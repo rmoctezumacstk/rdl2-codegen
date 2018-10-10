@@ -1,0 +1,975 @@
+grammar com.softtek.Rdl2 with org.eclipse.xtext.common.Terminals
+
+generate rdl2 "http://www.softtek.com/Rdl2"
+
+Model:
+  module = Module | (actors+=Actor)* | system=System
+;
+/*
+ * 
+ system NombreSistema {
+
+   title: “Nombre del Sistema”
+
+   description: “Descripción del Sistema”
+
+   logo: “./img/logo.png”
+
+ 
+
+   module Modulo1
+
+   module Modulo2
+
+   module Modulo3
+
+}
+ */
+
+
+ModuleName:
+	'module' module=[ModuleInfo|QualifiedName]
+;
+
+ModuleInfo:
+	Module
+; 
+ 
+System :
+ 'system' name=ID '{' 
+ 	'title' ':' title=STRING
+ 	('description' ':' description=STRING)?
+ 	('logo' ':' logo=STRING)?
+ 	(modules+=ModuleName)+
+ 	 
+ '}'
+;
+
+Module:
+ 'module' name = QualifiedName '{'
+   'name' ':' description = STRING
+   (elements += AbstractElement)*
+ '}'
+;
+
+QualifiedName:
+  ID ('.' ID)*
+;
+
+QualifiedNameWithWildcard:
+  QualifiedName '.*'?
+;
+
+AbstractElement:
+	( Enum | Entity | PageContainer | Task)
+;
+	
+Enum:
+	'enum' name=ID '{'
+		(enum_literals += EnumLiteral)+
+	'}'
+;
+
+EnumLiteral:
+	key=ID ':' value=STRING
+;
+
+Entity:
+	'entity' name=ID '{'
+	    (actions = Actions)?
+	    (glossary = Glossary)?
+	    (db_map = DBMapEntity)?
+		(entity_fields += EntityField)+
+	    (entity_methods += MethodDeclaration)*
+	'}'
+;
+
+MethodDeclaration:
+ 	'def' name=ID '{'
+ 		( def_statements += Statement )+
+	'}'
+;
+
+Statement:
+	StatementReturn
+;
+
+StatementReturn:
+	'return' entityfield=[EntityField|QualifiedName]
+;
+
+EntityField:
+	EntityReferenceField |
+	EntityTextField      |
+	EntityLongTextField  |
+	EntityDateField      |
+	EntityImageField     |
+	EntityFileField      |
+	EntityEmailField     |
+	EntityDecimalField   |
+	EntityIntegerField   |
+	EntityCurrencyField
+;
+
+EntityTextConstraintDef:
+	'constraints' '(' constraints += EntityTextConstraint (',' constraints += EntityTextConstraint)* ')'
+;
+
+EntityTextConstraint:
+	ConstraintRequired |
+	ConstraintUnique   |
+	ConstraintMaxLength|
+	ConstraintMinLength
+;
+
+EntityTextField:
+	'field' name=ID ':' 'Text'
+	  ('{'
+	      (attrs += EntityTextFieldAttr)+
+	   '}')?
+;
+
+EntityTextFieldAttr:
+	//numberofvalues   = NumberOfValues         |
+	glossary         = Glossary               |
+	widget           = WidgetText             |
+	constraint       = EntityTextConstraintDef|
+	db_map           = DBMapField             |
+	data_domain      = DataDomain             |
+	business_rule    = BusinessRule
+;
+
+
+EntityLongTextField:
+	'field' name=ID ':' 'LongText'
+	('{'
+	  (attrs += EntityLongTextFieldAttr)+
+	'}')?
+;
+
+EntityLongTextFieldAttr:
+	glossary         = Glossary                |
+	widget           = Widget                  |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+EntityDateField:
+	'field' name=ID ':' 'Date'
+	('{'
+	  (attrs += EntityDateFieldAttr)+
+	'}')?
+;
+
+EntityDateFieldAttr:
+   'default' ':' default=DATE                  |
+	glossary         = Glossary                |
+	widget           = WidgetDate              |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+EntityReferenceField:
+	'reference' name=ID ':' superType=[EnumEntity|QualifiedName] '[' lowerBound=INT '..' upperBound=CardinalityUpperBound ']' ('opposite-of' opposite=[EntityReferenceField|QualifiedName])?
+    ('{'
+   	  (attrs += EntityReferenceFieldAttr)+
+    '}')?
+;  
+
+CardinalityUpperBound:
+	INT | '*'
+;
+
+EntityReferenceFieldAttr:
+	glossary         = Glossary                |
+	widget           = WidgetEnum              |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+EnumEntity:
+	Enum | Entity
+;
+EntityImageField:
+	'field' name=ID ':' 'Image'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityFileField:
+	'field' name=ID ':' 'File'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityEmailField:
+	'field' name=ID ':' 'Email'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityDecimalField:
+	'field' name=ID ':' 'Decimal'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityIntegerField:
+	'field' name=ID ':' 'Integer'
+	('{'
+	 (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityCurrencyField:
+	'field' name=ID ':' 'Currency'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityAttr:
+	glossary         = Glossary                |
+	widget           = Widget                  |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+ConstraintRequired:
+	'required' ':' value=('true' | 'false')
+;
+
+ConstraintUnique:
+	'unique' ':' value=('true' | 'false')
+;
+
+ConstraintMaxLength:
+	'max_length' ':' value=INT
+;
+
+ConstraintMinLength:
+	'min_length' ':' value=INT
+;
+
+
+//Glossary
+Glossary :
+	'glossary' '('
+	     glossary_name        = GlossaryName
+	     ','
+	     glossary_description = GlossaryDescription
+	     //attrs += GlosaryAttr (',' attrs += GlosaryAttr)* 
+	 ')'
+;
+
+GlossaryName:
+	'name' ':' label= STRING
+;
+
+GlossaryDescription:
+	'description' ':' label= STRING
+;
+
+WidgetLabel:
+	'label' ':' label= STRING
+;
+
+WidgetHelp:
+	'help'  ':' help = STRING 
+;
+
+WidgetExposedFilter:
+	'exposed_filter'  ':' exposed_filter = ('true' | 'false') 
+;
+
+WidgetType:
+	'type'  ':' type = ('Option'| 'Check' | 'Autocomplete')
+;
+
+WidgetTypeSelect:
+	'type'  ':' type = 'SelectList' 
+;
+
+
+WidgetSortBy:
+	'sort_by'  ':' sortby = ID 
+;
+
+WidgetStartYear :
+	{WidgetStartYear} 'start_year_from_now' ':' start= '-'? '+'? INT
+;
+
+WidgetEndYear :
+	{WidgetEndYear} 'end_year_from_now' ':' end='-'? '+'? INT
+;
+
+Widget :
+	widget='widget' '(' attrs += WidgetAttr (',' attrs += WidgetAttr)* ')'
+;
+
+WidgetEnum :
+	widget='widget' '(' attrs += WidgetAttrEnum (',' attrs += WidgetAttrEnum)* ')'
+;
+
+WidgetDate :
+	widget='widget' '(' attrs += WidgetAttrDate (',' attrs += WidgetAttrDate)* ')'
+;
+
+WidgetText :
+	widget='widget' '(' attrs += WidgetAttrText (',' attrs += WidgetAttrText)* ')'
+;
+
+
+WidgetAttr:
+	WidgetLabel |
+	WidgetHelp  |
+	WidgetExposedFilter|
+	WidgetDisplayResult
+;
+
+WidgetAttrEnum:
+	WidgetAttrEnumType |
+	WidgetAttrEnumTypeSelect|
+	WidgetDisplayResult
+;
+
+WidgetAttrEnumType:
+	WidgetLabel |
+	WidgetHelp  |
+	WidgetExposedFilter |
+	WidgetType 
+;
+
+WidgetAttrEnumTypeSelect:
+	WidgetTypeSelect 
+	(',' sortby = WidgetSortBy)?
+;
+
+WidgetAttrDate:
+	WidgetLabel |
+	WidgetHelp  |
+	WidgetExposedFilter |
+	WidgetStartYear |
+	WidgetEndYear |
+	WidgetDisplayResult
+;
+
+WidgetAttrText:
+	WidgetLabel |
+	WidgetHelp  |
+	WidgetExposedFilter |
+	WidgetSize |
+	WidgetDisplayResult
+;
+
+
+WidgetSize:
+	'size'  ':' type = WidgetSizeType 
+;
+
+WidgetSizeType:
+	'XS' |'SM'  |'MD' |'LG' | 'XL'
+;
+
+WidgetDisplayResult:
+   'display_result' ':'  display_result= ('true'| 'false')
+;
+//Types
+BOOLEAN :
+	'true' | 'false'
+;
+
+DATE:
+	{DATE} (date=DATETIME)| now='Now' 
+;
+
+MONTH : 'Jan'|'Feb'|'Mar'|'Apr'|'May'|'Jun'|'Jul'|'Aug'|'Sep'|'Oct'|'Nov'|'Dec';
+
+
+
+ActionSearch:
+   'search' ':' value = ('Simple' | 'Complex' | 'None' )
+;
+
+ActionAdd:
+   'add'  ':'   value = ('true' | 'false')
+;
+
+ActionEdit:
+   'edit' ':'   value = ('true' | 'false') 
+;
+
+ActionDelete:
+   'delete' ':' value = ('true' | 'false')
+;
+  
+Action:
+	ActionSearch |
+	ActionAdd    |
+	ActionEdit   |
+	ActionDelete 
+;
+
+Actions:
+ 'scaffold' '(' action += Action (',' action += Action)* ')'
+;
+
+terminal DATETIME :
+	 ('0'..'9')('0'..'9')('0'..'9')('0'..'9')
+	 ('-'|'/')
+	 ('0'..'9')('0'..'9')
+	 ('-'|'/')
+	 ('0'..'9')('0'..'9')
+	 (' '
+	  ('0'..'9')('0'..'9')
+	  ':'
+	  ('0'..'9')('0'..'9')
+	  ':'
+	  ('0'..'9')('0'..'9'))?
+;
+
+DBMapEntity: 
+	 'db_map' '('
+	 'table'  ':' table=STRING (')'|','
+	 dbmap_attrs += DBMapAttr (',' dbmap_attrs += DBMapAttr)* ')')
+;
+
+DBMapAttr:
+	DBMapAttrIdentity | DBMapAttrAutoId
+;
+DBMapAttrIdentity:
+	'identity' ':' identity= STRING	
+;
+
+DBMapAttrAutoId:
+	'auto_id' ':' autoid= ('true'|'false')	
+;
+
+DBMapField: 
+	'db_map' '(' 'field'  ':' table=STRING 
+	 (')' | ',' 'pk' ':' pk=('true'|'false') ')')
+;
+
+DataDomain:
+	'data' '(' 'domain' ':' domain=STRING ')'
+;
+
+BusinessRule:
+    'business_rule' '(' 'code' ':' code=STRING ',' 'description' ':' description=STRING ')'
+;
+
+//Actors
+//Actors:{Actors}
+//	(actors+=Actor)*
+//;
+
+
+Actor:
+	'actor' name=ID '{'
+		'name' ':' (actor_name=STRING)
+	'}'
+;
+
+//PageContainers
+
+PageContainer:
+	'screen'  (name=ID) (':' ('Wizard'|'Modal'|'Modeless'))? '{'
+		('home' ':' home=('true'|'false'))?
+		('landmark' ':' landmark=('true'|'false'))?
+		'title' ':' (page_title=STRING)
+		(components+=UIComponent)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+
+UIComponent:
+	FormComponent |
+	ListComponent |
+	DetailComponent |
+	MessageComponent
+;
+
+FormComponent:
+	'form' ('<' (entity=[Entity|QualifiedName]) '>')? name=ID '{'
+		('title' ':' (form_title=STRING))?
+		(form_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+ListComponent:
+	'list' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
+		('title' ':' (list_title=STRING))?
+		(list_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+DetailComponent:
+	'details' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
+		('title' ':' (list_title=STRING))?
+		(list_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+MessageComponent:
+	'message' name=ID
+	('{' 'text' ':' msgtext=STRING '}')?
+;
+
+UIElement:
+	UIField | UIDisplay
+;
+
+UIFormContainer:
+	UIFormPanel | UIFormRow | UIFormColumn
+;
+
+UIFormPanel:
+	'panel' ':' name=ID '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIFormRow: {UIFormRow}
+	'row' '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIFormColumn:{UIFormColumn}
+	'col' '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIDisplay:
+	'display' ui_field=[EntityField|QualifiedName] ('{' mutable='mutable' '}')?
+;
+
+UIField:
+	UITextField
+  | UILongTextField
+  | UIDateField
+  | UIImageField
+  | UIFileField
+  | UIEmailField 
+  | UIDecimalField 
+  | UIIntegerField 
+  | UICurrencyField
+;
+
+UITextField:
+	'field' name=ID ':' 'Text' ('{' immutable='immutable' '}')?
+;
+
+UILongTextField:
+	'field' name=ID ':' 'LongText' ('{' immutable='immutable' '}')?
+;
+
+UIDateField:
+	'field' name=ID ':' 'Date' ('{' immutable='immutable' '}')?
+;
+UIImageField:
+	'field' name=ID ':' 'Image'	 ('{' immutable='immutable' '}')?
+;
+
+UIFileField:
+	'field' name=ID ':' 'File'	 ('{' immutable='immutable' '}')?
+;
+
+UIEmailField:
+	'field' name=ID ':' 'Email'	 ('{' immutable='immutable' '}')?
+;
+
+UIDecimalField:
+	'field' name=ID ':' 'Decimal' ('{' immutable='immutable' '}')?
+;
+
+UIIntegerField:
+	'field' name=ID ':' 'Integer' ('{' immutable='immutable' '}')?
+;
+
+UICurrencyField:
+	'field' name=ID ':' 'Currency' ('{' immutable='immutable' '}')?
+;
+
+UICommand:
+	'command' name=ID ':' (type=('PrimaryButton'|'Button'|'Link')) '{'
+		'label' ':' (command_label=STRING)
+		('icon' ':' icon=STRING)?
+		'link-to' ":" (link_to=[PageContainer])
+	'}'
+;
+
+UILinkFlow:
+	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
+	('{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}')?
+;
+
+UIListCommand:
+	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
+	('{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}')?
+;
+
+
+//Tasks
+
+Task:
+	'task' name=ID ':' 'User' '{'
+		'id' ':' uc_id=ID
+		'name' ':' uc_name=STRING
+		'goal' ':' uc_goal=STRING
+		'trigger' ':' trigger=UCTrigger
+		(steps+=TaskStep)*
+	'}'
+;
+
+UCTrigger:
+	actor=[Actor] 'chooses' page=[PageContainer]
+;
+
+TaskStep:
+	SystemStep |
+	ActorStep
+;
+
+SystemStep:
+	SystemShowsStep |
+	SystemValidatesFormStep |
+	SystemFillsListStep |
+	SystemCreatesEntityStep |
+	SystemUpdatesEntityStep |
+	SystemDeletesEntityStep |
+	SystemInvokesUCStep
+;
+
+ActorStep:
+	ActorEntersStep |
+	ActorChoosesStep |
+	ActorSelectsStep
+;
+
+SystemShowsStep:
+	'System' 'shows' page=[PageContainer]
+;
+
+SystemValidatesFormStep:
+	'System' 'validates' form=[FormComponent|QualifiedName]
+;
+
+SystemFillsListStep:
+	'System' 'fills' list=[ListComponent|QualifiedName]
+;
+
+SystemCreatesEntityStep:
+	'System' 'creates' entity=[Entity|QualifiedName]
+;
+
+SystemUpdatesEntityStep:
+	'System' 'updates' entity=[Entity|QualifiedName]
+;
+
+SystemDeletesEntityStep:
+	'System' 'deletes' entity=[Entity|QualifiedName]
+;
+
+SystemInvokesUCStep:
+	'System' 'invokes' usecase=[Task]
+;
+
+ActorEntersStep:
+	actor=[Actor] 'enters' form=[FormComponent|QualifiedName]
+;
+
+ActorChoosesStep:
+	actor=[Actor] 'chooses' command=[UICommand|QualifiedName]
+;
+
+ActorSelectsStep:
+	actor=[Actor] 'selects' list=[UIListCommand|QualifiedName]
+;
+
+
+/* 
+Model:
+	element=AbstractElement
+;
+
+AbstractElement:
+	module=Module | actor=Actores
+;
+
+Module:
+	'module' name=ID '{'
+		'name' ':' (module_name=STRING)
+		(elements+=ModuleElement)*
+	'}'
+;
+
+ModuleElement:
+	Enum | Entity | PageContainer | Task
+;
+
+Enum:
+	'enum' name=ID '{'
+		(enum_literals += EnumLiteral)+
+	'}'
+;
+
+EnumLiteral:
+	key=ID ':' value=STRING
+;
+
+Entity:
+	'entity' name=ID '{'
+		'glossary' '(' 'name' ':' glossary_name=STRING ',' 'description' ':' glossary_description=STRING ')'
+		(fields+=Field)*
+	'}'
+;
+
+Field:
+	BasicField | ReferenceField
+;
+
+BasicField:
+	'field' name=ID ':' 'Text'
+;
+
+ReferenceField:
+	'reference' name=ID ':' entity=[Entity|QualifiedName] '[' lowerBound=INT '..' upperBound=CardinalityUpperBound ']' ('opposite-of' opposite=[ReferenceField|QualifiedName])?
+;
+
+PageContainer:
+	'screen'  (name=ID) (':' ('Wizard'|'Modal'|'Modeless'))? '{'
+		('home' ':' home=('true'|'false'))?
+		('landmark' ':' landmark=('true'|'false'))?
+		'title' ':' (page_title=STRING)
+		(components+=UIComponent)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+
+UIComponent:
+	FormComponent |
+	ListComponent |
+	DetailComponent |
+	MessageComponent
+;
+
+FormComponent:
+	'form' ('<' (entity=[Entity|QualifiedName]) '>')? name=ID '{'
+		('title' ':' (form_title=STRING))?
+		(form_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+ListComponent:
+	'list' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
+		('title' ':' (list_title=STRING))?
+		(list_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+DetailComponent:
+	'details' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
+		('title' ':' (list_title=STRING))?
+		(list_elements += UIElement)*
+		(links += UILinkFlow)*
+	'}'
+;
+
+MessageComponent:
+	'message' name=ID
+	('{' 'text' ':' msgtext=STRING '}')?
+;
+
+UIElement:
+	UIField | UIDisplay
+;
+
+UIFormContainer:
+	UIFormPanel | UIFormRow | UIFormColumn
+;
+
+UIFormPanel:
+	'panel' ':' name=ID '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIFormRow:
+	'row' '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIFormColumn:
+	'col' '{'
+		(elements += UIElement)*
+	'}'
+;
+
+UIDisplay:
+	'display' ui_field=[Field|QualifiedName] ('{' mutable='mutable' '}')?
+;
+
+UIField:
+	UITextField
+;
+
+UITextField:
+	'field' name=ID ':' 'Text' ('{' immutable='immutable' '}')?
+;
+
+UICommand:
+	'command' name=ID ':' (type=('PrimaryButton'|'Button'|'Link')) '{'
+		'label' ':' (command_label=STRING)
+		('icon' ':' icon=STRING)?
+		'link-to' ":" (link_to=[PageContainer])
+	'}'
+;
+
+UILinkFlow:
+	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
+	('{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}')?
+;
+
+UIListCommand:
+	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
+	('{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}')?
+;
+
+ActionDefinition:
+	'action' name=ID '{'
+		okport=ActionOKOutputPort
+		(errorport=ActionErrorOutputPort)?
+	'}'
+;
+
+ActionOKOutputPort:
+	'okflow' name=ID '->' (link_to=[PageContainer|QualifiedName]) '{'
+		'message' '(' 'text' ':' msgtext=STRING  ')'
+	'}'
+;
+
+ActionErrorOutputPort:
+	'errorflow' name=ID '->' (link_to=[PageContainer|QualifiedName]) '{'
+		'message' '(' 'text' ':' msgtext=STRING  ')'
+	'}'
+;
+
+Actores:
+	(actores+=Actor)*
+;
+
+Actor:
+	'actor' name=ID '{'
+		'name' ':' (actor_name=STRING)
+	'}'
+;
+
+Task:
+	'task' name=ID ':' 'User' '{'
+		'id' ':' uc_id=ID
+		'name' ':' uc_name=STRING
+		'goal' ':' uc_goal=STRING
+		'trigger' ':' trigger=UCTrigger
+		(steps+=TaskStep)*
+	'}'
+;
+
+UCTrigger:
+	actor=[Actor] 'chooses' page=[PageContainer]
+;
+
+TaskStep:
+	SystemStep |
+	ActorStep
+;
+
+SystemStep:
+	SystemShowsStep |
+	SystemValidatesFormStep |
+	SystemFillsListStep |
+	SystemCreatesEntityStep |
+	SystemUpdatesEntityStep |
+	SystemDeletesEntityStep |
+	SystemInvokesUCStep
+;
+
+ActorStep:
+	ActorEntersStep |
+	ActorChoosesStep |
+	ActorSelectsStep
+;
+
+SystemShowsStep:
+	'System' 'shows' page=[PageContainer]
+;
+
+SystemValidatesFormStep:
+	'System' 'validates' form=[FormComponent|QualifiedName]
+;
+
+SystemFillsListStep:
+	'System' 'fills' list=[ListComponent|QualifiedName]
+;
+
+SystemCreatesEntityStep:
+	'System' 'creates' entity=[Entity|QualifiedName]
+;
+
+SystemUpdatesEntityStep:
+	'System' 'updates' entity=[Entity|QualifiedName]
+;
+
+SystemDeletesEntityStep:
+	'System' 'deletes' entity=[Entity|QualifiedName]
+;
+
+SystemInvokesUCStep:
+	'System' 'invokes' usecase=[Task]
+;
+
+ActorEntersStep:
+	actor=[Actor] 'enters' form=[FormComponent|QualifiedName]
+;
+
+ActorChoosesStep:
+	actor=[Actor] 'chooses' command=[UICommand|QualifiedName]
+;
+
+ActorSelectsStep:
+	actor=[Actor] 'selects' list=[UIListCommand|QualifiedName]
+;
+
+QualifiedName:
+  ID ('.' ID)* 
+;
+*/
