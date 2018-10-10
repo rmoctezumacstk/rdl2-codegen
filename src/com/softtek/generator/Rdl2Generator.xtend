@@ -28,6 +28,7 @@ class Rdl2Generator extends AbstractGenerator {
 		println("resource "+resource.resourceSet)
 		for(r:resource.resourceSet.resources){
 			importList.addAll(structureComponentRDLGenerator.doGenImports(r, fsa))
+			//entityComponentRDLGenerator.doGeneratorScreen(r, fsa)
 		}
 		
 		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,fsa))

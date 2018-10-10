@@ -107,7 +107,7 @@ class StructureComponentRDLGenerator {
 	// Hoja de estilos
 	import './styles/index.scss'
 	
-	// Applicación
+	// ApplicaciÃ³n
 	import './components/app/app.tag'
 	
 	// Componentes comunes
@@ -155,9 +155,9 @@ class StructureComponentRDLGenerator {
 	import './components/patterns/wizard/step-wizard.tag'
 	
 	// Componentes generados
-	«FOR String a: importElementList»
-	  «a»
-	«ENDFOR»
+	Â«FOR String a: importElementListÂ»
+	  Â«aÂ»
+	Â«ENDFORÂ»
 	
 	const msgs = require('json-loader!./default-messages.json')
 	var msgJSON = JSON.stringify(msgs)
@@ -194,10 +194,10 @@ class StructureComponentRDLGenerator {
 	  { route: '/home/', tag: 'app' },
 	
 	]
-	riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'Contraseña', link: '//' } } })
+	riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'ContraseÃ±a', link: '//' } } })
 		
 	'''
-	//«createAbstractElementRoutes(contents, fsa)»
+	//Â«createAbstractElementRoutes(contents, fsa)Â»
 	def dispatch genAbstractElementRoutes(Model model, IFileSystemAccess2 fsa) {
 		
 		var routes = '';
@@ -218,29 +218,29 @@ class StructureComponentRDLGenerator {
 		routes = routes.substring(0, routes.length-1);
 		
 		//routes = routes //+ ''']
-		// riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'Contraseña', link: '//' } } })'''
+		// riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'ContraseÃ±a', link: '//' } } })'''
 	}
 	
 	
 	
 	def dispatch genAbstractElement(Entity t, Model model, IFileSystemAccess2 fsa) '''
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-admin.tag'
+		import './components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-admin.tag'
 		
-		«IF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-form.tag'
-		«ENDIF»
+		Â«IF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value))Â»
+		import './components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-form.tag'
+		Â«ENDIFÂ»
 		
-		«IF t.actions !== null && (!t.actions.action.filter(ActionAdd).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionAdd).get(0).value))»		
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-add.tag'
-		«ENDIF»
+		Â«IF t.actions !== null && (!t.actions.action.filter(ActionAdd).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionAdd).get(0).value))Â»		
+		import './components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-add.tag'
+		Â«ENDIFÂ»
 			
-		«IF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionEdit).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-edit.tag'
-		«ENDIF»
+		Â«IF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionEdit).get(0).value))Â»
+		import './components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-edit.tag'
+		Â«ENDIFÂ»
 		
-		«IF t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionDelete).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-delete.tag'
-		«ENDIF»
+		Â«IF t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionDelete).get(0).value))Â»
+		import './components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-delete.tag'
+		Â«ENDIFÂ»
 	'''
 	
 	def dispatch genAbstractElement(Enum t, Model model, IFileSystemAccess2 fsa) '''
@@ -262,7 +262,7 @@ class StructureComponentRDLGenerator {
 	'''
 	
 	def dispatch genAbstractElementRouteAdmin(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var admin = '''{ route: '/«t.name.toLowerCase»-admin/', tag: '«t.name.toLowerCase»-admin' },
+		var admin = '''{ route: '/Â«t.name.toLowerCaseÂ»-admin/', tag: 'Â«t.name.toLowerCaseÂ»-admin' },
 		'''
 		return admin;
 	}
@@ -277,7 +277,7 @@ class StructureComponentRDLGenerator {
 	'''
 	
 	def dispatch genAbstractElementRouteAdd(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var add = '''{ route: '/«t.name.toLowerCase»-add/', tag: '«t.name.toLowerCase»-add' },
+		var add = '''{ route: '/Â«t.name.toLowerCaseÂ»-add/', tag: 'Â«t.name.toLowerCaseÂ»-add' },
 		'''
 		return add;
 	}
@@ -292,7 +292,7 @@ class StructureComponentRDLGenerator {
 	'''
 	
 	def dispatch genAbstractElementRouteEdit(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var edit = '''{ route: '/«t.name.toLowerCase»-edit/', tag: '«t.name.toLowerCase»-edit' },
+		var edit = '''{ route: '/Â«t.name.toLowerCaseÂ»-edit/', tag: 'Â«t.name.toLowerCaseÂ»-edit' },
 		'''
 		return edit;
 	}
@@ -308,7 +308,7 @@ class StructureComponentRDLGenerator {
 	
 	
 	def dispatch genAbstractElementRouteDelete(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var delete = '''{ route: '/«t.name.toLowerCase»-delete/', tag: '«t.name.toLowerCase»-delete' },
+		var delete = '''{ route: '/Â«t.name.toLowerCaseÂ»-delete/', tag: 'Â«t.name.toLowerCaseÂ»-delete' },
 		'''
 		return delete;	
 	}
@@ -343,7 +343,7 @@ class StructureComponentRDLGenerator {
 								</div>
 								<div class="profile_info">
 									<span>Welcome,</span>
-									<h2>Juan Pérez González</h2>
+									<h2>Juan PÃ©rez GonzÃ¡lez</h2>
 								</div>
 							</div>
 							<!-- /menu profile quick info -->
@@ -353,15 +353,15 @@ class StructureComponentRDLGenerator {
 							<!-- sidebar menu -->
 							<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 								<div class="menu_section">
-								    «IF model.module!==null»
-									<h3>«model.module.name.toFirstUpper»</h3>
+								    Â«IF model.module!==nullÂ»
+									<h3>Â«model.module.name.toFirstUpperÂ»</h3>
 									<ul class="nav side-menu">
 									    
-								        «FOR AbstractElement a: model.module.elements»
-											«a.genAbstractElementMenuSection(model)»
-										«ENDFOR»
+								        Â«FOR AbstractElement a: model.module.elementsÂ»
+											Â«a.genAbstractElementMenuSection(model)Â»
+										Â«ENDFORÂ»
 									</ul>
-									«ENDIF»
+									Â«ENDIFÂ»
 								</div>
 							</div>
 						<!-- /sidebar menu -->
@@ -395,7 +395,7 @@ class StructureComponentRDLGenerator {
 							<ul class="nav navbar-nav navbar-right">
 								<li >
 								<a href="javascript:;" class="user-profile" style="background-color: #EDEDED;" >		
-									<img class="user-profile" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="">Juan Pérez
+									<img class="user-profile" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" alt="">Juan PÃ©rez
 									<span class=" fa fa-angle-down"></span>
 								</a>					
 								</li>
@@ -425,10 +425,10 @@ class StructureComponentRDLGenerator {
 	
 	def dispatch genAbstractElementMenuSection(Entity t, Model model) '''
 
-			<li><a><i class="fa fa-home"></i> «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF» <span class="fa fa-chevron-down"></span></a>
+			<li><a><i class="fa fa-home"></i> Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»Â«t.glossary.glossary_name.labelÂ»Â«ELSEÂ»Â«t.name.toFirstUpperÂ»Â«ENDIFÂ» <span class="fa fa-chevron-down"></span></a>
 				<ul class="nav child_menu">
-					<li><a href="/«t.name.toLowerCase»-admin">Mantenimiento de «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF»s</a></li>
-					<li><a href="/«t.name.toLowerCase»-add">Alta de «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF»</a></li>
+					<li><a href="/Â«t.name.toLowerCaseÂ»-admin">Mantenimiento de Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»Â«t.glossary.glossary_name.labelÂ»Â«ELSEÂ»Â«t.name.toFirstUpperÂ»Â«ENDIFÂ»s</a></li>
+					<li><a href="/Â«t.name.toLowerCaseÂ»-add">Alta de Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»Â«t.glossary.glossary_name.labelÂ»Â«ELSEÂ»Â«t.name.toFirstUpperÂ»Â«ENDIFÂ»</a></li>
 				</ul>
 			</li>
 
@@ -457,7 +457,7 @@ class StructureComponentRDLGenerator {
 	def dispatch genAbstractElementTableData(Task t, Model model) ''''''
 	
 	def dispatch genAbstractElementTableData(Entity t, Model model) '''
-		{ path: require('json-loader!./tabledata/modal«t.name.toLowerCase».json') },
+		{ path: require('json-loader!./tabledata/modalÂ«t.name.toLowerCaseÂ».json') },
 	'''
 	def static toLowerCase(String it){
 	  toLowerCase

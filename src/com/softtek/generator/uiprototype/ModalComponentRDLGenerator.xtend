@@ -47,7 +47,7 @@ class ModalComponentRDLGenerator {
 	}
 	
 	def dispatch genAbstractElement(Entity t, Model model, IFileSystemAccess2 fsa) '''
-	«fsa.generateFile('''prototipo/src/tabledata/modal«t.name.toLowerCase».json''', t.genApiModal(model))»
+	Â«fsa.generateFile('''prototipo/src/tabledata/modalÂ«t.name.toLowerCaseÂ».json''', t.genApiModal(model))Â»
 	'''
 	
 	def dispatch genAbstractElement(Enum t, Model model, IFileSystemAccess2 fsa) '''Enum'''
@@ -57,35 +57,35 @@ class ModalComponentRDLGenerator {
 	def dispatch genAbstractElement(Task t, Model model, IFileSystemAccess2 fsa) '''Task'''
 	
 	def dispatch genApiModal(Entity t, Model model) '''
-		«var EList<EntityField> visibleEntityFields = filterVisibleEntityFields(t)»
+		Â«var EList<EntityField> visibleEntityFields = filterVisibleEntityFields(t)Â»
 	
 		{
 			"ids":[
 				{
-					"id": "«t.name.toLowerCase»-results",
+					"id": "Â«t.name.toLowerCaseÂ»-results",
 					"headers": [
-					«FOR EntityField e : visibleEntityFields SEPARATOR ','»
-						«var glossaryName = e.getGlossaryEntityField()»
-						«IF glossaryName !== null && !glossaryName.toString.trim.isEmpty»	
-							{ "label": "«glossaryName.toString.trim»" }
-						«ELSE»
-							{ "label": "«e.name.toFirstUpper»" }
-						«ENDIF»
-					«ENDFOR»
+					Â«FOR EntityField e : visibleEntityFields SEPARATOR ','Â»
+						Â«var glossaryName = e.getGlossaryEntityField()Â»
+						Â«IF glossaryName !== null && !glossaryName.toString.trim.isEmptyÂ»	
+							{ "label": "Â«glossaryName.toString.trimÂ»" }
+						Â«ELSEÂ»
+							{ "label": "Â«e.name.toFirstUpperÂ»" }
+						Â«ENDIFÂ»
+					Â«ENDFORÂ»
 					],
 					"rows": [
-						«FOR i : 1..10 SEPARATOR ','»
+						Â«FOR i : 1..10 SEPARATOR ','Â»
 						{
-							"id": "«i»",
+							"id": "Â«iÂ»",
 							"data": [
-								«FOR EntityField e : visibleEntityFields SEPARATOR ','»
-									«e.fakerDomainData(t)»
-								«ENDFOR»
+								Â«FOR EntityField e : visibleEntityFields SEPARATOR ','Â»
+									Â«e.fakerDomainData(t)Â»
+								Â«ENDFORÂ»
 							]
 						}
-						«ENDFOR»
+						Â«ENDFORÂ»
 					]
-					«t.genRelationshipOneToMany»
+					Â«t.genRelationshipOneToManyÂ»
 				}
 			]
 		}
@@ -110,26 +110,26 @@ class ModalComponentRDLGenerator {
 	 * Shows a Button in Search Results for each OneToMany relationship to another Entity.
 	 */
 	def CharSequence genRelationshipOneToMany(Entity entity) '''
-		«IF countOneToManyRelationships(entity) > 0»
+		Â«IF countOneToManyRelationships(entity) > 0Â»
 		    ,
 			"actions": [
 				{
 				"group": "Relaciones",
 				"actions": [
-				«var int numEntityReferenceField = this.getNumEntityReferenceField(entity)»
-				«var state = new State(1)»
+				Â«var int numEntityReferenceField = this.getNumEntityReferenceField(entity)Â»
+				Â«var state = new State(1)Â»
 				
-				«FOR r : entity.entity_fields.filter(typeof(EntityReferenceField))»
-					«IF r.upperBound != '1' »
-						{ "label": "«r.getGlossaryEntityField().toString.trim»", "link": "/«r.superType.getEntityNameFromRelationship.toString.toLowerCase»-admin/" }«IF state.getCounter() < numEntityReferenceField »,«ENDIF»
+				Â«FOR r : entity.entity_fields.filter(typeof(EntityReferenceField))Â»
+					Â«IF r.upperBound != '1' Â»
+						{ "label": "Â«r.getGlossaryEntityField().toString.trimÂ»", "link": "/Â«r.superType.getEntityNameFromRelationship.toString.toLowerCaseÂ»-admin/" }Â«IF state.getCounter() < numEntityReferenceField Â»,Â«ENDIFÂ»
 						
-						«state.setCounter(state.counter+1)»
-					«ENDIF»
-				«ENDFOR»
+						Â«state.setCounter(state.counter+1)Â»
+					Â«ENDIFÂ»
+				Â«ENDFORÂ»
 				]
 				}
 			]
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	/**
 	 * Obtiene el numero de atributos de la entidad de tipo EntityReferenceField
@@ -172,152 +172,152 @@ class ModalComponentRDLGenerator {
 	
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/	
 	def dispatch isVisibleEntityField(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityReferenceFieldAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def dispatch isVisibleEntityField(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityTextFieldAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityLongTextFieldAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def dispatch isVisibleEntityField(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityDateFieldAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def dispatch isVisibleEntityField(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch isVisibleEntityField(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty »
-				«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty Â»
+				Â«a.widget.attrs.filter(WidgetDisplayResult).get(0).display_resultÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 	def dispatch getGlossaryEntityField(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityReferenceFieldAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def dispatch getGlossaryEntityField(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityTextFieldAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityLongTextFieldAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def dispatch getGlossaryEntityField(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityDateFieldAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def dispatch getGlossaryEntityField(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	def dispatch getGlossaryEntityField(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs»
-			«IF a.glossary !== null && !a.glossary.toString.trim.isEmpty»
-				«a.glossary.glossary_name.label»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrsÂ»
+			Â«IF a.glossary !== null && !a.glossary.toString.trim.isEmptyÂ»
+				Â«a.glossary.glossary_name.labelÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 	
@@ -332,7 +332,7 @@ class ModalComponentRDLGenerator {
 	
 	// Field Description DOM
 	def dispatch fakerDomainData(EntityReferenceField field, Entity e) '''
-		«field.superType.fakerRelationship(e, field)»
+		Â«field.superType.fakerRelationship(e, field)Â»
 	'''
 	def dispatch fakerRelationship(Enum toEnum, Entity fromEntity, EntityReferenceField fromField) '''
 		"XXXXXXXX"
@@ -342,37 +342,37 @@ class ModalComponentRDLGenerator {
 		"YYYYYYYY"
 	'''
 	def dispatch fakerDomainData(EntityTextField field, Entity e) '''
-		"«field.fieldTextDomainData»"
+		"Â«field.fieldTextDomainDataÂ»"
 	'''
 	
 	def dispatch fakerDomainData(EntityLongTextField field, Entity e) '''
-		"«faker.lorem().paragraph»"
+		"Â«faker.lorem().paragraphÂ»"
 	'''
 	def dispatch fakerDomainData(EntityDateField field, Entity e) '''
-		"«formatter.format(faker.date().past(800, TimeUnit.DAYS))»"
+		"Â«formatter.format(faker.date().past(800, TimeUnit.DAYS))Â»"
 	'''
 	
 	def dispatch fakerDomainData(EntityImageField field, Entity e) '''
-		"«faker.internet().avatar»"
+		"Â«faker.internet().avatarÂ»"
 	'''
 	
 	def dispatch fakerDomainData(EntityFileField field, Entity e) '''
 		""
 	'''
 	def dispatch fakerDomainData(EntityEmailField field, Entity e) '''
-		"«faker.internet().emailAddress»"
+		"Â«faker.internet().emailAddressÂ»"
 	'''
 	
 	def dispatch fakerDomainData(EntityDecimalField field, Entity e) '''
-		"«faker.number().randomNumber»"
+		"Â«faker.number().randomNumberÂ»"
 	'''
 	
 	def dispatch fakerDomainData(EntityIntegerField field, Entity e) '''
-		"«faker.number().numberBetween(1, 1000000)»"
+		"Â«faker.number().numberBetween(1, 1000000)Â»"
 	'''
 	
 	def dispatch fakerDomainData(EntityCurrencyField field, Entity e) '''
-		"«"$"+faker.number().randomNumber»"
+		"Â«"$"+faker.number().randomNumberÂ»"
 	'''
 	def CharSequence fieldTextDomainData(EntityTextField field) {
 		var fieldData = faker.lorem().sentence

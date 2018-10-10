@@ -28,7 +28,7 @@ class AdminComponentRDLGenerator {
 	}
 	
 	def dispatch genAbstractElement(Entity t, Model model, IFileSystemAccess2 fsa) '''
-	«fsa.generateFile('''prototipo/src/components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-admin.tag''', t.genApiAdmin(model).gen(model))»
+	Â«fsa.generateFile('''prototipo/src/components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-admin.tag''', t.genApiAdmin(model).gen(model))Â»
 	'''
 	
 	def dispatch genAbstractElement(Enum t, Model model, IFileSystemAccess2 fsa) '''
@@ -43,42 +43,42 @@ class AdminComponentRDLGenerator {
 	/* Create the admin page */
 	def dispatch genApiAdmin(Entity t, Model model) 
 	'''
-		<«t.name.toLowerCase»-admin>
-			«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»
-			<page id="«t.name.toLowerCase»-admin" title="Administrar «t.glossary.glossary_name.label.toFirstUpper»">
-			«ELSE»
-			<page id="«t.name.toLowerCase»-admin" title="Administrar «t.name.toFirstUpper»">
-			«ENDIF»		
-				<searchpanel add="«t.name.toLowerCase»-add">
-					«IF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)) && t.actions.action.filter(ActionAdd).isNullOrEmpty»
-					<searchcriteria viewsearch="true" typesearch="«t.actions.action.filter(ActionSearch).get(0).value»" viewadd="false">
-					«ELSEIF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)) && !t.actions.action.filter(ActionAdd).isNullOrEmpty»
-					<searchcriteria viewsearch="true" typesearch="«t.actions.action.filter(ActionSearch).get(0).value»" viewadd="«t.actions.action.filter(ActionAdd).get(0).value»">
-					«ELSEIF  t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && SEARCH_NONE.equals(t.actions.action.filter(ActionSearch).get(0).value) && t.actions.action.filter(ActionAdd).isNullOrEmpty»
+		<Â«t.name.toLowerCaseÂ»-admin>
+			Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»
+			<page id="Â«t.name.toLowerCaseÂ»-admin" title="Administrar Â«t.glossary.glossary_name.label.toFirstUpperÂ»">
+			Â«ELSEÂ»
+			<page id="Â«t.name.toLowerCaseÂ»-admin" title="Administrar Â«t.name.toFirstUpperÂ»">
+			Â«ENDIFÂ»		
+				<searchpanel add="Â«t.name.toLowerCaseÂ»-add">
+					Â«IF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)) && t.actions.action.filter(ActionAdd).isNullOrEmptyÂ»
+					<searchcriteria viewsearch="true" typesearch="Â«t.actions.action.filter(ActionSearch).get(0).valueÂ»" viewadd="false">
+					Â«ELSEIF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)) && !t.actions.action.filter(ActionAdd).isNullOrEmptyÂ»
+					<searchcriteria viewsearch="true" typesearch="Â«t.actions.action.filter(ActionSearch).get(0).valueÂ»" viewadd="Â«t.actions.action.filter(ActionAdd).get(0).valueÂ»">
+					Â«ELSEIF  t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && SEARCH_NONE.equals(t.actions.action.filter(ActionSearch).get(0).value) && t.actions.action.filter(ActionAdd).isNullOrEmptyÂ»
 					<searchcriteria viewsearch="false" viewadd="false">
-					«ELSEIF  t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && SEARCH_NONE.equals(t.actions.action.filter(ActionSearch).get(0).value) && !t.actions.action.filter(ActionAdd).isNullOrEmpty»
-					<searchcriteria viewsearch="false" viewadd="«t.actions.action.filter(ActionAdd).get(0).value»">
-					«ELSEIF  t.actions !== null && t.actions.action.filter(ActionSearch).isNullOrEmpty && !t.actions.action.filter(ActionAdd).isNullOrEmpty»
-					<searchcriteria viewsearch="false" viewadd="«t.actions.action.filter(ActionAdd).get(0).value»">
-					«ELSE»
+					Â«ELSEIF  t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && SEARCH_NONE.equals(t.actions.action.filter(ActionSearch).get(0).value) && !t.actions.action.filter(ActionAdd).isNullOrEmptyÂ»
+					<searchcriteria viewsearch="false" viewadd="Â«t.actions.action.filter(ActionAdd).get(0).valueÂ»">
+					Â«ELSEIF  t.actions !== null && t.actions.action.filter(ActionSearch).isNullOrEmpty && !t.actions.action.filter(ActionAdd).isNullOrEmptyÂ»
+					<searchcriteria viewsearch="false" viewadd="Â«t.actions.action.filter(ActionAdd).get(0).valueÂ»">
+					Â«ELSEÂ»
 					<searchcriteria viewsearch="false" viewadd="false">
-					«ENDIF»
-						<«t.name.toLowerCase»-form />
+					Â«ENDIFÂ»
+						<Â«t.name.toLowerCaseÂ»-form />
 					</searchcriteria>
 
-					«IF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionEdit).get(0).value)) && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionDelete).get(0).value))»
-					<searchresults id="«t.name.toLowerCase»-results" edit="«t.name.toLowerCase»-edit" delete="«t.name.toLowerCase»-delete" pagination="true">
-					«ELSEIF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionEdit).get(0).value))»
-					<searchresults id="«t.name.toLowerCase»-results" edit="«t.name.toLowerCase»-edit" pagination="true">
-					«ELSEIF t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionDelete).get(0).value))»
-					<searchresults id="«t.name.toLowerCase»-results" delete="«t.name.toLowerCase»-delete" pagination="true">
-					«ELSE»
-					<searchresults id="«t.name.toLowerCase»-results" pagination="true">
-					«ENDIF»
+					Â«IF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionEdit).get(0).value)) && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionDelete).get(0).value))Â»
+					<searchresults id="Â«t.name.toLowerCaseÂ»-results" edit="Â«t.name.toLowerCaseÂ»-edit" delete="Â«t.name.toLowerCaseÂ»-delete" pagination="true">
+					Â«ELSEIF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionEdit).get(0).value))Â»
+					<searchresults id="Â«t.name.toLowerCaseÂ»-results" edit="Â«t.name.toLowerCaseÂ»-edit" pagination="true">
+					Â«ELSEIF t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && "true".equals(t.actions.action.filter(ActionDelete).get(0).value))Â»
+					<searchresults id="Â«t.name.toLowerCaseÂ»-results" delete="Â«t.name.toLowerCaseÂ»-delete" pagination="true">
+					Â«ELSEÂ»
+					<searchresults id="Â«t.name.toLowerCaseÂ»-results" pagination="true">
+					Â«ENDIFÂ»
 					</searchresults>
 				</searchpanel>
 			</page>
-		</«t.name.toLowerCase»-admin>
+		</Â«t.name.toLowerCaseÂ»-admin>
 	'''
 	
 	def dispatch genApiAdmin(Enum t, Model model) '''
@@ -91,7 +91,7 @@ class AdminComponentRDLGenerator {
 	'''
 	
 	def gen(CharSequence body, Model model) '''
-		«body»
+		Â«bodyÂ»
 	'''
 	
 	def static toUpperCase(String it){

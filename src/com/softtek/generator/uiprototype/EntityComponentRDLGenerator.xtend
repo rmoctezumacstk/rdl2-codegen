@@ -64,21 +64,21 @@ class EntityComponentRDLGenerator {
 	def dispatch genAbstractElement(Task t, Model model, IFileSystemAccess2 fsa) ''''''
 	
 	def dispatch genAbstractElement(Entity t, Model model, IFileSystemAccess2 fsa) '''
-		«IF generateAddTag(t)»
-			«fsa.generateFile('''prototipo/src/components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-add.tag''', t.genApiAdd(model, fsa, false).gen(model))»
-		«ENDIF»
+		Â«IF generateAddTag(t)Â»
+			Â«fsa.generateFile('''prototipo/src/components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-add.tag''', t.genApiAdd(model, fsa, false).gen(model))Â»
+		Â«ENDIFÂ»
 		
-		«IF generateEditTag(t)»
-			«fsa.generateFile('''prototipo/src/components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-edit.tag''', t.genApiEdit(model, fsa, false).gen(model))»
-		«ENDIF»
+		Â«IF generateEditTag(t)Â»
+			Â«fsa.generateFile('''prototipo/src/components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-edit.tag''', t.genApiEdit(model, fsa, false).gen(model))Â»
+		Â«ENDIFÂ»
 		
-		«IF generateDeleteTag(t)»
-			«fsa.generateFile('''prototipo/src/components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-delete.tag''', t.genApiDelete(model, fsa, true).gen(model))»
-		«ENDIF»		
+		Â«IF generateDeleteTag(t)Â»
+			Â«fsa.generateFile('''prototipo/src/components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-delete.tag''', t.genApiDelete(model, fsa, true).gen(model))Â»
+		Â«ENDIFÂ»		
 		
-		«IF generateSearchTag(t)»
-			«fsa.generateFile('''prototipo/src/components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-form.tag''', t.genApiForm(model, fsa, false).gen(model))»
-		«ENDIF»
+		Â«IF generateSearchTag(t)Â»
+			Â«fsa.generateFile('''prototipo/src/components/app/Â«t.name.toLowerCaseÂ»/Â«t.name.toLowerCaseÂ»-form.tag''', t.genApiForm(model, fsa, false).gen(model))Â»
+		Â«ENDIFÂ»
 	'''
 
 	def dispatch generateAddTag(Entity t){
@@ -123,108 +123,108 @@ class EntityComponentRDLGenerator {
 	
 	
 	def dispatch genApiAdd(Entity t, Model model, IFileSystemAccess2 fsa, Boolean disabled) '''
-	«var contador = 1»
+	Â«var contador = 1Â»
 	
-	<«t.name.toLowerCase»-add>
-		«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»
-		<page id="«t.name.toLowerCase»-add" title="Agregar «t.glossary.glossary_name.label.toFirstUpper»">
-		«ELSE»
-		<page id="«t.name.toLowerCase»-add" title="Agregar «t.name.toFirstUpper»">
-		«ENDIF»
-			<formbox title="Datos de «t.name.toFirstUpper»" icon="fa fa-check-circle-o" action="create" return="«t.name.toFirstLower»-admin">
-				«FOR EntityField f : t.entity_fields»
-					«IF contador % numColumnas == 1»
+	<Â«t.name.toLowerCaseÂ»-add>
+		Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-add" title="Agregar Â«t.glossary.glossary_name.label.toFirstUpperÂ»">
+		Â«ELSEÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-add" title="Agregar Â«t.name.toFirstUpperÂ»">
+		Â«ENDIFÂ»
+			<formbox title="Datos de Â«t.name.toFirstUpperÂ»" icon="fa fa-check-circle-o" action="create" return="Â«t.name.toFirstLowerÂ»-admin">
+				Â«FOR EntityField f : t.entity_fieldsÂ»
+					Â«IF contador % numColumnas == 1Â»
 					<div class="row">
-					«ENDIF»
-						«f.genEntityField(model, fsa, t, disabled, true)»
-					«IF contador % numColumnas == 0 || contador == t.entity_fields.size»
+					Â«ENDIFÂ»
+						Â«f.genEntityField(model, fsa, t, disabled, true)Â»
+					Â«IF contador % numColumnas == 0 || contador == t.entity_fields.sizeÂ»
 					</div>
-					«ENDIF»
+					Â«ENDIFÂ»
 					
-					<p hidden>«contador++»</p>
-				«ENDFOR»
+					<p hidden>Â«contador++Â»</p>
+				Â«ENDFORÂ»
 			</formbox>
 		</page>
-	</«t.name.toLowerCase»-add>	
+	</Â«t.name.toLowerCaseÂ»-add>	
 	'''
 	
 	def dispatch genApiEdit(Entity t, Model model, IFileSystemAccess2 fsa, Boolean disabled) '''
-	«var contador = 1»
+	Â«var contador = 1Â»
 	
-	<«t.name.toLowerCase»-edit>
-		«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»
-		<page id="«t.name.toLowerCase»-edit" title="Editar «t.glossary.glossary_name.label.toFirstUpper»">
-		«ELSE»
-		<page id="«t.name.toLowerCase»-edit" title="Editar «t.name.toFirstUpper»">
-		«ENDIF»	
-			<formbox title="Datos de «t.name.toFirstUpper»" icon="fa fa-check-circle-o" action="update" return="«t.name.toFirstLower»-admin">
-				«FOR EntityField f : t.entity_fields»
-					«IF contador % numColumnas == 1»
+	<Â«t.name.toLowerCaseÂ»-edit>
+		Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-edit" title="Editar Â«t.glossary.glossary_name.label.toFirstUpperÂ»">
+		Â«ELSEÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-edit" title="Editar Â«t.name.toFirstUpperÂ»">
+		Â«ENDIFÂ»	
+			<formbox title="Datos de Â«t.name.toFirstUpperÂ»" icon="fa fa-check-circle-o" action="update" return="Â«t.name.toFirstLowerÂ»-admin">
+				Â«FOR EntityField f : t.entity_fieldsÂ»
+					Â«IF contador % numColumnas == 1Â»
 					<div class="row">
-					«ENDIF»
-						«f.genEntityField(model, fsa, t, disabled, true)»
-					«IF contador % numColumnas == 0 || contador == t.entity_fields.size»
+					Â«ENDIFÂ»
+						Â«f.genEntityField(model, fsa, t, disabled, true)Â»
+					Â«IF contador % numColumnas == 0 || contador == t.entity_fields.sizeÂ»
 					</div>
-					«ENDIF»
+					Â«ENDIFÂ»
 					
-					<p hidden>«contador++»</p>
-				«ENDFOR»
+					<p hidden>Â«contador++Â»</p>
+				Â«ENDFORÂ»
 			</formbox>
 		</page>
-	</«t.name.toLowerCase»-edit>
+	</Â«t.name.toLowerCaseÂ»-edit>
 	'''
 	
 	def dispatch genApiDelete(Entity t, Model model, IFileSystemAccess2 fsa, Boolean disabled) '''
-	«var contador = 1»
+	Â«var contador = 1Â»
 	
-	<«t.name.toLowerCase»-delete>
-		«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»
-		<page id="«t.name.toLowerCase»-delete" title="Eliminar «t.glossary.glossary_name.label.toFirstUpper»">
-		«ELSE»
-		<page id="«t.name.toLowerCase»-delete" title="Eliminar «t.name.toFirstUpper»">
-		«ENDIF»	
-			<formbox title="Datos de «t.name.toFirstUpper»" icon="fa fa-check-circle-o" action="delete" return="«t.name.toFirstLower»-admin">
-				«FOR EntityField f : t.entity_fields»
-					«IF contador % numColumnas == 1»
+	<Â«t.name.toLowerCaseÂ»-delete>
+		Â«IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmptyÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-delete" title="Eliminar Â«t.glossary.glossary_name.label.toFirstUpperÂ»">
+		Â«ELSEÂ»
+		<page id="Â«t.name.toLowerCaseÂ»-delete" title="Eliminar Â«t.name.toFirstUpperÂ»">
+		Â«ENDIFÂ»	
+			<formbox title="Datos de Â«t.name.toFirstUpperÂ»" icon="fa fa-check-circle-o" action="delete" return="Â«t.name.toFirstLowerÂ»-admin">
+				Â«FOR EntityField f : t.entity_fieldsÂ»
+					Â«IF contador % numColumnas == 1Â»
 					<div class="row">
-					«ENDIF»
-						«f.genEntityField(model, fsa, t, disabled, true)»
-					«IF contador % numColumnas == 0 || contador == t.entity_fields.size»
+					Â«ENDIFÂ»
+						Â«f.genEntityField(model, fsa, t, disabled, true)Â»
+					Â«IF contador % numColumnas == 0 || contador == t.entity_fields.sizeÂ»
 					</div>
-					«ENDIF»
+					Â«ENDIFÂ»
 					
-					<p hidden>«contador++»</p>
-				«ENDFOR»
+					<p hidden>Â«contador++Â»</p>
+				Â«ENDFORÂ»
 			</formbox>
 		</page>
-	</«t.name.toLowerCase»-delete>
+	</Â«t.name.toLowerCaseÂ»-delete>
 	'''
 	
 	
 
 	def dispatch genApiForm(Entity t, Model model, IFileSystemAccess2 fsa, Boolean disabled) '''
-	«var numCamposEntity = t.entity_fields.size»
-	«var contador = 1»
+	Â«var numCamposEntity = t.entity_fields.sizeÂ»
+	Â«var contador = 1Â»
 	
-	<«t.name.toLowerCase»-form>
+	<Â«t.name.toLowerCaseÂ»-form>
 	
-		«IF SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)»
-			«FOR EntityField f : t.entity_fields»
-				«var isExposed = isExposedFilterEntityField(f)»
+		Â«IF SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)Â»
+			Â«FOR EntityField f : t.entity_fieldsÂ»
+				Â«var isExposed = isExposedFilterEntityField(f)Â»
 	
-				«IF isExposed»
-					«IF contador % numColumnas == 1»
+				Â«IF isExposedÂ»
+					Â«IF contador % numColumnas == 1Â»
 						<div class="row">
-					«ENDIF»
-						«f.genEntityField(model, fsa, t, disabled, false)»
-					«IF contador % numColumnas == 0 || contador == numCamposEntity»
+					Â«ENDIFÂ»
+						Â«f.genEntityField(model, fsa, t, disabled, false)Â»
+					Â«IF contador % numColumnas == 0 || contador == numCamposEntityÂ»
 						</div>
-					«ENDIF»
+					Â«ENDIFÂ»
 	
-					<p hidden>«contador++»</p>
-				«ENDIF»	
-			«ENDFOR»
-		«ELSE»
+					<p hidden>Â«contador++Â»</p>
+				Â«ENDIFÂ»	
+			Â«ENDFORÂ»
+		Â«ELSEÂ»
 			<div class="row">
 				<div class="col-md-12">
 					<div class="col-md-11"  style="padding-left: 0px; padding-right: 0px;">
@@ -236,8 +236,8 @@ class EntityComponentRDLGenerator {
 				</div>
 			</div>
 			
-		«ENDIF»
-	</«t.name.toLowerCase»-form>
+		Â«ENDIFÂ»
+	</Â«t.name.toLowerCaseÂ»-form>
 	'''
 	
 	def getFieldIndex(Entity entity){
@@ -287,126 +287,126 @@ class EntityComponentRDLGenerator {
 	}
 	
 	def dispatch getOptionSelectAuto(Entity f,EntityReferenceField r)'''
-	«FOR EntityReferenceFieldAttr a : r.attrs »
-								«IF a.widget !== null && a.widget.attrs.filter(WidgetType) !== null && !a.widget.attrs.filter(WidgetType).isEmpty»
-									«IF a.widget.attrs.filter(WidgetType).get(0).type.trim.equals("Autocomplete") && r.upperBound.trim.equals("1")»
-									  <select-auto id="«f.name»" type="select" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.label»" data="«f.name.toLowerCase»-results" required=true fieldindex="«getFieldIndex(f)»">
+	Â«FOR EntityReferenceFieldAttr a : r.attrs Â»
+								Â«IF a.widget !== null && a.widget.attrs.filter(WidgetType) !== null && !a.widget.attrs.filter(WidgetType).isEmptyÂ»
+									Â«IF a.widget.attrs.filter(WidgetType).get(0).type.trim.equals("Autocomplete") && r.upperBound.trim.equals("1")Â»
+									  <select-auto id="Â«f.nameÂ»" type="select" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.labelÂ»" data="Â«f.name.toLowerCaseÂ»-results" required=true fieldindex="Â«getFieldIndex(f)Â»">
 									    
 									  </select-auto>
-									«ENDIF»
-									«IF a.widget.attrs.filter(WidgetType).get(0).type.trim.equals("Option") && r.upperBound.trim.equals("1")»
-									  <select-box id="«f.name»" type="option" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.label»" data="«f.name.toLowerCase»-results" required=true fieldindex="«getFieldIndex(f)»">
+									Â«ENDIFÂ»
+									Â«IF a.widget.attrs.filter(WidgetType).get(0).type.trim.equals("Option") && r.upperBound.trim.equals("1")Â»
+									  <select-box id="Â«f.nameÂ»" type="option" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.labelÂ»" data="Â«f.name.toLowerCaseÂ»-results" required=true fieldindex="Â«getFieldIndex(f)Â»">
 									  </select-box>
-									«ENDIF»
-								«ENDIF»
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
 								
-								«IF a.widget !== null && a.widget.attrs.filter(WidgetTypeSelect) !== null && !a.widget.attrs.filter(WidgetTypeSelect).isEmpty»
-									«IF a.widget.attrs.filter(WidgetTypeSelect).get(0).type.trim.equals("SelectList") && r.upperBound.trim.equals("1")»
-									  <select-box id="«f.name»" type="select" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.label»" data="«f.name.toLowerCase»-results" required=true fieldindex="«getFieldIndex(f)»">
+								Â«IF a.widget !== null && a.widget.attrs.filter(WidgetTypeSelect) !== null && !a.widget.attrs.filter(WidgetTypeSelect).isEmptyÂ»
+									Â«IF a.widget.attrs.filter(WidgetTypeSelect).get(0).type.trim.equals("SelectList") && r.upperBound.trim.equals("1")Â»
+									  <select-box id="Â«f.nameÂ»" type="select" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.labelÂ»" data="Â«f.name.toLowerCaseÂ»-results" required=true fieldindex="Â«getFieldIndex(f)Â»">
 									  </select-box>
-									«ENDIF»
-								«ENDIF»
-	«ENDFOR»
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
+	Â«ENDFORÂ»
 	'''
 	
 	/* nuevo - ancho columnas */
 	def dispatch genEntitySuperType(Entity f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, EntityReferenceField r, Boolean validateFieldRequired)'''
-		«IF r.upperBound == "1"»
-		«IF f.equals(r.superType)»
-			<div class="col-md-«anchoColumn»">
-			«var requerido = isRequiredAttrb(r)»
-			«IF isModalBox(r)»
-						«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")»
-							«IF validateFieldRequired && (requerido === null || requerido.toString.isEmpty || (requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")))»
-								<label class="control-label">«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»<font color="red"> *</font></label>
-							«ELSE»
-								<label class="control-label">«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»</label>
-			            	«ENDIF»
-						«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(r).toString.trim.equals("true")»
-							«IF validateFieldRequired && (requerido === null || requerido.toString.isEmpty || (requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")))»
-								<label class="control-label">«f.name.toFirstUpper»<font color="red"> *</font></label>
-							«ELSE»
-								<label class="control-label">«f.name.toFirstUpper»</label>
-							«ENDIF»
-						«ELSE»
-							<label class="control-label">«f.name.toFirstUpper»</label>
-						«ENDIF»
-			 «ENDIF»
+		Â«IF r.upperBound == "1"Â»
+		Â«IF f.equals(r.superType)Â»
+			<div class="col-md-Â«anchoColumnÂ»">
+			Â«var requerido = isRequiredAttrb(r)Â»
+			Â«IF isModalBox(r)Â»
+						Â«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")Â»
+							Â«IF validateFieldRequired && (requerido === null || requerido.toString.isEmpty || (requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")))Â»
+								<label class="control-label">Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»<font color="red"> *</font></label>
+							Â«ELSEÂ»
+								<label class="control-label">Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»</label>
+			            	Â«ENDIFÂ»
+						Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(r).toString.trim.equals("true")Â»
+							Â«IF validateFieldRequired && (requerido === null || requerido.toString.isEmpty || (requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")))Â»
+								<label class="control-label">Â«f.name.toFirstUpperÂ»<font color="red"> *</font></label>
+							Â«ELSEÂ»
+								<label class="control-label">Â«f.name.toFirstUpperÂ»</label>
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							<label class="control-label">Â«f.name.toFirstUpperÂ»</label>
+						Â«ENDIFÂ»
+			 Â«ENDIFÂ»
 			 <div class="form-group">
 			 <!-- Modal -->
-			  «IF isEntityFieldWithGlossary(r).toString.trim.equals("true")»
-				«IF disabled»
-					<small id="searchboxsample" required=false>«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.label»</small>
-				«ELSE»	
-				    «IF !isModalBox(r)»
-				    «getOptionSelectAuto(f, r)»	
-				    «ELSE»
-				    <search-box id="searchboxsample" link="«r.name»modal" caption="«f.name.toFirstUpper»" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.label»" />
-				    <modal-box id="«r.name»modal"  data="«f.name.toLowerCase»-results" title="Seleccionar «f.name.toFirstUpper» " action="select-one" pagination="true"/>
-        		    «ENDIF»
-        		«ENDIF»
-        	  «ELSE»
-        		«IF disabled»
-        			<small id="searchboxsample" required=false>«f.name.toFirstUpper»</small>
-        		«ELSE»	
-        		    «IF !isModalBox(r)»
-        		    «getOptionSelectAuto(f, r)»	
-        		    «ELSE»
-        		    <search-box id="searchboxsample" link="«r.name»modal" caption="«f.name.toFirstUpper»" placeholder="«f.name.toFirstUpper»" />
-        		    <modal-box id="«r.name»modal"  data="«f.name.toLowerCase»-results" title="Seleccionar «f.name.toFirstUpper» " action="select-one" pagination="true"/>
-        		    «ENDIF»
-        		«ENDIF»
-	          «ENDIF»
+			  Â«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")Â»
+				Â«IF disabledÂ»
+					<small id="searchboxsample" required=false>Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.labelÂ»</small>
+				Â«ELSEÂ»	
+				    Â«IF !isModalBox(r)Â»
+				    Â«getOptionSelectAuto(f, r)Â»	
+				    Â«ELSEÂ»
+				    <search-box id="searchboxsample" link="Â«r.nameÂ»modal" caption="Â«f.name.toFirstUpperÂ»" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_description.labelÂ»" />
+				    <modal-box id="Â«r.nameÂ»modal"  data="Â«f.name.toLowerCaseÂ»-results" title="Seleccionar Â«f.name.toFirstUpperÂ» " action="select-one" pagination="true"/>
+        		    Â«ENDIFÂ»
+        		Â«ENDIFÂ»
+        	  Â«ELSEÂ»
+        		Â«IF disabledÂ»
+        			<small id="searchboxsample" required=false>Â«f.name.toFirstUpperÂ»</small>
+        		Â«ELSEÂ»	
+        		    Â«IF !isModalBox(r)Â»
+        		    Â«getOptionSelectAuto(f, r)Â»	
+        		    Â«ELSEÂ»
+        		    <search-box id="searchboxsample" link="Â«r.nameÂ»modal" caption="Â«f.name.toFirstUpperÂ»" placeholder="Â«f.name.toFirstUpperÂ»" />
+        		    <modal-box id="Â«r.nameÂ»modal"  data="Â«f.name.toLowerCaseÂ»-results" title="Seleccionar Â«f.name.toFirstUpperÂ» " action="select-one" pagination="true"/>
+        		    Â«ENDIFÂ»
+        		Â«ENDIFÂ»
+	          Â«ENDIFÂ»
 			 </div>
 	        </div>
-		«ENDIF»
-		«ENDIF»
+		Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	/* nuevo - ancho columna */
 	def dispatch genEntitySuperType(Enum f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, EntityReferenceField r, Boolean validateFieldRequired)'''
-      «IF f.equals(r.superType)»
-	      <div class="col-md-«anchoColumn»">
-	      «var requerido = isRequiredAttrb(r)»
+      Â«IF f.equals(r.superType)Â»
+	      <div class="col-md-Â«anchoColumnÂ»">
+	      Â«var requerido = isRequiredAttrb(r)Â»
 	      
-	      «IF disabled»
-	      	«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")»
-	      		«IF !f.enum_literals.isEmpty»
-	      		<outputtext id="«f.name»" label="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»" value="«f.enum_literals.get(0).value»" />
-	      		«ELSE»
-	      		<outputtext id="«f.name»" label="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»" value="Seleccione una opcion" />
-	      		«ENDIF»
-	      	«ELSE»
-	      		<outputtext id="«f.name»" label="«f.name»" value="«f.name»" />
-	      	«ENDIF»
-	      «ELSE»	      
-		      «IF isEntityFieldWithGlossary(r).toString.trim.equals("true")»
-		      	«IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")»
-			  		<select-box id="«r.name»" type="select" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»" required=«requerido»>
-			  	«ELSE»
-			  		<select-box id="«r.name»" type="select" placeholder="«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.label»" required=false>
-			  	«ENDIF»
-			  «ELSEIF isEntityFieldWithOutGlossaryWithConstraint(r).toString.trim.equals("true")»
-			    «IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")»
-			    	<select-box id="«r.name»" type="select" placeholder="«f.name»" required=«requerido»>
-			    «ELSE»
-			    	<select-box id="«r.name»" type="select" placeholder="«f.name»" required=false>
-			    «ENDIF»
-			  «ELSE»
-			  	«IF validateFieldRequired»
-				  	<select-box id="«r.name»" type="select" placeholder="«f.name»" required=true>
-				«ELSE»
-					<select-box id="«r.name»" type="select" placeholder="«f.name»" required=false>
-				«ENDIF»  	
-			  «ENDIF»
+	      Â«IF disabledÂ»
+	      	Â«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")Â»
+	      		Â«IF !f.enum_literals.isEmptyÂ»
+	      		<outputtext id="Â«f.nameÂ»" label="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»" value="Â«f.enum_literals.get(0).valueÂ»" />
+	      		Â«ELSEÂ»
+	      		<outputtext id="Â«f.nameÂ»" label="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»" value="Seleccione una opcion" />
+	      		Â«ENDIFÂ»
+	      	Â«ELSEÂ»
+	      		<outputtext id="Â«f.nameÂ»" label="Â«f.nameÂ»" value="Â«f.nameÂ»" />
+	      	Â«ENDIFÂ»
+	      Â«ELSEÂ»	      
+		      Â«IF isEntityFieldWithGlossary(r).toString.trim.equals("true")Â»
+		      	Â«IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")Â»
+			  		<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»" required=Â«requeridoÂ»>
+			  	Â«ELSEÂ»
+			  		<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«r.attrs.filter(EntityReferenceFieldAttr).get(0).glossary.glossary_name.labelÂ»" required=false>
+			  	Â«ENDIFÂ»
+			  Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(r).toString.trim.equals("true")Â»
+			    Â«IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmpty && requerido.toString.trim.equals("true")Â»
+			    	<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.nameÂ»" required=Â«requeridoÂ»>
+			    Â«ELSEÂ»
+			    	<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.nameÂ»" required=false>
+			    Â«ENDIFÂ»
+			  Â«ELSEÂ»
+			  	Â«IF validateFieldRequiredÂ»
+				  	<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.nameÂ»" required=true>
+				Â«ELSEÂ»
+					<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.nameÂ»" required=false>
+				Â«ENDIFÂ»  	
+			  Â«ENDIFÂ»
 	
-				«FOR EnumLiteral e: f.enum_literals»
-					<option-box id="«r.name + '-'+ e.key»" label="«e.value»" />
-				«ENDFOR»
+				Â«FOR EnumLiteral e: f.enum_literalsÂ»
+					<option-box id="Â«r.name + '-'+ e.keyÂ»" label="Â«e.valueÂ»" />
+				Â«ENDFORÂ»
 			  	</select-box>
-		  «ENDIF»
+		  Â«ENDIFÂ»
 		  </div>
-      «ENDIF»
+      Â«ENDIFÂ»
 	'''
 		
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_
@@ -414,104 +414,104 @@ class EntityComponentRDLGenerator {
 	
 	/* nuevo - ancho columna */
 	def dispatch genEntitySuperTypeDefault(Entity f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, EntityReferenceField r, Boolean validateFieldRequired)'''
-	«IF r.upperBound == "1"»
-	«IF f.equals(r.superType)»
-		<div class="col-md-«anchoColumn»">
-		«IF validateFieldRequired»
-			<label class="control-label">«f.name.toFirstUpper»<font color="red"> *</font></label>
-		«ELSE»
-			<label class="control-label">«f.name.toFirstUpper»</label>
-		«ENDIF»
+	Â«IF r.upperBound == "1"Â»
+	Â«IF f.equals(r.superType)Â»
+		<div class="col-md-Â«anchoColumnÂ»">
+		Â«IF validateFieldRequiredÂ»
+			<label class="control-label">Â«f.name.toFirstUpperÂ»<font color="red"> *</font></label>
+		Â«ELSEÂ»
+			<label class="control-label">Â«f.name.toFirstUpperÂ»</label>
+		Â«ENDIFÂ»
 		<div class="form-group">
-		«IF disabled»
-			<small id="searchboxsample" required=false>Seleccionar «f.name.toFirstUpper»</small>
-		«ELSE»
+		Â«IF disabledÂ»
+			<small id="searchboxsample" required=false>Seleccionar Â«f.name.toFirstUpperÂ»</small>
+		Â«ELSEÂ»
 			<!-- Modal -->
-			<search-box id="searchboxsample" link="«r.name»modal" caption="«f.name.toFirstUpper»" placeholder="«f.name.toFirstUpper»" />
-			<modal-box id="«r.name»modal"  data="«f.name.toLowerCase»-results" title="Seleccionar «f.name.toFirstUpper» " action="select-multi" pagination="true"/>
-		«ENDIF»
+			<search-box id="searchboxsample" link="Â«r.nameÂ»modal" caption="Â«f.name.toFirstUpperÂ»" placeholder="Â«f.name.toFirstUpperÂ»" />
+			<modal-box id="Â«r.nameÂ»modal"  data="Â«f.name.toLowerCaseÂ»-results" title="Seleccionar Â«f.name.toFirstUpperÂ» " action="select-multi" pagination="true"/>
+		Â«ENDIFÂ»
 		</div>
 		</div>
-    «ENDIF»
-    «ENDIF»
+    Â«ENDIFÂ»
+    Â«ENDIFÂ»
 	'''
 	
 	/* nuevo - ancho columna */
 	def dispatch genEntitySuperTypeDefault(Enum f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, EntityReferenceField r, Boolean validateFieldRequired)'''
-      «IF f.equals(r.superType)»
-	      <div class="col-md-«anchoColumn»">
-	      «IF disabled»
-	      	«IF !f.enum_literals.empty»
-	      	<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.enum_literals.get(0).value»" />
-	      	«ELSE»
-	      	<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="Seleccione una opcion" />
-	      	«ENDIF»
-	      «ELSE»
-		      «IF validateFieldRequired»
-			  	<select-box id="«r.name»" type="select" placeholder="«f.name.toFirstUpper»" required=true>
-			  «ELSE»
-			  	<select-box id="«r.name»" type="select" placeholder="«f.name.toFirstUpper»" required=false>
-			  «ENDIF»  
-			  	«FOR EnumLiteral e: f.enum_literals»
-			  		<option-box id="«r.name + '-' + e.key»" label="«e.value»" />
-			    «ENDFOR»
+      Â«IF f.equals(r.superType)Â»
+	      <div class="col-md-Â«anchoColumnÂ»">
+	      Â«IF disabledÂ»
+	      	Â«IF !f.enum_literals.emptyÂ»
+	      	<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.enum_literals.get(0).valueÂ»" />
+	      	Â«ELSEÂ»
+	      	<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Seleccione una opcion" />
+	      	Â«ENDIFÂ»
+	      Â«ELSEÂ»
+		      Â«IF validateFieldRequiredÂ»
+			  	<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.name.toFirstUpperÂ»" required=true>
+			  Â«ELSEÂ»
+			  	<select-box id="Â«r.nameÂ»" type="select" placeholder="Â«f.name.toFirstUpperÂ»" required=false>
+			  Â«ENDIFÂ»  
+			  	Â«FOR EnumLiteral e: f.enum_literalsÂ»
+			  		<option-box id="Â«r.name + '-' + e.keyÂ»" label="Â«e.valueÂ»" />
+			    Â«ENDFORÂ»
 			  </select-box>
-		  «ENDIF»
+		  Â«ENDIFÂ»
 		  </div>
-      «ENDIF»
+      Â«ENDIFÂ»
 	'''	
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_	
 	
 	def dispatch genEntityField(EntityReferenceField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible)'''
-		«var visibleField = isVisibleEntityField(f).toString»
+		Â«var visibleField = isVisibleEntityField(f).toStringÂ»
 		
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			«IF f.attrs.size > 0»
-				«««------------------------- codigo original -------------------------------
-				«FOR AbstractElement a : model.module.elements»
-					«a.genEntitySuperType(model, fsa, t, disabled, f, pantallaVisible)»
-				«ENDFOR»
-				«««-------------------------------------------------------------------------
-			«ELSE»
-				«FOR AbstractElement a : model.module.elements»
-					«a.genEntitySuperTypeDefault(model, fsa, t, disabled, f, pantallaVisible)»
-				«ENDFOR»
-			«ENDIF»
-		«ENDIF»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			Â«IF f.attrs.size > 0Â»
+				Â«Â«Â«------------------------- codigo original -------------------------------
+				Â«FOR AbstractElement a : model.module.elementsÂ»
+					Â«a.genEntitySuperType(model, fsa, t, disabled, f, pantallaVisible)Â»
+				Â«ENDFORÂ»
+				Â«Â«Â«-------------------------------------------------------------------------
+			Â«ELSEÂ»
+				Â«FOR AbstractElement a : model.module.elementsÂ»
+					Â«a.genEntitySuperTypeDefault(model, fsa, t, disabled, f, pantallaVisible)Â»
+				Â«ENDFORÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 
 	def isEntityFieldWithGlossary(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityReferenceFieldAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityReferenceFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityReferenceFieldAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isRequiredAttrb(EntityReferenceField f)'''
-		«FOR EntityReferenceFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty »
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityReferenceFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 
 	/**
@@ -519,116 +519,116 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */		
 	def dispatch genEntityField(EntityTextField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">	
-			«IF f.attrs.size > 0 »
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»
-					«FOR EntityTextFieldAttr a : f.attrs »
-						«a.genTextEntityAttr(f, t, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«var requerido = isRiquiredAttrb(f)»
-					«var minLength = getMinLengthAttb(f)»
-					«var maxLength = getMaxLengthAttb(f)»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">	
+			Â«IF f.attrs.size > 0 Â»
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»
+					Â«FOR EntityTextFieldAttr a : f.attrs Â»
+						Â«a.genTextEntityAttr(f, t, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«var minLength = getMinLengthAttb(f)Â»
+					Â«var maxLength = getMaxLengthAttb(f)Â»
 					
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»					
-						«IF pantallaVisible && requerido !== null && !requerido.toString.trim.isEmpty»
-							«IF minLength !== null && !minLength.toString.trim.isEmpty»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-									<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-								«ELSE»
-									<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» minsize=«minLength» />
-								«ENDIF»
-							«ELSE»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-									<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» maxsize=«maxLength» />
-								«ELSE»
-									<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» />
-								«ENDIF»
-							«ENDIF»
-						«ELSE»
-							«IF minLength !== null && !minLength.toString.trim.isEmpty»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-									«ENDIF»
-								«ELSE»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=«minLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=«minLength» />
-									«ENDIF»
-								«ENDIF»
-							«ELSE»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» maxsize=«maxLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» maxsize=«maxLength» />
-									«ENDIF»
-								«ELSE»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» />
-									«ELSE»
-										<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» />
-									«ENDIF»
-								«ENDIF»
-							«ENDIF»	
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» />
-						«ELSE»
-							<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»
-				«ENDIF»
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-				«ELSE»	
-					«IF pantallaVisible»	
-						<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» />
-					«ELSE»
-						<inputbox id="«f.name»" type="text" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»					
+						Â«IF pantallaVisible && requerido !== null && !requerido.toString.trim.isEmptyÂ»
+							Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+									<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+								Â«ELSEÂ»
+									<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+								Â«ENDIFÂ»
+							Â«ELSEÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+									<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+								Â«ELSEÂ»
+									<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+								Â«ENDIFÂ»
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ELSEÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
+							Â«ELSEÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ELSEÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» />
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
+							Â«ENDIFÂ»	
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+				Â«ELSEÂ»	
+					Â«IF pantallaVisibleÂ»	
+						<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="text" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	/**
@@ -636,91 +636,91 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def genTextEntityAttr(EntityTextFieldAttr a, EntityTextField f, Entity t, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«var requerido = isRiquiredAttrb(f)»
-			«var minLength = getMinLengthAttb(f)»
-			«var maxLength = getMaxLengthAttb(f)»
+		Â«IF a.glossary !== nullÂ»
+			Â«var requerido = isRiquiredAttrb(f)Â»
+			Â«var minLength = getMinLengthAttb(f)Â»
+			Â«var maxLength = getMaxLengthAttb(f)Â»
 			
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmpty»
-					«IF minLength !== null && !minLength.toString.trim.isEmpty»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-							<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-						«ELSE»
-							<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=«minLength» />
-						«ENDIF»
-					«ELSE»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-							<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» maxsize=«maxLength» />
-						«ELSE»
-							<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» />
-						«ENDIF»	
-					«ENDIF»
-				«ELSE»
-					«IF minLength !== null && !minLength.toString.trim.isEmpty»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-							«ENDIF»
-						«ELSE»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=«minLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» />
-							«ENDIF»
-						«ENDIF»
-					«ELSE»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» maxsize=«maxLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» maxsize=«maxLength» />
-							«ENDIF»
-						«ELSE»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» />
-							«ELSE»
-								<inputbox id="«f.name»" type="text" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» />
-							«ENDIF»
-						«ENDIF»
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»		
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequired && requerido !== null && !requerido.toString.trim.isEmptyÂ»
+					Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+						Â«ENDIFÂ»
+					Â«ELSEÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»	
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ENDIFÂ»
+					Â«ELSEÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="text" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»		
 	'''
 	
 	def isRiquiredAttrb(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty »
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 	
 	def getMinLengthAttb(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintMinLength) !== null && !a.constraint.constraints.filter(ConstraintMinLength).isEmpty »
-					«a.constraint.constraints.filter(ConstraintMinLength).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintMinLength) !== null && !a.constraint.constraints.filter(ConstraintMinLength).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintMinLength).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 
 	def getMaxLengthAttb(EntityTextField f)'''
-		«FOR EntityTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintMaxLength) !== null && !a.constraint.constraints.filter(ConstraintMaxLength).isEmpty »
-					«a.constraint.constraints.filter(ConstraintMaxLength).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintMaxLength) !== null && !a.constraint.constraints.filter(ConstraintMaxLength).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintMaxLength).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 	
 	/**
@@ -728,80 +728,80 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def dispatch genEntityField( EntityLongTextField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»		
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">
-			«IF f.attrs.size > 0»
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»		
-					«FOR EntityLongTextFieldAttr a : f.attrs »	
-						«a.genLongTextEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«var requerido = isRequiredAttrb(f)»
-					«var minLength = getMinLengthAttb(f)»
-					«var maxLength = getMaxLengthAttb(f)»
+		Â«var visibleField = isVisibleEntityField(f)Â»		
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">
+			Â«IF f.attrs.size > 0Â»
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»		
+					Â«FOR EntityLongTextFieldAttr a : f.attrs Â»	
+						Â«a.genLongTextEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«var requerido = isRequiredAttrb(f)Â»
+					Â«var minLength = getMinLengthAttb(f)Â»
+					Â«var maxLength = getMaxLengthAttb(f)Â»
 					
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="Ingresa tus comentarios" />
-					«ELSE»
-						«IF requerido !== null && !requerido.toString.trim.isEmpty»
-							«IF minLength !== null && !minLength.toString.trim.isEmpty»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»	
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=«requerido» disabled=«disabled» minsize=«minLength» maxsize=«maxLength» lines=5 />
-									«ELSE»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» lines=5 />
-									«ENDIF»
-								«ELSE»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=«requerido» disabled=«disabled» minsize=«minLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» minsize=«minLength» />
-									«ENDIF»
-								«ENDIF»
-							«ENDIF»			
-						«ELSE»
-							«IF minLength !== null && !minLength.toString.trim.isEmpty»
-								«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=true disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-									«ENDIF»
-								«ELSE»
-									«IF pantallaVisible»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=true disabled=«disabled» minsize=«minLength» />
-									«ELSE»
-										<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» minsize=«minLength» />
-									«ENDIF»
-								«ENDIF»
-							«ENDIF»	
-						«ENDIF»
-					«ENDIF»	
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="Ingresa tus comentarios" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=true disabled=«disabled» />
-						«ELSE»
-							<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»
-				«ENDIF»
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="Ingresa tus comentarios" />
-				«ELSE»
-					«IF pantallaVisible»
-						<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=true disabled=«disabled» />
-					«ELSE»
-						<inputbox id="«f.name»" type="textarea" label="«f.name.toFirstUpper»" value="" placeholder="Ingresa tus comentarios" required=false disabled=«disabled» />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Ingresa tus comentarios" />
+					Â«ELSEÂ»
+						Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+							Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»	
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» lines=5 />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» lines=5 />
+									Â«ENDIFÂ»
+								Â«ELSEÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
+							Â«ENDIFÂ»			
+						Â«ELSEÂ»
+							Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+								Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ELSEÂ»
+									Â«IF pantallaVisibleÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ELSEÂ»
+										<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+									Â«ENDIFÂ»
+								Â«ENDIFÂ»
+							Â«ENDIFÂ»	
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Ingresa tus comentarios" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=true disabled=Â«disabledÂ» />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Ingresa tus comentarios" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=true disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Ingresa tus comentarios" required=false disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»			
+		Â«ENDIFÂ»			
 	'''
 	
 	/**
@@ -809,131 +809,131 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genLongTextEntityAttr(EntityLongTextFieldAttr a, EntityLongTextField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«var requerido = isRequiredAttrb(f)»
-			«var minLength = getMinLengthAttb(f)»
-			«var maxLength = getMaxLengthAttb(f)»
+		Â«IF a.glossary !== nullÂ»
+			Â«var requerido = isRequiredAttrb(f)Â»
+			Â«var minLength = getMinLengthAttb(f)Â»
+			Â«var maxLength = getMaxLengthAttb(f)Â»
 			
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF requerido !== null && !requerido.toString.trim.isEmpty»
-					«IF minLength !== null && !minLength.toString.trim.isEmpty»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»			
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=«minLength» maxsize=«maxLength» lines=5 />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» lines=5 />
-							«ENDIF»
-						«ELSE»	
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=«minLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» />
-							«ENDIF»
-						«ENDIF»
-					«ELSE»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»		
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» maxsize=«maxLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» maxsize=«maxLength» />
-							«ENDIF»
-						«ELSE»	
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» />
-							«ENDIF»
-						«ENDIF»
-					«ENDIF»			
-				«ELSE»
-					«IF minLength !== null && !minLength.toString.trim.isEmpty»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»		
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-							«ELSE»		
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» maxsize=«maxLength» />
-							«ENDIF»
-						«ELSE»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=«minLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=«minLength» />
-							«ENDIF»	
-						«ENDIF»
-					«ELSE»
-						«IF maxLength !== null && !maxLength.toString.trim.isEmpty»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» maxsize=«maxLength» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» maxsize=«maxLength» />
-							«ENDIF»
-						«ELSE»
-							«IF validateFieldRequired»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» />
-							«ELSE»
-								<inputbox id="«f.name»" type="textarea" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» />
-							«ENDIF»
-						«ENDIF»
-					«ENDIF»		
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»		
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+					Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»			
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» lines=5 />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» lines=5 />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»	
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ENDIFÂ»
+					Â«ELSEÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»		
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»	
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»			
+				Â«ELSEÂ»
+					Â«IF minLength !== null && !minLength.toString.trim.isEmptyÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»		
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+							Â«ELSEÂ»		
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» maxsize=Â«maxLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=Â«minLengthÂ» />
+							Â«ENDIFÂ»	
+						Â«ENDIFÂ»
+					Â«ELSEÂ»
+						Â«IF maxLength !== null && !maxLength.toString.trim.isEmptyÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» maxsize=Â«maxLengthÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							Â«IF validateFieldRequiredÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="textarea" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»		
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»		
 	'''
 	
 	def isEntityFieldWithGlossary(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''	
 	
 	def isVisibleEntityField(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''	
 	
 	def isRequiredAttrb(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 	
 	def getMinLengthAttb(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintMinLength) !== null && !a.constraint.constraints.filter(ConstraintMinLength).isEmpty »
-					«a.constraint.constraints.filter(ConstraintMinLength).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintMinLength) !== null && !a.constraint.constraints.filter(ConstraintMinLength).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintMinLength).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 
 	def getMaxLengthAttb(EntityLongTextField f)'''
-		«FOR EntityLongTextFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintMaxLength) !== null && !a.constraint.constraints.filter(ConstraintMaxLength).isEmpty »
-					«a.constraint.constraints.filter(ConstraintMaxLength).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityLongTextFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintMaxLength) !== null && !a.constraint.constraints.filter(ConstraintMaxLength).isEmpty Â»
+					Â«a.constraint.constraints.filter(ConstraintMaxLength).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 	
 	/**
@@ -941,53 +941,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */		
 	def dispatch genEntityField( EntityDateField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">
-			«IF f.attrs.size > 0»
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityDateFieldAttr a : f.attrs »	
-						«a.genDateEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»			
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name»" value="«f.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=«requerido» disabled=«disabled» />
-							«ELSE»
-								<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=true disabled=«disabled» />
-							«ENDIF»	
-						«ELSE»
-							<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name»" value="«f.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=true disabled=«disabled» />	
-						«ELSE»
-							<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=false disabled=«disabled» />	
-						«ENDIF»
-					«ENDIF»
-				«ENDIF»
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name»" value="«f.name»" />
-				«ELSE»
-					«IF pantallaVisible»
-						<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=true disabled=«disabled» />
-					«ELSE»
-						<date-picker id="«f.name»" type= "date" label="«f.name»" placeholder="«f.name»" required=false disabled=«disabled» />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">
+			Â«IF f.attrs.size > 0Â»
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityDateFieldAttr a : f.attrs Â»	
+						Â«a.genDateEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»			
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.nameÂ»" value="Â«f.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=true disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»	
+						Â«ELSEÂ»
+							<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.nameÂ»" value="Â«f.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=true disabled=Â«disabledÂ» />	
+						Â«ELSEÂ»
+							<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=false disabled=Â«disabledÂ» />	
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.nameÂ»" value="Â«f.nameÂ»" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=true disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<date-picker id="Â«f.nameÂ»" type= "date" label="Â«f.nameÂ»" placeholder="Â«f.nameÂ»" required=false disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 
 	/**
@@ -995,56 +995,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genDateEntityAttr(EntityDateFieldAttr a, EntityDateField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<date-picker id="«f.name»" type= "date" label="«a.glossary.glossary_name.label»" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» />
-					«ELSE»
-						<date-picker id="«f.name»" type= "date" label="«a.glossary.glossary_name.label»" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» />
-					«ENDIF»			
-				«ELSE»
-					<date-picker id="«f.name»" type= "date" label="«a.glossary.glossary_name.label»" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» />			
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»		
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<date-picker id="Â«f.nameÂ»" type= "date" label="Â«a.glossary.glossary_name.labelÂ»" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<date-picker id="Â«f.nameÂ»" type= "date" label="Â«a.glossary.glossary_name.labelÂ»" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»			
+				Â«ELSEÂ»
+					<date-picker id="Â«f.nameÂ»" type= "date" label="Â«a.glossary.glossary_name.labelÂ»" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» />			
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»		
 	'''
 	
 	def isEntityFieldWithGlossary(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityDateFieldAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityDateFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityDateFieldAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 
 	def isRiquiredAttrb(EntityDateField f)'''
-		«FOR EntityDateFieldAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityDateFieldAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 		
 	/**
@@ -1052,53 +1052,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def dispatch genEntityField( EntityImageField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">
-			«IF f.attrs.size > 0»
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genImageEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»			
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=«requerido» disabled=«disabled» />
-							«ELSE»
-								<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=«disabled» />
-							«ENDIF»	
-						«ELSE»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=«disabled» />	
-						«ELSE»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=«disabled» />	
-						«ENDIF»
-					«ENDIF»	
-				«ENDIF»
-			«ELSE»	
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-				«ELSE»	
-					«IF pantallaVisible»
-						<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=«disabled» />
-					«ELSE»
-						<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=«disabled» />
-					«ENDIF»
-				«ENDIF»	
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">
+			Â«IF f.attrs.size > 0Â»
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genImageEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»			
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»	
+						Â«ELSEÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=Â«disabledÂ» />	
+						Â«ELSEÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=Â«disabledÂ» />	
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ENDIFÂ»
+			Â«ELSEÂ»	
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+				Â«ELSEÂ»	
+					Â«IF pantallaVisibleÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»	
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -1106,56 +1106,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genImageEntityAttr(EntityAttr a, EntityImageField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_name.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=«requerido» disabled=«disabled» />
-					«ELSE»
-						<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=«disabled» />
-					«ENDIF»
-				«ELSE»
-					<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=«disabled» />
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_name.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=true disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="jpg, png, bmp" required=false disabled=Â«disabledÂ» />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityImageField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''		
 	
 	/**
@@ -1163,53 +1163,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def dispatch genEntityField( EntityFileField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">
-			«IF f.attrs.size > 0»	
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genFileEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=«requerido» disabled=«disabled» />
-							«ELSE»
-								<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=«disabled» />
-							«ENDIF»
-						«ELSE»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»	
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=«disabled» />
-						«ELSE»
-							<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=«disabled» />
-						«ENDIF»
-					«ENDIF»	
-				«ENDIF»
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper»" />
-				«ELSE»
-					«IF pantallaVisible»
-						<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=«disabled» />
-					«ELSE»
-						<attach-photo id="«f.name»" label="«f.name.toFirstUpper»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=«disabled» />
-					«ENDIF»
-				«ENDIF»	
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">
+			Â«IF f.attrs.size > 0Â»	
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genFileEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+							Â«ELSEÂ»
+								<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=Â«disabledÂ» />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=Â«disabledÂ» />
+						Â«ELSEÂ»
+							<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=Â«disabledÂ» />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ENDIFÂ»
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ»" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»	
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -1217,56 +1217,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genFileEntityAttr(EntityAttr a, EntityFileField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_name.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=«requerido» disabled=«disabled» />
-					«ELSE»
-						<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=«disabled» />
-					«ENDIF»			
-				«ELSE»
-					<attach-photo id="«f.name»" label="«a.glossary.glossary_name.label»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=«disabled» />
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_name.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=Â«requeridoÂ» disabled=Â«disabledÂ» />
+					Â«ELSEÂ»
+						<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=true disabled=Â«disabledÂ» />
+					Â«ENDIFÂ»			
+				Â«ELSEÂ»
+					<attach-photo id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" height="200" width="400" maxsizemb="7" filetypes="docx, pdf, txt" required=false disabled=Â«disabledÂ» />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''	
 	
 	def isVisibleEntityField(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityFileField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 	
 	/**
@@ -1274,53 +1274,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def dispatch genEntityField( EntityEmailField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»	
-			<div class="col-md-«anchoColumn»">	
-			«IF f.attrs.size > 0»	
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genEmailEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» minsize=3 maxsize=100 />
-							«ELSE»
-								<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-							«ENDIF»
-						«ELSE»
-							<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-						«ELSE»
-							<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-						«ENDIF»
-					«ENDIF»
-				«ENDIF»
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-				«ELSE»		
-					«IF pantallaVisible»
-						<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-					«ELSE»
-						<inputbox id="«f.name»" type="email" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-					«ENDIF»
-				«ENDIF»	
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»	
+			<div class="col-md-Â«anchoColumnÂ»">	
+			Â«IF f.attrs.size > 0Â»	
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genEmailEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+				Â«ELSEÂ»		
+					Â«IF pantallaVisibleÂ»
+						<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="email" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»	
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -1328,56 +1328,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genEmailEntityAttr(EntityAttr a, EntityEmailField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<inputbox id="«f.name»" type="email" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=3 maxsize=100 />
-					«ELSE»
-						<inputbox id="«f.name»" type="email" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-					«ENDIF»		
-				«ELSE»
-					<inputbox id="«f.name»" type="email" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<inputbox id="Â«f.nameÂ»" type="email" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="email" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ENDIFÂ»		
+				Â«ELSEÂ»
+					<inputbox id="Â«f.nameÂ»" type="email" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 
 	def isEntityFieldWithGlossary(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 
 	def isVisibleEntityField(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityEmailField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 	
 	/**
@@ -1385,53 +1385,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def dispatch genEntityField( EntityDecimalField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»	
-			<div class="col-md-«anchoColumn»">	
-			«IF f.attrs.size > 0»	
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genDecimalEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» min=0.50 max=8.00 />
-							«ELSE»
-								<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=0.50 max=8.00 />
-							«ENDIF»
-						«ELSE»
-							<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=0.50 max=8.00 />
-						«ENDIF»
-					«ENDIF»	
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=0.50 max=8.00 />
-						«ELSE»
-							<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=0.50 max=8.00 />
-						«ENDIF»
-					«ENDIF»	
-				«ENDIF»
-			«ELSE»	
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-				«ELSE»
-					«IF pantallaVisible»
-						<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=0.50 max=8.00 />
-					«ELSE»	
-						<inputbox id="«f.name»" type="float" step="any" label="«f.name.toFirstUpper»" value="0.00" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=0.50 max=8.00 />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»	
+			<div class="col-md-Â«anchoColumnÂ»">	
+			Â«IF f.attrs.size > 0Â»	
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genDecimalEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» min=0.50 max=8.00 />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=0.50 max=8.00 />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=0.50 max=8.00 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=0.50 max=8.00 />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=0.50 max=8.00 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ENDIFÂ»
+			Â«ELSEÂ»	
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=0.50 max=8.00 />
+					Â«ELSEÂ»	
+						<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«f.name.toFirstUpperÂ»" value="0.00" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=0.50 max=8.00 />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -1439,56 +1439,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genDecimalEntityAttr(EntityAttr a, EntityDecimalField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<inputbox id="«f.name»" type="float" step="any" label="«a.glossary.glossary_name.label»" value="0.00" precision=2 placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» min=0.50 max=8.00 />
-					«ELSE»
-						<inputbox id="«f.name»" type="float" step="any" label="«a.glossary.glossary_name.label»" value="0.00" precision=2 placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» min=0.50 max=8.00 />
-					«ENDIF»
-				«ELSE»
-					<inputbox id="«f.name»" type="float" step="any" label="«a.glossary.glossary_name.label»" value="0.00" precision=2 placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» min=0.50 max=8.00 />
-				«ENDIF»
-			«ENDIF»	
-		«ENDIF»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«a.glossary.glossary_name.labelÂ»" value="0.00" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» min=0.50 max=8.00 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«a.glossary.glossary_name.labelÂ»" value="0.00" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» min=0.50 max=8.00 />
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					<inputbox id="Â«f.nameÂ»" type="float" step="any" label="Â«a.glossary.glossary_name.labelÂ»" value="0.00" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» min=0.50 max=8.00 />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»	
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityDecimalField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 	
 	/**
@@ -1496,53 +1496,53 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.	
 	 */
 	def dispatch genEntityField( EntityIntegerField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»
-			<div class="col-md-«anchoColumn»">			
-			«IF f.attrs.size > 0»	
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genIntegerEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» minsize=3 maxsize=100 />
-							«ELSE»
-								<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-							«ENDIF»
-						«ELSE»
-							<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-						«ENDIF»
-					«ENDIF»	
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-						«ELSE»
-							<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-						«ENDIF»
-					«ENDIF»	
-				«ENDIF»							
-			«ELSE»		
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-				«ELSE»
-					«IF pantallaVisible»
-						<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-					«ELSE»
-						<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«f.name.toFirstUpper»" value="" placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»
+			<div class="col-md-Â«anchoColumnÂ»">			
+			Â«IF f.attrs.size > 0Â»	
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genIntegerEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+							Â«ENDIFÂ»
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ENDIFÂ»							
+			Â«ELSEÂ»		
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«f.name.toFirstUpperÂ»" value="" placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -1550,56 +1550,56 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def genIntegerEntityAttr(EntityAttr a, EntityIntegerField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» minsize=3 maxsize=100 />
-					«ELSE»
-						<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» minsize=3 maxsize=100 />
-					«ENDIF»		
-				«ELSE»
-					<inputbox id="«f.name»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="«a.glossary.glossary_name.label»" value="" placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» minsize=3 maxsize=100 />
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+					Â«ENDIFÂ»		
+				Â«ELSEÂ»
+					<inputbox id="Â«f.nameÂ»" type="number" pattern="[0-9]" onkeypress="return event.charCode >= 48 && event.charCode <= 57" label="Â«a.glossary.glossary_name.labelÂ»" value="" placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» minsize=3 maxsize=100 />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityIntegerField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''
 	
 	/**
@@ -1607,54 +1607,54 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */
 	def dispatch genEntityField( EntityCurrencyField f, Model model, IFileSystemAccess2 fsa, Entity t, Boolean disabled, Boolean pantallaVisible) '''
-		«var visibleField = isVisibleEntityField(f)»
-		«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))»	
-			<div class="col-md-«anchoColumn»">
+		Â«var visibleField = isVisibleEntityField(f)Â»
+		Â«IF pantallaVisible || (visibleField !== null && !visibleField.toString.trim.isEmpty && visibleField.toString.trim.equals("true"))Â»	
+			<div class="col-md-Â«anchoColumnÂ»">
 			
-			«IF f.attrs.size > 0»	
-				«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")»	
-					«FOR EntityAttr a : f.attrs »	
-						«a.genIntegerEntityAttr(f, disabled, pantallaVisible)»
-					«ENDFOR»
-				«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							«var requerido = isRiquiredAttrb(f)»
-							«IF requerido !== null && !requerido.toString.trim.isEmpty»
-								<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=«requerido» disabled=«disabled» min=1.00 max=1000000.00 />
-							«ELSE»
-								<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=1.00 max=1000000.00 />
-							«ENDIF»					
-						«ELSE»
-							<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=1.00 max=1000000.00 />
-						«ENDIF»
-					«ENDIF»
-				«ELSE»
-					«IF disabled»
-						<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-					«ELSE»
-						«IF pantallaVisible»
-							<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=1.00 max=1000000.00 />
-						«ELSE»
-							<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=1.00 max=1000000.00 />
-						«ENDIF»
-					«ENDIF»	
-				«ENDIF»							
-			«ELSE»
-				«IF disabled»
-					<outputtext id="«f.name»" label="«f.name.toFirstUpper»" value="«f.name.toFirstUpper» del «t.name»" />
-				«ELSE»
-					«IF pantallaVisible»
-						<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=true disabled=«disabled» min=1.00 max=1000000.00 />
-					«ELSE»
-						<inputbox id="«f.name»" type="currency" label="«f.name.toFirstUpper»" value="" precision=2 placeholder="«f.name.toFirstUpper» del «t.name»" required=false disabled=«disabled» min=1.00 max=1000000.00 />
-					«ENDIF»
-				«ENDIF»
-			«ENDIF»
+			Â«IF f.attrs.size > 0Â»	
+				Â«IF isEntityFieldWithGlossary(f).toString.trim.equals("true")Â»	
+					Â«FOR EntityAttr a : f.attrs Â»	
+						Â«a.genIntegerEntityAttr(f, disabled, pantallaVisible)Â»
+					Â«ENDFORÂ»
+				Â«ELSEIF isEntityFieldWithOutGlossaryWithConstraint(f).toString.trim.equals("true")Â»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							Â«var requerido = isRiquiredAttrb(f)Â»
+							Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+								<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+							Â«ELSEÂ»
+								<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+							Â«ENDIFÂ»					
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»
+				Â«ELSEÂ»
+					Â«IF disabledÂ»
+						<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+					Â«ELSEÂ»
+						Â«IF pantallaVisibleÂ»
+							<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+						Â«ELSEÂ»
+							<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+						Â«ENDIFÂ»
+					Â«ENDIFÂ»	
+				Â«ENDIFÂ»							
+			Â«ELSEÂ»
+				Â«IF disabledÂ»
+					<outputtext id="Â«f.nameÂ»" label="Â«f.name.toFirstUpperÂ»" value="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" />
+				Â«ELSEÂ»
+					Â«IF pantallaVisibleÂ»
+						<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=true disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="currency" label="Â«f.name.toFirstUpperÂ»" value="" precision=2 placeholder="Â«f.name.toFirstUpperÂ» del Â«t.nameÂ»" required=false disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+					Â«ENDIFÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
 			</div>
-		«ENDIF»
+		Â«ENDIFÂ»
 	'''
 
 	/**
@@ -1662,57 +1662,57 @@ class EntityComponentRDLGenerator {
 	 * Con la variable "disabled" se valida si se trata de la pantalla delete, en cuyo caso todos los campos se muestran como label's.
 	 */	
 	def genIntegerEntityAttr(EntityAttr a, EntityCurrencyField f, Boolean disabled, Boolean validateFieldRequired)'''
-		«IF a.glossary !== null»
-			«IF disabled»
-				<outputtext id="«f.name»" label="«a.glossary.glossary_name.label»" value="«a.glossary.glossary_description.label»" />
-			«ELSE»
+		Â«IF a.glossary !== nullÂ»
+			Â«IF disabledÂ»
+				<outputtext id="Â«f.nameÂ»" label="Â«a.glossary.glossary_name.labelÂ»" value="Â«a.glossary.glossary_description.labelÂ»" />
+			Â«ELSEÂ»
 				<!-- Con la variable "pantallaVisible" se VALIDA SI SE TRATA DE LA SECCION CRITERIOS DE BUSQUEDA, en cuyo caso los campos no son obligatorios -->
-				«IF validateFieldRequired»
-					«var requerido = isRiquiredAttrb(f)»
-					«IF requerido !== null && !requerido.toString.trim.isEmpty»
-						<inputbox id="«f.name»" type="currency" label="«a.glossary.glossary_name.label»" value="" precision=2 placeholder="«a.glossary.glossary_description.label»" required=«requerido» disabled=«disabled» min=1.00 max=1000000.00 />
-					«ELSE»
-						<inputbox id="«f.name»" type="currency" label="«a.glossary.glossary_name.label»" value="" precision=2 placeholder="«a.glossary.glossary_description.label»" required=true disabled=«disabled» min=1.00 max=1000000.00 />
-					«ENDIF»		
-				«ELSE»
-					<inputbox id="«f.name»" type="currency" label="«a.glossary.glossary_name.label»" value="" precision=2 placeholder="«a.glossary.glossary_description.label»" required=false disabled=«disabled» min=1.00 max=1000000.00 />
-				«ENDIF»
-			«ENDIF»
-		«ENDIF»
+				Â«IF validateFieldRequiredÂ»
+					Â«var requerido = isRiquiredAttrb(f)Â»
+					Â«IF requerido !== null && !requerido.toString.trim.isEmptyÂ»
+						<inputbox id="Â«f.nameÂ»" type="currency" label="Â«a.glossary.glossary_name.labelÂ»" value="" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=Â«requeridoÂ» disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+					Â«ELSEÂ»
+						<inputbox id="Â«f.nameÂ»" type="currency" label="Â«a.glossary.glossary_name.labelÂ»" value="" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=true disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+					Â«ENDIFÂ»		
+				Â«ELSEÂ»
+					<inputbox id="Â«f.nameÂ»" type="currency" label="Â«a.glossary.glossary_name.labelÂ»" value="" precision=2 placeholder="Â«a.glossary.glossary_description.labelÂ»" required=false disabled=Â«disabledÂ» min=1.00 max=1000000.00 />
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def isEntityFieldWithGlossary(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.glossary !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.glossary !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isEntityFieldWithOutGlossaryWithConstraint(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«true»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«trueÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def isVisibleEntityField(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty»
-				«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter»
-			«ENDIF»
-		«ENDFOR»
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmptyÂ»
+				Â«a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filterÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 		
 	def isRiquiredAttrb(EntityCurrencyField f)'''
-		«FOR EntityAttr a : f.attrs »
-			«IF a.constraint !== null»
-				«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmpty»
-					«a.constraint.constraints.filter(ConstraintRequired).get(0).value»
-				«ENDIF»
-			«ENDIF»
-		«ENDFOR»		
+		Â«FOR EntityAttr a : f.attrs Â»
+			Â«IF a.constraint !== nullÂ»
+				Â«IF a.constraint.constraints.filter(ConstraintRequired) !== null && !a.constraint.constraints.filter(ConstraintRequired).isEmptyÂ»
+					Â«a.constraint.constraints.filter(ConstraintRequired).get(0).valueÂ»
+				Â«ENDIFÂ»
+			Â«ENDIFÂ»
+		Â«ENDFORÂ»		
 	'''	
 	
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
@@ -1839,8 +1839,8 @@ class EntityComponentRDLGenerator {
 //_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/	
 		
 	def dispatch genEntityTextConstraint(ConstraintRequired b)'''
-		<p style="color: lime">«b.value»</p>
-		«b.value»
+		<p style="color: lime">Â«b.valueÂ»</p>
+		Â«b.valueÂ»
 	'''
 
 	def dispatch genEntityTextConstraint(ConstraintUnique b)'''
@@ -1857,7 +1857,7 @@ class EntityComponentRDLGenerator {
 
 	
 	def gen(CharSequence body, Model model) '''
-		«body»
+		Â«bodyÂ»
 	'''
 
 	def static toUpperCase(String it){
