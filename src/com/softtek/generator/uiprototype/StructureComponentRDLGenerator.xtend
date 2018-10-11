@@ -71,30 +71,99 @@ class StructureComponentRDLGenerator {
 	}
 	
 	
-	def genImportElements(Enum t, Model model, IFileSystemAccess2 fsa){	
-	}
-	
-	def genImportElements(PageContainer t, Model model, IFileSystemAccess2 fsa) {
-	}
-	
-	def genImportElements(Task t, Model model, IFileSystemAccess2 fsa) {
-	}
-	
-	def createAbstractElementRoutes(EList<EObject> contents,IFileSystemAccess2 fsa) {
-	 var routes=""
-	 for ( m: contents){
-	  var model  = m as Model
-	  if (model.module!==null)
-	   for (AbstractElement a: model.module.elements){
-		  routes = routes + genAbstractElementRoutes(model, fsa)
-	   }
+	def doGenRoutes(Resource resource, IFileSystemAccess2 fsa) {
+	  var tempRouteList = new ArrayList<String>()
+	  for ( m: resource.contents){
+	   var model  = m as Model
+	    if (model.module!==null){
+	  	 for (AbstractElement a: model.module.elements){
+	   	      if (a instanceof Entity){
+		       tempRouteList.addAll(genRouteElements(a,model,fsa))
+		      }
+	     }
+	    }
 	  }
-	 return routes
+	 return tempRouteList
 	}
 	
 	
+	def genRouteElements(Entity t, Model model, IFileSystemAccess2 fsa){
+		var admin  = '{ route: \'/'+t.name.toLowerCase+'-admin/\', tag: \''+t.name.toLowerCase+'-admin\' }'
+		var add    = '{ route: \'/'+t.name.toLowerCase+'-add/\', tag: \''+t.name.toLowerCase+'-add\' }'
+		var edit   = '{ route: \'/'+t.name.toLowerCase+'-edit/\', tag: \''+t.name.toLowerCase+'-edit\' }'
+		var delete = '{ route: \'/'+t.name.toLowerCase+'-delete/\', tag: \''+t.name.toLowerCase+'-delete\' }'
+	    var routeList = new ArrayList<String>()
+	    routeList.add(admin)
+		routeList.add(add)
+		routeList.add(edit)
+		routeList.add(delete)
+		return routeList
+	}
 	
-	def dispatch genApiIndex(ArrayList<String> importElementList, IFileSystemAccess2 fsa) '''
+	
+	def doGenMenu(Resource resource, IFileSystemAccess2 fsa) {
+	  var tempMenuList = new ArrayList<String>()
+	  for ( m: resource.contents){
+	   var model  = m as Model
+	    if (model.module!==null){
+	  	 for (AbstractElement a: model.module.elements){
+	   	      if (a instanceof PageContainer){
+		       tempMenuList.addAll(genMenuElements(a,model,fsa))
+		      }
+	     }
+	    }
+	  }
+	 return tempMenuList
+	}
+	
+	def genMenuElements(PageContainer page, Model model, IFileSystemAccess2 fsa){
+	  var menuList = new ArrayList<String>()
+	
+	  if ( page.landmark!==null && page.landmark.trim.equals("true")){
+	    var label=page.page_title
+	    var title   = '<h3>'+model.module.name.toFirstUpper+'</h3>'
+		var ul      = '<ul class=\"nav side-menu\">'
+		var li      = '<li><a><i class="fa fa-home"></i>'+ label +'<span class="fa fa-chevron-down"></span></a>'
+		var liAdmin = '<li><a href=\"/'+page.name.toLowerCase+'-admin\">Mantenimiento de ' +label +'</a></li>'
+		var liAdd   = '<li><a href=\"/'+page.name.toLowerCase+'-add\">Alta de ' +label +'</a></li>'
+		menuList.add(title)
+		menuList.add(ul)
+	    menuList.add(li)
+	    menuList.add("<ul class=\"nav child_menu\">")
+	    menuList.add(liAdmin)
+	    menuList.add(liAdd)
+	    menuList.add("</ul>")
+	    menuList.add("</li>")
+	    menuList.add("</ul>")
+	  }
+	  return menuList
+	}
+	
+	
+    def doGenTableData(Resource resource, IFileSystemAccess2 fsa) {
+	  var tempTableList = new ArrayList<String>()
+	  for ( m: resource.contents){
+	   var model  = m as Model
+	    if (model.module!==null){
+	  	 for (AbstractElement a: model.module.elements){
+	   	      if (a instanceof Entity){
+		       tempTableList.addAll(genTableDataElements(a,model,fsa))
+		      }
+	     }
+	    }
+	  }
+	 return tempTableList
+	}
+	
+	def genTableDataElements(Entity t, Model model, IFileSystemAccess2 fsa){
+		var dataList = new ArrayList<String>()
+		var data= '{ path: require(\'json-loader!./tabledata/modal'+ t.name.toLowerCase +'.json\') }'
+	    dataList.add(data)
+		return dataList
+	}
+	
+	
+	def dispatch genApiIndex(ArrayList<String> importElementList, ArrayList<String> routeElementList, IFileSystemAccess2 fsa) '''
 	/*eslint no-mixed-spaces-and-tabs: ["error", "smart-tabs"]*/
 	'use strict'
 	
@@ -192,131 +261,15 @@ class StructureComponentRDLGenerator {
 	var routes = [
 	  { route: '/login/', tag: 'login' },
 	  { route: '/home/', tag: 'app' },
-	
+	  «FOR String r: routeElementList SEPARATOR ','»
+	  	  «r»
+	  «ENDFOR»
 	]
 	riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'Contraseña', link: '//' } } })
 		
 	'''
-	//«createAbstractElementRoutes(contents, fsa)»
-	def dispatch genAbstractElementRoutes(Model model, IFileSystemAccess2 fsa) {
-		
-		var routes = '';
-		
-		for (AbstractElement a: model.module.elements){
-			routes = routes + a.genAbstractElementRouteAdmin(model,fsa);
-		}
-		for (AbstractElement a: model.module.elements){
-			routes = routes + a.genAbstractElementRouteAdd(model,fsa);
-		}
-		for (AbstractElement a: model.module.elements){
-			routes = routes + a.genAbstractElementRouteEdit(model,fsa);
-		}
-		for (AbstractElement a: model.module.elements){
-			routes = routes + a.genAbstractElementRouteDelete(model,fsa);
-		}
-		
-		routes = routes.substring(0, routes.length-1);
-		
-		//routes = routes //+ ''']
-		// riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'Contraseña', link: '//' } } })'''
-	}
 	
-	
-	
-	def dispatch genAbstractElement(Entity t, Model model, IFileSystemAccess2 fsa) '''
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-admin.tag'
-		
-		«IF t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-form.tag'
-		«ENDIF»
-		
-		«IF t.actions !== null && (!t.actions.action.filter(ActionAdd).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionAdd).get(0).value))»		
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-add.tag'
-		«ENDIF»
-			
-		«IF t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionEdit).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-edit.tag'
-		«ENDIF»
-		
-		«IF t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionDelete).get(0).value))»
-		import './components/app/«t.name.toLowerCase»/«t.name.toLowerCase»-delete.tag'
-		«ENDIF»
-	'''
-	
-	def dispatch genAbstractElement(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElement(PageContainer t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElement(Task t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdmin(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdmin(PageContainer t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdmin(Task t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdmin(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var admin = '''{ route: '/«t.name.toLowerCase»-admin/', tag: '«t.name.toLowerCase»-admin' },
-		'''
-		return admin;
-	}
-	
-	def dispatch genAbstractElementRouteAdd(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdd(PageContainer t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdd(Task t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteAdd(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var add = '''{ route: '/«t.name.toLowerCase»-add/', tag: '«t.name.toLowerCase»-add' },
-		'''
-		return add;
-	}
-	
-	def dispatch genAbstractElementRouteEdit(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteEdit(PageContainer t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteEdit(Task t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteEdit(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var edit = '''{ route: '/«t.name.toLowerCase»-edit/', tag: '«t.name.toLowerCase»-edit' },
-		'''
-		return edit;
-	}
-	
-	def dispatch genAbstractElementRouteDelete(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteDelete(PageContainer t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genAbstractElementRouteDelete(Task t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	
-	def dispatch genAbstractElementRouteDelete(Entity t, Model model, IFileSystemAccess2 fsa) {
-		var delete = '''{ route: '/«t.name.toLowerCase»-delete/', tag: '«t.name.toLowerCase»-delete' },
-		'''
-		return delete;	
-	}
-	
-	def dispatch genAbstractElementRoute(Enum t, Model model, IFileSystemAccess2 fsa) '''
-	'''
-	
-	def dispatch genApiApp(Model model) '''
+	def dispatch genApiApp(ArrayList<String> menuElementList) '''
 			<app>
 			<style>
 			a {color:#C4CFDA;}
@@ -353,15 +306,9 @@ class StructureComponentRDLGenerator {
 							<!-- sidebar menu -->
 							<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 								<div class="menu_section">
-								    «IF model.module!==null»
-									<h3>«model.module.name.toFirstUpper»</h3>
-									<ul class="nav side-menu">
-									    
-								        «FOR AbstractElement a: model.module.elements»
-											«a.genAbstractElementMenuSection(model)»
-										«ENDFOR»
-									</ul>
-									«ENDIF»
+									«FOR String m: menuElementList»
+											«m»
+									«ENDFOR»
 								</div>
 							</div>
 						<!-- /sidebar menu -->
@@ -414,51 +361,15 @@ class StructureComponentRDLGenerator {
 			</app>
 	'''
 	
-	def dispatch genAbstractElementMenuSection(Enum t, Model model) '''
+	def dispatch genApiTableData(ArrayList<String> tableDataList) '''
+		module.exports = {files: [
+		 «FOR String t: tableDataList SEPARATOR ','»
+		  «t»
+		 «ENDFOR»
+		]}
 	'''
-	
-	def dispatch genAbstractElementMenuSection(PageContainer t, Model model) '''
-	'''
-	
-	def dispatch genAbstractElementMenuSection(Task t, Model model) '''
-	'''
-	
-	def dispatch genAbstractElementMenuSection(Entity t, Model model) '''
-
-			<li><a><i class="fa fa-home"></i> «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF» <span class="fa fa-chevron-down"></span></a>
-				<ul class="nav child_menu">
-					<li><a href="/«t.name.toLowerCase»-admin">Mantenimiento de «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF»s</a></li>
-					<li><a href="/«t.name.toLowerCase»-add">Alta de «IF t.glossary !== null && t.glossary.glossary_name !== null && !t.glossary.glossary_name.label.isNullOrEmpty»«t.glossary.glossary_name.label»«ELSE»«t.name.toFirstUpper»«ENDIF»</a></li>
-				</ul>
-			</li>
-
-	'''	 
-	 
-	def dispatch genApiTableData(Model model) {
-		var s = '';
-		var result = '';
-		
-		if (model.module!==null) {
-		  for (AbstractElement a : model.module.elements){
-		 	s = s + a.genAbstractElementTableData(model)	
-		  }
-		
-		  s = s.substring(0, s.length-2)
-		}
-		result = 'module.exports = {files: [' + s + ']}';
-		return result
-	}
 		
 	
-	def dispatch genAbstractElementTableData(Enum t, Model model) ''''''
-	
-	def dispatch genAbstractElementTableData(PageContainer t, Model model) ''''''
-	
-	def dispatch genAbstractElementTableData(Task t, Model model) ''''''
-	
-	def dispatch genAbstractElementTableData(Entity t, Model model) '''
-		{ path: require('json-loader!./tabledata/modal«t.name.toLowerCase».json') },
-	'''
 	def static toLowerCase(String it){
 	  toLowerCase
 	}
