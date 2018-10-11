@@ -20,12 +20,16 @@ import com.softtek.rdl2.EntityEmailField
 import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
-
-import com.softtek.generator.utils.genEntityField
 import com.softtek.rdl2.Enum
 import com.softtek.rdl2.Entity
 
+import com.softtek.generator.utils.EntityFieldUtils
+import com.softtek.generator.utils.EntityUtils
+
 class ScreenGenerator {
+	
+	var entityUtils = new EntityUtils
+	var entityFieldUtils = new EntityFieldUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -95,46 +99,46 @@ class ScreenGenerator {
 	'''
 	
 	def dispatch genUIFormEntityField(EntityTextField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="text" label="«field.name»" value="" placeholder="" «IF true»required=true«ELSE»required=true«ENDIF» disabled=false />
+		<inputbox id="«field.name.toLowerCase»" type="text" label="«entityFieldUtils.getFieldGlossaryName(field)»" value="" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityLongTextField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="textarea" lines=5 label="«field.name»" value="" placeholder="" required=true disabled=false minsize=3 maxsize=500 />
+		<inputbox id="«field.name.toLowerCase»" type="textarea" lines=5 label="«entityFieldUtils.getFieldGlossaryName(field)»" value="" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false minsize=3 maxsize=500 />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityDateField field) '''
-		<date-picker id="«field.name.toLowerCase»" type="date" label="«field.name»" value="" placeholder="" required=true disabled=false format="yyyy/mm/dd" mindate="1900-01-01" maxdate="2200-12-31" />
+		<date-picker id="«field.name.toLowerCase»" type="date" label="«entityFieldUtils.getFieldGlossaryName(field)»" value="" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false format="yyyy/mm/dd" mindate="1900-01-01" maxdate="2200-12-31" />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityImageField field) '''
-		<attach-photo id="«field.name.toLowerCase»" label="«field.name»" height="200" width="400" maxsizemb="2" filetypes="jpg, png, bmp" />
+		<attach-photo id="«field.name.toLowerCase»" label="«entityFieldUtils.getFieldGlossaryName(field)»" height="200" width="400" maxsizemb="2" filetypes="jpg, png, bmp" />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityFileField field) '''
-		<attach-photo id="«field.name.toLowerCase»" label="«field.name»" height="200" width="400" maxsizemb="2" filetypes="doc, docx, pdf" />
+		<attach-photo id="«field.name.toLowerCase»" label="«entityFieldUtils.getFieldGlossaryName(field)»" height="200" width="400" maxsizemb="2" filetypes="doc, docx, pdf" />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityEmailField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="email"  label="«field.name»" value="" placeholder="" required=true disabled=false />
+		<inputbox id="«field.name.toLowerCase»" type="email"  label="«entityFieldUtils.getFieldGlossaryName(field)»" value="" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityDecimalField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="number" label="«field.name»" placeholder="" required=true />
+		<inputbox id="«field.name.toLowerCase»" type="number" label="«entityFieldUtils.getFieldGlossaryName(field)»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityIntegerField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="integer" label="«field.name»" value="" placeholder="" required=true disabled=false min=0 max=1000000 />
+		<inputbox id="«field.name.toLowerCase»" type="integer" label="«entityFieldUtils.getFieldGlossaryName(field)»" value="" placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false min=0 max=1000000 />
 	'''
 	
 	def dispatch genUIFormEntityField(EntityCurrencyField field) '''
-		<inputbox id="«field.name.toLowerCase»" type="currency" label="«field.name»" value=""  placeholder="" required=true disabled=false min=0.00 max=1000000.00 />
+		<inputbox id="«field.name.toLowerCase»" type="currency" label="«entityFieldUtils.getFieldGlossaryName(field)»" value=""  placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=true«ENDIF» disabled=false min=0.00 max=1000000.00 />
 	'''
 
 	/*
 	 * genUIFormRelationshipField
 	 */
 	def dispatch genUIFormRelationshipField(Enum toEnum, EntityReferenceField fromField) '''
-		<select-box id="«toEnum.name.toLowerCase»" type="option" placeholder="«toEnum.name»">
+		<select-box id="«toEnum.name.toLowerCase»" type="option" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»">
 			«FOR l : toEnum.enum_literals»
 				<option-box id="«l.key»" label="«l.value»" />
 			«ENDFOR»
@@ -142,8 +146,8 @@ class ScreenGenerator {
 	'''
 
 	def dispatch genUIFormRelationshipField(Entity toEntity, EntityReferenceField fromField) '''
-	    <search-box id="«fromField.name.toLowerCase»" link="«toEntity.name.toLowerCase»_modal" caption="«fromField.name»" placeholder="" />
-	    <modal-box id="«fromField.name.toLowerCase»_modal"  data="«fromField.name.toLowerCase»-results" title="Seleccionar «fromField.name» " action="select-one" pagination="true"/>
+	    <search-box id="«fromField.name.toLowerCase»" link="«toEntity.name.toLowerCase»_modal" caption="«entityFieldUtils.getFieldGlossaryName(fromField)»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»" />
+	    <modal-box id="«fromField.name.toLowerCase»_modal"  data="«fromField.name.toLowerCase»-results" title="Seleccionar «entityFieldUtils.getFieldGlossaryName(fromField)» " action="select-one" pagination="true"/>
 	'''
 	
 	/*
@@ -162,43 +166,43 @@ class ScreenGenerator {
 	 * genUIDetailEntityField
 	 */
 	def dispatch genUIDetailEntityField(EntityReferenceField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityTextField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityLongTextField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityDateField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityImageField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityFileField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityEmailField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityDecimalField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityIntegerField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityCurrencyField field) '''
-		<outputtext label="«field.name»" value=""></outputtext>
+		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 
 }
