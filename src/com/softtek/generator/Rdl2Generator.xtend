@@ -14,21 +14,24 @@ import com.softtek.generator.uiprototype.StructureComponentRDLGenerator
 import com.softtek.generator.uiprototype.ModalComponentRDLGenerator
 import com.softtek.generator.bash.BashRDLGenerator
 import java.util.ArrayList
+import com.softtek.generator.uiprototype.ScreenGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
 	@Inject StructureComponentRDLGenerator structureComponentRDLGenerator
-	@Inject EntityComponentRDLGenerator entityComponentRDLGenerator
-	@Inject ModalComponentRDLGenerator modalComponentRDLGenerator
-	@Inject AdminComponentRDLGenerator adminComponentRDLGenerator
-	@Inject BashRDLGenerator bashRDLGenerator
+	//@Inject EntityComponentRDLGenerator entityComponentRDLGenerator
+	//@Inject ModalComponentRDLGenerator modalComponentRDLGenerator
+	//@Inject AdminComponentRDLGenerator adminComponentRDLGenerator
+	//@Inject BashRDLGenerator bashRDLGenerator
+	
+	@Inject ScreenGenerator screenGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		var importList = new ArrayList<String>()
 		println("resource "+resource.resourceSet)
 		for(r:resource.resourceSet.resources){
 			importList.addAll(structureComponentRDLGenerator.doGenImports(r, fsa))
-			//entityComponentRDLGenerator.doGeneratorScreen(r, fsa)
+			screenGenerator.doGenerate(r, fsa)
 		}
 		
 		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,fsa))

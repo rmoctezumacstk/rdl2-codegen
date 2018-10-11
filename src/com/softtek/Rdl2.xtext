@@ -5,27 +5,6 @@ generate rdl2 "http://www.softtek.com/Rdl2"
 Model:
   module = Module | (actors+=Actor)* | system=System
 ;
-/*
- * 
- system NombreSistema {
-
-   title: “Nombre del Sistema”
-
-   description: “Descripción del Sistema”
-
-   logo: “./img/logo.png”
-
- 
-
-   module Modulo1
-
-   module Modulo2
-
-   module Modulo3
-
-}
- */
-
 
 ModuleName:
 	'module' module=[ModuleInfo|QualifiedName]
