@@ -28,14 +28,21 @@ class Rdl2Generator extends AbstractGenerator {
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		var importList = new ArrayList<String>()
+		var routeList  = new ArrayList<String>()
+		var menuList   = new ArrayList<String>()
+		var tableDataList = new ArrayList<String>()
 		println("resource "+resource.resourceSet)
 		for(r:resource.resourceSet.resources){
 			importList.addAll(structureComponentRDLGenerator.doGenImports(r, fsa))
+			routeList.addAll(structureComponentRDLGenerator.doGenRoutes(r,fsa))
+			menuList.addAll(structureComponentRDLGenerator.doGenMenu(r,fsa))
+			tableDataList.addAll(structureComponentRDLGenerator.doGenTableData(r,fsa))
 			screenGenerator.doGenerate(r, fsa)
 		}
 		
-		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,fsa))
-		
+		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,routeList,fsa))
+		fsa.generateFile('''prototipo/src/components/app/app.tag''', structureComponentRDLGenerator.genApiApp(menuList))
+		fsa.generateFile('''prototipo/src/tabledata.js''', structureComponentRDLGenerator.genApiTableData(tableDataList))
 		//structureComponentRDLGenerator.doGeneratorStructure(resource, fsa)
 		//entityComponentRDLGenerator.doGeneratorEntity(resource, fsa)
 		//modalComponentRDLGenerator.doGeneratorModal(resource, fsa)
