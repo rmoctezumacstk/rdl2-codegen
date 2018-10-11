@@ -15,6 +15,7 @@ import com.softtek.generator.uiprototype.ModalComponentRDLGenerator
 import com.softtek.generator.bash.BashRDLGenerator
 import java.util.ArrayList
 import com.softtek.generator.uiprototype.ScreenGenerator
+import com.softtek.generator.uiprototype.TableDataGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -25,6 +26,7 @@ class Rdl2Generator extends AbstractGenerator {
 	//@Inject BashRDLGenerator bashRDLGenerator
 	
 	@Inject ScreenGenerator screenGenerator
+	@Inject TableDataGenerator tableDataGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		var importList = new ArrayList<String>()
@@ -38,6 +40,7 @@ class Rdl2Generator extends AbstractGenerator {
 			menuList.addAll(structureComponentRDLGenerator.doGenMenu(r,fsa))
 			tableDataList.addAll(structureComponentRDLGenerator.doGenTableData(r,fsa))
 			screenGenerator.doGenerate(r, fsa)
+			tableDataGenerator.doGenerate(r, fsa)
 		}
 		
 		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,routeList,fsa))

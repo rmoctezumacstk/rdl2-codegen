@@ -24,11 +24,9 @@ import com.softtek.rdl2.Enum
 import com.softtek.rdl2.Entity
 
 import com.softtek.generator.utils.EntityFieldUtils
-import com.softtek.generator.utils.EntityUtils
 
 class ScreenGenerator {
 	
-	var entityUtils = new EntityUtils
 	var entityFieldUtils = new EntityFieldUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
