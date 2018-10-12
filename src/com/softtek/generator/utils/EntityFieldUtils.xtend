@@ -35,7 +35,10 @@ class EntityFieldUtils {
     Random rand = new Random()
 	Faker faker = new Faker(new Locale("es-MX"))
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MMM-dd", new Locale("es-MX"))
+	SimpleDateFormat timeFormatter = new SimpleDateFormat("h:m:s a", new Locale("es-MX"))
 	NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance()
+	NumberFormat integerFormatter = NumberFormat.getIntegerInstance()
+	NumberFormat numberFormatter = NumberFormat.getNumberInstance()
 
 	/*
 	 * isFieldRequired
@@ -450,7 +453,7 @@ class EntityFieldUtils {
  	}
  	
 	def dispatch fakerRelationship(Enum toEnum, EntityReferenceField fromField) {
-		return toEnum.enum_literals.get(rand.nextInt(toEnum.enum_literals.length)).key
+		return toEnum.enum_literals.get(rand.nextInt(toEnum.enum_literals.length)).value
 	}
 	
 	def dispatch fakerRelationship(Entity toEntity, EntityReferenceField fromField) {
@@ -544,7 +547,17 @@ class EntityFieldUtils {
 	}
 	
 	def dispatch fakerDomainData(EntityDateField field) {
-		return dateFormatter.format(faker.date().past(800, TimeUnit.DAYS))
+		var fieldData = dateFormatter.format(faker.date().past(800, TimeUnit.DAYS))
+		
+		for (attr : field.attrs) {
+			if (attr.data_domain !== null) {
+				if (attr.data_domain.domain.toString=="Date::time") {
+					fieldData = timeFormatter.format(faker.date().past(800, TimeUnit.HOURS))
+				}
+			}
+		}
+
+		return fieldData
 	}
 	
 	def dispatch fakerDomainData(EntityImageField field) {
@@ -560,14 +573,14 @@ class EntityFieldUtils {
 	}
 	
 	def  dispatch fakerDomainData(EntityDecimalField field) {
-		return faker.number().randomNumber
+		return numberFormatter.format(faker.number().numberBetween(1, 99999))
 	}
 	
 	def  dispatch fakerDomainData(EntityIntegerField field) {
-		return faker.number().numberBetween(1, 1000000)
+		return integerFormatter.format(faker.number().numberBetween(1, 99999))
 	}
 	
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
-		return currencyFormatter.format(faker.number().randomNumber)
+		return currencyFormatter.format(faker.number().numberBetween(1, 999999))
 	}
 }

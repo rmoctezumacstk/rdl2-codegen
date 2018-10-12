@@ -48,14 +48,16 @@ class TableDataGenerator {
 						«ENDFOR»
 					],
 					"rows": [
-						{
-							"id": "«RandomStringUtils.randomAlphanumeric(8)»",
-							"data": [
-								«FOR r : list.list_elements SEPARATOR ","»
-									«r.genTableRows»
-								«ENDFOR»
-							]
-						}
+						«FOR i : 1..8 SEPARATOR ","»
+							{
+								"id": "«RandomStringUtils.randomAlphanumeric(8)»",
+								"data": [
+									«FOR r : list.list_elements SEPARATOR ","»
+										«r.genTableRows»
+									«ENDFOR»
+								]
+							}
+						«ENDFOR»
 					]
 					«IF list.links.size > 0»
 						,"actions": [
@@ -140,8 +142,7 @@ class TableDataGenerator {
 	
 	def dispatch genHeaderUIDisplayField(EntityCurrencyField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
-			"type": "currency"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
 		}
 	'''
 
