@@ -43,7 +43,7 @@ class TableDataGenerator {
 				{
 					"id": "«list.name.toLowerCase»",
 					"headers": [
-						«FOR h : list.list_elements»
+						«FOR h : list.list_elements  SEPARATOR ","»
 							«h.genTableHeader»
 						«ENDFOR»
 					],

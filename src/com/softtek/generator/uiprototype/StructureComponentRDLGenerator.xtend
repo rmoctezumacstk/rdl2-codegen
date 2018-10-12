@@ -41,7 +41,7 @@ class StructureComponentRDLGenerator {
 	   var model  = m as Model
 	    if (model.module!==null){
 	  	 for (AbstractElement a: model.module.elements){
-	   	      if (a instanceof Entity){
+	   	      if (a instanceof PageContainer){
 		       tempImportList.addAll(genImportElements(a,model,fsa))
 		      }
 	     }
@@ -51,23 +51,10 @@ class StructureComponentRDLGenerator {
 	}
 	
 
-	def genImportElements(Entity t, Model model, IFileSystemAccess2 fsa){
+	def genImportElements(PageContainer t, Model model, IFileSystemAccess2 fsa){
 	    var importList = new ArrayList<String>()
-	    var importStmt = 'import \'./components/app/'+ model.module.name.toLowerCase +'/'+t.name.toLowerCase
-	    importList.add(importStmt+'-admin.tag\'')
-		
-		if (t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)))
-		importList.add(importStmt+'-form.tag\'')
-		
-		if (t.actions !== null && (!t.actions.action.filter(ActionAdd).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionAdd).get(0).value)))		
-		importList.add(importStmt+'-add.tag\'')
-			
-		if (t.actions !== null && (!t.actions.action.filter(ActionEdit).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionEdit).get(0).value)))
-		importList.add(importStmt+'-edit.tag\'')
-		
-		if (t.actions !== null && (!t.actions.action.filter(ActionDelete).isNullOrEmpty && TRUE.equals(t.actions.action.filter(ActionDelete).get(0).value)))
-		importList.add(importStmt+'-delete.tag\'')
-		
+	    var importStmt = 'import \'./components/app/'+ model.module.name.toLowerCase +'/'+t.name.toLowerCase+'.tag\''
+	    importList.add(importStmt)
 		return importList
 	}
 	
@@ -78,7 +65,7 @@ class StructureComponentRDLGenerator {
 	   var model  = m as Model
 	    if (model.module!==null){
 	  	 for (AbstractElement a: model.module.elements){
-	   	      if (a instanceof Entity){
+	   	      if (a instanceof PageContainer){
 		       tempRouteList.addAll(genRouteElements(a,model,fsa))
 		      }
 	     }
@@ -88,16 +75,10 @@ class StructureComponentRDLGenerator {
 	}
 	
 	
-	def genRouteElements(Entity t, Model model, IFileSystemAccess2 fsa){
-		var admin  = '{ route: \'/'+t.name.toLowerCase+'-admin/\', tag: \''+t.name.toLowerCase+'-admin\' }'
-		var add    = '{ route: \'/'+t.name.toLowerCase+'-add/\', tag: \''+t.name.toLowerCase+'-add\' }'
-		var edit   = '{ route: \'/'+t.name.toLowerCase+'-edit/\', tag: \''+t.name.toLowerCase+'-edit\' }'
-		var delete = '{ route: \'/'+t.name.toLowerCase+'-delete/\', tag: \''+t.name.toLowerCase+'-delete\' }'
-	    var routeList = new ArrayList<String>()
+	def genRouteElements(PageContainer t, Model model, IFileSystemAccess2 fsa){
+		var admin  = '{ route: \'/'+ model.module.name.toLowerCase+'/'+t.name.toLowerCase+'\', tag: \''+t.name.toLowerCase+'\' }'
+		var routeList = new ArrayList<String>()
 	    routeList.add(admin)
-		routeList.add(add)
-		routeList.add(edit)
-		routeList.add(delete)
 		return routeList
 	}
 	
@@ -107,6 +88,8 @@ class StructureComponentRDLGenerator {
 	  for ( m: resource.contents){
 	   var model  = m as Model
 	    if (model.module!==null){
+	     //var title   = '<h3>'+model.module.name.toFirstUpper+'</h3>'
+	     //tempMenuList.add(title)
 	  	 for (AbstractElement a: model.module.elements){
 	   	      if (a instanceof PageContainer){
 		       tempMenuList.addAll(genMenuElements(a,model,fsa))
@@ -122,16 +105,12 @@ class StructureComponentRDLGenerator {
 	
 	  if ( page.landmark!==null && page.landmark.trim.equals("true")){
 	    var label=page.page_title
-	    var title   = '<h3>'+model.module.name.toFirstUpper+'</h3>'
 		var ul      = '<ul class=\"nav side-menu\">'
 		var li      = '<li><a><i class="fa fa-home"></i>'+ label +'<span class="fa fa-chevron-down"></span></a>'
-		var liAdmin = '<li><a href=\"/'+page.name.toLowerCase+'-admin\">Mantenimiento de ' +label +'</a></li>'
-		var liAdd   = '<li><a href=\"/'+page.name.toLowerCase+'-add\">Alta de ' +label +'</a></li>'
-		menuList.add(title)
+		var liAdd   = '<li><a href=\"/'+model.module.name.toLowerCase+ '/' +page.name.toLowerCase+'\">'+label +'</a></li>'
 		menuList.add(ul)
 	    menuList.add(li)
 	    menuList.add("<ul class=\"nav child_menu\">")
-	    menuList.add(liAdmin)
 	    menuList.add(liAdd)
 	    menuList.add("</ul>")
 	    menuList.add("</li>")
@@ -141,28 +120,12 @@ class StructureComponentRDLGenerator {
 	}
 	
 	
-    def doGenTableData(Resource resource, IFileSystemAccess2 fsa) {
-	  var tempTableList = new ArrayList<String>()
-	  for ( m: resource.contents){
-	   var model  = m as Model
-	    if (model.module!==null){
-	  	 for (AbstractElement a: model.module.elements){
-	   	      if (a instanceof Entity){
-		       tempTableList.addAll(genTableDataElements(a,model,fsa))
-		      }
-	     }
-	    }
-	  }
-	 return tempTableList
-	}
-	
 	def genTableDataElements(Entity t, Model model, IFileSystemAccess2 fsa){
 		var dataList = new ArrayList<String>()
 		var data= '{ path: require(\'json-loader!./tabledata/'+ model.module.name.toLowerCase +'/modal'+ t.name.toLowerCase +'.json\') }'
 	    dataList.add(data)
 		return dataList
 	}
-	
 	
 	
     def doGenInnerTableData(Resource resource, IFileSystemAccess2 fsa) {
@@ -243,6 +206,8 @@ class StructureComponentRDLGenerator {
 	import './components/patterns/crud/modal-box.tag'
 	import './components/patterns/wizard/form-wizard.tag'
 	import './components/patterns/wizard/step-wizard.tag'
+	
+	import './components/app/app.tag'
 	
 	// Componentes generados
 	«FOR String a: importElementList»
