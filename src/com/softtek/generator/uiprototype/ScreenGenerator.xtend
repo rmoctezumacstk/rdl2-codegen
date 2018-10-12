@@ -24,10 +24,13 @@ import com.softtek.rdl2.Enum
 import com.softtek.rdl2.Entity
 
 import com.softtek.generator.utils.EntityFieldUtils
+import com.softtek.rdl2.UILinkFlow
+import com.softtek.generator.utils.UIFlowUtils
 
 class ScreenGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
+	var uiFlowUtils = new UIFlowUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -43,6 +46,9 @@ class ScreenGenerator {
 				«FOR c : page.components»
 					«c.genUIComponent»
 				«ENDFOR»
+				«FOR flow : page.links»
+					«flow.genPageFlow»
+				«ENDFOR»
 			</page>
 		</«page.name.toLowerCase»>
 	'''
@@ -54,6 +60,9 @@ class ScreenGenerator {
 		<formbox id="«form.name.toLowerCase»" title="«form.form_title»">
 			«FOR field : form.form_elements»
 				«field.genUIFormElement»
+			«ENDFOR»
+			«FOR flow : form.links»
+				«flow.genFormFlow»
 			«ENDFOR»
 		</formbox>
 	'''
@@ -147,18 +156,33 @@ class ScreenGenerator {
 	    <search-box id="«fromField.name.toLowerCase»" link="«toEntity.name.toLowerCase»_modal" caption="«entityFieldUtils.getFieldGlossaryName(fromField)»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»" />
 	    <modal-box id="«fromField.name.toLowerCase»_modal"  data="«fromField.name.toLowerCase»-results" title="Seleccionar «entityFieldUtils.getFieldGlossaryName(fromField)» " action="select-one" pagination="true"/>
 	'''
+
+
+	/*
+	 * genPageFlow
+	 */
+	def CharSequence genPageFlow(UILinkFlow flow) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''
 	
+
+	/*
+	 * genFormFlow
+	 */
+	def CharSequence genFormFlow(UILinkFlow flow) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''
+
+
 	/*
 	 * genUIDetailElement
-	 */
-	/*
-	 * genUIFormElement
 	 */
 	def dispatch genUIDetailElement(UIField e) ''''''
 	
 	def dispatch genUIDetailElement(UIDisplay e) '''
 		«e.ui_field.genUIDetailEntityField»
 	'''
+	
 	
 	/*
 	 * genUIDetailEntityField

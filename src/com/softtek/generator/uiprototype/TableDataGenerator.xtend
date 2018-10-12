@@ -19,10 +19,13 @@ import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
 import org.apache.commons.lang3.RandomStringUtils
 import com.softtek.rdl2.PageContainer
+import com.softtek.rdl2.UILinkFlow
+import com.softtek.generator.utils.UIFlowUtils
 
 class TableDataGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
+	var uiFlowUtils = new UIFlowUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -40,20 +43,32 @@ class TableDataGenerator {
 				{
 					"id": "«list.name.toLowerCase»",
 					"headers": [
-						«FOR f : list.list_elements»
-							«f.genTableHeader»
+						«FOR h : list.list_elements»
+							«h.genTableHeader»
 						«ENDFOR»
 					],
 					"rows": [
 						{
 							"id": "«RandomStringUtils.randomAlphanumeric(8)»",
 							"data": [
-								«FOR f : list.list_elements SEPARATOR ","»
-									«f.genTableRows»
+								«FOR r : list.list_elements SEPARATOR ","»
+									«r.genTableRows»
 								«ENDFOR»
 							]
 						}
 					]
+					«IF list.links.size > 0»
+						,"actions": [
+							{
+								"group": "Acciones",
+								"actions": [
+									«FOR f : list.links SEPARATOR ","»
+										«f.genFlowRows»
+									«ENDFOR»
+								]
+							}
+						]
+					«ENDIF»
 				}
 			]
 		}
@@ -180,4 +195,14 @@ class TableDataGenerator {
 		"«entityFieldUtils.fakerDomainData(field)»"
 	'''
 
+
+	/*
+	 * genFlowRows
+	 */
+	def CharSequence genFlowRows(UILinkFlow flow) '''
+		{
+			"label": "«uiFlowUtils.getFlowLabel(flow)»",
+			"link": "/«flow.link_to.name.toLowerCase»/"
+		}
+	'''
 }
