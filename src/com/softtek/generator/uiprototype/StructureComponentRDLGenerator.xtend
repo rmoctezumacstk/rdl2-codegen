@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import java.util.HashSet
+import com.softtek.rdl2.ListComponent
 
 class StructureComponentRDLGenerator {
 	var TRUE = "true";
@@ -52,7 +53,7 @@ class StructureComponentRDLGenerator {
 
 	def genImportElements(Entity t, Model model, IFileSystemAccess2 fsa){
 	    var importList = new ArrayList<String>()
-	    var importStmt = 'import \'./components/app/'+t.name.toLowerCase+'/'+t.name.toLowerCase
+	    var importStmt = 'import \'./components/app/'+ model.module.name.toLowerCase +'/'+t.name.toLowerCase
 	    importList.add(importStmt+'-admin.tag\'')
 		
 		if (t.actions !== null && !t.actions.action.filter(ActionSearch).isNullOrEmpty && (SEARCH_SIMPLE.equals(t.actions.action.filter(ActionSearch).get(0).value) || SEARCH_COMPLEX.equals(t.actions.action.filter(ActionSearch).get(0).value)))
@@ -157,12 +158,32 @@ class StructureComponentRDLGenerator {
 	
 	def genTableDataElements(Entity t, Model model, IFileSystemAccess2 fsa){
 		var dataList = new ArrayList<String>()
-		var data= '{ path: require(\'json-loader!./tabledata/modal'+ t.name.toLowerCase +'.json\') }'
+		var data= '{ path: require(\'json-loader!./tabledata/'+ model.module.name.toLowerCase +'/modal'+ t.name.toLowerCase +'.json\') }'
 	    dataList.add(data)
 		return dataList
 	}
 	
 	
+	
+    def doGenInnerTableData(Resource resource, IFileSystemAccess2 fsa) {
+	  var tempTableList = new ArrayList<String>()
+	  for ( m: resource.contents){
+	   var model  = m as Model
+	    if (model.module!==null){
+	  	 for (AbstractElement p: model.module.elements){
+	   	      if (p instanceof PageContainer){
+	   	       for (list : p.components.filter(typeof(ListComponent))) {
+					var data= '{ path: require(\'json-loader!./tabledata/'+ model.module.name.toLowerCase +'/'+ list.name.toLowerCase +'.json\') }'
+	                tempTableList.add(data)
+				}
+		      }
+	     }
+	    }
+	  }
+	 return tempTableList
+	}
+	
+
 	def dispatch genApiIndex(ArrayList<String> importElementList, ArrayList<String> routeElementList, IFileSystemAccess2 fsa) '''
 	/*eslint no-mixed-spaces-and-tabs: ["error", "smart-tabs"]*/
 	'use strict'

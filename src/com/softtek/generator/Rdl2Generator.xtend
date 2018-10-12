@@ -33,16 +33,19 @@ class Rdl2Generator extends AbstractGenerator {
 		var routeList  = new ArrayList<String>()
 		var menuList   = new ArrayList<String>()
 		var tableDataList = new ArrayList<String>()
-		println("resource "+resource.resourceSet)
+		var tableDataInnerList = new ArrayList<String>()
+		//println("resource "+resource.resourceSet)
 		for(r:resource.resourceSet.resources){
 			importList.addAll(structureComponentRDLGenerator.doGenImports(r, fsa))
 			routeList.addAll(structureComponentRDLGenerator.doGenRoutes(r,fsa))
 			menuList.addAll(structureComponentRDLGenerator.doGenMenu(r,fsa))
 			tableDataList.addAll(structureComponentRDLGenerator.doGenTableData(r,fsa))
+			tableDataInnerList.addAll(structureComponentRDLGenerator.doGenInnerTableData(r,fsa))
 			screenGenerator.doGenerate(r, fsa)
 			tableDataGenerator.doGenerate(r, fsa)
 		}
-		
+		//We add the table data inside Pages
+		tableDataList.addAll(tableDataInnerList)
 		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,routeList,fsa))
 		fsa.generateFile('''prototipo/src/components/app/app.tag''', structureComponentRDLGenerator.genApiApp(menuList))
 		fsa.generateFile('''prototipo/src/tabledata.js''', structureComponentRDLGenerator.genApiTableData(tableDataList))
