@@ -40,7 +40,7 @@ QualifiedNameWithWildcard:
 ;
 
 AbstractElement:
-	( Enum | Entity | PageContainer | Task)
+	( Enum | Entity | PageContainer | Task | Service)
 ;
 	
 Enum:
@@ -687,3 +687,11 @@ ActorSelectsStep:
 	actor=[Actor] 'selects' list=[UIListCommand|QualifiedName]
 ;
 
+
+//Services
+Service:
+	'service'  name=ID '{'
+	    'name' ':' servicename = STRING
+		('description' ':' description=STRING)?
+	'}'
+;
