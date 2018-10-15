@@ -22,7 +22,7 @@ import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.UILinkFlow
 import com.softtek.generator.utils.UIFlowUtils
 
-class TableDataGenerator {
+class TableDataJsonGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
 	var uiFlowUtils = new UIFlowUtils

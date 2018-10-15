@@ -35,19 +35,19 @@ class ScreenGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
-				fsa.generateFile("prototipo/src/components/app/" + m.name.toLowerCase + "/" + p.name.toLowerCase + ".tag", p.generateTag)
+				fsa.generateFile("prototipo/src/components/app/" + m.name.toLowerCase + "/" + p.name.toLowerCase + ".tag", p.generateTag(m))
 			}
 		}
 	}
 	
-	def CharSequence generateTag(PageContainer page) '''
+	def CharSequence generateTag(PageContainer page, Module module) '''
 		<«page.name.toLowerCase»>
 			<page id="«page.name.toLowerCase»" title="«page.page_title»">
 				«FOR c : page.components»
-					«c.genUIComponent»
+					«c.genUIComponent(module)»
 				«ENDFOR»
 				«FOR flow : page.links»
-					«flow.genPageFlow»
+					«flow.genPageFlow(module)»
 				«ENDFOR»
 			</page>
 		</«page.name.toLowerCase»>
@@ -56,29 +56,29 @@ class ScreenGenerator {
 	/*
 	 * genUIComponent
 	 */
-	def dispatch genUIComponent(FormComponent form) '''
+	def dispatch genUIComponent(FormComponent form, Module module) '''
 		<formbox id="«form.name.toLowerCase»" title="«form.form_title»">
 			«FOR field : form.form_elements»
 				«field.genUIFormElement»
 			«ENDFOR»
 			«FOR flow : form.links»
-				«flow.genFormFlow»
+				«flow.genFormFlow(module)»
 			«ENDFOR»
 		</formbox>
 	'''
 	
-	def dispatch genUIComponent(ListComponent l) '''
+	def dispatch genUIComponent(ListComponent l, Module module) '''
 	    <table-results id="«l.name.toLowerCase»" title="«l.list_title»">
 	    </table-results>
 	'''
 	
-	def dispatch genUIComponent(DetailComponent detail) '''
+	def dispatch genUIComponent(DetailComponent detail, Module module) '''
 		«FOR field : detail.list_elements»
 			«field.genUIDetailElement»
 		«ENDFOR»
 	'''
 	
-	def dispatch genUIComponent(MessageComponent m) '''
+	def dispatch genUIComponent(MessageComponent m, Module module) '''
 		<div class="alert alert-info alert-dismissible fade in" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
 				<span aria-hidden="true">×</span>
@@ -152,25 +152,28 @@ class ScreenGenerator {
 		</select-box>
 	'''
 
-	def dispatch genUIFormRelationshipField(Entity toEntity, EntityReferenceField fromField) '''
+/*
 	    <search-box id="«fromField.name.toLowerCase»" link="«toEntity.name.toLowerCase»_modal" caption="«entityFieldUtils.getFieldGlossaryName(fromField)»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»" />
 	    <modal-box id="«fromField.name.toLowerCase»_modal"  data="«fromField.name.toLowerCase»-results" title="Seleccionar «entityFieldUtils.getFieldGlossaryName(fromField)» " action="select-one" pagination="true"/>
+ */
+
+	def dispatch genUIFormRelationshipField(Entity toEntity, EntityReferenceField fromField) '''
 	'''
 
 
 	/*
 	 * genPageFlow
 	 */
-	def CharSequence genPageFlow(UILinkFlow flow) '''
-		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	def CharSequence genPageFlow(UILinkFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
 	
 
 	/*
 	 * genFormFlow
 	 */
-	def CharSequence genFormFlow(UILinkFlow flow) '''
-		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	def CharSequence genFormFlow(UILinkFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
 
 

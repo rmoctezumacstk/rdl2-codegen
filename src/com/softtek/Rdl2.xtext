@@ -6,20 +6,16 @@ Model:
   module = Module | (actors+=Actor)* | system=System
 ;
 
-ModuleName:
-	'module' module=[ModuleInfo|QualifiedName]
+ModuleRef:
+	'module' module_ref=[Module|QualifiedName]
 ;
-
-ModuleInfo:
-	Module
-; 
  
 System :
  'system' name=ID '{' 
  	'title' ':' title=STRING
  	('description' ':' description=STRING)?
  	('logo' ':' logo=STRING)?
- 	(modules+=ModuleName)+
+ 	(modules_ref += ModuleRef)+
  	 
  '}'
 ;

@@ -8,53 +8,37 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import javax.inject.Inject
-import com.softtek.generator.uiprototype.AdminComponentRDLGenerator
-import com.softtek.generator.uiprototype.EntityComponentRDLGenerator
-import com.softtek.generator.uiprototype.StructureComponentRDLGenerator
-import com.softtek.generator.uiprototype.ModalComponentRDLGenerator
 import com.softtek.generator.bash.BashRDLGenerator
-import java.util.ArrayList
 import com.softtek.generator.uiprototype.ScreenGenerator
-import com.softtek.generator.uiprototype.TableDataGenerator
+import com.softtek.generator.uiprototype.AppTagGenerator
+import com.softtek.generator.uiprototype.IndexJsGenerator
+import com.softtek.generator.uiprototype.TableDataJsGenerator
+import com.softtek.generator.uiprototype.TableDataJsonGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
-	@Inject StructureComponentRDLGenerator structureComponentRDLGenerator
-	//@Inject EntityComponentRDLGenerator entityComponentRDLGenerator
-	//@Inject ModalComponentRDLGenerator modalComponentRDLGenerator
-	//@Inject AdminComponentRDLGenerator adminComponentRDLGenerator
 	@Inject BashRDLGenerator bashRDLGenerator
 	
+	@Inject IndexJsGenerator indexJsGenerator
+	@Inject AppTagGenerator appTagGenerator
+	@Inject TableDataJsGenerator tableDataJsGenerator
 	@Inject ScreenGenerator screenGenerator
-	@Inject TableDataGenerator tableDataGenerator
+	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		var importList = new ArrayList<String>()
-		var routeList  = new ArrayList<String>()
-		var menuList   = new ArrayList<String>()
-		var tableDataInnerList = new ArrayList<String>()
-		//println("resource "+resource.resourceSet)
+		indexJsGenerator.doGenerate(resource, fsa)
+		appTagGenerator.doGenerate(resource, fsa)
+		tableDataJsGenerator.doGenerate(resource, fsa)
+		
 		for(r:resource.resourceSet.resources){
-			importList.addAll(structureComponentRDLGenerator.doGenImports(r, fsa))
-			routeList.addAll(structureComponentRDLGenerator.doGenRoutes(r,fsa))
-			menuList.addAll(structureComponentRDLGenerator.doGenMenu(r,fsa))
-			tableDataInnerList.addAll(structureComponentRDLGenerator.doGenInnerTableData(r,fsa))
 			screenGenerator.doGenerate(r, fsa)
-			tableDataGenerator.doGenerate(r, fsa)
+			tableDataJsonGenerator.doGenerate(r, fsa)
 		}
-		fsa.generateFile('''prototipo/src/index.js''', structureComponentRDLGenerator.genApiIndex(importList,routeList,fsa))
-		fsa.generateFile('''prototipo/src/components/app/app.tag''', structureComponentRDLGenerator.genApiApp(menuList))
-		fsa.generateFile('''prototipo/src/tabledata.js''', structureComponentRDLGenerator.genApiTableData(tableDataInnerList))
-		//structureComponentRDLGenerator.doGeneratorStructure(resource, fsa)
-		//entityComponentRDLGenerator.doGeneratorEntity(resource, fsa)
-		//modalComponentRDLGenerator.doGeneratorModal(resource, fsa)
-		//adminComponentRDLGenerator.doGeneratorAdmin(resource, fsa)
 		
 		bashRDLGenerator.doGenerator(resource, fsa)
 	}
 	
 	override afterGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		
 	}
 	
 }
