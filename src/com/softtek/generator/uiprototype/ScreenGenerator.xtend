@@ -26,6 +26,8 @@ import com.softtek.rdl2.Entity
 import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.rdl2.UILinkFlow
 import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.UIFormRow
+import com.softtek.rdl2.RowComponent
 
 class ScreenGenerator {
 	
@@ -89,11 +91,15 @@ class ScreenGenerator {
 		</div>
 	'''
 	
+	def dispatch genUIComponent(RowComponent m, Module module) '''
+	'''
 	
 	/*
 	 * genUIFormElement
 	 */
 	def dispatch genUIFormElement(UIField e) ''''''
+	
+	def dispatch genUIFormElement(UIFormRow e) ''''''
 	
 	def dispatch genUIFormElement(UIDisplay e) '''
 		«e.ui_field.genUIFormEntityField»
@@ -187,6 +193,8 @@ class ScreenGenerator {
 	def dispatch genUIDetailElement(UIDisplay e) '''
 		«e.ui_field.genUIDetailEntityField»
 	'''
+	
+	def dispatch genUIDetailElement(UIFormRow e) ''''''
 	
 	
 	/*
