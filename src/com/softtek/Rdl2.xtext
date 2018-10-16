@@ -460,7 +460,7 @@ Actor:
 //PageContainers
 
 PageContainer:
-	'screen'  (name=ID) (':' ('Wizard'|'Modal'|'Modeless'))? '{'
+	'screen'  (name=ID) (':' screen_type=('Wizard'|'Modal'|'Modeless'))? '{'
 		('home' ':' home=('true'|'false'))?
 		('landmark' ':' landmark=('true'|'false'))?
 		'title' ':' (page_title=STRING)
