@@ -328,7 +328,7 @@ WidgetAttrEnumType:
 ;
 
 WidgetAttrEnumTypeSelect:
-	WidgetTypeSelect 
+	widget_select = WidgetTypeSelect 
 	(',' sortby = WidgetSortBy)?
 ;
 

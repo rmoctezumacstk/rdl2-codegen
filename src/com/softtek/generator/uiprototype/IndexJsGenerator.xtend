@@ -77,7 +77,9 @@ class IndexJsGenerator {
 		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
 			«FOR m : s.modules_ref»
 				«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
-					import './components/app/«m.module_ref.name.toLowerCase»/«page.name.toLowerCase».tag'
+					«IF page.screen_type === null»
+						import './components/app/«m.module_ref.name.toLowerCase»/«page.name.toLowerCase».tag'
+					«ENDIF»
 				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
