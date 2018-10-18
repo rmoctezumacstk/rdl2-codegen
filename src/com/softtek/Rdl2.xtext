@@ -36,7 +36,7 @@ QualifiedNameWithWildcard:
 ;
 
 AbstractElement:
-	( Enum | Entity | PageContainer | Task | Service)
+	( Enum | Entity | PageContainer | Task | CommandQuery )
 ;
 	
 Enum:
@@ -482,7 +482,7 @@ FormComponent:
 	'form' ('<' (entity=[Entity|QualifiedName]) '>')? name=ID '{'
 		('title' ':' (form_title=STRING))?
 		(form_elements += UIElement)*
-		(links += UILinkFlow)*
+		(links += UILinkCommandQueryFlow)*
 	'}'
 ;
 
@@ -490,7 +490,7 @@ ListComponent:
 	'list' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
 		('title' ':' (list_title=STRING))?
 		(list_elements += UIElement)*
-		(links += UILinkFlow)*
+		(links += UILinkCommandQueryFlow)*
 	'}'
 ;
 
@@ -498,7 +498,7 @@ DetailComponent:
 	'details' '<' (entity=[Entity|QualifiedName]) '>' name=ID '{'
 		('title' ':' (list_title=STRING))?
 		(list_elements += UIElement)*
-		(links += UILinkFlow)*
+		(links += UILinkCommandQueryFlow)*
 	'}'
 ;
 
@@ -621,22 +621,32 @@ UICurrencyField:
 	'field' name=ID ':' 'Currency' ('{' immutable='immutable' '}')?
 ;
 
-UICommand:
-	'command' name=ID ':' (type=('PrimaryButton'|'Button'|'Link')) '{'
-		'label' ':' (command_label=STRING)
-		('icon' ':' icon=STRING)?
-		'link-to' ":" (link_to=[PageContainer])
+
+UILinkCommandQueryFlow:
+	UICommandFlow |
+	UIQueryFlow	 |
+	UILinkFlow
+;
+
+UIQueryFlow:
+	'query' name=ID '->' query_ref=[QueryElement|QualifiedName]
+		'.success' ':' success_flow=[UIComponent|QualifiedName]
+		'.failure' ':' failure_flow=[UIComponent|QualifiedName]
+	'{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}'
+;
+
+UICommandFlow:
+	'command' name=ID '->' command_ref=[CommandElement|QualifiedName]
+		'.success' ':' success_flow=[UIComponent|QualifiedName]
+		'.failure' ':' failure_flow=[UIComponent|QualifiedName]
+	'{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}'
 ;
 
 UILinkFlow:
-	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
-	('{'
-		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
-	'}')?
-;
-
-UIListCommand:
 	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
 	('{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
@@ -714,17 +724,28 @@ ActorEntersStep:
 ;
 
 ActorChoosesStep:
-	actor=[Actor] 'chooses' command=[UICommand|QualifiedName]
+	actor=[Actor] 'chooses' command=[UILinkCommandQueryFlow|QualifiedName]
 ;
 
 ActorSelectsStep:
-	actor=[Actor] 'selects' list=[UIListCommand|QualifiedName]
+	actor=[Actor] 'selects' list=[UILinkCommandQueryFlow|QualifiedName]
 ;
 
 
-//Services
-Service:
-	'service'  name=ID '{'
+CommandQuery:
+	CommandElement |
+	QueryElement
+;
+
+CommandElement:
+	'command'  name=ID '{'
+	    'name' ':' servicename = STRING
+		('description' ':' description=STRING)?
+	'}'
+;
+
+QueryElement:
+	'query'  name=ID '{'
 	    'name' ':' servicename = STRING
 		('description' ':' description=STRING)?
 	'}'

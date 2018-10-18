@@ -21,6 +21,8 @@ import org.apache.commons.lang3.RandomStringUtils
 import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.UILinkFlow
 import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.UICommandFlow
+import com.softtek.rdl2.UIQueryFlow
 
 class TableDataJsonGenerator {
 	
@@ -198,9 +200,13 @@ class TableDataJsonGenerator {
 
 
 	/*
-	 * genFlowRows
+	 * UILinkCommandQueryFlow
 	 */
-	def CharSequence genFlowRows(UILinkFlow flow) '''
+	def dispatch genFlowRows(UICommandFlow flow) '''
+	'''
+	def dispatch genFlowRows(UIQueryFlow flow) '''
+	'''
+	def dispatch genFlowRows(UILinkFlow flow) '''
 		{
 			"label": "«uiFlowUtils.getFlowLabel(flow)»",
 			"link": "/«flow.link_to.name.toLowerCase»/"

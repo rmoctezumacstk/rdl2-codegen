@@ -44,6 +44,8 @@ import com.softtek.rdl2.WidgetType
 import com.softtek.rdl2.Statement
 import com.softtek.rdl2.StatementReturn
 import org.apache.commons.lang3.RandomStringUtils
+import com.softtek.rdl2.UICommandFlow
+import com.softtek.rdl2.UIQueryFlow
 
 class ScreenGenerator {
 	
@@ -314,10 +316,15 @@ class ScreenGenerator {
 	/*
 	 * genFormFlow
 	 */
-	def CharSequence genFormFlow(UILinkFlow flow, Module m) '''
+	def dispatch genFormFlow(UICommandFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.command_ref.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''
+	def dispatch genFormFlow(UIQueryFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.query_ref.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''
+	def dispatch genFormFlow(UILinkFlow flow, Module m) '''
 		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
-
 
 	/*
 	 * genUIDetailElement

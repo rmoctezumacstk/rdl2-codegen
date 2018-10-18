@@ -1,18 +1,18 @@
 package com.softtek.generator.utils
 
-import com.softtek.rdl2.UILinkFlow
+import com.softtek.rdl2.UILinkCommandQueryFlow
 
 class UIFlowUtils {
 	
-	def getFlowLabel(UILinkFlow flow) {
+	def getFlowLabel(UILinkCommandQueryFlow flow) {
 		return if (flow.link_label !== null) flow.link_label else flow.name
 	}
 	
-	def getFlowState(UILinkFlow flow) {
+	def getFlowState(UILinkCommandQueryFlow flow) {
 		return if (flow.type !== null) "" else ""
 	}
 	
-	def getFlowIcon(UILinkFlow flow, String library) {
+	def getFlowIcon(UILinkCommandQueryFlow flow, String library) {
 		var icon = "?"
 		
 		if (library == "Font Awesome") {
