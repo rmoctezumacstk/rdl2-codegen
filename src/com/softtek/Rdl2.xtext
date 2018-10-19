@@ -472,6 +472,7 @@ PageContainer:
 
 UIComponent:
 	FormComponent   |
+	InlineFormComponent |
 	ListComponent   |
 	DetailComponent |
 	MessageComponent|
@@ -480,6 +481,15 @@ UIComponent:
 
 FormComponent:
 	'form' ('<' (entity=[Entity|QualifiedName]) '>')? name=ID '{'
+		('title' ':' (form_title=STRING))?
+		(form_elements += UIElement)*
+		(links += UILinkCommandQueryFlow)*
+	'}'
+;
+
+/* TODO: En Inlineforms no se debe permitir rows, cols o panels */
+InlineFormComponent:
+	'inlineform' ('<' (entity=[Entity|QualifiedName]) '>')? name=ID '{'
 		('title' ':' (form_title=STRING))?
 		(form_elements += UIElement)*
 		(links += UILinkCommandQueryFlow)*

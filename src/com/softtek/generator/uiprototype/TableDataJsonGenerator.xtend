@@ -23,6 +23,8 @@ import com.softtek.rdl2.UILinkFlow
 import com.softtek.generator.utils.UIFlowUtils
 import com.softtek.rdl2.UICommandFlow
 import com.softtek.rdl2.UIQueryFlow
+import com.softtek.rdl2.InlineFormComponent
+import com.softtek.rdl2.UIFormContainer
 
 class TableDataJsonGenerator {
 	
@@ -34,6 +36,9 @@ class TableDataJsonGenerator {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				for (list : p.components.filter(typeof(ListComponent))) {
 					fsa.generateFile("prototipo/src/tabledata/" + m.name.toLowerCase + "/" + list.name.toLowerCase + ".json", list.genListTableData)
+				}
+				for (inlineform : p.components.filter(typeof(InlineFormComponent))) {
+					fsa.generateFile("prototipo/src/tabledata/" + m.name.toLowerCase + "/" + inlineform.name.toLowerCase + ".json", inlineform.genInlineFormTableData)
 				}
 			}
 		}
@@ -78,15 +83,34 @@ class TableDataJsonGenerator {
 		}
 	'''
 
+
+	def CharSequence genInlineFormTableData(InlineFormComponent form) '''
+		{
+			"ids": [
+				{
+					"id": "«form.name.toLowerCase»",
+					"headers": [
+						«FOR h : form.form_elements  SEPARATOR ","»
+							«h.genTableHeader»
+						«ENDFOR»
+					],
+					"rows": [
+					]
+				}
+			]
+		}
+	'''
+
 	
 	/*
-	 * genTableHeader
+	 * UIElement
 	 */
 	def dispatch genTableHeader(UIField element) ''''''
-	
 	def dispatch genTableHeader(UIDisplay element) '''
 		«element.ui_field.genHeaderUIDisplayField»
 	'''
+	def dispatch genTableHeader(UIFormContainer element) ''''''
+
 	
 	def dispatch genHeaderUIDisplayField(EntityReferenceField field) '''
 		{

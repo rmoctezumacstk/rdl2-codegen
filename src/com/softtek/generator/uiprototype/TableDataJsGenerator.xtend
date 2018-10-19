@@ -5,6 +5,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.System
 import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.ListComponent
+import com.softtek.rdl2.InlineFormComponent
 
 class TableDataJsGenerator {
 	
@@ -19,6 +20,9 @@ class TableDataJsGenerator {
 					«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
 						«FOR list : page.components.filter(typeof(ListComponent))»
 							{ path: require('json-loader!./tabledata/«m.module_ref.name.toLowerCase»/«list.name.toLowerCase».json') },
+						«ENDFOR»
+						«FOR inlineform : page.components.filter(typeof(InlineFormComponent))»
+							{ path: require('json-loader!./tabledata/«m.module_ref.name.toLowerCase»/«inlineform.name.toLowerCase».json') },
 						«ENDFOR»
 					«ENDFOR»
 				«ENDFOR»

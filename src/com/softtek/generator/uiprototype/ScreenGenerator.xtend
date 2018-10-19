@@ -46,6 +46,7 @@ import com.softtek.rdl2.StatementReturn
 import org.apache.commons.lang3.RandomStringUtils
 import com.softtek.rdl2.UICommandFlow
 import com.softtek.rdl2.UIQueryFlow
+import com.softtek.rdl2.InlineFormComponent
 
 class ScreenGenerator {
 	
@@ -68,6 +69,7 @@ class ScreenGenerator {
 				«FOR c : page.components»
 					«c.genUIComponent(module)»
 				«ENDFOR»
+				<div class="ln_solid"></div>
 				«FOR flow : page.links»
 					«flow.genPageFlow(module)»
 				«ENDFOR»
@@ -83,10 +85,15 @@ class ScreenGenerator {
 			«FOR field : form.form_elements»
 				«field.genUIFormElement»
 			«ENDFOR»
+			<div class="ln_solid"></div>
 			«FOR flow : form.links»
 				«flow.genFormFlow(module)»
 			«ENDFOR»
 		</formbox>
+	'''
+
+	def dispatch genUIComponent(InlineFormComponent form, Module module) '''
+		<simple-admin id="«form.name.toLowerCase»" maxrows="8"/>
 	'''
 	
 	def dispatch genUIComponent(ListComponent l, Module module) '''
@@ -196,12 +203,33 @@ class ScreenGenerator {
 	 * genUIFormRelationshipField
 	 */
 	def dispatch genUIFormRelationshipField(Enum toEnum, EntityReferenceField fromField) '''
-		<select-box id="«toEnum.name.toLowerCase»" type="option" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»">
+		«IF fromField.getWidgetType == "SelectList"»
+			«fromField.genEnumSelectBox(toEnum, "select")»
+		«ENDIF»
+		«IF fromField.getWidgetType == "Option" || fromField.getWidgetType === null»
+			«fromField.genEnumSelectBox(toEnum, "option")»
+		«ENDIF»
+		«IF fromField.getWidgetType == "Check"»
+			«fromField.genEnumSelectBox(toEnum, "check")»
+		«ENDIF»
+		«IF fromField.getWidgetType == "Autocomplete"»
+			<select-auto id="«fromField.name.toLowerCase»" placeholder="«entityFieldUtils.getFieldGlossaryName(fromField)»" «IF entityFieldUtils.isFieldRequired(fromField)»required=true«ELSE»required=true«ENDIF» disabled=false>
+				«FOR l : toEnum.enum_literals»
+					<option id="«l.key»" label="«l.value»»" />
+				«ENDFOR»
+			</select-auto>
+		«ENDIF»
+	'''
+	
+	def CharSequence genEnumSelectBox(EntityReferenceField fromField, Enum toEnum, String selectBoxType) '''
+		<select-box id="«toEnum.name.toLowerCase»" type="«selectBoxType»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»">
 			«FOR l : toEnum.enum_literals»
 				<option-box id="«l.key»" label="«l.value»" />
 			«ENDFOR»
 		</select-box>
 	'''
+	
+
 
 /*
 	    <search-box id="«fromField.name.toLowerCase»" link="«toEntity.name.toLowerCase»_modal" caption="«entityFieldUtils.getFieldGlossaryName(fromField)»" placeholder="«entityFieldUtils.getFieldGlossaryDescription(fromField)»" />
@@ -209,14 +237,14 @@ class ScreenGenerator {
  */
 
 	def dispatch genUIFormRelationshipField(Entity toEntity, EntityReferenceField fromField) '''
-		«IF fromField.getWidgetType == "SelectList"»
-			«fromField.genSelectBox(toEntity, "select")»
+		«IF fromField.getWidgetType == "SelectList" || fromField.getWidgetType === null»
+			«fromField.genEntitySelectBox(toEntity, "select")»
 		«ENDIF»
 		«IF fromField.getWidgetType == "Option"»
-			«fromField.genSelectBox(toEntity, "option")»
+			«fromField.genEntitySelectBox(toEntity, "option")»
 		«ENDIF»
 		«IF fromField.getWidgetType == "Check"»
-			«fromField.genSelectBox(toEntity, "check")»
+			«fromField.genEntitySelectBox(toEntity, "check")»
 		«ENDIF»
 		«IF fromField.getWidgetType == "Autocomplete"»
 			<select-auto id="«fromField.name.toLowerCase»" placeholder="«entityFieldUtils.getFieldGlossaryName(fromField)»" «IF entityFieldUtils.isFieldRequired(fromField)»required=true«ELSE»required=true«ENDIF» disabled=false>
@@ -227,7 +255,7 @@ class ScreenGenerator {
 		«ENDIF»
 	'''
 	
-	def CharSequence genSelectBox(EntityReferenceField fromField, Entity toEntity, String selectBoxType) '''
+	def CharSequence genEntitySelectBox(EntityReferenceField fromField, Entity toEntity, String selectBoxType) '''
 		<select-box id="«fromField.name.toLowerCase»" type="«selectBoxType»" placeholder="«entityFieldUtils.getFieldGlossaryName(fromField)»">
 			«FOR i : 1..5»
 				<option-box id="«RandomStringUtils.randomAlphanumeric(8)»" label="«entityFieldUtils.fakerDomainData(toEntity.getToStringField)»" />
