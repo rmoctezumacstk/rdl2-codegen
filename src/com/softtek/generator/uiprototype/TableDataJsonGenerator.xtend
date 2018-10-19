@@ -25,11 +25,16 @@ import com.softtek.rdl2.UICommandFlow
 import com.softtek.rdl2.UIQueryFlow
 import com.softtek.rdl2.InlineFormComponent
 import com.softtek.rdl2.UIFormContainer
+import com.softtek.rdl2.UIComponent
+//import org.eclipse.xtext.naming.IQualifiedNameProvider
+//import com.google.inject.Inject
 
 class TableDataJsonGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
 	var uiFlowUtils = new UIFlowUtils
+	
+	//@Inject extension IQualifiedNameProvider
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -227,8 +232,10 @@ class TableDataJsonGenerator {
 	 * UILinkCommandQueryFlow
 	 */
 	def dispatch genFlowRows(UICommandFlow flow) '''
+		«flow.success_flow.genCommandFlowToContainer(flow)»
 	'''
 	def dispatch genFlowRows(UIQueryFlow flow) '''
+		«flow.success_flow.genQueryFlowToContainer(flow)»
 	'''
 	def dispatch genFlowRows(UILinkFlow flow) '''
 		{
@@ -236,4 +243,32 @@ class TableDataJsonGenerator {
 			"link": "/«flow.link_to.name.toLowerCase»/"
 		}
 	'''
+
+	/*
+	 * ContainerOrComponent
+	 */
+	def dispatch genCommandFlowToContainer(PageContainer page, UICommandFlow flow) '''
+		{
+			"label": "«uiFlowUtils.getFlowLabel(flow)»",
+			"link": "/«page.getParentModule.name.toLowerCase»/«page.name.toLowerCase»/"
+		}
+	'''
+	
+	def dispatch genCommandFlowToContainer(UIComponent component, UICommandFlow flow) ''''''
+	
+	/*
+	 * ContainerOrComponent
+	 */
+	def dispatch genQueryFlowToContainer(PageContainer page, UIQueryFlow flow) '''
+		{
+			"label": "«uiFlowUtils.getFlowLabel(flow)»",
+			"link": "/«page.getParentModule.name.toLowerCase»/«page.name.toLowerCase»/"
+		}
+	'''
+	def dispatch genQueryFlowToContainer(UIComponent component, UIQueryFlow flow) ''''''
+	
+
+	def Module getParentModule(PageContainer page) {
+		return page.eContainer as Module
+	}
 }

@@ -47,6 +47,9 @@ import org.apache.commons.lang3.RandomStringUtils
 import com.softtek.rdl2.UICommandFlow
 import com.softtek.rdl2.UIQueryFlow
 import com.softtek.rdl2.InlineFormComponent
+import com.softtek.rdl2.UILinkCommandQueryFlow
+import com.softtek.rdl2.ContainerOrComponent
+import com.softtek.rdl2.UIComponent
 
 class ScreenGenerator {
 	
@@ -106,14 +109,18 @@ class ScreenGenerator {
 			«field.genUIDetailElement»
 		«ENDFOR»
 	'''
-	
-	def dispatch genUIComponent(MessageComponent m, Module module) '''
+
+/*
 		<div class="alert alert-info alert-dismissible fade in" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
 				<span aria-hidden="true">×</span>
 			</button>
 			«m.msgtext»
 		</div>
+ */
+	
+	def dispatch genUIComponent(MessageComponent m, Module module) '''
+
 	'''
 	
 	def dispatch genUIComponent(RowComponent row, Module module) '''
@@ -333,26 +340,50 @@ class ScreenGenerator {
 	'''
 
 
+	/* TODO: Probablemente el modulo deba obtenerse del flow para los casos en que el destino esta en otro modulo. */
 	/*
-	 * genPageFlow
+	 * UILinkCommandQueryFlow
 	 */
-	def CharSequence genPageFlow(UILinkFlow flow, Module m) '''
-		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	def dispatch genPageFlow(UICommandFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.success_flow.genCommandFlowToContainer.getParentModule.name.toLowerCase»/«flow.success_flow.genCommandFlowToContainer.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
-	
+	def dispatch genPageFlow(UIQueryFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.success_flow.genCommandFlowToContainer.getParentModule.name.toLowerCase»/«flow.success_flow.genQueryFlowToContainer.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''
+	def dispatch genPageFlow(UILinkFlow flow, Module m) '''
+		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	'''	
 
+	/* TODO: Probablemente el modulo deba obtenerse del flow para los casos en que el destino esta en otro modulo. */
 	/*
-	 * genFormFlow
+	 * UILinkCommandQueryFlow
 	 */
 	def dispatch genFormFlow(UICommandFlow flow, Module m) '''
-		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.command_ref.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.success_flow.genQueryFlowToContainer.getParentModule.name.toLowerCase»/«flow.success_flow.genCommandFlowToContainer.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
 	def dispatch genFormFlow(UIQueryFlow flow, Module m) '''
-		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.query_ref.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.success_flow.genQueryFlowToContainer.getParentModule.name.toLowerCase»/«flow.success_flow.genQueryFlowToContainer.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
 	def dispatch genFormFlow(UILinkFlow flow, Module m) '''
 		<submit-button id="«flow.name.toLowerCase»" to="/«m.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
+
+	/*
+	 * ContainerOrComponent
+	 */
+	def dispatch genCommandFlowToContainer(PageContainer page) {
+		return page
+	}
+	def dispatch genCommandFlowToContainer(UIComponent component) {}
+	
+	/*
+	 * ContainerOrComponent
+	 */
+	def dispatch genQueryFlowToContainer(PageContainer page) {
+		return page
+	}
+	def dispatch genQueryFlowToContainer(UIComponent component) {}
+
 
 	/*
 	 * genUIDetailElement
@@ -437,5 +468,8 @@ class ScreenGenerator {
 	def dispatch genUIDetailEntityField(EntityCurrencyField field) '''
 		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
-
+	
+	def Module getParentModule(PageContainer page) {
+		return page.eContainer as Module
+	}
 }

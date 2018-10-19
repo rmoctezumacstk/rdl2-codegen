@@ -465,7 +465,7 @@ PageContainer:
 		('landmark' ':' landmark=('true'|'false'))?
 		'title' ':' (page_title=STRING)
 		(components+=UIComponent)*
-		(links += UILinkFlow)*
+		(links += UILinkCommandQueryFlow)*
 	'}'
 ;
 
@@ -638,10 +638,15 @@ UILinkCommandQueryFlow:
 	UILinkFlow
 ;
 
+ContainerOrComponent:
+	PageContainer |
+	UIComponent
+;
+
 UIQueryFlow:
 	'query' name=ID '->' query_ref=[QueryElement|QualifiedName]
-		'.success' ':' success_flow=[UIComponent|QualifiedName]
-		'.failure' ':' failure_flow=[UIComponent|QualifiedName]
+		'.success' ':' success_flow=[ContainerOrComponent|QualifiedName]
+		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}'
@@ -649,8 +654,8 @@ UIQueryFlow:
 
 UICommandFlow:
 	'command' name=ID '->' command_ref=[CommandElement|QualifiedName]
-		'.success' ':' success_flow=[UIComponent|QualifiedName]
-		'.failure' ':' failure_flow=[UIComponent|QualifiedName]
+		'.success' ':' success_flow=[ContainerOrComponent|QualifiedName]
+		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}'
