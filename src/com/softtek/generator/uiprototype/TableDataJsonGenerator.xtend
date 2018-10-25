@@ -215,13 +215,14 @@ class TableDataJsonGenerator {
 	'''
 
 	/*
-	 * genTableRows
+	 * UIElement
 	 */
 	def dispatch genTableRows(UIField element) ''''''
-	
 	def dispatch genTableRows(UIDisplay element) '''
 		«element.ui_field.genRowsUIDisplayField»
 	'''
+	def dispatch genTableRows(UIFormContainer element) ''''''
+	
 	
 	def dispatch genRowsUIDisplayField(EntityReferenceField field) '''
 		"«entityFieldUtils.fakerDomainData(field)»"

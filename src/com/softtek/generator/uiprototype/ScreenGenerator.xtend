@@ -56,6 +56,7 @@ import com.softtek.rdl2.UIEmailField
 import com.softtek.rdl2.UIDecimalField
 import com.softtek.rdl2.UIIntegerField
 import com.softtek.rdl2.UICurrencyField
+import com.softtek.rdl2.OffSetMD
 
 class ScreenGenerator {
 	
@@ -187,6 +188,13 @@ class ScreenGenerator {
 		var col_class = ""
 		for (size : list) {
 			col_class = col_class + "col-" + size.sizeop + " "
+			if (size.offset !== null) {
+				var offset = size.offset as OffSetMD
+				col_class = col_class + "col-" + offset.sizeop + " "
+			}
+			if (size.centermargin !== null) {
+				col_class = col_class + "center-margin "
+			}
 		}
 		return col_class
 	}
@@ -579,9 +587,10 @@ class ScreenGenerator {
 	 * genTableRows
 	 */
 	def dispatch genTableRows(UIField element) ''''''
-	
 	def dispatch genTableRows(UIDisplay element) '''
 		«element.ui_field.genRowsUIDisplayField»
+	'''
+	def dispatch genTableRows(UIFormContainer element) '''
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityReferenceField field) '''
