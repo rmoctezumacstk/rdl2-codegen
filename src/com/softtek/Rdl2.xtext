@@ -551,13 +551,18 @@ UIFormRow: {UIFormRow}
 ;
 
 UIFormColumn:{UIFormColumn}
-	'col' '(' sizes += SizeOption (',' sizes += SizeOption)* ')' '{'
+	'col' '(' sizes += (SizeOption) (',' sizes += SizeOption)* ')' '{'
 		(elements += UIElement)+
 	'}'
 ;
 
 SizeOption:
-	XS|SM|MD|LG|XL
+	(XS|SM|MD|LG|XL)
+	offset=SizeOptionOffSet?
+;
+
+SizeOptionOffSet:
+    'offset' '-' sizeOptionOffSet = (XS|SM|MD|LG|XL)
 ;
 
 XS:
