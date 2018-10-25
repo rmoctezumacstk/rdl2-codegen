@@ -537,6 +537,12 @@ class EntityFieldUtils {
 				if (attr.data_domain.domain.toString=="Color::name") {
 					fieldData = faker.color().name
 				}
+				if (attr.data_domain.domain.toString=="Commerce::productName") {
+					fieldData = faker.commerce().productName
+				}
+				if (attr.data_domain.domain.toString=="Commerce::department") {
+					fieldData = faker.commerce().department
+				}
 			}
 		}
 		return fieldData
@@ -561,7 +567,17 @@ class EntityFieldUtils {
 	}
 	
 	def dispatch fakerDomainData(EntityImageField field) {
-		return faker.internet().avatar
+		var image = "https://fakeimg.pl/150x150/?text=Picture&font=lobster"
+		
+		for (attr : field.attrs) {
+			if (attr.data_domain !== null) {
+				if (attr.data_domain.domain.toString=="Internet::avatar") {
+					image = faker.internet().avatar
+				}
+			}
+		}
+		
+		return image
 	}
 	
 	def dispatch fakerDomainData(EntityFileField field) {
@@ -577,10 +593,10 @@ class EntityFieldUtils {
 	}
 	
 	def  dispatch fakerDomainData(EntityIntegerField field) {
-		return integerFormatter.format(faker.number().numberBetween(1, 99999))
+		return integerFormatter.format(faker.number().numberBetween(1, 9999))
 	}
 	
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
-		return currencyFormatter.format(faker.number().numberBetween(1, 999999))
+		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
 	}
 }

@@ -24,6 +24,11 @@ class UIFlowUtils {
 				case "Save": return "fa fa-save"
 				case "Return": return "fa fa-arrow-left"
 				case "OK": return "fa fa-check"
+				case "Done": return "fa fa-check"
+				case "Cart": return "fa fa-shopping-cart"
+				case "Next": return "fa fa-arrow-right"
+				case "Previous": return "fa fa-arrow-left"
+				case "Pay": return "fa fa-dollar"
 			}
 		}
 		

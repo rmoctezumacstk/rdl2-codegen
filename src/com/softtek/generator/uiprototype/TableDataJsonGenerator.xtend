@@ -26,11 +26,16 @@ import com.softtek.rdl2.UIQueryFlow
 import com.softtek.rdl2.InlineFormComponent
 import com.softtek.rdl2.UIFormContainer
 import com.softtek.rdl2.UIComponent
+import com.softtek.rdl2.Enum
+import com.softtek.rdl2.Entity
+import com.softtek.generator.utils.EntityUtils
+
 //import org.eclipse.xtext.naming.IQualifiedNameProvider
 //import com.google.inject.Inject
 
 class TableDataJsonGenerator {
 	
+	var entityUtils = new EntityUtils
 	var entityFieldUtils = new EntityFieldUtils
 	var uiFlowUtils = new UIFlowUtils
 	
@@ -119,64 +124,95 @@ class TableDataJsonGenerator {
 	
 	def dispatch genHeaderUIDisplayField(EntityReferenceField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			"type": "select",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»,
+			«field.superType.genEnumEntityData»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityTextField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityLongTextField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityDateField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			"type": "date",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityImageField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityFileField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityEmailField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityDecimalField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityIntegerField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 	
 	def dispatch genHeaderUIDisplayField(EntityCurrencyField field) '''
 		{
-			"label": "«entityFieldUtils.getFieldGlossaryName(field)»"
+			"label": "«entityFieldUtils.getFieldGlossaryName(field)»",
+			«IF entityFieldUtils.isFieldRequired(field)»"required": "true"«ELSE»"required" : "false"«ENDIF»
 		}
 	'''
 
+
+	/*
+	 * EnumEntity
+	 */
+	def dispatch genEnumEntityData(Enum toEnum) '''
+		"data": [
+			«FOR l : toEnum.enum_literals SEPARATOR ","»
+				"«l.value»"
+			«ENDFOR»
+		]
+	'''
+	def dispatch genEnumEntityData(Entity toEntity) '''
+		"data": [
+			«FOR i : 1..5 SEPARATOR ","»
+				"«entityFieldUtils.fakerDomainData(entityUtils.getToStringField(toEntity))»"
+			«ENDFOR»
+		]
+	'''
 
 	/*
 	 * genTableRows
@@ -240,9 +276,10 @@ class TableDataJsonGenerator {
 	def dispatch genFlowRows(UILinkFlow flow) '''
 		{
 			"label": "«uiFlowUtils.getFlowLabel(flow)»",
-			"link": "/«flow.link_to.name.toLowerCase»/"
+			"link": "/«flow.link_to.getParentModule.name.toLowerCase»/«flow.link_to.name.toLowerCase»/"
 		}
 	'''
+
 
 	/*
 	 * ContainerOrComponent
@@ -253,9 +290,9 @@ class TableDataJsonGenerator {
 			"link": "/«page.getParentModule.name.toLowerCase»/«page.name.toLowerCase»/"
 		}
 	'''
-	
 	def dispatch genCommandFlowToContainer(UIComponent component, UICommandFlow flow) ''''''
-	
+
+
 	/*
 	 * ContainerOrComponent
 	 */

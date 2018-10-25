@@ -1,9 +1,14 @@
 package com.softtek.generator.utils
 
 import com.softtek.rdl2.Entity
+import com.softtek.rdl2.Statement
+import com.softtek.rdl2.StatementReturn
 
 class EntityUtils {
 	
+	/*
+	 * getEntityName
+	 */
 	def static getEntityName(Entity e) {
 		var name = e.name
 		if (e.glossary !== null) {
@@ -12,6 +17,9 @@ class EntityUtils {
 		return name
 	}
 	
+	/*
+	 * getEntityDescription
+	 */
 	def static getEntityDescription(Entity e) {
 		var description = ""
 		if (e.glossary !== null) {
@@ -19,5 +27,26 @@ class EntityUtils {
 		}
 		return description
 	}
-	
+
+	/*
+	 * getToStringField
+	 */
+	def getToStringField(Entity entity) {
+		for (m : entity.entity_methods) {
+			if (m.name == "toString") {
+				for (s : m.def_statements) {
+					return s.getReturnStatement
+				}
+			}
+		}
+	}
+
+	/*
+	 * getReturnStatement
+	 */
+	def dispatch getReturnStatement(Statement statement) {}	
+	def dispatch getReturnStatement(StatementReturn statement) {
+		return statement.entityfield
+	}
+
 }

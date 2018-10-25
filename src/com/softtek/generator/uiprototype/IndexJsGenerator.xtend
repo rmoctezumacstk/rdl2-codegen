@@ -115,6 +115,7 @@ class IndexJsGenerator {
 		
 		require('riot-routehandler')
 		var routes = [
+			«resource.genHomeRoute»
 			{ route: '/login/', tag: 'login' },
 			{ route: '/home/', tag: 'app' },
 			«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
@@ -127,4 +128,17 @@ class IndexJsGenerator {
 		]
 		riot.mount('*', { routes: routes, options: { hashbang: true, params: { title: 'Login', username: 'Usuario', password: 'Contraseña', link: '//' } } })
 	'''
+	
+	def CharSequence genHomeRoute(Resource resource) '''
+		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
+			«FOR m : s.modules_ref»
+				«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
+					«IF page.home!==null && page.home.trim.equals("true")»
+						{ route: '/', tag: '«page.name.toLowerCase»' },
+					«ENDIF»
+				«ENDFOR»
+			«ENDFOR»
+		«ENDFOR»
+	'''
+	
 }

@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.System
 import com.softtek.rdl2.PageContainer
+import com.softtek.rdl2.ModuleRef
 
 class AppTagGenerator {
 
@@ -52,24 +53,30 @@ class AppTagGenerator {
 									<h3>«s.name»</h3>
 									<ul class="nav side-menu">
 										«FOR m : s.modules_ref»
-											<li>
-												<a><i class="fa fa-home"></i>«m.module_ref.description»<span class="fa fa-chevron-down"></span></a>
-												<ul>
-													«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
-														«IF page.landmark!==null && page.landmark.trim.equals("true")»
-															<li>
-																<a href="/«m.module_ref.name.toLowerCase»/«page.name.toLowerCase»/">«page.page_title»</a>
-															</li>
-														«ENDIF»
-													«ENDFOR»
-												</ul>
-											</li>
+											«IF m.countPageLanmarks > 0»
+												<li>
+													<a><i class="fa fa-home"></i>«m.module_ref.description»<span class="fa fa-chevron-down"></span></a>
+													<ul class="nav child_menu">
+														«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
+															«IF page.landmark!==null && page.landmark.trim.equals("true")»
+																<li>
+																	<a href="/«m.module_ref.name.toLowerCase»/«page.name.toLowerCase»/">«page.page_title»</a>
+																</li>
+															«ENDIF»
+														«ENDFOR»
+													</ul>
+												</li>
+											«ENDIF»
 										«ENDFOR»
 									</ul>
 								</div>
 							«ENDFOR»
 						</div>
 					<!-- /sidebar menu -->
+					<!-- /menu footer buttons -->
+					<div class="sidebar-footer hidden-small">
+					</div>
+					<!-- /menu footer buttons -->
 				</div>
 			</div>
 		        
@@ -101,5 +108,17 @@ class AppTagGenerator {
 			</div>
 		</app>
 	'''
+	
+	def int countPageLanmarks(ModuleRef m) {
+		var count = 0
+		
+		for (page : m.module_ref.elements.filter(typeof(PageContainer))) {
+			if (page.landmark!==null && page.landmark.trim.equals("true")) {
+				count++
+			}
+		}
+		
+		return count
+	}
 	
 }
