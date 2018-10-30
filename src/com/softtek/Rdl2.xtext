@@ -16,7 +16,7 @@ System :
  	('description' ':' description=STRING)?
  	('logo' ':' logo=STRING)?
  	(modules_ref += ModuleRef)+
- 	 
+ 	(modules_permission +=ModulePermission)* 
  '}'
 ;
 
@@ -445,16 +445,42 @@ BusinessRule:
     'business_rule' '(' 'code' ':' code=STRING ',' 'description' ':' description=STRING ')'
 ;
 
-//Actors
-//Actors:{Actors}
-//	(actors+=Actor)*
-//;
-
 
 Actor:
 	'actor' name=ID '{'
 		'name' ':' (actor_name=STRING)
+		('permissions'  '(' permissions += ActorPermission (',' permissions += ActorPermission)* ')') ?
 	'}'
+;
+
+//Permissions
+
+ActorPermission:
+	permission=[Entity|QualifiedName] ':' actions += PermissionActionInstance ('|' actions += PermissionActionInstance)* 
+;
+
+PermissionActionInstance:
+	action=PermissionAction (':' instance=PermissionInstance)?
+;
+
+PermissionAction :
+	action=('CREATE'|'READ'|'UPDATE'|'DELETE'|'*'|'ACTIVATE'|'DEACTIVATE'|ID) 
+;
+
+PermissionInstance:
+	instance=('OWN'|'ALL'|'VIP'|'NORMAL')
+;
+
+ModulePermission:
+    'permission' '(' 
+	   'resource' ':' resource  = [Entity|QualifiedName] ','
+	   'action'   ':' action   += PermissionAction ('|' action += PermissionAction)* ','
+	   'instance' ':' instance += PermissionInstance ('|' instance += PermissionInstance)*
+	')'
+;
+
+RequiresPermissions:
+   'requires_permissions'  '(' resource=[Entity|QualifiedName] ':' action=PermissionAction ':' instance=PermissionInstance ')'
 ;
 
 //PageContainers
@@ -464,6 +490,7 @@ PageContainer:
 		('home' ':' home=('true'|'false'))?
 		('landmark' ':' landmark=('true'|'false'))?
 		'title' ':' (page_title=STRING)
+		(requires_permissions=RequiresPermissions)?
 		(components+=UIComponent)*
 		(links += UILinkCommandQueryFlow)*
 	'}'
