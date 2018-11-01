@@ -29,6 +29,25 @@ class UIFlowUtils {
 				case "Next": return "fa fa-arrow-right"
 				case "Previous": return "fa fa-arrow-left"
 				case "Pay": return "fa fa-dollar"
+				case "Show": return "fa fa-eye"
+			}
+		}
+
+		if (library == "Material Design Icons") {
+			switch flow.icon {
+				case "Search": return "Magnify"
+				case "Create": return "PlusBoxOutline"
+				case "Update": return "Pencil"
+				case "Delete": return "Delete"
+				case "Save": return "ContentSaveOutline"
+				case "Return": return "KeyboardReturn"
+				case "OK": return "Check"
+				case "Done": return "Check"
+				case "Cart": return "ShoppingCartOutline"
+				case "Next": return "ArrowRightThick"
+				case "Previous": return "ArrowLeftThick"
+				case "Pay": return "CurrencyUSD"
+				case "Show": return "Eye"
 			}
 		}
 		

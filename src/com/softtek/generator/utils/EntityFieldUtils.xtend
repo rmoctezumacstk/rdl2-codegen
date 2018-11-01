@@ -504,6 +504,12 @@ class EntityFieldUtils {
 				if (attr.data_domain.domain.toString=="Business::creditCardNumber") {
 					fieldData = faker.business().creditCardNumber
 				}
+				if (attr.data_domain.domain.toString=="Business::creditCardExpiry") {
+					fieldData = faker.business().creditCardExpiry
+				}
+				if (attr.data_domain.domain.toString=="Business::creditVerificationValue") {
+					fieldData = faker.number().digits(3)
+				}
 				if (attr.data_domain.domain.toString=="Internet::password") {
 					fieldData = faker.internet().password
 				}

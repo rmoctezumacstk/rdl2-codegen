@@ -14,6 +14,11 @@ import com.softtek.generator.uiprototype.AppTagGenerator
 import com.softtek.generator.uiprototype.IndexJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
+import com.softtek.generator.vulcan.VulcanModulesGenerator
+import com.softtek.generator.vulcan.VulcanModuleHeaderFilesGenerator
+import com.softtek.generator.vulcan.VulcanServerGenerator
+import com.softtek.generator.vulcan.VulcanComponentsGenerator
+import com.softtek.generator.vulcan.VulcanCommonComponentsGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -24,15 +29,26 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject TableDataJsGenerator tableDataJsGenerator
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
+	@Inject VulcanModulesGenerator vulcanModulesGenerator
+	@Inject VulcanModuleHeaderFilesGenerator vulcanModuleHeaderFilesGenerator
+	@Inject VulcanServerGenerator vulcanServerGenerator
+	@Inject VulcanComponentsGenerator vulcanComponentsGenerator
+	@Inject VulcanCommonComponentsGenerator vulcanCommonComponentsGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
 		tableDataJsGenerator.doGenerate(resource, fsa)
+		vulcanModuleHeaderFilesGenerator.doGenerate(resource, fsa)
+		vulcanServerGenerator.doGenerate(resource, fsa)
+		vulcanCommonComponentsGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
+			
+			vulcanModulesGenerator.doGenerate(r, fsa)
+			vulcanComponentsGenerator.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)
