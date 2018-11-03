@@ -3,6 +3,7 @@ package com.softtek.generator.vulcan
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
+import com.softtek.rdl2.Enum
 import com.softtek.rdl2.Entity
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.EntityTextField
@@ -15,16 +16,17 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
-import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.ListComponent
 import com.softtek.rdl2.UIField
 import com.softtek.rdl2.UIDisplay
 import com.softtek.rdl2.UIFormContainer
 import com.softtek.rdl2.DetailComponent
+import com.java2s.pluralize.Inflector
 
 class VulcanModulesGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
+	var inflector = new Inflector
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -56,21 +58,21 @@ class VulcanModulesGenerator {
 		import "./fragments.js";
 		import "./permissions.js";
 		
-		const «entity.name»Collection = createCollection({
+		const «inflector.pluralize(entity.name)» = createCollection({
 		  schema,
-		  //collectionName: "«entity.name»Collection",
+		  //collectionName: "«inflector.pluralize(entity.name)»",
 		  typeName: "«entity.name»",
 		  resolvers: getDefaultResolvers({ typeName: "«entity.name»" }),
 		  mutations: getDefaultMutations({ typeName: "«entity.name»" })
 		});
 		
-		«entity.name»Collection.addDefaultView(terms => {
+		«inflector.pluralize(entity.name)».addDefaultView(terms => {
 		  return {
 		    options: { sort: { createdAt: -1 } }
 		  };
 		});
 		
-		export default «entity.name»Collection;
+		export default «inflector.pluralize(entity.name)»;
 	'''
 	
 	def CharSequence genFragmentsJsByEntity(Entity entity) '''
@@ -225,16 +227,7 @@ class VulcanModulesGenerator {
 	 * EntityField
 	 */
 	def dispatch genSchemaField(EntityReferenceField field) '''
-	  «field.name.toLowerCase»Id : {
-	    label: "«entityFieldUtils.getFieldGlossaryName(field)»" ,
-	    type: String,
-	    optional: «IF entityFieldUtils.isFieldRequired(field)»false«ELSE»true«ENDIF»,
-	    //placeholder: "«entityFieldUtils.getFieldGlossaryDescription(field)»",
-	    canRead: ["guests"],
-	    canCreate: ["members"],
-	    canUpdate: ["members"],
-	    //searchable: true, // make field searchable
-	  },
+	  «field.superType.genEntityreferenceSchemaField(field)»
 	'''
 	def dispatch genSchemaField(EntityTextField field) '''
 	  «field.name.toLowerCase» : {
@@ -351,4 +344,38 @@ class VulcanModulesGenerator {
 	  },
 	'''
 	
+	/*
+	 * EnumEntity
+	 */
+	def dispatch genEntityreferenceSchemaField(Enum entity, EntityReferenceField field) '''
+	  «field.name.toLowerCase»Id : {
+	    label: "«entityFieldUtils.getFieldGlossaryName(field)»" ,
+	    type: String,
+	    optional: «IF entityFieldUtils.isFieldRequired(field)»false«ELSE»true«ENDIF»,
+	    //placeholder: "«entityFieldUtils.getFieldGlossaryDescription(field)»",
+	    canRead: ["guests"],
+	    canCreate: ["members"],
+	    canUpdate: ["members"],
+	    //searchable: true, // make field searchable
+	  },
+	'''
+	def dispatch genEntityreferenceSchemaField(Entity entity, EntityReferenceField field) '''
+	  «field.name.toLowerCase»Id : {
+	    label: "«entityFieldUtils.getFieldGlossaryName(field)»" ,
+	    type: String,
+	    optional: «IF entityFieldUtils.isFieldRequired(field)»false«ELSE»true«ENDIF»,
+	    //placeholder: "«entityFieldUtils.getFieldGlossaryDescription(field)»",
+	    canRead: ["guests"],
+	    canCreate: ["members"],
+	    canUpdate: ["members"],
+	    //searchable: true, // make field searchable
+	    resolveAs: {
+	      fieldName: "«field.name.toLowerCase»",
+	      type: "«entity.name»",
+	      resolver: (entity, args, { «inflector.pluralize(entity.name)» }) =>
+	        entity.«field.name.toLowerCase»Id && «inflector.pluralize(entity.name)».loader.load(entity.«field.name.toLowerCase»Id),
+	      addOriginalField: true
+	    }
+	  },
+	'''
 }

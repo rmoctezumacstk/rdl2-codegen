@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.System
 import com.softtek.rdl2.Entity
-import com.softtek.rdl2.EntityField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.EntityTextField
 import com.softtek.rdl2.EntityLongTextField
@@ -16,10 +15,12 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
+import com.java2s.pluralize.Inflector
 
 class VulcanServerGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
+	var inflector = new Inflector
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		fsa.generateFile("vulcan/lib/server/main.js", genMainJs(resource, fsa))
@@ -42,7 +43,7 @@ class VulcanServerGenerator {
 		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
 			«FOR m : s.modules_ref»
 				«FOR entity : m.module_ref.elements.filter(typeof(Entity))»
-					import «entity.name»Collection from "../modules/«entity.name.toLowerCase»/collection";
+					import «inflector.pluralize(entity.name)» from "../modules/«entity.name.toLowerCase»/collection";
 				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
@@ -106,14 +107,14 @@ class VulcanServerGenerator {
   		  «FOR System s : resource.allContents.toIterable.filter(typeof(System))»
   			  «FOR m : s.modules_ref»
   				  «FOR entity : m.module_ref.elements.filter(typeof(Entity))»
-					  if («entity.name»Collection.find().fetch().length === 0) {
+					  if («inflector.pluralize(entity.name)».find().fetch().length === 0) {
 					    // eslint-disable-next-line no-console
 					    console.log("// creating dummy «entity.name»");
 					    Promise.awaitAll(
 					      seedData«entity.name».map(document =>
 					        createMutator({
 					          action: "«entity.name.toLowerCase».create",
-					          collection: «entity.name»Collection,
+					          collection: «inflector.pluralize(entity.name)»,
 					          document,
 					          currentUser,
 					          validate: false

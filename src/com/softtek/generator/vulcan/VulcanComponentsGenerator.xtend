@@ -30,12 +30,13 @@ import com.softtek.rdl2.UIQueryFlow
 import com.softtek.rdl2.UILinkFlow
 import com.softtek.rdl2.UIComponent
 import com.softtek.generator.utils.UIFlowUtils
-import com.softtek.rdl2.UIElement
+import com.java2s.pluralize.Inflector
 
 class VulcanComponentsGenerator {
 	
 	var entityFieldUtils = new EntityFieldUtils
 	var uiFlowUtils = new UIFlowUtils
+	var inflector = new Inflector
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -144,11 +145,11 @@ class VulcanComponentsGenerator {
 		  getFragment
 		} from "meteor/vulcan:core";
 		
-		import «c.entity.name»Collection from "../../../modules/«c.entity.name.toLowerCase»/collection";
+		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.entity.name.toLowerCase»/collection";
 		
 		const «c.name» = ({ currentUser, refetch }) => (
 		  <div>
-		    {«c.name»Collection.options.mutations.create.check(currentUser) ? (
+		    {«inflector.pluralize(c.entity.name)».options.mutations.create.check(currentUser) ? (
 		      <div
 		        style={{
 		          marginBottom: "20px",
@@ -158,7 +159,7 @@ class VulcanComponentsGenerator {
 		      >
 		        <h4>Insert New Document</h4>
 		        <Components.SmartForm
-		          collection={«c.entity.name»Collection}
+		          collection={«inflector.pluralize(c.entity.name)»}
 		          mutationFragment={getFragment("«c.entity.name»ItemFragment")}
 		          successCallback={refetch}
 		        />
@@ -183,11 +184,11 @@ class VulcanComponentsGenerator {
 		  getFragment
 		} from "meteor/vulcan:core";
 		
-		import «c.entity.name»Collection from "../../../modules/«c.entity.name.toLowerCase»/collection";
+		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.entity.name.toLowerCase»/collection";
 		
 		const «c.name» = ({ currentUser, refetch }) => (
 		  <div>
-		    {«c.name»Collection.options.mutations.create.check(currentUser) ? (
+		    {«inflector.pluralize(c.entity.name)».options.mutations.create.check(currentUser) ? (
 		      <div
 		        style={{
 		          marginBottom: "20px",
@@ -197,7 +198,7 @@ class VulcanComponentsGenerator {
 		      >
 		        <h4>Insert New Document</h4>
 		        <Components.SmartForm
-		          collection={«c.entity.name»Collection}
+		          collection={«inflector.pluralize(c.entity.name)»}
 		          mutationFragment={getFragment("«c.entity.name»ItemFragment")}
 		          successCallback={refetch}
 		        />
@@ -236,7 +237,7 @@ class VulcanComponentsGenerator {
 		  withCurrentUser
 		} from "meteor/vulcan:core";
 		
-		import «c.entity.name»Collection from "../../../modules/«c.entity.name.toLowerCase»/collection";
+		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.entity.name.toLowerCase»/collection";
 		
 		const styles = theme => ({
 		  root: {
@@ -310,7 +311,7 @@ class VulcanComponentsGenerator {
 		);
 		
 		const options = {
-		  collection: «c.entity.name»Collection,
+		  collection: «inflector.pluralize(c.entity.name)»,
 		  fragmentName: "«c.entity.name»ItemFragment",
 		  limit: 12
 		};
@@ -508,7 +509,7 @@ class VulcanComponentsGenerator {
 		import { registerComponent, Components, withSingle } from "meteor/vulcan:core";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		
-		import «c.name» from "../../../modules/«c.name»/collection";
+		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.name»/collection";
 		
 		const styles = theme => ({
 		  root: {
@@ -580,7 +581,7 @@ class VulcanComponentsGenerator {
 		}
 		
 		const singleOptions = {
-		  collection: «c.entity.name»,
+		  collection: «inflector.pluralize(c.entity.name)»,
 		  fragmentName: "«c.name»ItemFragment"
 		};
 		
