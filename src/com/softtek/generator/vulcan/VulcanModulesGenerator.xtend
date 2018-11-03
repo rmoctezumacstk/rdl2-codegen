@@ -57,9 +57,9 @@ class VulcanModulesGenerator {
 		import "./permissions.js";
 		
 		const «entity.name»Collection = createCollection({
-		  collectionName: "«entity.name»Collection",
-		  typeName: "«entity.name»",
 		  schema,
+		  //collectionName: "«entity.name»Collection",
+		  typeName: "«entity.name»",
 		  resolvers: getDefaultResolvers({ typeName: "«entity.name»" }),
 		  mutations: getDefaultMutations({ typeName: "«entity.name»" })
 		});
@@ -191,20 +191,28 @@ class VulcanModulesGenerator {
 		      return new Date();
 		    }
 		  },
-		  // userId: {
-		  //   type: String,
-		  //   optional: true,
-		  //   canRead: ["guests"],
-		  //   resolveAs: {
-		  //     fieldName: "user,
-		  //     type: "User",
-		  //     resolver: (movie, args, context) => {
-		  //       return context.Users.findOne({ _id: movie.userId }, { fields: context.Users.getViewableFields(context.currentUser, context.Users) });
-		  //     },
-		  //     addOriginalField: true
-		  //   }
-		  // },
-		  
+		  userId: {
+		    type: String,
+		    optional: true,
+		    canRead: ["guests"],
+		    resolveAs: {
+		      fieldName: "user",
+		      type: "User",
+		      resolver: («entity.name.toLowerCase», args, context) => {
+		        return context.Users.findOne(
+		          {_id: «entity.name.toLowerCase».userId },
+		          {
+		          	fields: context.Users.getViewableFields(
+		          	  context.currentUser,
+		          	  context.Users
+		          	)
+		          }
+		        );
+		      },
+		      addOriginalField: true
+		    }
+		  },
+
 		  «FOR f : entity.entity_fields»
 		  	«f.genSchemaField»
 		  «ENDFOR»
@@ -217,7 +225,7 @@ class VulcanModulesGenerator {
 	 * EntityField
 	 */
 	def dispatch genSchemaField(EntityReferenceField field) '''
-	  «field.name.toLowerCase» : {
+	  «field.name.toLowerCase»Id : {
 	    label: "«entityFieldUtils.getFieldGlossaryName(field)»" ,
 	    type: String,
 	    optional: «IF entityFieldUtils.isFieldRequired(field)»false«ELSE»true«ENDIF»,

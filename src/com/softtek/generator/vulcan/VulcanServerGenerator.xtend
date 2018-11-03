@@ -132,7 +132,7 @@ class VulcanServerGenerator {
 	 * EntityField
 	 */
 	def dispatch genSeedDataField(EntityReferenceField field) '''
-		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
+		«field.name.toLowerCase»Id: "«entityFieldUtils.fakerDomainData(field)»"
 	'''
 	def dispatch genSeedDataField(EntityTextField field) '''
 		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
@@ -153,13 +153,13 @@ class VulcanServerGenerator {
 		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
 	'''
 	def dispatch genSeedDataField(EntityDecimalField field) '''
-		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
+		«field.name.toLowerCase»: «entityFieldUtils.fakerDomainData(field)»
 	'''
 	def dispatch genSeedDataField(EntityIntegerField field) '''
-		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
+		«field.name.toLowerCase»: «entityFieldUtils.fakerDomainData(field)»
 	'''
 	def dispatch genSeedDataField(EntityCurrencyField field) '''
-		«field.name.toLowerCase»: "«entityFieldUtils.fakerDomainData(field)»"
+		«field.name.toLowerCase»: «entityFieldUtils.fakerDomainData(field)»
 	'''
 	
 }

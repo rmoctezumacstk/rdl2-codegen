@@ -28,7 +28,7 @@ import java.util.Locale
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 import org.apache.commons.lang3.RandomStringUtils
-import java.text.NumberFormat
+//import java.text.NumberFormat
 
 class EntityFieldUtils {
 
@@ -36,9 +36,9 @@ class EntityFieldUtils {
 	Faker faker = new Faker(new Locale("es-MX"))
 	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MMM-dd", new Locale("es-MX"))
 	SimpleDateFormat timeFormatter = new SimpleDateFormat("h:m:s a", new Locale("es-MX"))
-	NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance()
-	NumberFormat integerFormatter = NumberFormat.getIntegerInstance()
-	NumberFormat numberFormatter = NumberFormat.getNumberInstance()
+	//NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance()
+	//NumberFormat integerFormatter = NumberFormat.getIntegerInstance()
+	//NumberFormat numberFormatter = NumberFormat.getNumberInstance()
 
 	/*
 	 * isFieldRequired
@@ -595,14 +595,17 @@ class EntityFieldUtils {
 	}
 	
 	def  dispatch fakerDomainData(EntityDecimalField field) {
-		return numberFormatter.format(faker.number().numberBetween(1, 99999))
+		//return numberFormatter.format(faker.number().numberBetween(1, 99999))
+		return faker.number().numberBetween(1, 99999)
 	}
 	
 	def  dispatch fakerDomainData(EntityIntegerField field) {
-		return integerFormatter.format(faker.number().numberBetween(1, 9999))
+		//return integerFormatter.format(faker.number().numberBetween(1, 9999))
+		return faker.number().numberBetween(1, 9999)
 	}
 	
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
-		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
+		//return currencyFormatter.format(faker.number().numberBetween(1, 99999))
+		return faker.number().numberBetween(1, 99999)
 	}
 }
