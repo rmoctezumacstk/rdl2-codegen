@@ -43,7 +43,7 @@ class UIFlowUtils {
 				case "Return": return "KeyboardReturn"
 				case "OK": return "Check"
 				case "Done": return "Check"
-				case "Cart": return "ShoppingCartOutline"
+				case "Cart": return "Cart"
 				case "Next": return "ArrowRightThick"
 				case "Previous": return "ArrowLeftThick"
 				case "Pay": return "CurrencyUSD"
@@ -52,5 +52,31 @@ class UIFlowUtils {
 		}
 		
 		return icon
+	}
+	
+	def getFlowButtonStyle(UILinkCommandQueryFlow flow, String library) {
+		var style = ""
+		var type = ""
+		var state = ""
+		
+		if (flow.type !== null && flow.state !== null) {
+			
+		  if (library == "Material Design Icons") {
+			switch flow.type.toString {
+				case "Normal": type='variant="contained"'
+				case "Outlined": type='variant="outlined"'
+				case "Link": type=""
+				case "Circle": type=""
+			}
+			switch flow.state.toString {
+				case "Default": state=""
+				case "Primary": state='color="primary"'
+				case "Danger": state="secondary"
+			}
+		  }
+		  style = type + " " + state
+		}
+		
+		return style
 	}
 }

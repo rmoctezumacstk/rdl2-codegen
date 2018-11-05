@@ -12,19 +12,32 @@ class VulcanCommonComponentsGenerator {
 		fsa.generateFile("vulcan/lib/components/common/Header.jsx", genHeaderJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/Layout.jsx", genLayoutJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/SideNavigation.jsx", genSideNavigationJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/Login.jsx", genLoginJsx(resource, fsa))
 	}
 	
 	def CharSequence genHeaderJsx(Resource resource, IFileSystemAccess2 access2) '''
 		import React from "react";
+		import { browserHistory } from "react-router";
 		import PropTypes from "prop-types";
-		import AppBar from "@material-ui/core/AppBar";
-		import Toolbar from "@material-ui/core/Toolbar";
-		import IconButton from "@material-ui/core/IconButton";
-		import Typography from "@material-ui/core/Typography";
+		import {
+		  AppBar,
+		  Toolbar,
+		  IconButton,
+		  Typography,
+		  Button,
+		  Menu,
+		  MenuItem
+		} from "@material-ui/core";
 		import MenuIcon from "mdi-material-ui/Menu";
+		import AccountCircle from "mdi-material-ui/AccountCircle";
 		import ChevronLeftIcon from "mdi-material-ui/ChevronLeft";
 		import withStyles from "@material-ui/core/styles/withStyles";
-		import { getSetting, Components, registerComponent } from "meteor/vulcan:core";
+		import {
+		  getSetting,
+		  Components,
+		  registerComponent,
+		  withCurrentUser
+		} from "meteor/vulcan:core";
 		import classNames from "classnames";
 		
 		const drawerWidth = 240;
@@ -65,8 +78,30 @@ class VulcanCommonComponentsGenerator {
 		  }
 		});
 		
+		const NavLoggedIn = ({ currentUser }) => (
+		  <Button
+		    color="inherit"
+		    onClick={() => {
+		      Meteor.logout(() => browserHistory.push("/"));
+		    }}
+		  >
+		    Logout
+		  </Button>
+		);
+		
+		const NavLoggedOut = ({ currentUser }) => (
+		  <Button
+		    color="inherit"
+		    onClick={() => {
+		      browserHistory.push("/login");
+		    }}
+		  >
+		    Login
+		  </Button>
+		);
+		
 		const Header = (props, context) => {
-		  const classes = props.classes;
+		  const { classes, currentUser } = props;
 		  const isSideNavOpen = props.isSideNavOpen;
 		  const toggleSideNav = props.toggleSideNav;
 		
@@ -90,10 +125,16 @@ class VulcanCommonComponentsGenerator {
 		        </IconButton>
 		
 		        <div className={classNames(classes.headerMid)}>
-		          <Typography variant="title" color="inherit" className="tagline">
+		          <Typography variant="h6" color="inherit" className="tagline">
 		            {siteTitle}
 		          </Typography>
 		        </div>
+		
+		        {currentUser ? (
+		          <NavLoggedIn currentUser={currentUser} />
+		        ) : (
+		          <NavLoggedOut currentUser={currentUser} />
+		        )}
 		      </Toolbar>
 		    </AppBar>
 		  );
@@ -107,7 +148,11 @@ class VulcanCommonComponentsGenerator {
 		
 		Header.displayName = "Header";
 		
-		registerComponent("Header", Header, [withStyles, styles]);
+		registerComponent({
+		  name: "Header",
+		  component: Header,
+		  hocs: [withCurrentUser, [withStyles, styles]]
+		});
 	'''
 	
 	def CharSequence genLayoutJsx(Resource resource, IFileSystemAccess2 access2) '''
@@ -387,6 +432,68 @@ class VulcanCommonComponentsGenerator {
 		  [withStyles, styles],
 		  withCurrentUser
 		);
+	'''
+
+	def genLoginJsx(Resource resource, IFileSystemAccess2 fsa) '''
+		import React, { Component } from "react";
+		import { Paper, Avatar, Typography } from "@material-ui/core";
+		import { Lock } from "mdi-material-ui";
+		import withStyles from "@material-ui/core/styles/withStyles";
+		import {
+		  registerComponent,
+		  Components,
+		  withCurrentUser
+		} from "meteor/vulcan:core";
+		
+		const styles = theme => ({
+		  layout: {
+		    width: "auto",
+		    display: "block", // Fix IE 11 issue.
+		    marginLeft: theme.spacing.unit * 3,
+		    marginRight: theme.spacing.unit * 3,
+		    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+		      width: 400,
+		      marginLeft: "auto",
+		      marginRight: "auto"
+		    }
+		  },
+		  paper: {
+		    marginTop: theme.spacing.unit * 8,
+		    display: "flex",
+		    flexDirection: "column",
+		    alignItems: "center",
+		    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+		      .spacing.unit * 3}px`
+		  },
+		  avatar: {
+		    margin: theme.spacing.unit,
+		    backgroundColor: theme.palette.secondary.main
+		  }
+		});
+		
+		class Login extends Component {
+		  render() {
+		    const { classes } = this.props;
+		    return (
+		      <main className={classes.layout}>
+		        <Paper className={classes.paper}>
+		          <Avatar className={classes.avatar}>
+		            <Lock />
+		          </Avatar>
+		          <Typography component="h1" variant="h5">
+		            Login
+		          </Typography>
+		          <Components.AccountsLoginForm />
+		        </Paper>
+		      </main>
+		    );
+		  }
+		}
+		registerComponent({
+		  name: "Login",
+		  component: Login,
+		  hocs: [withCurrentUser, [withStyles, styles]]
+		});
 	'''
 
 	def int countPageLanmarks(ModuleRef m) {

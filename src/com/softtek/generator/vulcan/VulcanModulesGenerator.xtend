@@ -16,11 +16,9 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
-import com.softtek.rdl2.ListComponent
 import com.softtek.rdl2.UIField
 import com.softtek.rdl2.UIDisplay
 import com.softtek.rdl2.UIFormContainer
-import com.softtek.rdl2.DetailComponent
 import com.java2s.pluralize.Inflector
 
 class VulcanModulesGenerator {
@@ -83,12 +81,14 @@ class VulcanModulesGenerator {
 		     _id
 		     createdAt
 		     «FOR f : entity.entity_fields»
-		     	«f.name.toLowerCase»
+		     	«f.genFragmentField»
 		     «ENDFOR»
 		   }
 		`);
 	'''
+
 	
+	/*
 	def CharSequence genFragmentsJsByListComponent(ListComponent c) '''
 		import { registerFragment } from "meteor/vulcan:core";
 		
@@ -116,6 +116,7 @@ class VulcanModulesGenerator {
 		   }
 		`);
 	'''
+	*/
 	
 
 	/*
@@ -377,5 +378,49 @@ class VulcanModulesGenerator {
 	      addOriginalField: true
 	    }
 	  },
+	'''
+	
+	/*
+	 * EntityField
+	 */
+	def dispatch genFragmentField(EntityReferenceField field) '''
+		«field.superType.genFragmentForReferenceField(field)»
+	'''
+	def dispatch genFragmentField(EntityTextField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityLongTextField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityDateField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityImageField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityFileField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityEmailField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityDecimalField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityIntegerField field) '''
+		«field.name.toLowerCase»
+	'''
+	def dispatch genFragmentField(EntityCurrencyField field) '''
+		«field.name.toLowerCase»
+	'''
+	
+	/*
+	 * EnumEntity
+	 */
+	def dispatch genFragmentForReferenceField(Enum entity, EntityReferenceField field) '''
+		«field.name.toLowerCase»Id
+	'''
+	def dispatch genFragmentForReferenceField(Entity entity, EntityReferenceField field) '''
+		«field.name.toLowerCase»Id
 	'''
 }
