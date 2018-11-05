@@ -702,7 +702,7 @@ UIQueryFlow:
 		'.success' ':' success_flow=[ContainerOrComponent|QualifiedName]
 		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
-		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}'
 ;
 
@@ -711,14 +711,14 @@ UICommandFlow:
 		'.success' ':' success_flow=[ContainerOrComponent|QualifiedName]
 		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
-		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}'
 ;
 
 UILinkFlow:
 	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
 	('{'
-		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' (type=('PrimaryButton'|'Button'|'Link')))? (',' 'state' ':' ('Info'|'Success'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}')?
 ;
 
