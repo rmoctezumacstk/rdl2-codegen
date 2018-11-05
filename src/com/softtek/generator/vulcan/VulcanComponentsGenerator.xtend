@@ -31,6 +31,11 @@ import com.softtek.rdl2.UILinkFlow
 import com.softtek.rdl2.UIComponent
 import com.softtek.generator.utils.UIFlowUtils
 import com.java2s.pluralize.Inflector
+import com.softtek.rdl2.UIFormPanel
+import com.softtek.rdl2.UIFormRow
+import com.softtek.rdl2.UIFormColumn
+import com.softtek.rdl2.SizeOption
+import org.eclipse.emf.common.util.EList
 
 class VulcanComponentsGenerator {
 	
@@ -51,7 +56,11 @@ class VulcanComponentsGenerator {
 	
 	def CharSequence genPageContainerJsx(PageContainer page) '''
 		import React, { Component } from "react";
-		import { Typography } from "@material-ui/core";
+		import { browserHistory } from "react-router";
+		import { Typography, Button } from "@material-ui/core";
+		import {
+			«page.genImportPageIcons»
+		} from "mdi-material-ui";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		import {
 		  registerComponent,
@@ -60,6 +69,12 @@ class VulcanComponentsGenerator {
 		} from "meteor/vulcan:core";
 		
 		const styles = theme => ({
+		  button: {
+		    margin: theme.spacing.unit
+		  },
+		  extendedIcon: {
+		    marginRight: theme.spacing.unit
+		  },
 		  footer: {
 		    backgroundColor: theme.palette.background.paper,
 		    padding: theme.spacing.unit * 6
@@ -68,7 +83,7 @@ class VulcanComponentsGenerator {
 		
 		class «page.name» extends Component {
 		  render() {
-		    const { classes } = this.props;
+		    const { classes, params } = this.props;
 		    return (
 		      <div>
 		        <Typography variant="h4" gutterBottom component="h2">
@@ -77,6 +92,10 @@ class VulcanComponentsGenerator {
 		        
 		        «FOR c : page.components»
 		        	«c.genPageUIComponent»
+		        «ENDFOR»
+		        
+		        «FOR l : page.links»
+		        	«l.genPageActions»
 		        «ENDFOR»
 		        
 		        {/* Footer */}
@@ -102,22 +121,45 @@ class VulcanComponentsGenerator {
 		});
 	'''
 	
+	
+	
 	def dispatch genPageUIComponent(FormComponent c) '''
-		<Components.«c.name» />
+		<Components.«c.name» documentId={params.id} />
 	'''
 	def dispatch genPageUIComponent(InlineFormComponent c) '''
-		<Components.«c.name» />
+		<Components.«c.name» documentId={params.id} />
 	'''
 	def dispatch genPageUIComponent(ListComponent c) '''
-		<Components.«c.name» />
+		<Components.«c.name» documentId={params.id} />
 	'''
 	def dispatch genPageUIComponent(DetailComponent c) '''
-		<Components.«c.name» />
+		<Components.«c.name» documentId={params.id} />
 	'''
 	def dispatch genPageUIComponent(MessageComponent c) ''''''
 	def dispatch genPageUIComponent(RowComponent c) ''''''
 	
 	
+	/*
+	 * UILinkCommandQueryFlow
+	 */
+	def dispatch genPageActions(UICommandFlow flow) '''
+	'''
+	def dispatch genPageActions(UIQueryFlow flow) '''
+	'''
+	def dispatch genPageActions(UILinkFlow flow) '''
+	    <Button
+	      «uiFlowUtils.getFlowButtonStyle(flow, "Material Design Icons")»
+	      className={classes.button}
+	      onClick={() => {
+	        browserHistory.push("/«flow.link_to.name.toLowerCase»");
+	      }}
+	    >
+	      <«uiFlowUtils.getFlowIcon(flow, "Material Design Icons")» className={classes.extendedIcon} />
+	      «uiFlowUtils.getFlowLabel(flow)»
+	    </Button>
+	'''
+
+
 	
 	def dispatch genComponentJsx(FormComponent c, PageContainer p, Module m, Resource resource, IFileSystemAccess2 fsa) {
 		fsa.generateFile("vulcan/lib/components/" + m.name.toLowerCase + "/" + p.name.toLowerCase + "/" + c.name + ".jsx", c.genFormComponentJsx(p, m))
@@ -227,7 +269,7 @@ class VulcanComponentsGenerator {
 		  Button
 		} from "@material-ui/core";
 		import {
-			«c.genImportIcons»
+			«c.genImportListIcons»
 		} from "mdi-material-ui";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		import {
@@ -427,10 +469,10 @@ class VulcanComponentsGenerator {
 	'''
 	def dispatch genTableBodyActions(UILinkFlow flow) '''
 	    <Button
-	      variant="outlined"
+	      «uiFlowUtils.getFlowButtonStyle(flow, "Material Design Icons")»
 	      className={classes.button}
 	      onClick={() => {
-	        browserHistory.push("/«flow.link_to.name.toLowerCase»");
+	        browserHistory.push("/«flow.link_to.name.toLowerCase»/" + row._id);
 	      }}
 	    >
 	      <«uiFlowUtils.getFlowIcon(flow, "Material Design Icons")» className={classes.extendedIcon} />
@@ -443,7 +485,7 @@ class VulcanComponentsGenerator {
 	 */
 	def dispatch genCommandFlowToContainer(PageContainer page, UICommandFlow flow) '''
 	    <Button
-	      variant="outlined"
+	      «uiFlowUtils.getFlowButtonStyle(flow, "Material Design Icons")»
 	      className={classes.button}
 	      onClick={() => {
 	        browserHistory.push("/«page.name.toLowerCase»");
@@ -461,7 +503,7 @@ class VulcanComponentsGenerator {
 	 */
 	def dispatch genQueryFlowToContainer(PageContainer page, UIQueryFlow flow) '''
 	    <Button
-	      variant="outlined"
+	      «uiFlowUtils.getFlowButtonStyle(flow, "Material Design Icons")»
 	      className={classes.button}
 	      onClick={() => {
 	        browserHistory.push("/«page.name.toLowerCase»");
@@ -504,12 +546,14 @@ class VulcanComponentsGenerator {
 	def CharSequence genDetailComponentJsx(DetailComponent c, PageContainer p, Module m) '''
 		import React from "react";
 		import { browserHistory } from "react-router";
-		import { Paper, Typography, Button, Icon } from "@material-ui/core";
-		import { Cart, KeyboardReturn } from "mdi-material-ui";
+		import { Paper, Typography, Button, Grid } from "@material-ui/core";
+		import { 
+		  «c.genImportDetailIcons»
+		} from "mdi-material-ui";
 		import { registerComponent, Components, withSingle } from "meteor/vulcan:core";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		
-		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.name»/collection";
+		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.entity.name.toLowerCase»/collection";
 		
 		const styles = theme => ({
 		  root: {
@@ -524,11 +568,8 @@ class VulcanComponentsGenerator {
 		  button: {
 		    margin: theme.spacing.unit
 		  },
-		  leftIcon: {
+		  extendedIcon: {
 		    marginRight: theme.spacing.unit
-		  },
-		  rightIcon: {
-		    marginLeft: theme.spacing.unit
 		  },
 		  footer: {
 		    backgroundColor: theme.palette.background.paper,
@@ -539,7 +580,7 @@ class VulcanComponentsGenerator {
 		function «c.name»(props) {
 		  return (
 		    <div style={{ margin: "20px auto" }}>
-		      <Components.«c.name»Inner documentId={props.params.id} />
+		      <Components.«c.name»Inner documentId={props.documentId} />
 		    </div>
 		  );
 		}
@@ -555,26 +596,13 @@ class VulcanComponentsGenerator {
 		      <div>
 		        <Paper className={classes.root} elevation={1}>
 		          «FOR f : c.list_elements»
-		          	«f.genDetailComponentField(c.entity)»
+		          	«f.genDetailComponentField»
 		          «ENDFOR»
 
 				  «FOR f : c.links»
 				    «f.genTableBodyActions»
 				  «ENDFOR»
 		        </Paper>
-		
-		        {/* Footer */}
-		        <footer className={classes.footer}>
-		          <Typography
-		            variant="subtitle1"
-		            align="center"
-		            color="textSecondary"
-		            component="p"
-		          >
-		            Powered by Softtek
-		          </Typography>
-		        </footer>
-		        {/* End footer */}
 		      </div>
 		    );
 		  }
@@ -582,7 +610,7 @@ class VulcanComponentsGenerator {
 		
 		const singleOptions = {
 		  collection: «inflector.pluralize(c.entity.name)»,
-		  fragmentName: "«c.name»ItemFragment"
+		  fragmentName: "«c.entity.name»ItemFragment"
 		};
 		
 		registerComponent({
@@ -640,16 +668,18 @@ class VulcanComponentsGenerator {
 	/*
 	 * UIElement
 	 */
-	def dispatch genDetailComponentField(UIField f, Entity entity) ''''''
-	def dispatch genDetailComponentField(UIDisplay f, Entity entity) '''
-		«f.ui_field.genUIDisplayDetailItemField(entity)»
+	def dispatch genDetailComponentField(UIField f) ''''''
+	def dispatch genDetailComponentField(UIDisplay f) '''
+		«f.ui_field.genUIDisplayDetailItemField»
 	'''
-	def dispatch genDetailComponentField(UIFormContainer e, Entity entity) ''''''
+	def dispatch genDetailComponentField(UIFormContainer e) '''
+		«e.genUIFormContainer»
+	'''
 	
 	/*
 	 * EntityField
 	 */
-	def dispatch genUIDisplayDetailItemField(EntityReferenceField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityReferenceField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -658,7 +688,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityTextField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityTextField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -667,7 +697,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityLongTextField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityLongTextField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -676,7 +706,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityDateField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityDateField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -685,11 +715,11 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityImageField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityImageField field) '''
       <img src={props.document.«field.name.toLowerCase»} />
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityFileField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityFileField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -698,7 +728,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityEmailField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityEmailField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -707,7 +737,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityDecimalField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityDecimalField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -716,7 +746,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityIntegerField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityIntegerField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -725,7 +755,7 @@ class VulcanComponentsGenerator {
       </Typography>
       <br />
 	'''
-	def dispatch genUIDisplayDetailItemField(EntityCurrencyField field, Entity entity) '''
+	def dispatch genUIDisplayDetailItemField(EntityCurrencyField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
@@ -733,10 +763,47 @@ class VulcanComponentsGenerator {
         {props.document.«field.name.toLowerCase»}
       </Typography>
       <br />
+	'''
+
+
+	/*
+	 * UIFormContainer
+	 */
+	def dispatch genUIFormContainer(UIFormPanel panel) '''
+	'''
+	def dispatch genUIFormContainer(UIFormRow row) '''
+		<Grid container>
+			«FOR c : row.columns»
+				«c.genUIFormColumn»
+			«ENDFOR»
+		</Grid>
 	'''
 	
+	/*
+	 * UIFormColumn
+	 */
+	def CharSequence genUIFormColumn(UIFormColumn column) '''
+		<Grid item«column.sizes.genGridBreakPoints»>
+			«FOR e : column.elements»
+				«e.genDetailComponentField»
+			«ENDFOR»
+		</Grid>
+	'''
+
+
+	def CharSequence genImportPageIcons(PageContainer container) '''
+		«FOR flow : container.links SEPARATOR ","»
+			«flow.genActionIcon»
+		«ENDFOR»
+	'''
 	
-	def CharSequence genImportIcons(ListComponent component) '''
+	def CharSequence genImportListIcons(ListComponent component) '''
+		«FOR flow : component.links SEPARATOR ","»
+			«flow.genActionIcon»
+		«ENDFOR»
+	'''
+	
+	def CharSequence genImportDetailIcons(DetailComponent component) '''
 		«FOR flow : component.links SEPARATOR ","»
 			«flow.genActionIcon»
 		«ENDFOR»
@@ -771,4 +838,48 @@ class VulcanComponentsGenerator {
 	    «uiFlowUtils.getFlowIcon(flow, "Material Design Icons")»
 	'''
 	def dispatch genIconQueryFlow(UIComponent component, UIQueryFlow flow) ''''''
+	
+	
+	def genGridBreakPoints(EList<SizeOption> list) {
+		var grid_breakpoints = ""
+		for (size : list) {
+			grid_breakpoints = grid_breakpoints + " " + size.getGridBreakpoint
+			//col_class = col_class + "col-" + size.sizeop + " "
+			//if (size.offset !== null) {
+			//	var offset = size.offset as OffSetMD
+			//	col_class = col_class + "col-" + offset.sizeop + " "
+			//}
+			//if (size.centermargin !== null) {
+			//	col_class = col_class + "center-margin "
+			//}
+		}
+		return grid_breakpoints
+	}
+	
+	def getGetGridBreakpoint(SizeOption size) {
+		var breakpoint = ""
+		var sizeop = size.sizeop.toString
+		
+		println(size)
+		println(size.sizeop)
+		if (sizeop == "md-12") {
+			breakpoint = "md={12}"
+		}
+		if (sizeop == "md-10") {
+			breakpoint = "md={10}"
+		}
+		if (sizeop == "md-8") {
+			breakpoint = "md={8}"
+		}
+		if (sizeop == "md-6") {
+			breakpoint = "md={6}"
+		}
+		if (sizeop == "md-2") {
+			breakpoint = "md={2}"
+		}		
+		
+		return breakpoint
+	}
+	
+	
 }
