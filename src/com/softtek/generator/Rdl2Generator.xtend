@@ -36,22 +36,23 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject VulcanCommonComponentsGenerator vulcanCommonComponentsGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		indexJsGenerator.doGenerate(resource, fsa)
-		appTagGenerator.doGenerate(resource, fsa)
-		tableDataJsGenerator.doGenerate(resource, fsa)
+		//indexJsGenerator.doGenerate(resource, fsa)
+		//appTagGenerator.doGenerate(resource, fsa)
+		//tableDataJsGenerator.doGenerate(resource, fsa)
+		
 		vulcanModuleHeaderFilesGenerator.doGenerate(resource, fsa)
 		vulcanServerGenerator.doGenerate(resource, fsa)
 		vulcanCommonComponentsGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
-			screenGenerator.doGenerate(r, fsa)
-			tableDataJsonGenerator.doGenerate(r, fsa)
+			//screenGenerator.doGenerate(r, fsa)
+			//tableDataJsonGenerator.doGenerate(r, fsa)
 			
 			vulcanModulesGenerator.doGenerate(r, fsa)
 			vulcanComponentsGenerator.doGenerate(r, fsa)
 		}
 		
-		bashRDLGenerator.doGenerator(resource, fsa)
+		//bashRDLGenerator.doGenerator(resource, fsa)
 	}
 	
 	override afterGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
