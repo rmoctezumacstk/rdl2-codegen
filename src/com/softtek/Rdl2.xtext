@@ -468,11 +468,11 @@ PermissionActionInstance:
 ;
 
 PermissionAction :
-	action=('CREATE'|'READ'|'UPDATE'|'DELETE'|'*'|'ACTIVATE'|'DEACTIVATE'|ID) 
+	action=( 'CREATE'|'READ'|'UPDATE'|'DELETE'|ID ) 
 ;
 
 PermissionInstance:
-	instance=('OWN'|'ALL'|'VIP'|'NORMAL')
+	instance=( 'OWN'|'ALL'| ID )
 ;
 
 ModulePermission:
