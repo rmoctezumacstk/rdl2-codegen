@@ -25,6 +25,7 @@ class VulcanModuleHeaderFilesGenerator {
 		import "../components/common/Header";
 		import "../components/common/Layout";
 		import "../components/common/SideNavigation";
+		import "../components/common/Login";
 		
 		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
 			«FOR m : s.modules_ref»
@@ -54,7 +55,13 @@ class VulcanModuleHeaderFilesGenerator {
 	
 	def CharSequence genRoutesJs(Resource resource, IFileSystemAccess2 fsa) '''
 		import { addRoute } from "meteor/vulcan:core";
-		
+
+		addRoute({
+		  name: "login",
+		  path: "/login",
+		  componentName: "Login"
+		});
+
 		«resource.genHomeRoute»
 
 		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
@@ -66,6 +73,7 @@ class VulcanModuleHeaderFilesGenerator {
 						  path: "/«page.name.toLowerCase»",
 						  componentName: "«page.name»"
 						});
+						
 					«ENDIF»
 				«ENDFOR»
 			«ENDFOR»
