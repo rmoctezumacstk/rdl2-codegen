@@ -46,7 +46,7 @@ class UIFlowUtils {
 				case "Cart": return "Cart"
 				case "Next": return "ArrowRightThick"
 				case "Previous": return "ArrowLeftThick"
-				case "Pay": return "CurrencyUSD"
+				case "Pay": return "CurrencyUsd"
 				case "Show": return "Eye"
 			}
 		}
@@ -71,7 +71,7 @@ class UIFlowUtils {
 			switch flow.state.toString {
 				case "Default": state=""
 				case "Primary": state='color="primary"'
-				case "Danger": state="secondary"
+				case "Danger": state='color="secundary"'
 			}
 		  }
 		  style = type + " " + state

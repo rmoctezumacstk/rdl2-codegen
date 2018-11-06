@@ -425,7 +425,7 @@ class VulcanComponentsGenerator {
 	 * EntityField
 	 */
 	def dispatch genTableBodyUIDisplayByListComponent(EntityReferenceField f) '''
-      <TableCell>{row.«f.name.toLowerCase»}</TableCell>
+      <TableCell>{row.«f.name.toLowerCase»Id}</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityTextField f) '''
 		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
@@ -448,13 +448,13 @@ class VulcanComponentsGenerator {
 		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityDecimalField f) '''
-		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityIntegerField f) '''
-		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityCurrencyField f) '''
-		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
 	'''
 	
 
@@ -858,26 +858,15 @@ class VulcanComponentsGenerator {
 	
 	def getGetGridBreakpoint(SizeOption size) {
 		var breakpoint = ""
-		var sizeop = size.sizeop.toString
 		
-		println(size)
-		println(size.sizeop)
-		if (sizeop == "md-12") {
-			breakpoint = "md={12}"
+		if (size.sizeop !== null) {
+			var sizeop = size.sizeop.toString
+			var gridBreakpoint = sizeop.substring(0, sizeop.indexOf("-"))
+			var gridSize = sizeop.substring(3)
+			
+			breakpoint = gridBreakpoint + "={" + gridSize + "} "
 		}
-		if (sizeop == "md-10") {
-			breakpoint = "md={10}"
-		}
-		if (sizeop == "md-8") {
-			breakpoint = "md={8}"
-		}
-		if (sizeop == "md-6") {
-			breakpoint = "md={6}"
-		}
-		if (sizeop == "md-2") {
-			breakpoint = "md={2}"
-		}		
-		
+
 		return breakpoint
 	}
 	
