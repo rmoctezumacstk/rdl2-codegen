@@ -268,6 +268,7 @@ class VulcanComponentsGenerator {
 		  TableCell,
 		  Button
 		} from "@material-ui/core";
+		import NumberFormat from "react-number-format";
 		import {
 			«c.genImportListIcons»
 		} from "mdi-material-ui";
@@ -448,13 +449,32 @@ class VulcanComponentsGenerator {
 		<TableCell>{row.«f.name.toLowerCase»}</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityDecimalField f) '''
-		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>
+			<NumberFormat
+			  value={row.«f.name.toLowerCase»}
+			  displayType={"text"}
+			  thousandSeparator={true}
+			/>
+		</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityIntegerField f) '''
-		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>
+			<NumberFormat
+			  value={row.«f.name.toLowerCase»}
+			  displayType={"text"}
+			  thousandSeparator={true}
+			/>
+		</TableCell>
 	'''
 	def dispatch genTableBodyUIDisplayByListComponent(EntityCurrencyField f) '''
-		<TableCell numeric>{row.«f.name.toLowerCase»}</TableCell>
+		<TableCell numeric>
+			<NumberFormat
+			  value={row.«f.name.toLowerCase»}
+			  displayType={"text"}
+			  thousandSeparator={true}
+			  prefix={"$"}
+			/>
+		</TableCell>
 	'''
 	
 
@@ -547,6 +567,7 @@ class VulcanComponentsGenerator {
 		import React from "react";
 		import { browserHistory } from "react-router";
 		import { Paper, Typography, Button, Grid } from "@material-ui/core";
+		import NumberFormat from "react-number-format";
 		import { 
 		  «c.genImportDetailIcons»
 		} from "mdi-material-ui";
@@ -742,7 +763,11 @@ class VulcanComponentsGenerator {
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
+      	<NumberFormat
+      	  value={props.document.«field.name.toLowerCase»}
+      	  displayType={"text"}
+      	  thousandSeparator={true}
+      	/>
       </Typography>
       <br />
 	'''
@@ -751,7 +776,11 @@ class VulcanComponentsGenerator {
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
+      	<NumberFormat
+      	  value={props.document.«field.name.toLowerCase»}
+      	  displayType={"text"}
+      	  thousandSeparator={true}
+      	/>
       </Typography>
       <br />
 	'''
@@ -760,7 +789,12 @@ class VulcanComponentsGenerator {
         «entityFieldUtils.getFieldGlossaryName(field)»
       </Typography>
       <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
+      	<NumberFormat
+      	  value={props.document.«field.name.toLowerCase»}
+      	  displayType={"text"}
+      	  thousandSeparator={true}
+      	  prefix={"$"}
+      	/>
       </Typography>
       <br />
 	'''
