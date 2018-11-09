@@ -14,6 +14,7 @@ import com.softtek.generator.uiprototype.AppTagGenerator
 import com.softtek.generator.uiprototype.IndexJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
+import com.softtek.generator.clarity.ScreenClarityGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -25,6 +26,9 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
+	// Clarity
+	@Inject ScreenClarityGenerator screenClarityGenerator
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -33,6 +37,8 @@ class Rdl2Generator extends AbstractGenerator {
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
+			
+			screenClarityGenerator.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)
