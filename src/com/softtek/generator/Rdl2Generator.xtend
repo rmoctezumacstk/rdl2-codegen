@@ -15,6 +15,8 @@ import com.softtek.generator.uiprototype.IndexJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
 import com.softtek.generator.clarity.ScreenClarityGenerator
+import com.softtek.generator.clarity.AdminHtmlClarityGenerator
+import com.softtek.generator.clarity.AdminRoutingClarityGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -28,16 +30,23 @@ class Rdl2Generator extends AbstractGenerator {
 	
 	// Clarity
 	@Inject ScreenClarityGenerator screenClarityGenerator
+	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
+	@Inject AdminRoutingClarityGenerator adminRoutingClarityGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
 		tableDataJsGenerator.doGenerate(resource, fsa)
 		
+		// Clarity
+		adminHtmlClarityGenerator.doGenerate(resource, fsa)
+		adminRoutingClarityGenerator.doGenerate(resource, fsa)
+		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
 			
+			// Clarity
 			screenClarityGenerator.doGenerate(r, fsa)
 		}
 		
