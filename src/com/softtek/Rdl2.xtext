@@ -23,6 +23,7 @@ System :
 Module:
  'module' name = QualifiedName '{'
    'name' ':' description = STRING
+   ('icon' ':' icon = STRING)?
    (elements += AbstractElement)*
  '}'
 ;
@@ -689,7 +690,8 @@ UICurrencyField:
 UILinkCommandQueryFlow:
 	UICommandFlow |
 	UIQueryFlow	 |
-	UILinkFlow
+	UILinkFlow |
+	UILinkAction
 ;
 
 ContainerOrComponent:
@@ -717,6 +719,13 @@ UICommandFlow:
 
 UILinkFlow:
 	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
+	('{'
+		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+	'}')?
+;
+
+UILinkAction:
+	'flow' name=ID '->' (action=('Back'|'Reset'))
 	('{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
 	'}')?
