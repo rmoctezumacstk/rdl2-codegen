@@ -71,7 +71,7 @@ class UIFlowUtils {
 			switch flow.state.toString {
 				case "Default": state=""
 				case "Primary": state='color="primary"'
-				case "Danger": state='color="secundary"'
+				case "Danger": state='color="secondary"'
 			}
 		  }
 		  style = type + " " + state

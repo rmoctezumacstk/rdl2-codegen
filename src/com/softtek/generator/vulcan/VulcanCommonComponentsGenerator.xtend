@@ -12,12 +12,13 @@ class VulcanCommonComponentsGenerator {
 		fsa.generateFile("vulcan/lib/components/common/Header.jsx", genHeaderJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/Layout.jsx", genLayoutJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/SideNavigation.jsx", genSideNavigationJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/Footer.jsx", genFooterJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/Login.jsx", genLoginJsx(resource, fsa))
 	}
 	
 	def CharSequence genHeaderJsx(Resource resource, IFileSystemAccess2 access2) '''
 		import React from "react";
-		import { browserHistory } from "react-router";
+		import { withRouter } from "react-router";
 		import PropTypes from "prop-types";
 		import {
 		  AppBar,
@@ -82,7 +83,7 @@ class VulcanCommonComponentsGenerator {
 		  <Button
 		    color="inherit"
 		    onClick={() => {
-		      Meteor.logout(() => browserHistory.push("/"));
+		      Meteor.logout(() => router.push("/"));
 		    }}
 		  >
 		    Logout
@@ -93,7 +94,7 @@ class VulcanCommonComponentsGenerator {
 		  <Button
 		    color="inherit"
 		    onClick={() => {
-		      browserHistory.push("/login");
+		      router.push("/login");
 		    }}
 		  >
 		    Login
@@ -101,7 +102,7 @@ class VulcanCommonComponentsGenerator {
 		);
 		
 		const Header = (props, context) => {
-		  const { classes, currentUser } = props;
+		  const { classes, currentUser, router } = props;
 		  const isSideNavOpen = props.isSideNavOpen;
 		  const toggleSideNav = props.toggleSideNav;
 		
@@ -151,7 +152,7 @@ class VulcanCommonComponentsGenerator {
 		registerComponent({
 		  name: "Header",
 		  component: Header,
-		  hocs: [withCurrentUser, [withStyles, styles]]
+		  hocs: [withCurrentUser, withRouter, [withStyles, styles]]
 		});
 	'''
 	
@@ -303,7 +304,7 @@ class VulcanCommonComponentsGenerator {
 		  registerComponent,
 		  withCurrentUser
 		} from "meteor/vulcan:core";
-		import { browserHistory } from "react-router";
+		import { withRouter } from "react-router";
 		import List from "@material-ui/core/List";
 		import ListItem from "@material-ui/core/ListItem";
 		import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -339,14 +340,14 @@ class VulcanCommonComponentsGenerator {
 		  };
 		
 		  render() {
-		    const currentUser = this.props.currentUser;
+		    const { currentUser, router } = this.props;
 		    const classes = this.props.classes;
 		    const isOpen = this.state.isOpen;
 		
 		    return (
 		      <div className={classes.root}>
 		        <List>
-		          <ListItem button onClick={() => { browserHistory.push("/"); }}>
+		          <ListItem button onClick={() => { router.push("/"); }}>
 		            <ListItemIcon>
 		              <HomeIcon />
 		            </ListItemIcon>
@@ -357,7 +358,7 @@ class VulcanCommonComponentsGenerator {
 		          		«IF m.countPageLanmarks > 0»
 		          			«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
 		          			«IF page.landmark!==null && page.landmark.trim.equals("true")»
-		          			<ListItem button onClick={() => { browserHistory.push('/«page.name.toLowerCase»'); }}>
+		          			<ListItem button onClick={() => { router.push('/«page.name.toLowerCase»'); }}>
 		          			  <ListItemIcon>
 		          			  	<VectorSquare/>
 		          			  </ListItemIcon>
@@ -390,7 +391,7 @@ class VulcanCommonComponentsGenerator {
 		                  button
 		                  className={classes.nested}
 		                  onClick={() => {
-		                    browserHistory.push("/admin");
+		                    router.push("/admin");
 		                  }}
 		                >
 		                  <ListItemIcon>
@@ -402,7 +403,7 @@ class VulcanCommonComponentsGenerator {
 		                  button
 		                  className={classes.nested}
 		                  onClick={() => {
-		                    browserHistory.push("/theme");
+		                    router.push("/theme");
 		                  }}
 		                >
 		                  <ListItemIcon>
@@ -430,9 +431,64 @@ class VulcanCommonComponentsGenerator {
 		  "SideNavigation",
 		  SideNavigation,
 		  [withStyles, styles],
-		  withCurrentUser
+		  withCurrentUser,
+		  withRouter
 		);
 	'''
+
+
+	 def CharSequence genFooterJsx(Resource resource, IFileSystemAccess2 access2) '''
+		import React from "react";
+		import { withRouter } from "react-router";
+		import PropTypes from "prop-types";
+		import { Typography } from "@material-ui/core";
+		import { ChevronLeftIcon } from "mdi-material-ui";
+		import withStyles from "@material-ui/core/styles/withStyles";
+		import {
+		  getSetting,
+		  Components,
+		  registerComponent,
+		  withCurrentUser
+		} from "meteor/vulcan:core";
+		import classNames from "classnames";
+		
+		const styles = theme => ({
+		  footer: {
+		    backgroundColor: theme.palette.background.paper,
+		    padding: theme.spacing.unit * 6
+		  }
+		});
+		
+		const Footer = (props, context) => {
+		  const { classes, currentUser, router } = props;
+		
+		  return (
+		    <footer className={classes.footer}>
+		      <Typography
+		        variant="subtitle1"
+		        align="center"
+		        color="textSecondary"
+		        component="p"
+		      >
+		        Powered by Softtek
+		      </Typography>
+		    </footer>
+		  );
+		};
+		
+		Footer.propTypes = {
+		  classes: PropTypes.object.isRequired
+		};
+		
+		Footer.displayName = "Footer";
+		
+		registerComponent({
+		  name: "Footer",
+		  component: Footer,
+		  hocs: [withCurrentUser, withRouter, [withStyles, styles]]
+		});
+	 '''
+
 
 	def genLoginJsx(Resource resource, IFileSystemAccess2 fsa) '''
 		import React, { Component } from "react";
