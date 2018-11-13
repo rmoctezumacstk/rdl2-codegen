@@ -32,6 +32,23 @@ class UIFlowUtils {
 			}
 		}
 		
+		if (library == "Font Clarity") {
+			switch flow.icon {
+				case "Search": return "search"
+				case "Create": return "success-standard"
+				case "Update": return "note-edit"
+				case "Delete": return "trash"
+				case "Save": return "success-standard"
+				case "Return": return "undo"
+				case "OK": return "check"
+				case "Done": return "check"
+				case "Cart": return "shopping-cart"
+				case "Next": return "login"
+				case "Previous": return "logout"
+				case "Pay": return "dollar"
+			}
+		}
+		
 		return icon
 	}
 }
