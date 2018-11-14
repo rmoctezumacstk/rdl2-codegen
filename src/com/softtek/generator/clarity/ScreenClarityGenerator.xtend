@@ -74,16 +74,19 @@ class ScreenClarityGenerator {
 	}
 	
 	def CharSequence generateTag(PageContainer page, Module module) '''
-		
+		   <div class="card-block">
 		   «FOR c : page.components»
 		   		«c.genUIComponent(module, page)»
 		   «ENDFOR»
+		   </div>
 		   <div class="ln_solid"></div>
-		   <p>
-   			«FOR flow : page.links»
-   				«flow.genPageFlow»
-   			«ENDFOR»
-   			</p>	
+		   <div class="card-block">
+			   	<p>
+	   			«FOR flow : page.links»
+	   				«flow.genPageFlow»
+	   			«ENDFOR»
+	   			</p>
+   			</div>	
 	'''
 	
 	// Form
@@ -167,74 +170,20 @@ class ScreenClarityGenerator {
 	    	</clr-datagrid>
 	</div>		
 	
-	
-«««//	<div class="card-block">
-«««//	    <clr-datagrid [clrDgLoading]="loading">
-«««//	        <clr-dg-placeholder>No se encontró información.</clr-dg-placeholder>
-«««//				«FOR h : l.list_elements»
-«««//					«h.genTableHeader»
-«««//				«ENDFOR»
-«««//
-«««//	            <clr-dg-row *clrDgItems="let afiliado of afiliadoArray" [clrDgItem]="afiliado">
-«««//	                <div hidden="true">
-«««//	                    <div *ngIf="afiliado_update">
-«««//	                        <button class="action-item" (click)="setClickedRowEditaAfiliado(i, afiliado)">Editar</button> 
-«««//	                    </div>
-«««//	                    <div *ngIf="afiliado_delete">
-«««//	                        <button class="action-item" (click)="setClickedRowEliminaAfiliado(i, afiliado)">Eliminar</button>
-«««//	                    </div>
-«««//					<div *ngIf="beneficiarios_read">
-«««//					            <button class="action-item"  (click)="setClickedRowConsultaBeneficiarios(i,Afiliado)">Beneficiarios</button>
-«««//					        </div>
-«««//	                </div>
-«««//	                <clr-dg-action-overflow>
-«««//	                    <button class="action-item" *ngIf="afiliado_update" (click)="setClickedRowEditaAfiliado(i, afiliado)">
-«««//	                        <clr-icon shape="note" ></clr-icon> Editar
-«««//	                    </button>
-«««//	                    <button class="action-item" *ngIf="afiliado_delete" (click)="setClickedRowEliminaAfiliado(i, afiliado)">
-«««//	                        <clr-icon shape="trash"></clr-icon> Borrar
-«««//	                    </button>
-«««//					<div class="line-list"></div>
-«««//					    <button class="action-item" *ngIf="beneficiario_read" (click)="setClickedRowConsultaBeneficiario(i,beneficiario)">
-«««//					        <clr-icon shape="flow-chart"></clr-icon> Beneficiario
-«««//					    </button>
-«««//	                </clr-dg-action-overflow>
-«««//	                
-«««//					«FOR h : l.list_elements»
-«««//						«h.genTableRows»
-«««//					«ENDFOR»
-«««//					«IF l.links.size > 0»
-«««//						<th>
-«««//							«FOR f : l.links»
-«««//								«f.genFlowRows»
-«««//							«ENDFOR»
-«««//						</th>
-«««//					«ENDIF»
-«««//	            </clr-dg-row>
-«««//	            <clr-dg-footer>
-«««//	                <clr-dg-column-toggle>
-«««//	                    <clr-dg-column-toggle-title>Elegir columnas</clr-dg-column-toggle-title>
-«««//	                    <clr-dg-column-toggle-button>Seleccionar todas</clr-dg-column-toggle-button>
-«««//	                </clr-dg-column-toggle>
-«««//	                <clr-dg-pagination #pagination [clrDgPageSize]="10">
-«««//	                    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-«««//	                    de {{pagination.totalItems}} registros
-«««//	                </clr-dg-pagination>
-«««//	            </clr-dg-footer>
-«««//	    	</clr-datagrid>
-«««//	</div>	
 	'''
 	
 	// DetailComponent
 	def dispatch genUIComponent(DetailComponent detail, Module module, PageContainer page) '''
+		<div class="card-block">
 		«FOR field : detail.list_elements»
 			«field.genUIDetailElement(null)»
 		«ENDFOR»
-		<div class="ln_solid"></div>
-		«FOR flow : detail.links»
-		
-«««			«flow.genFormFlow»
+		</div>
+		<div class="card-block">
+		«FOR flow : detail.links»		
+			«flow.genFormFlow»
 		«ENDFOR»
+		</div>
 	'''
 	
 	// MessageComponent
@@ -650,13 +599,13 @@ class ScreenClarityGenerator {
 	 * genUIDetailElement
 	 */
 	def dispatch genUIDetailElement(UIField e, FormComponent form) '''
-		«e.genFormUIField(form)»
+«««		«e.genFormUIField(form)»
 	'''
 	def dispatch genUIDetailElement(UIDisplay e, FormComponent form) '''
 		«e.ui_field.genUIDetailEntityField(form)»
 	'''
 	def dispatch genUIDetailElement(UIFormContainer e, FormComponent form) '''
-		«e.genUIDetailFormContainer(form)»
+«««		«e.genUIDetailFormContainer(form)»
 	'''
 	
 	/*
@@ -681,43 +630,73 @@ class ScreenClarityGenerator {
 	 * genUIDetailEntityField
 	 */
 	def dispatch genUIDetailEntityField(EntityReferenceField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityTextField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityLongTextField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityDateField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityImageField field, FormComponent form) '''
-		<img src="«entityFieldUtils.fakerDomainData(field)»" alt="«entityFieldUtils.getFieldGlossaryName(field)»">
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityFileField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityEmailField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityDecimalField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityIntegerField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def dispatch genUIDetailEntityField(EntityCurrencyField field, FormComponent form) '''
-		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
+		<div class="form-group">
+			<label for="«field.name.toLowerCase»">«entityFieldUtils.getFieldGlossaryName(field)»</label>
+			<input type="text" id="«field.name.toLowerCase»" readonly size="30" value="«entityFieldUtils.fakerDomainData(field)»" />
+		</div>
 	'''
 	
 	def CharSequence genUIDetailColumn(UIFormColumn column, FormComponent form) '''
