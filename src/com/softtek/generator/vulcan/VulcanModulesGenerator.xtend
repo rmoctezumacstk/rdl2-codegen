@@ -69,6 +69,15 @@ class VulcanModulesGenerator {
 		    options: { sort: { createdAt: -1 } }
 		  };
 		});
+
+		/*
+		Products.addView("productsByCategory", terms => {
+		  return {
+		    selector: { categoryId: terms.categoryId },
+		    options: { sort: { postedAt: -1 } }
+		  };
+		});
+		*/
 		
 		export default «inflector.pluralize(entity.name)»;
 	'''

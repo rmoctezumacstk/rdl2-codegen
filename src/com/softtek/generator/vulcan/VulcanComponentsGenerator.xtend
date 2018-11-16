@@ -107,6 +107,11 @@ class VulcanComponentsGenerator {
 	'''
 	def dispatch genPageUIComponent(ListComponent c) '''
 		<Components.«c.name» documentId={params.id} />
+		/*
+		<Components.«c.name»
+		  terms={{ categoryId: params.id, view: "productsByCategory" }}
+		/>
+		*/
 	'''
 	def dispatch genPageUIComponent(DetailComponent c) '''
 		<Components.«c.name» documentId={params.id} />

@@ -14,6 +14,10 @@ class VulcanCommonComponentsGenerator {
 		fsa.generateFile("vulcan/lib/components/common/SideNavigation.jsx", genSideNavigationJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/Footer.jsx", genFooterJsx(resource, fsa))
 		fsa.generateFile("vulcan/lib/components/common/Login.jsx", genLoginJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/custom/CustomLoading.jsx", genLoadingJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/custom/CustomModal.jsx", genModalJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/custom/CustomButton.jsx", genButtonJsx(resource, fsa))
+		fsa.generateFile("vulcan/lib/components/common/custom/CustomStaticText.jsx", genStaticTextJsx(resource, fsa))
 	}
 	
 	def CharSequence genHeaderJsx(Resource resource, IFileSystemAccess2 access2) '''
@@ -490,7 +494,7 @@ class VulcanCommonComponentsGenerator {
 	 '''
 
 
-	def genLoginJsx(Resource resource, IFileSystemAccess2 fsa) '''
+	def CharSequence genLoginJsx(Resource resource, IFileSystemAccess2 fsa) '''
 		import React, { Component } from "react";
 		import { Paper, Avatar, Typography } from "@material-ui/core";
 		import { Lock } from "mdi-material-ui";
@@ -550,6 +554,185 @@ class VulcanCommonComponentsGenerator {
 		  component: Login,
 		  hocs: [withCurrentUser, [withStyles, styles]]
 		});
+	'''
+
+	def CharSequence genLoadingJsx(Resource resource, IFileSystemAccess2 fsa) '''
+		import React from "react";
+		import { replaceComponent } from "meteor/vulcan:core";
+		import {
+		  CircularProgress,
+		  LinearProgress
+		} from "@material-ui/core";
+		import { withStyles } from "@material-ui/core/styles";
+		
+		const styles = theme => ({
+		  progress: {
+		    margin: theme.spacing.unit * 2,
+		    color: "#00695c"
+		  },
+		  linearColorPrimary: {
+		    backgroundColor: "#b2dfdb"
+		  },
+		  linearBarColorPrimary: {
+		    backgroundColor: "#00695c"
+		  }
+		});
+		
+		function CustomLoading(props) {
+		  const { classes } = props;
+		
+		  return (
+		    <div>
+		      <LinearProgress
+		      // classes={{
+		      //   colorPrimary: classes.linearColorPrimary,
+		      //   barColorPrimary: classes.linearBarColorPrimary
+		      // }}
+		      />
+		      {/* <CircularProgress className={classes.progress} /> */}
+		    </div>
+		  );
+		}
+		
+		replaceComponent("Loading", CustomLoading, [withStyles, styles]);
+	'''
+
+	def CharSequence genModalJsx(Resource resource, IFileSystemAccess2 fsa) '''
+		import React from "react";
+		import PropTypes from "prop-types";
+		import { replaceComponent } from "meteor/vulcan:core";
+		import {
+		  Dialog,
+		  DialogActions,
+		  DialogContent,
+		  DialogContentText,
+		  DialogTitle
+		} from "@material-ui/core";
+		import { withStyles } from "@material-ui/core/styles";
+		
+		const styles = theme => ({
+		  // progress: {
+		  //   margin: theme.spacing.unit * 2,
+		  //   color: "#00695c"
+		  // },
+		});
+		
+		function CustomModal({
+		  classes,
+		  children,
+		  size,
+		  show,
+		  onHide,
+		  title,
+		  showCloseButton,
+		  header,
+		  footer,
+		  ...rest
+		}) {
+		  // console.log(header, title, footer);
+		  let headerComponent = "";
+		  if (header) {
+		    headerComponent = (
+		      <DialogTitle id="form-dialog-title">{header}</DialogTitle>
+		    );
+		  } else if (title) {
+		    headerComponent = <DialogTitle id="form-dialog-title">{title}</DialogTitle>;
+		  }
+		
+		  const footerComponent = footer ? (
+		    <DialogActions>{footer}</DialogActions>
+		  ) : null;
+		
+		  return (
+		    <Dialog
+		      open={show}
+		      onClose={onHide}
+		      aria-labelledby="form-dialog-title"
+		      aria-describedby="alert-dialog-description"
+		    >
+		      {headerComponent}
+		      <DialogContent>{children}</DialogContent>
+		      {footerComponent}
+		    </Dialog>
+		  );
+		}
+		
+		CustomModal.propTypes = {
+		  size: PropTypes.string,
+		  show: PropTypes.bool,
+		  showCloseButton: PropTypes.bool,
+		  onHide: PropTypes.func,
+		  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+		  header: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+		  footer: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+		};
+		
+		CustomModal.defaultProps = {
+		  size: "large",
+		  show: false,
+		  showCloseButton: true
+		};
+		
+		replaceComponent("Modal", CustomModal, [withStyles, styles]);
+	'''
+
+	def CharSequence genButtonJsx(Resource resource, IFileSystemAccess2 access2) '''
+		import React from "react";
+		import { replaceComponent } from "meteor/vulcan:core";
+		import { Button } from "@material-ui/core";
+		import { withStyles } from "@material-ui/core/styles";
+		
+		const styles = theme => ({
+		  button: {
+		    margin: theme.spacing.unit
+		  }
+		});
+		
+		function CustomButton(props) {
+		  const { classes, children, variant, size, iconButton, ...rest } = props;
+		
+		  //console.log(variant, size, iconButton, rest);
+		
+		  return (
+		    // <Button bsStyle={variant} bsSize={size} {...rest}>{children}</Button>
+		    <Button variant="contained" color={variant} className={classes.button}>
+		      {children}
+		    </Button>
+		  );
+		}
+		
+		replaceComponent("Button", CustomButton, [withStyles, styles]);
+	'''
+
+	def CharSequence genStaticTextJsx(Resource resource, IFileSystemAccess2 access2) '''
+		import React from "react";
+		import { replaceComponent } from "meteor/vulcan:core";
+		import { Typography } from "@material-ui/core";
+		import { withStyles } from "@material-ui/core/styles";
+		
+		const styles = theme => ({
+		  // button: {
+		  //   margin: theme.spacing.unit
+		  // }
+		});
+		
+		function CustomStaticText(props) {
+		  const { classes, value, label } = props;
+		
+		  return (
+		    <div>
+		      <Typography variant="caption" color="textSecondary" gutterBottom>
+		        {label}
+		      </Typography>
+		      <Typography variant="body1" gutterBottom>
+		        {value}
+		      </Typography>
+		      <br />
+		    </div>
+		  );
+		}
+		
+		replaceComponent("StaticText", CustomStaticText, [withStyles, styles]);
 	'''
 
 	def int countPageLanmarks(ModuleRef m) {

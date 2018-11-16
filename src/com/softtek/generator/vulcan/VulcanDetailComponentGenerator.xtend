@@ -21,14 +21,14 @@ import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.rdl2.UIFormPanel
 import com.softtek.rdl2.UIFormRow
 import com.softtek.rdl2.UIFormColumn
-import com.softtek.generator.utils.UIFlowUtils
+//import com.softtek.generator.utils.UIFlowUtils
 
 class VulcanDetailComponentGenerator {
 
 	var inflector = new Inflector
 	var utils = new VulcanUtils
 	var entityFieldUtils = new EntityFieldUtils
-	var uiFlowUtils = new UIFlowUtils
+	//var uiFlowUtils = new UIFlowUtils
 
 	def CharSequence genDetailComponentJsx(DetailComponent c, PageContainer p, Module m) '''
 		import React from "react";
@@ -38,7 +38,11 @@ class VulcanDetailComponentGenerator {
 		import { 
 		  «c.genImportDetailIcons»
 		} from "mdi-material-ui";
-		import { registerComponent, Components, withSingle } from "meteor/vulcan:core";
+		import {
+			Components,
+			registerComponent,
+			withSingle
+		} from "meteor/vulcan:core";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		
 		import «inflector.pluralize(c.entity.name)» from "../../../modules/«c.entity.name.toLowerCase»/collection";
@@ -76,8 +80,8 @@ class VulcanDetailComponentGenerator {
 		registerComponent({ name: "«c.name»", component: «c.name» });
 		
 		function «c.name»Inner(props) {
-		  const { classes, router } = props;
-		  if (props.loading) {
+		  const { classes, router, loading } = props;
+		  if (loading) {
 		    return <Components.Loading />;
 		  } else {
 		    return (
@@ -130,62 +134,38 @@ class VulcanDetailComponentGenerator {
 	 * EntityField
 	 */
 	def dispatch genUIDisplayDetailItemField(EntityReferenceField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityTextField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityLongTextField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityDateField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityImageField field) '''
       <img src={props.document.«field.name.toLowerCase»} />
       <br />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityFileField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityEmailField field) '''
-      <Typography variant="caption" color="textSecondary" gutterBottom>
-        «entityFieldUtils.getFieldGlossaryName(field)»
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {props.document.«field.name.toLowerCase»}
-      </Typography>
-      <br />
+	  <Components.StaticText
+	    label="«entityFieldUtils.getFieldGlossaryName(field)»"
+	    value={props.document.«field.name.toLowerCase»} />
 	'''
 	def dispatch genUIDisplayDetailItemField(EntityDecimalField field) '''
       <Typography variant="caption" color="textSecondary" gutterBottom>

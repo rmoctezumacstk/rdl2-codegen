@@ -26,6 +26,10 @@ class VulcanModuleHeaderFilesGenerator {
 		import "../components/common/Layout";
 		import "../components/common/SideNavigation";
 		import "../components/common/Footer";
+		import "../components/common/custom/CustomLoading";
+		import "../components/common/custom/CustomModal";
+		import "../components/common/custom/CustomButton";
+		import "../components/common/custom/CustomStaticText";
 		import "../components/common/Login";
 		
 		«FOR System s : resource.allContents.toIterable.filter(typeof(System))»

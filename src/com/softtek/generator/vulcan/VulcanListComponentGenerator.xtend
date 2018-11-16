@@ -43,8 +43,8 @@ class VulcanListComponentGenerator {
 		} from "mdi-material-ui";
 		import withStyles from "@material-ui/core/styles/withStyles";
 		import {
+		  Components,
 		  registerComponent,
-		  Loading,
 		  withMulti,
 		  withCurrentUser
 		} from "meteor/vulcan:core";
@@ -88,7 +88,7 @@ class VulcanListComponentGenerator {
 		}) => (
 		  <div>
 		    {loading ? (
-		      <Loading />
+		      <Components.Loading />
 		    ) : (
 			  <div>
 			      <Paper className={classes.root}>
