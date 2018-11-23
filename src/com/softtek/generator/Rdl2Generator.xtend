@@ -17,6 +17,7 @@ import com.softtek.generator.uiprototype.TableDataJsonGenerator
 import com.softtek.generator.clarity.ScreenClarityGenerator
 import com.softtek.generator.clarity.AdminHtmlClarityGenerator
 import com.softtek.generator.clarity.AdminRoutingClarityGenerator
+import com.softtek.generator.clarity.ScreenClarityTsGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -30,6 +31,7 @@ class Rdl2Generator extends AbstractGenerator {
 	
 	// Clarity
 	@Inject ScreenClarityGenerator screenClarityGenerator
+	@Inject ScreenClarityTsGenerator screenClarityTsGenerator
 	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
 	@Inject AdminRoutingClarityGenerator adminRoutingClarityGenerator
 	
@@ -48,6 +50,7 @@ class Rdl2Generator extends AbstractGenerator {
 			
 			// Clarity
 			screenClarityGenerator.doGenerate(r, fsa)
+			screenClarityTsGenerator.doGenerate(r,fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)

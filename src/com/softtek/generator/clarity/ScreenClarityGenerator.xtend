@@ -67,7 +67,7 @@ class ScreenClarityGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/" + m.name.toLowerCase + "/" + p.name.toLowerCase + ".html", p.generateTag(m))
+					fsa.generateFile("clarity/src/app/admin/" +m.name.toLowerCase+ "/" +p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.html", p.generateTag(m))
 				}
 			}
 		}
@@ -94,20 +94,19 @@ class ScreenClarityGenerator {
 		<!-- form -->
 		<form class="form" [formGroup]="«form.name.toLowerCase»Form">
 			«FOR field : form.form_elements»
-				Elementos: «field»
-«««				«field.genUIFormElement(form)»
+				«field.genUIFormElement(form)»
 			«ENDFOR»
 			<div class="ln_solid"></div>
-«««			«FOR flow : form.links»
-««««««				«flow.genFormFlow»
-«««			«ENDFOR»
+			«FOR flow : form.links»
+				«flow.genFormFlow»
+			«ENDFOR»
 		</form>
 		<!-- ./form -->	
 	'''
 
 	// InlineFormComponent
 	def dispatch genUIComponent(InlineFormComponent form, Module module, PageContainer page) '''
-«««		<simple-admin id="«form.name.toLowerCase»" maxrows="8"/>
+	<!--	<simple-admin id="«form.name.toLowerCase»" maxrows="8"/>-->
 	'''
 	
 	// ListComponent
@@ -125,20 +124,20 @@ class ScreenClarityGenerator {
 				«h.genTableHeader»
 			«ENDFOR»
 			
-	            <clr-dg-row *clrDgItems="let «module.name.toLowerCase» of «module.name.toLowerCase»Array" [clrDgItem]="«module.name.toLowerCase»">
+	            <clr-dg-row *clrDgItems="let «page.name.toLowerCase» of «page.name.toLowerCase»Array" [clrDgItem]="«page.name.toLowerCase»">
 	                <div hidden="true">
 	                    <div>
-	                        <button class="action-item" (click)="setClickedRowEdita«module.name.toLowerCase.toFirstUpper»(i, «module.name.toLowerCase»)">Editar</button> 
+	                        <button class="action-item" (click)="setClickedRowEdita«page.name.toLowerCase.toFirstUpper»(i, «page.name.toLowerCase»)">Editar</button> 
 	                    </div>
 	                    <div>
-	                        <button class="action-item" (click)="setClickedRowElimina«module.name.toLowerCase.toFirstUpper»(i, «module.name.toLowerCase»)">Eliminar</button>
+	                        <button class="action-item" (click)="setClickedRowElimina«page.name.toLowerCase.toFirstUpper»(i, «page.name.toLowerCase»)">Eliminar</button>
 	                    </div>
 	                </div>
 	                <clr-dg-action-overflow>
-	                    <button class="action-item" *ngIf="beneficiario_update" (click)="setClickedRowEdita«module.name.toLowerCase.toFirstUpper»(i, «module.name.toLowerCase»)">
+	                    <button class="action-item" *ngIf="beneficiario_update" (click)="setClickedRowEdita«page.name.toLowerCase.toFirstUpper»(i, «page.name.toLowerCase»)">
 	                        <clr-icon shape="note" ></clr-icon> Editar
 	                    </button>
-	                    <button class="action-item" *ngIf="beneficiario_delete" (click)="setClickedRowElimina«module.name.toLowerCase.toFirstUpper»(i, «module.name.toLowerCase»)">
+	                    <button class="action-item" *ngIf="beneficiario_delete" (click)="setClickedRowElimina«page.name.toLowerCase.toFirstUpper»(i, «page.name.toLowerCase»)">
 	                        <clr-icon shape="trash"></clr-icon> Borrar
 	                    </button>
 	                </clr-dg-action-overflow>
@@ -188,18 +187,19 @@ class ScreenClarityGenerator {
 	
 	// MessageComponent
 	def dispatch genUIComponent(MessageComponent m, Module module, PageContainer page) '''
-«««		<div class="well" style="overflow: auto">
-«««			«m.msgtext»
-«««		</div>
+		<div style="overflow: auto">
+			«m.msgtext»
+		</div>
 	'''
 	
 	// RowComponent
 	def dispatch genUIComponent(RowComponent row, Module module, PageContainer page) '''
-«««		<div class="row">
-«««			«FOR c : row.columns»
-««««««				«c.genColumnComponent(module)»
-«««			«ENDFOR»
-«««		</div>
+		<!--<div class="row">
+			«FOR c : row.columns»
+			Nombre: «c»
+«««				«c.genColumnComponent(module)»
+			«ENDFOR»
+		</div>-->
 	'''
 	
 	/*
@@ -215,11 +215,12 @@ class ScreenClarityGenerator {
 	'''
 	
 	def CharSequence genColumnComponent(ColumnComponent column, Module module) '''
-		<div class="«column.sizes.genColSize»">
+		<!--<div class="«column.sizes.genColSize»">
 			«FOR e : column.elements»
+			column: «e»
 «««				«e.genUIComponent(module)»
 			«ENDFOR»
-		</div>
+		</div>-->
 	'''
 	
 	def genColSize(EList<SizeOption> list) {
