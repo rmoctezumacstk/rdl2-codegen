@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 import org.apache.commons.lang3.RandomStringUtils
 import java.text.NumberFormat
+import com.softtek.rdl2.EntityBooleanField
 
 class EntityFieldUtils {
 
@@ -222,6 +223,23 @@ class EntityFieldUtils {
 		return required
 	}
 
+	def dispatch isFieldRequired(EntityBooleanField field) {
+		var required = true
+		
+		for(EntityAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
 
 	/*
 	 * getFieldGlossaryName
@@ -326,6 +344,16 @@ class EntityFieldUtils {
 		return fieldName
 	}
 
+	def dispatch getFieldGlossaryName(EntityBooleanField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+
 
 	/*
 	 * getFieldGlossaryDescription
@@ -421,6 +449,16 @@ class EntityFieldUtils {
 	}
 	
 	def dispatch getFieldGlossaryDescription(EntityCurrencyField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryDescription(EntityBooleanField field) {
 		var fieldName = field.name
 		for (attr : field.attrs) {
 			if (attr.glossary !== null) {
@@ -598,5 +636,9 @@ class EntityFieldUtils {
 	
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
 		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
+	}
+	
+	def  dispatch fakerDomainData(EntityBooleanField field) {
+		return faker.bool().bool()
 	}
 }

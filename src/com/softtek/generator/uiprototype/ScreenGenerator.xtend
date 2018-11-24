@@ -57,6 +57,7 @@ import com.softtek.rdl2.UIDecimalField
 import com.softtek.rdl2.UIIntegerField
 import com.softtek.rdl2.UICurrencyField
 import com.softtek.rdl2.OffSetMD
+import com.softtek.rdl2.EntityBooleanField
 
 class ScreenGenerator {
 	
@@ -244,6 +245,9 @@ class ScreenGenerator {
 	def dispatch genFormUIField(UICurrencyField field) '''
 		<inputbox id="«field.name.toLowerCase»" type="currency" label="«field.name»" value=""  placeholder="" required=true disabled=false min=0.00 max=1000000.00 />
 	'''	
+	def dispatch genFormUIField(EntityBooleanField field) '''
+	'''	
+
 	
 	/*
 	 * genEntityField
@@ -286,6 +290,9 @@ class ScreenGenerator {
 	
 	def dispatch genUIFormEntityField(EntityCurrencyField field) '''
 		<inputbox id="«field.name.toLowerCase»" type="currency" label="«entityFieldUtils.getFieldGlossaryName(field)»" value=""  placeholder="«entityFieldUtils.getFieldGlossaryDescription(field)»" «IF entityFieldUtils.isFieldRequired(field)»required=true«ELSE»required=false«ENDIF» disabled=false min=0.00 max=1000000.00 />
+	'''
+
+	def dispatch genUIFormEntityField(EntityBooleanField field) '''
 	'''
 
 	/*
@@ -532,6 +539,9 @@ class ScreenGenerator {
 		<outputtext label="«entityFieldUtils.getFieldGlossaryName(field)»" value="«entityFieldUtils.fakerDomainData(field)»"></outputtext>
 	'''
 
+	def dispatch genUIDetailEntityField(EntityBooleanField field) '''
+	'''
+
 
 	/*
 	 * UIElement
@@ -582,6 +592,10 @@ class ScreenGenerator {
 	def dispatch genHeaderUIDisplayField(EntityCurrencyField field) '''
 		<th>«entityFieldUtils.getFieldGlossaryName(field)»</th>
 	'''
+	
+	def dispatch genHeaderUIDisplayField(EntityBooleanField field) '''
+		<th>«entityFieldUtils.getFieldGlossaryName(field)»</th>
+	'''
 
 	/*
 	 * genTableRows
@@ -630,6 +644,10 @@ class ScreenGenerator {
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityCurrencyField field) '''
+		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+	'''
+
+	def dispatch genRowsUIDisplayField(EntityBooleanField field) '''
 		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 

@@ -14,6 +14,8 @@ import com.softtek.generator.uiprototype.AppTagGenerator
 import com.softtek.generator.uiprototype.IndexJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
+import com.softtek.generator.banorte.angular.BanorteGeneratorAngularHtml
+import com.softtek.generator.banorte.angular.BanorteGeneratorAngularTs
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -25,6 +27,9 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
+	@Inject BanorteGeneratorAngularHtml banorteGeneratorAngularHtml
+	@Inject BanorteGeneratorAngularTs banorteGeneratorAngularTs
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -33,6 +38,9 @@ class Rdl2Generator extends AbstractGenerator {
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
+			
+			banorteGeneratorAngularHtml.doGenerate(r, fsa)
+			banorteGeneratorAngularTs.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)

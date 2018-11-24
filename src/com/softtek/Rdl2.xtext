@@ -87,7 +87,8 @@ EntityField:
 	EntityEmailField     |
 	EntityDecimalField   |
 	EntityIntegerField   |
-	EntityCurrencyField
+	EntityCurrencyField  |
+	EntityBooleanField
 ;
 
 EntityTextConstraintDef:
@@ -212,6 +213,13 @@ EntityIntegerField:
 
 EntityCurrencyField:
 	'field' name=ID ':' 'Currency'
+	('{'
+	  (attrs += EntityAttr)+
+	'}')?
+;
+
+EntityBooleanField:
+	'field' name=ID ':' 'Boolean'
 	('{'
 	  (attrs += EntityAttr)+
 	'}')?
