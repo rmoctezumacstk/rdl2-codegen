@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.PageContainer
-import com.softtek.rdl2.UIComponent
 import com.softtek.rdl2.FormComponent
 import com.softtek.rdl2.InlineFormComponent
 import com.softtek.rdl2.ListComponent
@@ -15,6 +14,20 @@ import com.softtek.rdl2.EntityBooleanField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.UILinkCommandQueryFlow
 import com.softtek.generator.utils.ScreenContainerUtils
+import com.softtek.rdl2.UIField
+import com.softtek.rdl2.UIDisplay
+import com.softtek.rdl2.UIFormContainer
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.UIFormPanel
+import com.softtek.rdl2.UIFormRow
 
 class BanorteGeneratorAngularTs {
 	
@@ -43,9 +56,11 @@ class BanorteGeneratorAngularTs {
 		import { WSSecurityService } from "../../services/wssecurity.service";
 		import { environment } from "../../../environments/environment";
 		import { WsprivilegiosService } from "../../services/wsprivilegios.service";
-		«p.genServiceDeclarations»
 		import { WscatalogoService } from "../../services/wscatalogo.service";
 		import { GlobalesService } from "../../globales.service";
+		
+		«p.genServiceDeclarations»
+		
 		«p.genModelsDeclaration»
 		
 		@Component({
@@ -53,31 +68,32 @@ class BanorteGeneratorAngularTs {
 		  templateUrl: "./«p.name.toFirstLower».component.html",
 		  styleUrls: ["./«p.name.toFirstLower».component.css"]
 		})
+		
 		export class «p.name»Component implements OnInit, OnDestroy {
 		  @Input() modo = 0;
 		  navigationSubscription;
 		  // TODO -- Cambiar a usuario administrador
 		  administrador = "Usuario en duro";
 		  arrayErrors = [];
-		  
 		  isActionCanceled = false;
-		  
 		  editable = true;
+		  		
 		  «p.genModelsInitialization»
 		
-		  @Output() messageEvent = new EventEmitter<User>();
+		  «p.genMessageEvents»
 		
 		  constructor(
 		    private router: Router,
-		    // TODO: Incluir servicios por entidad
-		    private userData: UserdataService,
 		    private WSSecurityService: WSSecurityService,
 		    private WscatalogoService: WscatalogoService,
 		    private wsPrivilegios: WsprivilegiosService,
 		    public globales: GlobalesService
+		    
+		    «p.genDefServiceConstructor»
 		  ) {
 		    this.inicializarParametros();
 		  }
+		  
 		  ruta_imagenes = environment.ruta_imagenes;
 
 		  «p.genLocalVariableInitialization»
@@ -102,6 +118,7 @@ class BanorteGeneratorAngularTs {
 		      });
 		    }
 		  }
+		  
 		  inicializarParametros() {
 		    // Inicializar parámetros cada vez que se entre a la pantalla
 		    console.log("«p.name»Component: Inicializando parámetros");
@@ -120,15 +137,17 @@ class BanorteGeneratorAngularTs {
 		  }
 		
 		  onSubmit() {
-		    if (this.validaPerfil()) {
-		      for (const perfil of this.lstPerfiles) {
-		        if (this.model.perfil === perfil.idPerfil) {
-		          this.model.categoria = perfil["perfilInterno"];
-		        }
-		      }
-		      this.model.id = this.model.email;
-		      this.messageEvent.emit(this.model);
-		    }
+		  	// Handle this event...
+		  	
+		    //if (this.requiereSoftToken()) {
+		    //  for (const perfil of this.lstPerfiles) {
+		    //    if (this.model.perfil === perfil.idPerfil) {
+		    //      this.model.categoria = perfil["perfilInterno"];
+		    //    }
+		    //  }
+		    //  this.model.id = this.model.email;
+		    //  this.messageEvent.emit(this.model);
+		    //}
 		  }
 		  
 		  ngOnDestroy(): void {
@@ -141,7 +160,7 @@ class BanorteGeneratorAngularTs {
 		    this.isActionCanceled = true;
 		  }
 		
-		  validaPerfil() {
+		  requiereSoftToken() {
 		    this.arrayErrors = [];
 		    let locPerfil;
 		    let requiereSoftToken = false;
@@ -195,7 +214,7 @@ class BanorteGeneratorAngularTs {
 
 	def CharSequence genServiceDeclarations(PageContainer container) '''
 		«FOR e : screenContainerUtils.getScreenEntities(container)»
-			import { «e.name»dataService } from "../../services/«e.name.toFirstLower»data.service";
+			import { «e.name»DataService } from "../../services/«e.name.toFirstLower»Data.service";
 		«ENDFOR»
 	'''
 
@@ -215,14 +234,80 @@ class BanorteGeneratorAngularTs {
 			);
 		«ENDFOR»
 	'''
+	
+	
+	def CharSequence genMessageEvents(PageContainer container) '''
+		«FOR c : container.components.filter(typeof(FormComponent))»
+			«IF c.entity !== null»
+				@Output() «c.name.toFirstLower»MessageEvent = new EventEmitter<«c.entity.name»>();
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	def CharSequence genDefServiceConstructor(PageContainer container) '''
+		«FOR e : screenContainerUtils.getScreenEntities(container) SEPARATOR ","»
+			private «e.name.toFirstLower»DataService: «e.name»DataService
+		«ENDFOR»
+	'''
+
 
 	def CharSequence genLocalVariableInitialization(PageContainer container) '''
 		«FOR c : container.components.filter(typeof(FormComponent))»
-			«FOR s : c.form_elements.filter(typeof(EntityBooleanField))»
-				«s.name.toFirstLower» = 0;
+			«FOR f : c.form_elements»
+				«f.genUIElementLocalVarInit»
 			«ENDFOR»
-			«FOR s : c.form_elements.filter(typeof(EntityReferenceField))»
-				«s.name.toFirstLower» = [];
+		«ENDFOR»
+	'''
+	
+	/*
+	 * UIElement
+	 */
+	def dispatch genUIElementLocalVarInit(UIField element) '''
+	'''
+	def dispatch genUIElementLocalVarInit(UIDisplay element) '''
+		«element.ui_field.genUIDisplayLocalVarInit»
+	'''
+	def dispatch genUIElementLocalVarInit(UIFormContainer element) '''
+		«element.genUIFormContainerLocalVarInit»
+	'''
+
+	/*
+	 * EntityField
+	 */
+	def dispatch genUIDisplayLocalVarInit(EntityReferenceField field) '''
+		«field.name.toFirstLower» = [];
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityTextField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityLongTextField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityDateField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityImageField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityFileField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityEmailField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityDecimalField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityIntegerField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityCurrencyField field) '''
+	'''
+	def dispatch genUIDisplayLocalVarInit(EntityBooleanField field) '''
+		«field.name.toFirstLower» = 0;
+	'''
+
+	/*
+	 * UIFormContainer
+	 */
+	def dispatch genUIFormContainerLocalVarInit(UIFormPanel container) '''
+	'''
+	def dispatch genUIFormContainerLocalVarInit(UIFormRow container) '''
+		«FOR column : container.columns»
+			«FOR e : column.elements»
+				«e.genUIElementLocalVarInit»
 			«ENDFOR»
 		«ENDFOR»
 	'''
@@ -230,19 +315,124 @@ class BanorteGeneratorAngularTs {
 
 	def CharSequence genSwitchEventHandling(PageContainer container) '''
 		«FOR c : container.components.filter(typeof(FormComponent))»
-			«FOR s : c.form_elements.filter(typeof(EntityBooleanField))»
-			  onClick«s.name»(estatus: number) {
-			    this.«s.name.toFirstLower» = estatus;
-			    this.model.«s.name.toFirstLower» = estatus === 1;
-			  }
+			«FOR f : c.form_elements»
+				«f.genUIElementSwitchEventHandling»
 			«ENDFOR»
 		«ENDFOR»
 	'''
 
+	/*
+	 * UIElement
+	 */
+	def dispatch genUIElementSwitchEventHandling(UIField element) '''
+	'''
+	def dispatch genUIElementSwitchEventHandling(UIDisplay element) '''
+		«element.ui_field.genUIDisplaySwitchEventHandling»
+	'''
+	def dispatch genUIElementSwitchEventHandling(UIFormContainer element) '''
+		«element.genUIFormContainerSwitchEventHandling»
+	'''
+
+	/*
+	 * EntityField
+	 */
+	def dispatch genUIDisplaySwitchEventHandling(EntityReferenceField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityTextField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityLongTextField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityDateField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityImageField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityFileField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityEmailField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityDecimalField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityIntegerField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityCurrencyField field) '''
+	'''
+	def dispatch genUIDisplaySwitchEventHandling(EntityBooleanField field) '''
+	  onClick«field.name»(estatus: number) {
+	    this.«field.name.toFirstLower» = estatus;
+	    this.model.«field.name.toFirstLower» = estatus === 1;
+	  }
+	'''
+
+	/*
+	 * UIFormContainer
+	 */
+	def dispatch genUIFormContainerSwitchEventHandling(UIFormPanel container) '''
+	'''
+	def dispatch genUIFormContainerSwitchEventHandling(UIFormRow container) '''
+		«FOR column : container.columns»
+			«FOR e : column.elements»
+				«e.genUIElementSwitchEventHandling»
+			«ENDFOR»
+		«ENDFOR»
+	'''
+
+
 	def CharSequence genOnInitSwitches(PageContainer container) '''
 		«FOR c : container.components.filter(typeof(FormComponent))»
-			«FOR s : c.form_elements.filter(typeof(EntityBooleanField))»
-				this.model.«s.name.toFirstLower» = false;
+			«FOR f : c.form_elements»
+				«f.genUIElementOnInitSwitches»
+			«ENDFOR»
+		«ENDFOR»
+	'''
+
+	/*
+	 * UIElement
+	 */
+	def dispatch genUIElementOnInitSwitches(UIField element) '''
+	'''
+	def dispatch genUIElementOnInitSwitches(UIDisplay element) '''
+		«element.ui_field.genUIDisplayOnInitSwitches»
+	'''
+	def dispatch genUIElementOnInitSwitches(UIFormContainer element) '''
+		«element.genUIFormContainerOnInitSwitches»
+	'''
+
+	/*
+	 * EntityField
+	 */
+	def dispatch genUIDisplayOnInitSwitches(EntityReferenceField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityTextField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityLongTextField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityDateField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityImageField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityFileField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityEmailField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityDecimalField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityIntegerField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityCurrencyField field) '''
+	'''
+	def dispatch genUIDisplayOnInitSwitches(EntityBooleanField field) '''
+		this.model.«field.name.toFirstLower» = false;
+	'''
+
+	/*
+	 * UIFormContainer
+	 */
+	def dispatch genUIFormContainerOnInitSwitches(UIFormPanel container) '''
+	'''
+	def dispatch genUIFormContainerOnInitSwitches(UIFormRow container) '''
+		«FOR column : container.columns»
+			«FOR e : column.elements»
+				«e.genUIElementOnInitSwitches»
 			«ENDFOR»
 		«ENDFOR»
 	'''

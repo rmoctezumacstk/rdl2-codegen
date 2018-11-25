@@ -16,15 +16,14 @@ class ScreenContainerUtils {
 	def getScreenEntities(PageContainer p) {
 		var Set<Entity> entities = new HashSet()
 		
-		println(p)
 		for (c : p.components) {
-			println(c)
 			if (c.getComponentEntity !== null) {
-				println(c.getComponentEntity)
+				//println(c.getComponentEntity)
 				entities.add(c.getComponentEntity)
 			}
 		}
 		
+		//println(entities)
 		return entities
 	}
 	
