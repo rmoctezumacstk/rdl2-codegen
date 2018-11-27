@@ -63,7 +63,7 @@ class AdminHtmlClarityGenerator {
 										«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
 											«IF page.landmark!==null && page.landmark.trim.equals("true")»
 						                        <div>
-						                            <a clrVerticalNavLink routerLink="./«m.module_ref.name.toLowerCase»" routerLinkActive="active">
+						                            <a clrVerticalNavLink routerLink="./«page.name.toLowerCase»" routerLinkActive="active">
 						                                <clr-icon shape="application"></clr-icon>
 						                                «page.page_title»
 						                            </a>
