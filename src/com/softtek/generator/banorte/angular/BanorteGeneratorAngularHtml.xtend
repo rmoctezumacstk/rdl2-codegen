@@ -20,7 +20,7 @@ class BanorteGeneratorAngularHtml {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toFirstLower + "/" + p.name.toFirstLower + ".component.html", p.generateHtml(m))
+					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.html", p.generateHtml(m))
 				}
 			}
 		}
@@ -48,7 +48,7 @@ class BanorteGeneratorAngularHtml {
 		  </h5>
 		
 		  <div class="col-md-12">
-		    <app-steper [currentStep]="1" [steps]="[1, 2, 3, 4]"></app-steper>
+		    <!--<app-steper [currentStep]="1" [steps]="[1, 2, 3, 4]"></app-steper>-->
 		  </div>
 		  <br />
 		  <br />
@@ -85,6 +85,7 @@ class BanorteGeneratorAngularHtml {
 	'''
 	
 	def dispatch genUIComponent(MessageComponent m, Module module) '''
+	Mensaje: «m.name»
 	'''
 	
 	def dispatch genUIComponent(RowComponent row, Module module) '''

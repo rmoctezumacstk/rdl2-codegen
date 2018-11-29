@@ -10,7 +10,7 @@ class BanorteGeneratorAngularCss {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toFirstLower + "/" + p.name.toFirstLower + ".component.css", p.generateCss(m))
+					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.css", p.generateCss(m))
 				}
 			}
 		}

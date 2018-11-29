@@ -45,10 +45,8 @@ class BanorteGeneratorAngularHtml_Form {
 	//var uiFlowUtils = new UIFlowUtils
 	
 	def CharSequence genUIComponent_FormComponent(FormComponent form, Module module) '''
-	  <form #«form.name»="ngForm" (ngSubmit)="onSubmit()">
-	    <div
-	      class="col-md-10 col-xs-12 col-sm-12 center-block-no-float-left margin-bottom-1"
-	    >
+	  <form #«form.name»="ngForm" (ngSubmit)="onSubmit«form.name»()">
+	    <div class="col-md-10 col-xs-12 col-sm-12 center-block-no-float-left margin-bottom-1">
 	      <div class="row">
 	        <div class="col-md-12">
 	          <h6>
@@ -63,11 +61,7 @@ class BanorteGeneratorAngularHtml_Form {
 	      <div class="row">
 	        <div class="col-md-12">
 	          <h6>
-	            {{
-	              globales.etiquetasIdioma[
-	                "cib.«form.name.toFirstLower».labels.camposrequeridos"
-	              ]
-	            }}
+	            {{globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.camposrequeridos"]}}
 	          </h6>
 	        </div>
 	      </div>
@@ -75,14 +69,16 @@ class BanorteGeneratorAngularHtml_Form {
 	      «FOR field : form.form_elements»
 	        «field.genUIFormElement(form)»
 	      «ENDFOR»
-
-	      <div class="col-md-12">
+			
+		<div class="row">	
+	      <div class="col-md-4 col-xs-12 col-sm-12 mb-3 col-md-offset-4">
 	        <div class="file-actions-container right">
 	          «FOR flow : form.links»
 	            «flow.genFormFlow(form)»
 	          «ENDFOR»
-	        </div>
-	      </div>
+		        </div>
+		      </div>
+		    </div>
 	    </div>
 	  </form>
 	'''
@@ -177,6 +173,23 @@ class BanorteGeneratorAngularHtml_Form {
 	'''
 	
 	def dispatch genUIFormEntityField(EntityFileField field, FormComponent form) '''
+          <!-- <div class="row">
+              <div class="col-md-4 col-xs-12 col-sm-12 mb-3 col-md-offset-4">
+              <input class="inputImagen" id="archivo1"/>
+              <div class="botonInputFileModificado">
+                  <input type="file" class="inputImagenOculto" id="archivo_oculto1" name="archivo_oculto1"/>
+                  <div class="boton">Examinar</div>  
+              </div> 
+            </div>      
+          </div> -->
+          <div class="row">
+              <div class="col-md-4 col-xs-12 col-sm-12 mb-3 col-md-offset-4">
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="customFileLang">
+                  <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                </div>
+            </div>
+          </div>
 	'''
 	
 	def dispatch genUIFormEntityField(EntityEmailField field, FormComponent form) '''
@@ -251,7 +264,7 @@ class BanorteGeneratorAngularHtml_Form {
 	'''
 
 	def dispatch genUIFormEntityField(EntityBooleanField field, FormComponent form) '''
-      <div class="style="height: 10px;">
+      <div style="height: 10px;">
         <label>{{
           globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.alertas"]
         }}</label>
@@ -436,7 +449,7 @@ class BanorteGeneratorAngularHtml_Form {
         <button
           type="button"
           class="btn-default2 btn-size-default2"
-          (click)="onClick«flow.name»"()"
+          (click)="onClick«flow.name»()"
         >
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
@@ -455,7 +468,7 @@ class BanorteGeneratorAngularHtml_Form {
         <button
           type="button"
           class="btn-default2 btn-size-default2"
-          (click)="«flow.name.toFirstLower»"()"
+          (click)="onClick«flow.name»()"
         >
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
@@ -473,7 +486,7 @@ class BanorteGeneratorAngularHtml_Form {
         <button
           type="button"
           class="btn-default2 btn-size-default2"
-          (click)="«flow.name.toFirstLower»"()"
+          (click)="onClick«flow.name»()"
         >
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
