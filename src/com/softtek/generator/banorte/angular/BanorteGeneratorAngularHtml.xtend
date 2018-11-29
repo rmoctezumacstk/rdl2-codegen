@@ -15,6 +15,7 @@ class BanorteGeneratorAngularHtml {
 
 	var banorteGeneratorAngularHtml_Form = new BanorteGeneratorAngularHtml_Form
 	var banorteGeneratorAngularHtml_List = new BanorteGeneratorAngularHtml_List
+	var banorteGeneratorAngularHtml_Detail = new BanorteGeneratorAngularHtml_Detail
 
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -82,6 +83,7 @@ class BanorteGeneratorAngularHtml {
 	'''
 	
 	def dispatch genUIComponent(DetailComponent detail, Module module) '''
+		«banorteGeneratorAngularHtml_Detail.genUIComponent_DetailComponent(detail, module)»
 	'''
 	
 	def dispatch genUIComponent(MessageComponent m, Module module) '''
