@@ -643,7 +643,7 @@ OffSetXL:
 ;
 
 UIDisplay:
-	'display' ui_field=[EntityField|QualifiedName] ('{' mutable='mutable' '}')?
+	'display' ui_field=[EntityField|QualifiedName] ('{' (mutable='mutable' | immutable='immutable' | disabled='disabled')? '}')?
 ;
 
 UIField:
@@ -711,6 +711,7 @@ UIQueryFlow:
 		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		('confirmationMessage')?
 	'}'
 ;
 
@@ -720,6 +721,7 @@ UICommandFlow:
 		'.failure' ':' failure_flow=[ContainerOrComponent|QualifiedName]
 	'{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		('confirmationMessage')?
 	'}'
 ;
 
@@ -727,6 +729,7 @@ UILinkFlow:
 	'flow' name=ID '->' (link_to=[PageContainer|QualifiedName])
 	('{'
 		'widget' '(' ('label' ':' (link_label=STRING))? (',' 'type' ':' type=('Normal'|'Outlined'|'Link'|'Circle') ',' 'state' ':' state=('Default'|'Primary'|'Danger'))? (',' 'icon' ':' icon=STRING)?  ')'
+		('confirmationMessage')?
 	'}')?
 ;
 

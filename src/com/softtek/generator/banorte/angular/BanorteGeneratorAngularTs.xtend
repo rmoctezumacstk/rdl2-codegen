@@ -32,12 +32,13 @@ import com.softtek.rdl2.UIFormRow
 class BanorteGeneratorAngularTs {
 	
 	var screenContainerUtils = new ScreenContainerUtils()
+	var banorteGeneratorAngularTs_Form = new BanorteGeneratorAngularTs_Form
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toFirstLower + "/" + p.name.toFirstLower + ".component.ts", p.generateTs(m))
+					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.ts", p.generateTs(m))
 				}
 			}
 		}
@@ -53,15 +54,15 @@ class BanorteGeneratorAngularTs {
 		  Input
 		} from "@angular/core";
 		import { Router, NavigationEnd, NavigationCancel } from "@angular/router";
-		import { WSSecurityService } from "../../services/wssecurity.service";
-		import { environment } from "../../../environments/environment";
-		import { WsprivilegiosService } from "../../services/wsprivilegios.service";
-		import { WscatalogoService } from "../../services/wscatalogo.service";
-		import { GlobalesService } from "../../globales.service";
+«««		import { WSSecurityService } from "../../services/wssecurity.service";
+«««		import { environment } from "../../../environments/environment";
+«««		import { WsprivilegiosService } from "../../services/wsprivilegios.service";
+«««		import { WscatalogoService } from "../../services/wscatalogo.service";
+«««		import { GlobalesService } from "../../globales.service";
 		
-		«p.genServiceDeclarations»
+«««		«p.genServiceDeclarations»
 		
-		«p.genModelsDeclaration»
+«««		«p.genModelsDeclaration»
 		
 		@Component({
 		  selector: "app-«p.name.toFirstLower»",
@@ -78,77 +79,66 @@ class BanorteGeneratorAngularTs {
 		  isActionCanceled = false;
 		  editable = true;
 		  		
-		  «p.genModelsInitialization»
-		
-		  «p.genMessageEvents»
+«««		  «p.genModelsInitialization»	
+«««		  «p.genMessageEvents»
 		
 		  constructor(
-		    private router: Router,
-		    private WSSecurityService: WSSecurityService,
-		    private WscatalogoService: WscatalogoService,
-		    private wsPrivilegios: WsprivilegiosService,
-		    public globales: GlobalesService
-		    
-		    «p.genDefServiceConstructor»
+«««		    private router: Router,
+«««		    private WSSecurityService: WSSecurityService,
+«««		    private WscatalogoService: WscatalogoService,
+«««		    private wsPrivilegios: WsprivilegiosService,
+«««		    public globales: GlobalesService,
+«««		    «p.genDefServiceConstructor»
 		  ) {
 		    this.inicializarParametros();
 		  }
 		  
-		  ruta_imagenes = environment.ruta_imagenes;
+«««		  ruta_imagenes = environment.ruta_imagenes;
 
-		  «p.genLocalVariableInitialization»
+«««		  «p.genLocalVariableInitialization»
 		
-		  «p.genSwitchEventHandling»
+«««		  «p.genSwitchEventHandling»
 		
 		  ngOnInit(): void {
-		    this.WSSecurityService.pruebaObtenerDatos();
+«««		    this.WSSecurityService.pruebaObtenerDatos();
 
-		    «p.genOnInitSwitches»
+«««		    «p.genOnInitSwitches»
 
-		    if (!this.WSSecurityService.WSValidacionServicioUsuario(1)) {
-		      console.log("El usuario NO tiene acceso al servicio");
-		    } else {
-		      console.log("El usuario SI tiene acceso al servicio");
-		    }
-		    if (this.modo !== 0) {
-		      console.log("Si entra");
-		      this.userData.currentMessage.subscribe(user => {
-		        console.log(user);
-		        this.model = user;
-		      });
-		    }
+«««		    if (!this.WSSecurityService.WSValidacionServicioUsuario(1)) {
+«««		      console.log("El usuario NO tiene acceso al servicio");
+«««		    } else {
+«««		      console.log("El usuario SI tiene acceso al servicio");
+«««		    }
+«««		    if (this.modo !== 0) {
+«««		      console.log("Si entra");
+«««		      this.userData.currentMessage.subscribe(user => {
+«««		        console.log(user);
+«««		        this.model = user;
+«««		      });
+«««		    }
 		  }
 		  
 		  inicializarParametros() {
-		    // Inicializar parámetros cada vez que se entre a la pantalla
-		    console.log("«p.name»Component: Inicializando parámetros");
-		    // TODO: Por cada referencia a un Enum o Entity
-		    this.WscatalogoService.listaCatalogo("cat_perfiles").subscribe(respTemp => {
-		      console.log(respTemp);
-		      for (const perfil of respTemp["Response"]["Data"][0]) {
-		        if (perfil.perfilInterno === 0) {
-		          this.lstPerfiles.push(perfil);
-		        }
-		      }
-		    });
-		    this.WscatalogoService.listaCatalogo("cat_lenguaje").subscribe(respTemp => {
-		      this.lstLenguajes = respTemp["Response"]["Data"][0];
-		    });
+«««		    // Inicializar parámetros cada vez que se entre a la pantalla
+«««		    console.log("«p.name»Component: Inicializando parámetros");
+«««		    // TODO: Por cada referencia a un Enum o Entity
+«««		    this.WscatalogoService.listaCatalogo("cat_perfiles").subscribe(respTemp => {
+«««		      console.log(respTemp);
+«««		      for (const perfil of respTemp["Response"]["Data"][0]) {
+«««		        if (perfil.perfilInterno === 0) {
+«««		          this.lstPerfiles.push(perfil);
+«««		        }
+«««		      }
+«««		    });
+«««		    this.WscatalogoService.listaCatalogo("cat_lenguaje").subscribe(respTemp => {
+«««		      this.lstLenguajes = respTemp["Response"]["Data"][0];
+«««		    });
 		  }
 		
-		  onSubmit() {
-		  	// Handle this event...
-		  	
-		    //if (this.requiereSoftToken()) {
-		    //  for (const perfil of this.lstPerfiles) {
-		    //    if (this.model.perfil === perfil.idPerfil) {
-		    //      this.model.categoria = perfil["perfilInterno"];
-		    //    }
-		    //  }
-		    //  this.model.id = this.model.email;
-		    //  this.messageEvent.emit(this.model);
-		    //}
-		  }
+	  	«FOR c : p.components»
+		    «c.genUIComponent(module)»
+		«ENDFOR»		
+		
 		  
 		  ngOnDestroy(): void {
 		    if (this.navigationSubscription) {
@@ -160,56 +150,72 @@ class BanorteGeneratorAngularTs {
 		    this.isActionCanceled = true;
 		  }
 		
-		  requiereSoftToken() {
-		    this.arrayErrors = [];
-		    let locPerfil;
-		    let requiereSoftToken = false;
-		    const privilegios = [];
-		    for (const perfil of this.lstPerfiles) {
-		      if (perfil.idPerfil === this.model.perfil) {
-		        locPerfil = perfil;
-		        break;
-		      }
-		    }
-		    for (const privilegio of locPerfil.privilegios) {
-		      privilegios.push(privilegio.idPrivilegio);
-		      console.log("aplica soft token");
-		      console.log(privilegio.aplicaSofteToken);
-		      if (
-		        privilegio.aplicaSofteToken &&
-		        (this.model.movil1 === "" && this.model.movil2 === "")
-		      ) {
-		        requiereSoftToken = true;
-		        this.model.softTokenMovil1 = true;
-		        this.model.softTokenMovil2 = false;
-		      }
-		    }
-		    if (requiereSoftToken) {
-		      this.arrayErrors.push(
-		        "El perfil incluye privilegios que requieren soft token, es requerido un número de teléfono móvil"
-		      );
-		    }
-		    this.model.privilegios = privilegios;
-		    return !requiereSoftToken;
-		  }
+«««		  requiereSoftToken() {
+«««		    this.arrayErrors = [];
+«««		    let locPerfil;
+«««		    let requiereSoftToken = false;
+«««		    const privilegios = [];
+«««		    for (const perfil of this.lstPerfiles) {
+«««		      if (perfil.idPerfil === this.model.perfil) {
+«««		        locPerfil = perfil;
+«««		        break;
+«««		      }
+«««		    }
+«««		    for (const privilegio of locPerfil.privilegios) {
+«««		      privilegios.push(privilegio.idPrivilegio);
+«««		      console.log("aplica soft token");
+«««		      console.log(privilegio.aplicaSofteToken);
+«««		      if (
+«««		        privilegio.aplicaSofteToken &&
+«««		        (this.model.movil1 === "" && this.model.movil2 === "")
+«««		      ) {
+«««		        requiereSoftToken = true;
+«««		        this.model.softTokenMovil1 = true;
+«««		        this.model.softTokenMovil2 = false;
+«««		      }
+«««		    }
+«««		    if (requiereSoftToken) {
+«««		      this.arrayErrors.push(
+«««		        "El perfil incluye privilegios que requieren soft token, es requerido un número de teléfono móvil"
+«««		      );
+«««		    }
+«««		    this.model.privilegios = privilegios;
+«««		    return !requiereSoftToken;
+«««		  }
 		
-		  onCancelConfirmation(event) {
-		    this.isActionCanceled = false;
-		    if (event) {
-		      // si confirma
-		    }
-		  }
+«««		  onCancelConfirmation(event) {
+«««		    this.isActionCanceled = false;
+«««		    if (event) {
+«««		      // si confirma
+«««		    }
+«««		  }
 		
-		  //validaEstatus() {
-		  //  if (
-		  //    this.modo === 1 &&
-		  //    (this.model.estatus === "S" || this.model.estatus === "B")
-		  //  ) {
-		  //    this.editable = false;
-		  //  }
-		  //}
 		}
 	'''
+	
+	/*
+	 * genUIComponent
+	 */
+	def dispatch genUIComponent(FormComponent form, Module module) '''
+		«banorteGeneratorAngularTs_Form.genUIComponent_FormComponent(form, module)»
+	'''
+
+	def dispatch genUIComponent(InlineFormComponent form, Module module) '''
+	'''
+	
+	def dispatch genUIComponent(ListComponent list, Module module) '''
+«««		«banorteGeneratorAngularTs_List.genUIComponent_ListComponent(list, module)»
+	'''
+	
+	def dispatch genUIComponent(DetailComponent detail, Module module) '''
+	'''
+	
+	def dispatch genUIComponent(MessageComponent m, Module module) '''
+	'''
+	
+	def dispatch genUIComponent(RowComponent row, Module module) '''
+	'''
+	
 	
 
 	def CharSequence genServiceDeclarations(PageContainer container) '''

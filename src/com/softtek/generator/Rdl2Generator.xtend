@@ -16,6 +16,9 @@ import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
 import com.softtek.generator.banorte.angular.BanorteGeneratorAngularHtml
 import com.softtek.generator.banorte.angular.BanorteGeneratorAngularTs
+import com.softtek.generator.banorte.angular.BanorteGeneratorAngularCss
+import com.softtek.generator.banorte.angular.BanorteGeneratorAngularRouting
+import com.softtek.generator.banorte.angular.BanorteGeneratorAngularModule
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -27,13 +30,21 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
+	// Angular
 	@Inject BanorteGeneratorAngularHtml banorteGeneratorAngularHtml
 	@Inject BanorteGeneratorAngularTs banorteGeneratorAngularTs
+	@Inject BanorteGeneratorAngularCss banorteGeneratorAngularCss
+	@Inject BanorteGeneratorAngularRouting banorteGeneratorAngularRouting
+	@Inject BanorteGeneratorAngularModule banorteGeneratorAngularModule
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
 		tableDataJsGenerator.doGenerate(resource, fsa)
+		
+		// Angular
+		banorteGeneratorAngularRouting.doGenerate(resource, fsa)
+		banorteGeneratorAngularModule.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
@@ -41,6 +52,7 @@ class Rdl2Generator extends AbstractGenerator {
 			
 			banorteGeneratorAngularHtml.doGenerate(r, fsa)
 			banorteGeneratorAngularTs.doGenerate(r, fsa)
+			banorteGeneratorAngularCss.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)
