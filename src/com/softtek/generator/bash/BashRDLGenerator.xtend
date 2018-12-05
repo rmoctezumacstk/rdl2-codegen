@@ -9,35 +9,44 @@ class BashRDLGenerator {
 	def doGenerator(Resource resource, IFileSystemAccess2 fsa) {
 		fsa.generateFile("bash/" + "setup.sh", genSetupSh(resource))
 		fsa.generateFile("bash/" + "copy.sh", genCopySh(resource))
+		fsa.generateFile("bash/" + "copy-prototype.sh", genCopyPrototypeSh(resource))
 	}
 	
 
 	def CharSequence genSetupSh(Resource resource) '''
 		#!/usr/bin/env sh
 		
-		git clone https://github.com/efuentesp/riot-ui-prototype.git $1
+		mkdir $1
 		
-		./copy.sh $1
+		git clone https://github.com/efuentesp/riot-ui-prototype.git $1/prototype
 		
-		cd $1
-		npm install
-		npm run dev
+		sh copy.sh $1
+		
+		#cd $1
+		#npm install
+		#npm run dev
 	'''
 
 	def CharSequence genCopySh(Resource resource) '''
 		#!/usr/bin/env sh
 		
-		rm -rf $1/src/components/app
-		mkdir $1/src/components/app
-		
-		rm -rf $1/src/tabledata
-		mkdir $1/src/tabledata
-		
-		cp -r ../prototipo/src/components/app/* $1/src/components/app
-		cp ../prototipo/src/tabledata.js $1/src
-		cp -r ../prototipo/src/tabledata/* $1/src/tabledata
-		cp ../prototipo/src/index.js $1/src
-		
+		sh copy-prototype.sh $1
 	'''
-	
+
+	def CharSequence genCopyPrototypeSh(Resource resource) '''
+		#!/usr/bin/env sh
+		
+		dir=$1"/prototype"
+		
+		rm -rf $dir/src/components/app
+		mkdir $dir/src/components/app
+		
+		rm -rf $dir/src/tabledata
+		mkdir $dir/src/tabledata
+		
+		cp -r ../prototipo/src/components/app/* $dir/src/components/app
+		cp ../prototipo/src/tabledata.js $dir/src
+		cp -r ../prototipo/src/tabledata/* $dir/src/tabledata
+		cp ../prototipo/src/index.js $dir/src
+	'''	
 }
