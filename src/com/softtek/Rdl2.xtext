@@ -468,7 +468,7 @@ Actor:
 //Permissions
 
 ActorPermission:
-	permission=[Entity|QualifiedName] ':' actions += PermissionActionInstance ('|' actions += PermissionActionInstance)* 
+	resource=[ModulePermission|QualifiedName] ':' actions += PermissionActionInstance ('|' actions += PermissionActionInstance)* 
 ;
 
 PermissionActionInstance:
@@ -476,23 +476,23 @@ PermissionActionInstance:
 ;
 
 PermissionAction :
-	action=( 'CREATE'|'READ'|'UPDATE'|'DELETE'|ID ) 
+	action=('*' | ID) 
 ;
 
 PermissionInstance:
-	instance=( 'OWN'|'ALL'| ID )
+	instance= ('*' | ID) 
 ;
 
 ModulePermission:
     'permission' '(' 
-	   'resource' ':' resource  = [Entity|QualifiedName] ','
-	   'action'   ':' action   += PermissionAction ('|' action += PermissionAction)* ','
+	   'resource' ':' name  = ID ','
+	   'action'   ':' action   += ID ('|' action += ID)* ','
 	   'instance' ':' instance += PermissionInstance ('|' instance += PermissionInstance)*
 	')'
 ;
 
 RequiresPermissions:
-   'requires_permissions'  '(' resource=[Entity|QualifiedName] ':' action=PermissionAction ':' instance=PermissionInstance ')'
+   'requires_permissions'  '(' resource=[ModulePermission|QualifiedName] ':' action=PermissionAction ':' instance=PermissionInstance ')'
 ;
 
 //PageContainers
