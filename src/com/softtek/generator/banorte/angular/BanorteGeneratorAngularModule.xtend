@@ -8,12 +8,10 @@ import com.softtek.rdl2.PageContainer
 class BanorteGeneratorAngularModule {
 
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
-		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			fsa.generateFile("banorte/" + m.name.toFirstLower + "/app.module.ts", m.generateRouting(resource, fsa))
-		}
+		fsa.generateFile("banorte/app.module.ts", generateRouting(resource, fsa))
 	}
 	
-	def CharSequence generateRouting(Module m, Resource resource, IFileSystemAccess2 access2) '''
+	def CharSequence generateRouting(Resource resource, IFileSystemAccess2 access2) '''
 	import { BrowserModule, SafeHtml } from '@angular/platform-browser';
 	import { NgModule } from '@angular/core';
 	import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -26,17 +24,20 @@ class BanorteGeneratorAngularModule {
 	import { PortalModule } from './modulo-portal/modulo-portal.module';
 	import { PortalRoutingModule } from './modulo-portal/modulo-portal-routing.module';
 	
-	«FOR p : m.elements.filter(typeof(PageContainer))»
-	import { «p.name»Component }  from './«p.name.toLowerCase»/«p.name.toLowerCase».component';
+	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
+		«FOR p : m.elements.filter(typeof(PageContainer))»
+		import { «p.name»Component }  from './«p.name.toLowerCase»/«p.name.toLowerCase».component';
+		«ENDFOR»
 	«ENDFOR»
 	
 	@NgModule({
 	  declarations: [
-	   
+
+	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»	   
 	   	«FOR p : m.elements.filter(typeof(PageContainer))»
 	   	«p.name»Component,
 	   	«ENDFOR»
-	
+	«ENDFOR»	
 	  ],
 	  imports: [
 	    BrowserModule,

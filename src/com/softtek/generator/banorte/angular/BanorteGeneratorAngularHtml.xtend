@@ -21,7 +21,7 @@ class BanorteGeneratorAngularHtml {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.html", p.generateHtml(m))
+					fsa.generateFile("banorte/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.html", p.generateHtml(m))
 				}
 			}
 		}
@@ -41,23 +41,15 @@ class BanorteGeneratorAngularHtml {
 		></app-modal>
 
 		<div class="col-md-12 col-xs-12 col-sm-12 paddingLeft-by-LeftNavBar">
-		  <h5 class="border-left-gray-default title-h5-usuarios " *ngIf="modo === 0">
-		    {{ globales.etiquetasIdioma["cib.«p.name.toFirstLower».labels.title"] }}
-		  </h5>
-		  <h5 class="border-left-gray-default title-h5-usuarios " *ngIf="modo === 1">
-		    {{ globales.etiquetasIdioma["cib.«p.name.toFirstLower».modificacion.labels.title"] }}
-		  </h5>
+		  <h5 class="border-left-gray-default title-h5-usuarios " *ngIf="modo === 0">{{ globales.etiquetasIdioma["cib.«p.name.toFirstLower».labels.title"] }}</h5>
+		  <h5 class="border-left-gray-default title-h5-usuarios " *ngIf="modo === 1">{{ globales.etiquetasIdioma["cib.«p.name.toFirstLower».modificacion.labels.title"] }}</h5>
 		
 		  <div class="col-md-12">
 		    <!--<app-steper [currentStep]="1" [steps]="[1, 2, 3, 4]"></app-steper>-->
 		  </div>
 		  <br />
 		  <br />
-		  <div
-		    class="alert alert-danger margin-top-50"
-		    *ngIf="arrayErrors.length > 0"
-		    style="margin-top:30px"
-		  >
+		  <div class="alert alert-danger margin-top-50" *ngIf="arrayErrors.length > 0" style="margin-top:30px">
 		    <div *ngFor="let error of arrayErrors">
 		      <label>{{ error }}</label>
 		    </div>

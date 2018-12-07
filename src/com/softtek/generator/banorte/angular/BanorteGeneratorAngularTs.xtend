@@ -38,36 +38,34 @@ class BanorteGeneratorAngularTs {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.ts", p.generateTs(m))
+					fsa.generateFile("banorte/" + p.name.toLowerCase + "/" + p.name.toLowerCase + ".component.ts", p.generateTs(m))
 				}
 			}
 		}
 	}
 	
 	def CharSequence generateTs(PageContainer p, Module module) '''
-		import {
-		  Component,
-		  OnInit,
-		  OnDestroy,
-		  Output,
-		  EventEmitter,
-		  Input
-		} from "@angular/core";
+		import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from "@angular/core";
 		import { Router, NavigationEnd, NavigationCancel } from "@angular/router";
-«««		import { WSSecurityService } from "../../services/wssecurity.service";
-«««		import { environment } from "../../../environments/environment";
-«««		import { WsprivilegiosService } from "../../services/wsprivilegios.service";
-«««		import { WscatalogoService } from "../../services/wscatalogo.service";
-«««		import { GlobalesService } from "../../globales.service";
+		import { WSSecurityService } from "../../services/wssecurity.service";
+		import { environment } from "../../../environments/environment";
+		import { WsprivilegiosService } from "../../services/wsprivilegios.service";
+		import { WscatalogoService } from "../../services/wscatalogo.service";
+		import { GlobalesService } from "../../globales.service";
 		
-«««		«p.genServiceDeclarations»
+		// Models
+		import { User } from '../../model/user';
 		
+		// Imports Services
+		«p.genServiceDeclarations»
+		
+		// Models
 «««		«p.genModelsDeclaration»
 		
 		@Component({
-		  selector: "app-«p.name.toFirstLower»",
-		  templateUrl: "./«p.name.toFirstLower».component.html",
-		  styleUrls: ["./«p.name.toFirstLower».component.css"]
+		  selector: "app-«p.name.toLowerCase»",
+		  templateUrl: "./«p.name.toLowerCase».component.html",
+		  styleUrls: ["./«p.name.toLowerCase».component.css"]
 		})
 		
 		export class «p.name»Component implements OnInit, OnDestroy {
@@ -78,63 +76,63 @@ class BanorteGeneratorAngularTs {
 		  arrayErrors = [];
 		  isActionCanceled = false;
 		  editable = true;
+		  
+		  // Aditional variables
 		  		
 «««		  «p.genModelsInitialization»	
-«««		  «p.genMessageEvents»
+		  «p.genMessageEvents»
 		
 		  constructor(
-«««		    private router: Router,
-«««		    private WSSecurityService: WSSecurityService,
-«««		    private WscatalogoService: WscatalogoService,
-«««		    private wsPrivilegios: WsprivilegiosService,
-«««		    public globales: GlobalesService,
-«««		    «p.genDefServiceConstructor»
+		    private router: Router,
+		    private WSSecurityService: WSSecurityService,
+		    private WscatalogoService: WscatalogoService,
+		    private wsPrivilegios: WsprivilegiosService,
+		    public globales: GlobalesService,
+		    «p.genDefServiceConstructor»
 		  ) {
 		    this.inicializarParametros();
 		  }
 		  
-«««		  ruta_imagenes = environment.ruta_imagenes;
-
-«««		  «p.genLocalVariableInitialization»
-		
-«««		  «p.genSwitchEventHandling»
+		  ruta_imagenes = environment.ruta_imagenes;
+		  «p.genLocalVariableInitialization»
+		  «p.genSwitchEventHandling»
 		
 		  ngOnInit(): void {
-«««		    this.WSSecurityService.pruebaObtenerDatos();
-
-«««		    «p.genOnInitSwitches»
-
-«««		    if (!this.WSSecurityService.WSValidacionServicioUsuario(1)) {
-«««		      console.log("El usuario NO tiene acceso al servicio");
-«««		    } else {
-«««		      console.log("El usuario SI tiene acceso al servicio");
-«««		    }
-«««		    if (this.modo !== 0) {
-«««		      console.log("Si entra");
-«««		      this.userData.currentMessage.subscribe(user => {
-«««		        console.log(user);
-«««		        this.model = user;
-«««		      });
-«««		    }
+		    this.WSSecurityService.pruebaObtenerDatos();
+		    «p.genOnInitSwitches»
+		    if (!this.WSSecurityService.WSValidacionServicioUsuario(1)) {
+		      console.log("El usuario NO tiene acceso al servicio");
+		    } else {
+		      console.log("El usuario SI tiene acceso al servicio");
+		    }
+		    if (this.modo !== 0) {
+		      console.log("Si entra");
+		      this.userData.currentMessage.subscribe(user => {
+		        console.log(user);
+		        this.model = user;
+		      });
+		    }
 		  }
 		  
+		  // Inicializa
 		  inicializarParametros() {
-«««		    // Inicializar parámetros cada vez que se entre a la pantalla
-«««		    console.log("«p.name»Component: Inicializando parámetros");
-«««		    // TODO: Por cada referencia a un Enum o Entity
-«««		    this.WscatalogoService.listaCatalogo("cat_perfiles").subscribe(respTemp => {
-«««		      console.log(respTemp);
-«««		      for (const perfil of respTemp["Response"]["Data"][0]) {
-«««		        if (perfil.perfilInterno === 0) {
-«««		          this.lstPerfiles.push(perfil);
-«««		        }
-«««		      }
-«««		    });
-«««		    this.WscatalogoService.listaCatalogo("cat_lenguaje").subscribe(respTemp => {
-«««		      this.lstLenguajes = respTemp["Response"]["Data"][0];
-«««		    });
+		    // Inicializar parámetros cada vez que se entre a la pantalla
+		    console.log("«p.name»Component: Inicializando parámetros");
+		    // TODO: Por cada referencia a un Enum o Entity
+		    this.WscatalogoService.listaCatalogo("cat_perfiles").subscribe(respTemp => {
+		      console.log(respTemp);
+		      for (const perfil of respTemp["Response"]["Data"][0]) {
+		        if (perfil.perfilInterno === 0) {
+		          this.lstPerfiles.push(perfil);
+		        }
+		      }
+		    });
+		    this.WscatalogoService.listaCatalogo("cat_lenguaje").subscribe(respTemp => {
+		      this.lstLenguajes = respTemp["Response"]["Data"][0];
+		    });
 		  }
 		
+		// Forma
 	  	«FOR c : p.components»
 		    «c.genUIComponent(module)»
 		«ENDFOR»		
@@ -149,6 +147,17 @@ class BanorteGeneratorAngularTs {
 		  cancelAction() {
 		    this.isActionCanceled = true;
 		  }
+		
+«««		// Cancelar button modal
+«««		confirmacionModal(event) {
+«««		    this.modalBn = false;
+«««		    
+«««		    if (event) {
+«««		      this.router.navigate(['/', 'Home']);
+«««		    } else {
+«««		      this.isActionCanceled = false;
+«««		    }
+«««		}
 		
 «««		  requiereSoftToken() {
 «««		    this.arrayErrors = [];
@@ -183,12 +192,12 @@ class BanorteGeneratorAngularTs {
 «««		    return !requiereSoftToken;
 «««		  }
 		
-«««		  onCancelConfirmation(event) {
-«««		    this.isActionCanceled = false;
-«««		    if (event) {
-«««		      // si confirma
-«««		    }
-«««		  }
+		  onCancelConfirmation(event) {
+		    this.isActionCanceled = false;
+		    if (event) {
+		      // si confirma
+		    }
+		  }
 		
 		}
 	'''
@@ -216,11 +225,10 @@ class BanorteGeneratorAngularTs {
 	def dispatch genUIComponent(RowComponent row, Module module) '''
 	'''
 	
-	
 
 	def CharSequence genServiceDeclarations(PageContainer container) '''
 		«FOR e : screenContainerUtils.getScreenEntities(container)»
-			import { «e.name»DataService } from "../../services/«e.name.toFirstLower»Data.service";
+			import { «e.name»Service } from "../../services/«e.name.toFirstLower».service";
 		«ENDFOR»
 	'''
 
@@ -252,7 +260,7 @@ class BanorteGeneratorAngularTs {
 	
 	def CharSequence genDefServiceConstructor(PageContainer container) '''
 		«FOR e : screenContainerUtils.getScreenEntities(container) SEPARATOR ","»
-			private «e.name.toFirstLower»DataService: «e.name»DataService
+			private «e.name.toFirstLower»Service: «e.name»Service
 		«ENDFOR»
 	'''
 

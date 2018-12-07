@@ -23,7 +23,7 @@ class BanorteGeneratorAngularService {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("banorte/" + m.name.toFirstLower + "/services/" + p.name.toLowerCase + ".service.ts", p.generateTs(m))
+					fsa.generateFile("banorte/services/" + p.name.toLowerCase + ".service.ts", p.generateTs(m))
 				}
 			}
 		}

@@ -104,12 +104,7 @@ class BanorteGeneratorAngularHtml_Form {
 	
 	def dispatch genUIFormEntityField(EntityTextField field, FormComponent form) '''
 	        <div class="mb-3 field-container-default ">
-	          <label
-	            >«IF entityFieldUtils.isFieldRequired(field)»<span class="required">*</span
-	            >«ENDIF»{{
-	              globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.«field.name.toFirstLower»"]
-	            }}</label
-	          >
+	          <label>«IF entityFieldUtils.isFieldRequired(field)»<span class="required">*</span>«ENDIF»{{globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.«field.name.toFirstLower»"]}}</label>
 	          <input
 	            type="text"
 	            name="«field.name.toFirstLower»"
@@ -120,8 +115,7 @@ class BanorteGeneratorAngularHtml_Form {
 	            class="default-input"
 	            required=«IF entityFieldUtils.isFieldRequired(field)»"true"«ELSE»"false"«ENDIF»
 	            [(ngModel)]="model.«field.name.toFirstLower»"
-	            [ngModelOptions]="{ updateOn: 'change' }"
-	          />
+	            [ngModelOptions]="{ updateOn: 'change' }"/>
 	          <div class="invalid-feedback" *ngIf="!«field.name.toFirstLower».isValid">
 	            <label
 	              *ngIf="
@@ -198,8 +192,7 @@ class BanorteGeneratorAngularHtml_Form {
               >«IF entityFieldUtils.isFieldRequired(field)»<span class="required">*</span
               >«ENDIF»{{
                 globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.email"]
-              }}</label
-            >
+              }}</label>
             <input
               type="text"
               name="«field.name.toFirstLower»"
@@ -211,8 +204,7 @@ class BanorteGeneratorAngularHtml_Form {
               [(ngModel)]="model.«field.name.toFirstLower»"
               email="true"
               [ngModelOptions]="{ updateOn: 'change' }"
-              [disabled]="modo === 1"
-            />
+              [disabled]="modo === 1"/>
             <div class="invalid-feedback" *ngIf="!«field.name.toFirstLower».isValid">
               <label
                 *ngIf="
@@ -224,8 +216,7 @@ class BanorteGeneratorAngularHtml_Form {
                   globales.etiquetasIdioma[
                     "cib.«form.name.toFirstLower».errors.email.required"
                   ]
-                }}</label
-              >
+                }}</label>
               <label
                 *ngIf="
                   «field.name.toFirstLower».errors &&
@@ -236,8 +227,7 @@ class BanorteGeneratorAngularHtml_Form {
                   globales.etiquetasIdioma[
                     "cib.«form.name.toFirstLower».errors.email.minlength"
                   ]
-                }}</label
-              >
+                }}</label>
               <label
                 *ngIf="
                   «field.name.toFirstLower».errors &&
@@ -248,8 +238,7 @@ class BanorteGeneratorAngularHtml_Form {
                   globales.etiquetasIdioma[
                     "cib.«form.name.toFirstLower».errors.email.novalid"
                   ]
-                }}</label
-              >
+                }}</label>
             </div>
         </div>
 	'''
@@ -264,6 +253,7 @@ class BanorteGeneratorAngularHtml_Form {
 	'''
 
 	def dispatch genUIFormEntityField(EntityBooleanField field, FormComponent form) '''
+	<div style="margin-top: 20px;">
       <div style="height: 10px;">
         <label>{{
           globales.etiquetasIdioma["cib.«form.name.toFirstLower».labels.alertas"]
@@ -287,6 +277,7 @@ class BanorteGeneratorAngularHtml_Form {
           <span class="slider round"></span>
         </label>
       </div>
+    </div>
 	'''
 	
 	/*
@@ -316,6 +307,7 @@ class BanorteGeneratorAngularHtml_Form {
             }}</label
           >
           <select
+          
             class="default-select"
             id="«fromField.name.toFirstLower»"
             #«fromField.name.toFirstLower»="ngModel"
@@ -441,16 +433,14 @@ class BanorteGeneratorAngularHtml_Form {
         <button
           type="submit"
           class="btn-default1 btn-size-default1"
-          [disabled]="!«form.name».form.valid"
-        >
+          [disabled]="!«form.name».form.valid">
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
       «ELSE»
         <button
           type="button"
           class="btn-default2 btn-size-default2"
-          (click)="onClick«flow.name»()"
-        >
+          (click)="onClick«flow.name»()">
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
       «ENDIF»
@@ -468,8 +458,7 @@ class BanorteGeneratorAngularHtml_Form {
         <button
           type="button"
           class="btn-default2 btn-size-default2"
-          (click)="onClick«flow.name»()"
-        >
+          (click)="onClick«flow.name»()">
           {{ globales.etiquetasIdioma["cib.«form.name.toFirstLower».buttons.«flow.name.toFirstLower»"] }}
         </button>
       «ENDIF»	'''

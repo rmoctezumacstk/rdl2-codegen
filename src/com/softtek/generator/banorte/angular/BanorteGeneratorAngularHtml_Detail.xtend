@@ -60,13 +60,21 @@ class BanorteGeneratorAngularHtml_Detail {
 	'''
 	
 	def dispatch genUIFormDetail(UIFormContainer e, DetailComponent detail) '''
+	<div class="col-md-10 col-xs-12 col-sm-12 center-block-no-float-left margin-bottom-1">
+	    <div class="row">
+	        <div class="col-md-4 col-xs-12 col-sm-12">
+	            «detail.list_title»
+	        </div>
+	    </div>
 	«e.genUIDetailContainer(detail)»
+	</div>
 	'''
 
 	/*
 	 * UIFormContainer
 	 */
 	def dispatch genUIDetailContainer(UIFormPanel panel, DetailComponent detail) '''
+	
 	'''
 	
 	def dispatch genUIDetailContainer(UIFormRow row, DetailComponent detail) '''
@@ -168,11 +176,13 @@ class BanorteGeneratorAngularHtml_Detail {
         #«field.name.toFirstLower»="ngModel"
         pattern="^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]*$"
         minlength="2"
+        
+        
         class="default-input"
+        
         required=«IF entityFieldUtils.isFieldRequired(field)»"true"«ELSE»"false"«ENDIF»
         [(ngModel)]="model.«field.name.toFirstLower»"
-        [ngModelOptions]="{ updateOn: 'change' }"
-      />
+        [ngModelOptions]="{ updateOn: 'change' }"/>
 «««      <div class="invalid-feedback" *ngIf="!«field.name.toFirstLower».isValid">
 «««        <label
 «««          *ngIf="

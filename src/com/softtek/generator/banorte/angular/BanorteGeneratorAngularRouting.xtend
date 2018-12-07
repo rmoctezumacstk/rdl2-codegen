@@ -8,26 +8,27 @@ import com.softtek.rdl2.PageContainer
 class BanorteGeneratorAngularRouting {
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
-		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			fsa.generateFile("banorte/" + m.name.toFirstLower + "/app-routing.module.ts", m.generateRouting(resource, fsa))
-		}
+		fsa.generateFile("banorte/app-routing.module.ts", generateRouting(resource, fsa))
 	}
 	
-	def CharSequence generateRouting(Module m, Resource resource, IFileSystemAccess2 access2) '''
+	def CharSequence generateRouting(Resource resource, IFileSystemAccess2 access2) '''
 	import { RouterModule, Routes } from '@angular/router';
 	
 	import { HomeComponent } from './home';
 	import { LoginComponent } from './login';
 	import { AuthGuard } from './_guards';
 	
-	«FOR p : m.elements.filter(typeof(PageContainer))»
-	import { «p.name»Component } from './«p.name.toLowerCase»/«p.name.toLowerCase».component';
-	«ENDFOR»
-	 	
+	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
+		«FOR p : m.elements.filter(typeof(PageContainer))»
+		import { «p.name»Component } from './«p.name.toLowerCase»/«p.name.toLowerCase».component';
+		«ENDFOR»
+	«ENDFOR» 	
 	const routes: Routes = [
 
-	«FOR p : m.elements.filter(typeof(PageContainer))»
-	{ path: '«p.name.toLowerCase»component', component: «p.name»Component},
+	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
+		«FOR p : m.elements.filter(typeof(PageContainer))»
+		{ path: '«p.name.toLowerCase»component', component: «p.name»Component},
+		«ENDFOR»
 	«ENDFOR»
 	  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
 	  { path: '*', redirectTo: '/appnotfound', pathMatch: 'full' },
