@@ -14,10 +14,13 @@ import com.softtek.generator.uiprototype.AppTagGenerator
 import com.softtek.generator.uiprototype.IndexJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
-import com.softtek.generator.clarity.ScreenClarityGenerator
 import com.softtek.generator.clarity.AdminHtmlClarityGenerator
 import com.softtek.generator.clarity.AdminRoutingClarityGenerator
 import com.softtek.generator.clarity.ScreenClarityTsGenerator
+import com.softtek.generator.clarity.ScreenClarityHtmlGenerator
+import com.softtek.generator.clarity.ScreenClarityServiceGenerator
+import com.softtek.generator.clarity.ScreenClarityCssGenerator
+import com.softtek.generator.clarity.AdminModuleClarityGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -30,10 +33,14 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
 	// Clarity
-	@Inject ScreenClarityGenerator screenClarityGenerator
+	@Inject ScreenClarityHtmlGenerator screenClarityHtmlGenerator
 	@Inject ScreenClarityTsGenerator screenClarityTsGenerator
+	@Inject ScreenClarityServiceGenerator screenClarityServiceGenerator
+	@Inject ScreenClarityCssGenerator screenClarityCssGenerator
 	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
 	@Inject AdminRoutingClarityGenerator adminRoutingClarityGenerator
+	@Inject AdminModuleClarityGenerator adminModuleClarityGenerator
+	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -43,14 +50,17 @@ class Rdl2Generator extends AbstractGenerator {
 		// Clarity
 		adminHtmlClarityGenerator.doGenerate(resource, fsa)
 		adminRoutingClarityGenerator.doGenerate(resource, fsa)
+		adminModuleClarityGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
 			
 			// Clarity
-			screenClarityGenerator.doGenerate(r, fsa)
+			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
+			screenClarityServiceGenerator.doGenerate(r, fsa)
+			screenClarityCssGenerator.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)

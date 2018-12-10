@@ -58,7 +58,7 @@ import com.softtek.rdl2.UIIntegerField
 import com.softtek.rdl2.UICurrencyField
 import com.softtek.rdl2.OffSetMD
 
-class ScreenClarityGenerator {
+class ScreenClarityHtmlGenerator {
 	
 	var entityUtils = new EntityUtils
 	var entityFieldUtils = new EntityFieldUtils
@@ -67,7 +67,7 @@ class ScreenClarityGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/" +m.name.toLowerCase+ "/" +p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.html", p.generateTag(m))
+					fsa.generateFile("clarity/src/app/admin/"+p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.html", p.generateTag(m))
 				}
 			}
 		}

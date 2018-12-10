@@ -7,12 +7,9 @@ import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.Module
 
 class AdminRoutingClarityGenerator {
-	
-		def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
-		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			fsa.generateFile("clarity/src/app/admin/"+m.name.toLowerCase+"/"+m.name.toLowerCase+".psg.routing.ts", genIndexRouting(resource, fsa))
-		}	
-		
+
+	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
+		fsa.generateFile("clarity/src/app/admin/admin-routing.module.ts", genIndexRouting(resource, fsa))
 	}
 	
 	def CharSequence genIndexRouting(Resource resource, IFileSystemAccess2 access2) '''
