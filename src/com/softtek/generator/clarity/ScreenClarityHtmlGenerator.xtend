@@ -67,7 +67,7 @@ class ScreenClarityHtmlGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/"+p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.html", p.generateTag(m))
+					fsa.generateFile("clarity/src/app/admin/"+ m.name.toLowerCase + "/" + p.name.toLowerCase+"/"+ p.name.toLowerCase +".psg.html", p.generateTag(m))
 				}
 			}
 		}
@@ -712,13 +712,15 @@ class ScreenClarityHtmlGenerator {
 	 * UILinkCommandQueryFlow
 	 */
 	def dispatch genFlowRows(UICommandFlow flow) '''
-«««		«flow.success_flow.genCommandFlowToContainer(flow)»
+	Command
+		«flow.success_flow.genCommandFlowToContainer(flow)»
 	'''
 	def dispatch genFlowRows(UIQueryFlow flow) '''
 «««		«flow.success_flow.genQueryFlowToContainer(flow)»
 	'''
 	def dispatch genFlowRows(UILinkFlow flow) '''
-«««		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.getParentModule.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
+	Botón
+		<submit-button id="«flow.name.toLowerCase»" to="/«flow.link_to.getParentModule.name.toLowerCase»/«flow.link_to.name.toLowerCase»/" action="custom" icon="«uiFlowUtils.getFlowIcon(flow, "Font Awesome")»" caption="«uiFlowUtils.getFlowLabel(flow)»" ></submit-button>
 	'''
 	
 	/*

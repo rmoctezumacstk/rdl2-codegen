@@ -23,7 +23,7 @@ class ScreenClarityServiceGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/"+p.name.toLowerCase+"/"+p.name.toLowerCase +".service.ts", p.generateTs(m))
+					fsa.generateFile("clarity/src/app/admin/"+ m.name.toLowerCase + "/" + p.name.toLowerCase +"/"+ p.name.toLowerCase +".service.ts", p.generateTs(m))
 				}
 			}
 		}

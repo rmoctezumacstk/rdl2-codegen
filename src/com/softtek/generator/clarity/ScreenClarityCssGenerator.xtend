@@ -11,7 +11,7 @@ class ScreenClarityCssGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/" + p.name.toLowerCase+"/"+p.name.toLowerCase +".component.css", p.generateCss(m))
+					fsa.generateFile("clarity/src/app/admin/"+ m.name.toLowerCase + "/" + p.name.toLowerCase+ "/" +p.name.toLowerCase +".component.css", p.generateCss(m))
 				}
 			}
 		}

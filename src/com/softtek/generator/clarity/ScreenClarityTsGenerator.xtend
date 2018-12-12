@@ -67,7 +67,7 @@ class ScreenClarityTsGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (p : m.elements.filter(typeof(PageContainer))) {
 				if (p.screen_type === null) {
-					fsa.generateFile("clarity/src/app/admin/" + p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.ts", p.generateTag(m))
+					fsa.generateFile("clarity/src/app/admin/"+ m.name.toLowerCase + "/" + p.name.toLowerCase+"/"+p.name.toLowerCase +".psg.ts", p.generateTag(m))
 				}
 			}
 		}
@@ -115,12 +115,12 @@ class ScreenClarityTsGenerator {
 	// ListComponent
 	def dispatch genUIComponent(ListComponent l, Module module, PageContainer page) '''
 	
-		        «FOR h : l.list_elements»
-					Element«h»
-				«ENDFOR»
+	    «FOR h : l.list_elements»
+			Element«h»
+		«ENDFOR»
 	
-	Module «module»
-	Page «page»
+«««	Module «module»
+«««	Page «page»
 «««		public  «page.name.toLowerCase»Array: «page.name.toLowerCase.toFirstUpper»[];
 	'''
 	
