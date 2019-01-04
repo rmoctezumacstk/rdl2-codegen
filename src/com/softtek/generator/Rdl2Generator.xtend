@@ -16,11 +16,16 @@ import com.softtek.generator.uiprototype.TableDataJsGenerator
 import com.softtek.generator.uiprototype.TableDataJsonGenerator
 import com.softtek.generator.clarity.AdminHtmlClarityGenerator
 import com.softtek.generator.clarity.AdminRoutingClarityGenerator
-import com.softtek.generator.clarity.ScreenClarityTsGenerator
-import com.softtek.generator.clarity.ScreenClarityHtmlGenerator
-import com.softtek.generator.clarity.ScreenClarityServiceGenerator
-import com.softtek.generator.clarity.ScreenClarityCssGenerator
 import com.softtek.generator.clarity.AdminModuleClarityGenerator
+import com.softtek.generator.clarity.AdminTsClarityGenerator
+import com.softtek.generator.clarity.screen.ScreenClarityHtmlGenerator
+import com.softtek.generator.clarity.screen.ScreenClarityTsGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenTsGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenRoutingGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenCssGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenModuleGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -32,15 +37,23 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
-	// Clarity
+	// Clarity Screen
 	@Inject ScreenClarityHtmlGenerator screenClarityHtmlGenerator
 	@Inject ScreenClarityTsGenerator screenClarityTsGenerator
-	@Inject ScreenClarityServiceGenerator screenClarityServiceGenerator
-	@Inject ScreenClarityCssGenerator screenClarityCssGenerator
+	
+	// Clarity Screen Admin
+	@Inject ScreenTsGenerator screenTsGenerator
+	@Inject ScreenRoutingGenerator screenRoutingGenerator
+	@Inject ScreenCssGenerator screenCssGenerator
+	@Inject ScreenModuleGenerator screenModuleGenerator
+	@Inject ScreenServiceGenerator screenServiceGenerator
+	@Inject ScreenModelGenerator screenModelGenerator
+	
+	// Clrity Admin
 	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
 	@Inject AdminRoutingClarityGenerator adminRoutingClarityGenerator
 	@Inject AdminModuleClarityGenerator adminModuleClarityGenerator
-	
+	@Inject AdminTsClarityGenerator adminTsClarityGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -49,8 +62,17 @@ class Rdl2Generator extends AbstractGenerator {
 		
 		// Clarity
 		adminHtmlClarityGenerator.doGenerate(resource, fsa)
-		adminRoutingClarityGenerator.doGenerate(resource, fsa)
 		adminModuleClarityGenerator.doGenerate(resource, fsa)
+		adminRoutingClarityGenerator.doGenerate(resource, fsa)
+		adminTsClarityGenerator.doGenerate(resource, fsa)
+		
+		// Clarity Admin
+		screenTsGenerator.doGenerate(resource, fsa)
+		screenRoutingGenerator.doGenerate(resource, fsa)
+		screenCssGenerator.doGenerate(resource, fsa)
+		screenModuleGenerator.doGenerate(resource, fsa)
+		screenServiceGenerator.doGenerate(resource, fsa)
+		screenModelGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
@@ -59,8 +81,6 @@ class Rdl2Generator extends AbstractGenerator {
 			// Clarity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
-			screenClarityServiceGenerator.doGenerate(r, fsa)
-			screenClarityCssGenerator.doGenerate(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)

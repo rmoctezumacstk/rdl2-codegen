@@ -12,53 +12,46 @@ class AdminModuleClarityGenerator {
 	}
 	
 	def CharSequence generateModule(Resource resource, IFileSystemAccess2 access2) '''
-	import { BrowserModule, SafeHtml } from '@angular/platform-browser';
-	import { NgModule } from '@angular/core';
-	import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-	import { TooltipModule} from 'ng2-tooltip-directive';
-	import { MyHttpInterceptor } from './my-http-interceptor';
-	import { ReactiveFormsModule } from '@angular/forms';
-	import { FormsModule } from '@angular/forms';
+	import { NgModule, LOCALE_ID } from '@angular/core';
+	import { CommonModule, registerLocaleData } from '@angular/common';
+	import { HttpModule, Http } from '@angular/http';
+	import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+	import { AdminComponent } from './admin.component';
+	import { AdminDashboardComponent } from './admin-dashboard.component';
+	import { AdminRoutingModule } from './admin-routing.module';
+	import { HttpClientModule } from '@angular/common/http';
+	import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+	import { ClarityModule } from '@clr/angular';
+	import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 	
-	// Modulos
-	import { PortalModule } from './modulo-portal/modulo-portal.module';
-	import { PortalRoutingModule } from './modulo-portal/modulo-portal-routing.module';
+	import localeMx from '@angular/common/locales/es-MX';
+	registerLocaleData(localeMx, 'es-MX');
 	
-	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-		«FOR p : m.elements.filter(typeof(PageContainer))»
-		import { «p.name»Component }  from './«p.name.toLowerCase»/«p.name.toLowerCase».component';
-		«ENDFOR»
-	«ENDFOR»
+	import { PermissionDemoModule } from './permission/permission.psg.module';
+	import { UserDemoModule } from './user/user.psg.module';
+	import { AdministracionDemoModule } from './administracion/administracion.psg.module';
+	import { RolDemoModule } from './rol/rol.psg.module';
 	
 	@NgModule({
 	  declarations: [
-
-	«FOR m : resource.allContents.toIterable.filter(typeof(Module))»	   
-	   	«FOR p : m.elements.filter(typeof(PageContainer))»
-	   	«p.name»Component,
-	   	«ENDFOR»
-	«ENDFOR»	
-	  ],
+	  	AdminComponent, 
+	  	AdminDashboardComponent
+	  	],
 	  imports: [
-	    BrowserModule,
-	    HttpClientModule,
+	  	AppRoutingModule,
+	  	HttpModule,
+	  	CommonModule,
 	    ReactiveFormsModule,
-	    PortalModule,
-	    AppRoutingModule,
-	    PortalRoutingModule,
-	   TooltipModule,
-	   FormsModule
+	    FormsModule,
+	    ClarityModule,
+	    HttpClientModule
 	  ],
 	  providers: [
-	    PalistamodulosService,
-	    PortalGuard /*,
-	    { provide : HTTP_INTERCEPTORS, useClass : PalistaModulosApiInterceptor, multi : true },*/
-	    , { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-	    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+	    SelectivePreloadingStrategy,
+	    [{ provide: LOCALE_ID, useValue: 'es-MX' }],
 	  ],
-	  bootstrap: [AppComponent]
 	})
-	export class AppModule { }	
+	export class AdminModule { }	
 	'''	
 	
 }

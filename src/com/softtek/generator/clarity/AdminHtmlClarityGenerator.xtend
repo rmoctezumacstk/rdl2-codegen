@@ -9,10 +9,10 @@ import com.softtek.rdl2.ModuleRef
 class AdminHtmlClarityGenerator {
 
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
-		fsa.generateFile("clarity/src/app/admin/admin.component.html", genAppTag(resource, fsa))
+		fsa.generateFile("clarity/src/app/admin/admin.component.html", genAdminTag(resource, fsa))
 	}
 	
-	def CharSequence genAppTag(Resource resource, IFileSystemAccess2 access2) '''
+	def CharSequence genAdminTag(Resource resource, IFileSystemAccess2 access2) '''
 <!-- PSG Main Html -->
 <div class="main-container nav-group-links">
     <header class="header header-6">
@@ -46,37 +46,31 @@ class AdminHtmlClarityGenerator {
         </div>
         <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
             <ng-container>
-
-				<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+				<!-- Modulos «resource.resourceSet.resources» -->
 					«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
-		                <div style="margin-left: 1rem">
-		                <h5>«s.name»</h5>
-		                </div>
-						<clr-vertical-nav-group>
+					<clr-vertical-nav-group>
+	                    <a href="javascript://" clrVerticalNavLink>
+	                        <clr-icon shape="list" clrVerticalNavIcon></clr-icon>
+	                        «s.name»
+	                    </a>
+	                    <clr-vertical-nav-group-children *clrIfExpanded>
 							«FOR m : s.modules_ref»
 								«IF m.countPageLanmarks > 0»
-				                    <a href="javascript://" clrVerticalNavLink>
-				                        <clr-icon shape="list" clrVerticalNavIcon></clr-icon>
-				                        «m.module_ref.description»
-				                    </a>
-									<clr-vertical-nav-group-children *clrIfExpanded>
-										«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
-											«IF page.landmark!==null && page.landmark.trim.equals("true")»
-						                        <div>
-						                            <a clrVerticalNavLink routerLink="./«page.name.toLowerCase»" routerLinkActive="active">
-						                                <clr-icon shape="application"></clr-icon>
-						                                «page.page_title»
-						                            </a>
-						                        </div>
-											«ENDIF»
-										«ENDFOR»
-									</clr-vertical-nav-group-children>
+									«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
+										«IF page.landmark!==null && page.landmark.trim.equals("true")»
+					                        <div>
+					                            <a clrVerticalNavLink routerLink="./«m.module_ref.name.toLowerCase»" routerLinkActive="active">
+					                                <clr-icon shape="directory"></clr-icon>
+					                                «page.page_title»
+					                            </a>
+					                        </div>
+										«ENDIF»
+									«ENDFOR»
 								«ENDIF»
 							«ENDFOR»
-						</clr-vertical-nav-group>
+						</clr-vertical-nav-group-children>
+					</clr-vertical-nav-group>
 					«ENDFOR»
-				</div>
-			
             </ng-container>          
         </clr-vertical-nav>        
     </div>
