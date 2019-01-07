@@ -91,6 +91,7 @@ class ScreenClarityHtmlGenerator {
 	   	 	«c.genUIComponent(module, page)»
 	    «ENDFOR»
 	    
+	    <p>
 		«FOR flow : page.links»
 			«flow.genPageFlow»
 		«ENDFOR»

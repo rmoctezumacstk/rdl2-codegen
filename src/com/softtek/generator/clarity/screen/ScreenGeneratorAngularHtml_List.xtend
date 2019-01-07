@@ -56,7 +56,7 @@ class ScreenGeneratorAngularHtml_List {
 						«h.genTableRows»
 					«ENDFOR»
 					
-					Nombre: «l.name»
+					«l.name»
 «««					«IF l.links.size > 0»
 «««						«FOR f : l.links»
 «««							«f.genFlowRows»
