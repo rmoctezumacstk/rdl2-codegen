@@ -82,7 +82,7 @@ class ScreenClarityTsGenerator {
 	
 	def CharSequence generateTag(PageContainer page, Module module) '''
 		/* PSG  «page.name.toLowerCase.toFirstUpper» Ts */
-		import { Component } from '@angular/core';
+		import { Component, OnInit } from '@angular/core';
 		import '@clr/icons/shapes/social-shapes';
 		import '@clr/icons/shapes/essential-shapes';
 		import { Router, ActivatedRoute } from '@angular/router';
@@ -90,8 +90,8 @@ class ScreenClarityTsGenerator {
 		import { style } from '@angular/animations';
 		import { Permission } from '../../../_models/permission';
 		import { User } from '../../../_models';
-		
-«««		Van los imports de la s entidades
+		import { ValidationService } from '../../../_validation/validation.service';   // Agregar
+		import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';   // Agregar
 		
 		@Component({
 		  selector: 'clr-«page.name.toLowerCase»-demo-styles',
@@ -99,7 +99,15 @@ class ScreenClarityTsGenerator {
 		  templateUrl: './«page.name.toLowerCase».psg.html',
 		})
 		export class «page.name.toLowerCase.toFirstUpper» implements OnInit{
-		 
+		
+		  constructor(
+		    private fb: FormBuilder,
+		    private validationService: ValidationService,
+		    private router: Router,
+		    private route: ActivatedRoute
+		  ) {});
+		  }
+		
 		ngOnInit() {}	 
 
 	    «FOR c : page.components»

@@ -28,38 +28,7 @@ class AdminRoutingClarityGenerator {
 	        path: '',
 	        canActivate: [AuthGuard],
 	        children: [
-	          {
-	            path: 'company',
-	            loadChildren: 'src/app/admin/company/company.psg.module#CompanyDemoModule',
-	          },
-	          {
-	            path: 'property',
-	            loadChildren: 'src/app/admin/property/property.psg.module#PropertyDemoModule',
-	          },
-	          {
-	            path: 'unit',
-	            loadChildren: 'src/app/admin/unit/unit.psg.module#UnitDemoModule',
-	          },
-	          {
-	            path: 'parkingspot',
-	            loadChildren: 'src/app/admin/parkingspot/parkingspot.psg.module#ParkingspotDemoModule',
-	          },
-	          {
-	            path: 'person',
-	            loadChildren: 'src/app/admin/person/person.psg.module#PersonDemoModule',
-	          },
-	          {
-	            path: 'vehicle',
-	            loadChildren: 'src/app/admin/vehicle/vehicle.psg.module#VehicleDemoModule',
-	          },
-	          {
-	            path: 'note',
-	            loadChildren: 'src/app/admin/note/note.psg.module#NoteDemoModule',
-	          },
-	          {
-	            path: 'post',
-	            loadChildren: 'src/app/admin/post/post.psg.module#PostDemoModule',
-	          },
+	         
 	          { // Administracion
 	            path: 'administracion',
 	            loadChildren: 'src/app/admin/administracion/administracion.psg.module#AdministracionDemoModule',
@@ -68,10 +37,10 @@ class AdminRoutingClarityGenerator {
 	            path: 'user',
 	            loadChildren: 'src/app/admin/user/user.psg.module#UserDemoModule',
 	          },
-	          {
-	            path: 'rol',
-	            loadChildren: 'src/app/admin/rol/rol.psg.module#RolDemoModule',
-	          },
+«««	          {
+«««	            path: 'rol',
+«««	            loadChildren: 'src/app/admin/rol/rol.psg.module#RolDemoModule',
+«««	          },
 	           «FOR m : resource.allContents.toIterable.filter(typeof(Module))»
   	   	 	  {
             	path: '«m.name.toLowerCase»',

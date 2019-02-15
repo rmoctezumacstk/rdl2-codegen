@@ -25,33 +25,42 @@ class AdminModuleClarityGenerator {
 	import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 	
 	import localeMx from '@angular/common/locales/es-MX';
+	import { registerLocaleData } from '@angular/common';
 	registerLocaleData(localeMx, 'es-MX');
 	
 	import { PermissionDemoModule } from './permission/permission.psg.module';
 	import { UserDemoModule } from './user/user.psg.module';
 	import { AdministracionDemoModule } from './administracion/administracion.psg.module';
-	import { RolDemoModule } from './rol/rol.psg.module';
+	//import { RolDemoModule } from './rol/rol.psg.module';
 	
 	@NgModule({
-	  declarations: [
-	  	AdminComponent, 
-	  	AdminDashboardComponent
-	  	],
 	  imports: [
-	  	AppRoutingModule,
-	  	HttpModule,
-	  	CommonModule,
+	    AdminRoutingModule,
+	    HttpModule,
+	    CommonModule,
 	    ReactiveFormsModule,
 	    FormsModule,
 	    ClarityModule,
-	    HttpClientModule
+	    HttpClientModule,
+	    
+       «FOR m : resource.allContents.toIterable.filter(typeof(Module))»
+		«m.name.toLowerCase»DemoModule,
+      «ENDFOR» 	
+	
+	         PermissionDemoModule,
+	         UserDemoModule,
+	         AdministracionDemoModule,
+	        //  RolDemoModule 
 	  ],
+	  declarations: [AdminComponent,AdminDashboardComponent],
 	  providers: [
+	
 	    SelectivePreloadingStrategy,
-	    [{ provide: LOCALE_ID, useValue: 'es-MX' }],
+	    [{ provide: LOCALE_ID, useValue: 'es-MX' }]
 	  ],
 	})
-	export class AdminModule { }	
+	export class AdminModule {}
+	
 	'''	
 	
 }

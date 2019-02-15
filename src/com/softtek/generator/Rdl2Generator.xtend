@@ -26,6 +26,7 @@ import com.softtek.generator.clarity.screen.admin.ScreenCssGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModuleGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
+import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -37,7 +38,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenGenerator screenGenerator
 	@Inject TableDataJsonGenerator tableDataJsonGenerator
 	
-	// Clarity Screen
+	// Clarity Screen Entity
 	@Inject ScreenClarityHtmlGenerator screenClarityHtmlGenerator
 	@Inject ScreenClarityTsGenerator screenClarityTsGenerator
 	
@@ -48,6 +49,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenModuleGenerator screenModuleGenerator
 	@Inject ScreenServiceGenerator screenServiceGenerator
 	@Inject ScreenModelGenerator screenModelGenerator
+	@Inject ScreenHtmlGenerator screenHtmlGenerator
 	
 	// Clrity Admin
 	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
@@ -60,25 +62,26 @@ class Rdl2Generator extends AbstractGenerator {
 		appTagGenerator.doGenerate(resource, fsa)
 		tableDataJsGenerator.doGenerate(resource, fsa)
 		
-		// Clarity
+		// Clarity Admin Global
 		adminHtmlClarityGenerator.doGenerate(resource, fsa)
 		adminModuleClarityGenerator.doGenerate(resource, fsa)
 		adminRoutingClarityGenerator.doGenerate(resource, fsa)
 		adminTsClarityGenerator.doGenerate(resource, fsa)
 		
-		// Clarity Admin
+		// Clarity Admin Entity
 		screenTsGenerator.doGenerate(resource, fsa)
 		screenRoutingGenerator.doGenerate(resource, fsa)
 		screenCssGenerator.doGenerate(resource, fsa)
 		screenModuleGenerator.doGenerate(resource, fsa)
 		screenServiceGenerator.doGenerate(resource, fsa)
 		screenModelGenerator.doGenerate(resource, fsa)
+		screenHtmlGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
 			
-			// Clarity
+			// Clarity Entity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
 		}
