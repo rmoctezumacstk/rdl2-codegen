@@ -25,13 +25,16 @@ class AdminModuleClarityGenerator {
 	import { SelectivePreloadingStrategy } from './selective-preloading-strategy';
 	
 	import localeMx from '@angular/common/locales/es-MX';
-	import { registerLocaleData } from '@angular/common';
 	registerLocaleData(localeMx, 'es-MX');
 	
 	import { PermissionDemoModule } from './permission/permission.psg.module';
 	import { UserDemoModule } from './user/user.psg.module';
 	import { AdministracionDemoModule } from './administracion/administracion.psg.module';
 	//import { RolDemoModule } from './rol/rol.psg.module';
+	
+	  «FOR m : resource.allContents.toIterable.filter(typeof(Module))»
+	  import { «m.name.toLowerCase.toFirstUpper»DemoModule } from './«m.name.toLowerCase»/«m.name.toLowerCase».psg.module';
+	  «ENDFOR» 	
 	
 	@NgModule({
 	  imports: [
@@ -44,7 +47,7 @@ class AdminModuleClarityGenerator {
 	    HttpClientModule,
 	    
        «FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-		«m.name.toLowerCase»DemoModule,
+		«m.name.toLowerCase.toFirstUpper»DemoModule,
       «ENDFOR» 	
 	
 	         PermissionDemoModule,

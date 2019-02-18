@@ -51,12 +51,12 @@ class ScreenGeneratorAngularHtml_List {
 «««		                    </button>
 «««		                </clr-dg-action-overflow>
 «««		
-				<clr-dg-row>
+«««				<clr-dg-row>
 					«FOR h : l.list_elements»
 						«h.genTableRows»
 					«ENDFOR»
 					
-					«l.name»
+«««					«l.name»
 «««					«IF l.links.size > 0»
 «««						«FOR f : l.links»
 «««							«f.genFlowRows»
@@ -172,49 +172,49 @@ class ScreenGeneratorAngularHtml_List {
 	 */
 	def dispatch genTableRows(UIField element) ''''''
 	def dispatch genTableRows(UIDisplay element) '''
-	«element.ui_field»
+«««	«element.ui_field»
 		«element.ui_field.genRowsUIDisplayField»
 	'''
 	def dispatch genTableRows(UIFormContainer element) '''
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityReferenceField field) '''
-		<clr-dg-cell >{{«field».«field»}}</clr-dg-cell >
+«««		<clr-dg-cell >{{«field».«field»}}</clr-dg-cell >
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityTextField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityLongTextField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityDateField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityImageField field) '''
-		<th><img src="https://fakeimg.pl/60x60/?text=Picture&font=lobster"></img></th>
+«««		<th><img src="https://fakeimg.pl/60x60/?text=Picture&font=lobster"></img></th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityFileField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityEmailField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityDecimalField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityIntegerField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 	
 	def dispatch genRowsUIDisplayField(EntityCurrencyField field) '''
-		<th>«entityFieldUtils.fakerDomainData(field)»</th>
+«««		<th>«entityFieldUtils.fakerDomainData(field)»</th>
 	'''
 }

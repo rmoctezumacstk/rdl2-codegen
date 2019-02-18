@@ -23,7 +23,7 @@ class ScreenRoutingGenerator {
 	import { RouterModule, Routes } from '@angular/router';	
 	import { «module.name.toLowerCase.toFirstUpper»Demo } from './«module.name.toLowerCase».psg';  	
 	«FOR p : module.elements.filter(typeof(PageContainer))»
-	import { «p.name.toFirstUpper» } from './«p.name.toLowerCase»/«p.name.toLowerCase».psg';
+	import { «p.name.toLowerCase.toFirstUpper» } from './«p.name.toLowerCase»/«p.name.toLowerCase».psg';
 	«ENDFOR»
 	  	
 	const ROUTES: Routes = [

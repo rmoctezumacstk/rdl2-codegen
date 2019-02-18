@@ -29,6 +29,7 @@ class ScreenModuleGenerator {
 	import { «module.name.toLowerCase.toFirstUpper»Demo } from './«module.name.toLowerCase».psg';	
 	«FOR p : module.elements.filter(typeof(PageContainer))»
 	import { «p.name.toLowerCase.toFirstUpper» } from './«p.name.toLowerCase»/«p.name.toLowerCase».psg';
+	import { ROUTING } from './«module.name.toLowerCase.toFirstUpper».psg.routing';
 	«ENDFOR»
 	
 	@NgModule({

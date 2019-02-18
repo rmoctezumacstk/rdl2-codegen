@@ -5,10 +5,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.System
 import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.ModuleRef
+import com.softtek.rdl2.Module
 
 class AdminHtmlClarityGenerator {
 
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
+		
 		fsa.generateFile("clarity/src/app/admin/admin.component.html", genAdminTag(resource, fsa))
 	}
 	
@@ -46,31 +48,65 @@ class AdminHtmlClarityGenerator {
         </div>
         <clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapse">
             <ng-container>
-				<!-- Modulos «resource.resourceSet.resources» -->
-					«FOR System s : resource.allContents.toIterable.filter(typeof(System))»
-					<clr-vertical-nav-group>
-	                    <a href="javascript://" clrVerticalNavLink>
-	                        <clr-icon shape="list" clrVerticalNavIcon></clr-icon>
-	                        «s.name»
-	                    </a>
-	                    <clr-vertical-nav-group-children *clrIfExpanded>
-							«FOR m : s.modules_ref»
-								«IF m.countPageLanmarks > 0»
-									«FOR page : m.module_ref.elements.filter(typeof(PageContainer))»
-										«IF page.landmark!==null && page.landmark.trim.equals("true")»
-					                        <div>
-					                            <a clrVerticalNavLink routerLink="./«m.module_ref.name.toLowerCase»" routerLinkActive="active">
-					                                <clr-icon shape="directory"></clr-icon>
-					                                «page.page_title»
-					                            </a>
-					                        </div>
-										«ENDIF»
-									«ENDFOR»
-								«ENDIF»
-							«ENDFOR»
-						</clr-vertical-nav-group-children>
-					</clr-vertical-nav-group>
-					«ENDFOR»
+            
+                            
+            
+            «FOR Module m : resource.allContents.toIterable.filter(typeof(Module))»
+            
+            <clr-vertical-nav-group>
+                <a href="javascript://" clrVerticalNavLink>
+                    <clr-icon shape="lock" clrVerticalNavIcon></clr-icon>
+                    «m.name»
+                </a>
+             <clr-vertical-nav-group-children *clrIfExpanded>
+		
+				«FOR page : m.elements.filter(typeof(PageContainer))»
+					«IF page.landmark!==null && page.landmark.trim.equals("true")»
+                        <div>
+                            <a clrVerticalNavLink routerLink="./«m.name.toLowerCase»" routerLinkActive="active">
+                                <clr-icon shape="directory"></clr-icon>
+                                «page.page_title»
+                            </a>
+                        </div>
+					«ENDIF»
+				«ENDFOR»
+				
+            «ENDFOR»
+                   
+            </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>       
+                       
+            </ng-container>
+            <ng-container>
+                <clr-vertical-nav-group>
+                    <a href="javascript://" clrVerticalNavLink>
+                        <clr-icon shape="lock" clrVerticalNavIcon></clr-icon>
+                        Seguridad
+                    </a>
+                 <clr-vertical-nav-group-children *clrIfExpanded>
+                  
+                <div>
+                    <a clrVerticalNavLink routerLink="./administracion" routerLinkActive="active">
+                        <clr-icon shape="directory"></clr-icon>
+                        Administración
+                    </a>
+                </div>
+                
+                <div>
+                    <a clrVerticalNavLink routerLink="./user" routerLinkActive="active">
+                        <clr-icon shape="directory"></clr-icon>
+                        Usuario
+                    </a>
+                </div>
+                <div>
+                    <a clrVerticalNavLink routerLink="./rol" routerLinkActive="active">
+                        <clr-icon shape="directory"></clr-icon>
+                        Role
+                    </a>
+                </div>         
+                    
+                </clr-vertical-nav-group-children>
+            	</clr-vertical-nav-group>
             </ng-container>          
         </clr-vertical-nav>        
     </div>

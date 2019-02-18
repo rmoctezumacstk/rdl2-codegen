@@ -99,13 +99,25 @@ class ScreenClarityTsGenerator {
 		  templateUrl: './«page.name.toLowerCase».psg.html',
 		})
 		export class «page.name.toLowerCase.toFirstUpper» implements OnInit{
+			
+  		    «FOR form : page.components.filter(FormComponent)»
+  		   	 	«form.name.toLowerCase»Form : FormGroup;
+  		    «ENDFOR»
 		
 		  constructor(
 		    private fb: FormBuilder,
 		    private validationService: ValidationService,
 		    private router: Router,
 		    private route: ActivatedRoute
-		  ) {});
+		  ) {
+		  	
+  		    «FOR form : page.components.filter(FormComponent)»
+  		   	 	this.«form.name.toLowerCase»Form = this.fb.group({
+					«FOR field : form.form_elements»
+						«field.genUIFormElement(form)»
+					«ENDFOR»
+  		   	 	});	
+  		    «ENDFOR»
 		  }
 		
 		ngOnInit() {}	 
@@ -201,5 +213,95 @@ class ScreenClarityTsGenerator {
 		return page
 	}
 	def dispatch genCommandFlowToContainer(UIComponent component) {}	
+	
+	/*
+	 * genUIFormElement
+	 */
+	def dispatch genUIFormElement(UIField e, FormComponent form) '''
+		«e.genFormUIField(form)»
+	'''
+	
+	// UIElement - > FormComponent
+	def dispatch genUIFormElement(UIDisplay e, FormComponent form) '''
+		«e.ui_field.genUIFormEntityField(form)»
+	'''
+	
+	def dispatch genUIFormElement(UIFormContainer e, FormComponent form) '''
+«««		«e.genUIFormContainer(form)»
+	'''
+	
+	/*
+	 * genEntityField
+	 */
+	def dispatch genUIFormEntityField(EntityReferenceField field, FormComponent form) '''
+«««		«field.superType.genUIFormRelationshipField(field)»
+	'''
+	
+	def dispatch genUIFormEntityField(EntityTextField field, FormComponent form) '''
+		 «field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	
+	def dispatch genUIFormEntityField(EntityLongTextField field, FormComponent form) '''
+	 	«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	
+	def dispatch genUIFormEntityField(EntityDateField field, FormComponent form) '''
+ 		«field.name.toLowerCase»Aux: new FormControl('', Validators.required),	
+	'''
+	
+	def dispatch genUIFormEntityField(EntityImageField field, FormComponent form) '''
+ 		«field.name.toLowerCase»: new FormControl('', Validators.required),	
+	'''
+	
+	def dispatch genUIFormEntityField(EntityFileField field, FormComponent form) '''
+ 		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	
+	def dispatch genUIFormEntityField(EntityEmailField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),		
+	'''
+	
+	def dispatch genUIFormEntityField(EntityDecimalField field, FormComponent form) '''
+ 		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	
+	def dispatch genUIFormEntityField(EntityIntegerField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	
+	def dispatch genUIFormEntityField(EntityCurrencyField field, FormComponent form) '''
+		 «field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''		
+	
+	/*
+	 * UIField
+	 */
+	def dispatch genFormUIField(UITextField field, FormComponent form) '''
+		 «field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UILongTextField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIDateField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIImageField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIFileField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIEmailField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIDecimalField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UIIntegerField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''
+	def dispatch genFormUIField(UICurrencyField field, FormComponent form) '''
+		«field.name.toLowerCase»: new FormControl('', Validators.required),
+	'''	
 	
 }

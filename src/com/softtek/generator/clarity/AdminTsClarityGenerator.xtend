@@ -54,6 +54,8 @@ class AdminTsClarityGenerator {
 	  enabledLinks(user) {}
 	
 	  buildMenu() {
+	  	
+	  	this.permissions.forEach(element => {
 	
 	      // Seguridad
 	      if (element.code == 'USERS:CREATE') {
