@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    
+    <title>Consultar recepción y envío de archivos operativos.</title>
+    <link rel="stylesheet" href=".../../resources/css/bootstrap.min.css" >
+    <link rel="stylesheet" href=".../../resources/css/jquery-ui.css"> 
+	<link rel="stylesheet" href=".../../resources/css/ui.jqgrid.css"> 
+	<link rel="stylesheet" type="text/css" media="all" href=".../../resources/css/estilos.css" />
+	<link rel="stylesheet" href=".../../resources/css/buttonStyle.css"> 
+	<script type="text/javascript" src=".../../resources/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src=".../../resources/js/jquery-ui.js"></script>
+	<script type="text/javascript" src=".../../resources/js/bootstrap.bundle.js" ></script>
+    <script type="text/javascript" src=".../../resources/js/paginador.js" ></script>
+	<script type="text/javascript" src=".../../resources/js/jquery.jqgrid.src.js"></script>
+	<script type="text/javascript" src=".../../resources/js/grid.locale-es.js"></script>
+	<script type="text/javascript" src=".../../resources/js/generalComponent.js"></script>
+	
+</head>
+<body>
+	<div>
+<div id="wrapper" align="center">
+	<div class="container afobnmx_header">
+		<div class="row afobnmx_leng_txt">
+			<a class="afobnmx_txt_leng"> <span>| Ver. 1.0.9.16 al
+					09/02/2019 </span> | <span>MS57614</span> | <span></span>
+			</a>
+		</div>
+
+		<div class="row justify-content-end">
+			<a class="afobnmx_headerLogo"> <img
+				src=".../../resources/img/logoCiti.png" alt="citibanamex">
+			</a>
+		</div>
+		<div class="row mt-1 justify-content-start afobnmx_menu">
+			<ul class="nav">
+
+
+				<li class="nav-item"><a class="nav-link text-white"
+					href="/componentesGenerales/">Home</a></li>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Consultas</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"
+								href="/componentesGenerales/consultaRecepcionEnvioArchivos">Procesos
+								archivos</a>
+						</div></li>
+				</div>
+				
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Reenv&iacute;o</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="/componentesGenerales/consultaReenvioArchivos">Archivos</a>
+						</div>
+					</li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Contenedor</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaContenedor">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Archivo</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaArchivo">Actualizar</a>
+							</div>
+						</div>
+					</li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Env&iacute;o de archivo</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaEnvioArchivo">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Procesos</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaProceso">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+			</ul>
+		</div>
+
+	</div>
+
+</div></div>
+
+
+	<div>
+		<div id="wrapper"  align="center">
+		<div class="afobnmx_contPadd">
+			<div class="afobnmx_contForm1">
+		     <ul>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			   <li><div class="afobnmx_listForm1"></div></li>
+			 </ul>
+		   </div>
+			<div class="afobnmx_listForm2">
+			<form id="formBusquedaProcesosArchivos" action="/componentesGenerales/buscarProcesosArchivos" method="post" >
+				<br/>
+				<h1 class="afobnmx_persInfo"><label >Búsqueda de procesos operativos</label></h1>
+				<div>
+				   <div class="afobnmx_cont2Float">
+				     <b><label class="afobnmx_contlabel">Identificador del archivo</b>
+				     <b><label class="afobnmx_contlabel">Proceso</b>
+				   </div>
+					
+				   <div class="afobnmx_selectForm">
+				   	 <input type="text" class="afobnmx_inputForm" id="idArchivo" name="idArchivo" value=""/>
+					 <select class="afobnmx_select" id="idProceso" name="idProceso" >
+							<option value="">-- seleccione --</option>
+							<option value="dfgsd_ack">dfgsd_ack</option>
+							<option value="XXXX_TEST_ack">XXXX_TEST_ack</option>
+							<option value="Proceso_Prueba_Depedencia">Proceso_Prueba_Depedencia</option>
+							<option value="Proceso con un nombre largo validar">Proceso con un nombre largo validar</option>
+							<option value="el campo es de 35 caracteres v_ack">el campo es de 35 caracteres v_ack</option>
+							<option value="Archivo nuevo 1_ack">Archivo nuevo 1_ack</option>
+							<option value="csfasdasfasdf">csfasdasfasdf</option>
+							<option value="ooooooooooooooooookkkkkkkkkkkkkkk">ooooooooooooooooookkkkkkkkkkkkkkk</option>
+							<option value="SYM_BITACORA_MOVIMIENTO_REV">SYM_BITACORA_MOVIMIENTO_REV</option>
+							<option value="HEEE ProcessQA">HEEE ProcessQA</option>
+							<option value="GEN_DTYPE_VAL_AUT1">GEN_DTYPE_VAL_AUT1</option>
+							<option value="qwertyuiopasdfghjklzxcvbnm123456789">qwertyuiopasdfghjklzxcvbnm123456789</option>
+							<option value="GEN_DTYPE_VAL_AUT">GEN_DTYPE_VAL_AUT</option>
+							<option value="Proceso 2 de testing para sym">Proceso 2 de testing para sym</option>
+							<option value="archivo 1_ack">archivo 1_ack</option>
+							<option value="MC_01">MC_01</option>
+							<option value="ENVIO_100">ENVIO_100</option>
+							<option value="ARCHIVO_NODE22_ack">ARCHIVO_NODE22_ack</option>
+							<option value="mashlomja_ack">mashlomja_ack</option>
+							<option value="dasdasdasdasd">dasdasdasdasd</option>
+							<option value="Proceso1521">Proceso1521</option>
+							<option value="Proceso1522">Proceso1522</option>
+							<option value="klsdjfkasdjfkljsdklfjasdkl">klsdjfkasdjfkljsdklfjasdkl</option>
+							<option value="TOÑOTOÑOTOÑOTOÑOTOÑOasldhJKAGD">TOÑOTOÑOTOÑOTOÑOTOÑOasldhJKAGD</option>
+							<option value="adasd092u098heuifwuifbeu9fofnkfnjkb">adasd092u098heuifwuifbeu9fofnkfnjkb</option>
+							<option value="GEOC_03">GEOC_03</option>
+							<option value="File n5_ack">File n5_ack</option>
+							<option value="klasjdKLSJDÑFKLjdñf{jsdñ{fjañks">klasjdKLSJDÑFKLjdñf{jsdñ{fjañks</option>
+							<option value="proceso x-1">proceso x-1</option>
+							<option value="Procesos 2 Sistema 1 Cont 3">Procesos 2 Sistema 1 Cont 3</option>
+							<option value="SYM_BITACORA_MOVIMIENTO_ESP">SYM_BITACORA_MOVIMIENTO_ESP</option>
+							<option value="PROCESO16388-1">PROCESO16388-1</option>
+							<option value="Archivo 1 de S1 y C1_ack">Archivo 1 de S1 y C1_ack</option>
+							<option value="2312312_ack">2312312_ack</option>
+							<option value="AR16388_ack">AR16388_ack</option>
+							<option value="AR16388-3_ack">AR16388-3_ack</option>
+							<option value="Proceso Sonar 01">Proceso Sonar 01</option>
+							<option value="Process for testing">Process for testing</option>
+							<option value="GEOC_01">GEOC_01</option>
+							<option value="PRCG01">PRCG01</option>
+							<option value="serch">serch</option>
+							<option value="prueba-1_ack">prueba-1_ack</option>
+							<option value="archivo_test_ack">archivo_test_ack</option>
+							<option value="PRCG08">PRCG08</option>
+							<option value="PRCG09">PRCG09</option>
+							<option value="AR16388-4_ack">AR16388-4_ack</option>
+							<option value="PRCG06">PRCG06</option>
+							<option value="PRCG07">PRCG07</option>
+							<option value="PRCG04">PRCG04</option>
+							<option value="AR16388-11_ack">AR16388-11_ack</option>
+							<option value="PRCG05">PRCG05</option>
+							<option value="PRCG02">PRCG02</option>
+							<option value="HEEE Process">HEEE Process</option>
+							<option value="PRCG03">PRCG03</option>
+							<option value="weyioweyrioyweioryw">weyioweyrioyweioryw</option>
+							<option value="AFIOP192_VAL">AFIOP192_VAL</option>
+							<option value="Archivo activo_ack">Archivo activo_ack</option>
+							<option value="GEN_DTYPE_VAL_ESP">GEN_DTYPE_VAL_ESP</option>
+							<option value="Proceso 1 sistema 1, contenedor 16">Proceso 1 sistema 1, contenedor 16</option>
+							<option value="Usuario_ack">Usuario_ack</option>
+							<option value="proceso X">proceso X</option>
+							<option value="proceso W">proceso W</option>
+							<option value="Archivo en deploy nuevo_ack">Archivo en deploy nuevo_ack</option>
+							<option value="porfavor">porfavor</option>
+							<option value="El campo se debe poblar con 35 dato">El campo se debe poblar con 35 dato</option>
+							<option value="ARCHIVO_DEV_1_ack">ARCHIVO_DEV_1_ack</option>
+							<option value="File 3_ack">File 3_ack</option>
+							<option value="ARM16388">ARM16388</option>
+							<option value="AR16388-8_ack">AR16388-8_ack</option>
+							<option value="UIOUIOUIOUIOUIO">UIOUIOUIOUIOUIO</option>
+							<option value="AR16388-6_ack">AR16388-6_ack</option>
+							<option value="dsdsd">dsdsd</option>
+							<option value="W3kNm2S9tChD_ack">W3kNm2S9tChD_ack</option>
+							<option value="PROCESO HEEE">PROCESO HEEE</option>
+							<option value="Proceso 1 de prueba para sym">Proceso 1 de prueba para sym</option>
+							<option value="534534gdfgd">534534gdfgd</option>
+							<option value="GEN_DTYPE_VAL_REV">GEN_DTYPE_VAL_REV</option>
+							<option value="Proceso Hora">Proceso Hora</option>
+							<option value="Proceso Sistema 1 Cont 3">Proceso Sistema 1 Cont 3</option>
+							<option value="Proceso S5C1 2">Proceso S5C1 2</option>
+							<option value="TEST_NODE11_ack">TEST_NODE11_ack</option>
+							<option value="Proceso S5C1 1">Proceso S5C1 1</option>
+							<option value="Proc 1_S4_C1">Proc 1_S4_C1</option>
+							<option value="ARCHIVO_TEST_ACUSE_ack">ARCHIVO_TEST_ACUSE_ack</option>
+							<option value="dsww">dsww</option>
+							<option value="5yACUSE_ack">5yACUSE_ack</option>
+							<option value="File 1_ack">File 1_ack</option>
+							<option value="archivo 1, sistema 1, contenedor1_A">archivo 1, sistema 1, contenedor1_A</option>
+							<option value="QQQ1Q_ack">QQQ1Q_ack</option>
+							<option value="ARM16388_ack">ARM16388_ack</option>
+							<option value="Proceso validación Punto de falla ">Proceso validación Punto de falla </option>
+							<option value="Proceso uno">Proceso uno</option>
+							<option value="Proceso_Regression_Test">Proceso_Regression_Test</option>
+							<option value="jklasdñjlasdjlasdñjl">jklasdñjlasdjlasdñjl</option>
+							<option value="Proceso">Proceso</option>
+							<option value="eqweqweqweqwe">eqweqweqweqwe</option>
+							<option value="GEOC_S5C2">GEOC_S5C2</option>
+							<option value="SYM_LOTE_SIEFORE_SUBCUENTA_ESP">SYM_LOTE_SIEFORE_SUBCUENTA_ESP</option>
+							<option value="ARCHIVO_NODE_ack">ARCHIVO_NODE_ack</option>
+							<option value="EP10448_ack">EP10448_ack</option>
+							<option value="asdñfksñdfkñlsdkfñlksdñlfksñl">asdñfksñdfkñlsdkfñlksdñlfksñl</option>
+							<option value="llllllllllllllllllllll">llllllllllllllllllllll</option>
+							<option value="AR16388-9_ack">AR16388-9_ack</option>
+							<option value="jjjjjjjjjjjjjjjjjjjj">jjjjjjjjjjjjjjjjjjjj</option>
+							<option value="ProcesoX">ProcesoX</option>
+							<option value="Proceso 1 para sym testing">Proceso 1 para sym testing</option>
+							<option value="ProcesoY">ProcesoY</option>
+							<option value="PRCG11">PRCG11</option>
+							<option value="PRCG12">PRCG12</option>
+							<option value="dhskl">dhskl</option>
+							<option value="proceso test">proceso test</option>
+							<option value="PRCG10">PRCG10</option>
+							<option value="d22">d22</option>
+							<option value="Proceso 4 sistema 1 cont 3">Proceso 4 sistema 1 cont 3</option>
+							<option value="dasdsdaw2e">dasdsdaw2e</option>
+							<option value="Proceso sin redireccionamiento a ca">Proceso sin redireccionamiento a ca</option>
+							<option value="AR16388-2_ack">AR16388-2_ack</option>
+							<option value="Proceso navegabilidad">Proceso navegabilidad</option>
+							<option value="PRCG13">PRCG13</option>
+							<option value="Proceso de prueba Roles vs Servicio">Proceso de prueba Roles vs Servicio</option>
+							<option value="serchdenew">serchdenew</option>
+							<option value="SYM_LOTE_SIEFORE_SUBCUENTA_REV">SYM_LOTE_SIEFORE_SUBCUENTA_REV</option>
+							<option value="XXXXXXXX">XXXXXXXX</option>
+							<option value="12345_ack">12345_ack</option>
+							<option value="ProcesoXX">ProcesoXX</option>
+							<option value="proceso x">proceso x</option>
+							<option value="proceso pruebas 1">proceso pruebas 1</option>
+							<option value="yacasi">yacasi</option>
+							<option value="AR16388-20_ack">AR16388-20_ack</option>
+							<option value="El campo se poblará con 35 caracte">El campo se poblará con 35 caracte</option>
+							<option value="File 6_ack">File 6_ack</option>
+							<option value="mashlomja1_ack">mashlomja1_ack</option>
+							<option value="Proceso de prueba 4">Proceso de prueba 4</option>
+							<option value="yafunciona">yafunciona</option>
+							<option value="5xxxx_ack">5xxxx_ack</option>
+							<option value="Proceso Roles vs Servicio 2">Proceso Roles vs Servicio 2</option>
+							<option value="PROCESO 1, SISTEMA 1, CONTENEDOR 1">PROCESO 1, SISTEMA 1, CONTENEDOR 1</option>
+							<option value="Proceso AW">Proceso AW</option>
+							<option value="Proceso 2 Sistema 4">Proceso 2 Sistema 4</option>
+							<option value="Proceso777">Proceso777</option>
+							<option value="archivo_xxx_ack">archivo_xxx_ack</option>
+							<option value="ARCHI_x_ack">ARCHI_x_ack</option>
+							<option value="SYM_LOTE_SIEFORE_SUBCUENTA_AUT">SYM_LOTE_SIEFORE_SUBCUENTA_AUT</option>
+							<option value="PROCESO_CON_MUCHOS_CARACTERES_PRUEB">PROCESO_CON_MUCHOS_CARACTERES_PRUEB</option>
+							<option value="rwe_ack">rwe_ack</option>
+							<option value="dasdasd">dasdasd</option>
+							<option value="AR16388-5_ack">AR16388-5_ack</option>
+							<option value="test x">test x</option>
+							<option value="Prueba de estatus">Prueba de estatus</option>
+							<option value="Archivo_Both_ack">Archivo_Both_ack</option>
+							<option value="W3kNm2S9tChD1111_ack">W3kNm2S9tChD1111_ack</option>
+							<option value="Proceso 3 para sym">Proceso 3 para sym</option>
+							<option value="File 4_ack">File 4_ack</option>
+							<option value="proceso">proceso</option>
+							<option value="prueba joel">prueba joel</option>
+							<option value="Proceso 3-1">Proceso 3-1</option>
+							<option value="utyrew">utyrew</option>
+							<option value="ARCHIVO_ACUSE_TEST_ack">ARCHIVO_ACUSE_TEST_ack</option>
+							<option value="Percoeso 3 para sist 1 cont 3">Percoeso 3 para sist 1 cont 3</option>
+							<option value="AR16388-19_ack">AR16388-19_ack</option>
+							<option value="MCP_ProcesoEnvio01">MCP_ProcesoEnvio01</option>
+							<option value="asdfSFSDF">asdfSFSDF</option>
+							<option value="Proceso sin reedireccion">Proceso sin reedireccion</option>
+							<option value="Process testing ">Process testing </option>
+							<option value="SAHE">SAHE</option>
+							<option value="Proceso_prueba_envío">Proceso_prueba_envío</option>
+							<option value="ProcesoXklsdakl">ProcesoXklsdakl</option>
+							<option value="archivo12345_ack">archivo12345_ack</option>
+							<option value="jhkkkkkkkkkkkkkkkkk">jhkkkkkkkkkkkkkkkkk</option>
+							<option value="proceso xx">proceso xx</option>
+							<option value="ep1048_ack">ep1048_ack</option>
+							<option value="Proceso Z">Proceso Z</option>
+							<option value="dasdasd3eqweqw">dasdasd3eqweqw</option>
+							<option value="TEST_NODE_ack">TEST_NODE_ack</option>
+							<option value="uno_ack">uno_ack</option>
+							<option value="Nuevo Proceso Prueba">Nuevo Proceso Prueba</option>
+							<option value="PROCESO 3-10">PROCESO 3-10</option>
+							<option value="SYM_BITACORA_MOVIMIENTO_AUT">SYM_BITACORA_MOVIMIENTO_AUT</option>
+							<option value="PROCESO PARA TEST DE DEFECTOS">PROCESO PARA TEST DE DEFECTOS</option>
+							<option value="67890_ack">67890_ack</option>
+							<option value="daskdasjkl">daskdasjkl</option>
+							<option value="File 2_ack">File 2_ack</option>
+							<option value="dasdasdas">dasdasdas</option>
+							<option value="dswwww">dswwww</option>
+							<option value="HEEE ProcessQA200000000000000000000">HEEE ProcessQA200000000000000000000</option>
+							<option value="AR16388-7_ack">AR16388-7_ack</option>
+							<option value="dsfsd">dsfsd</option>
+						</select>  
+			       </div>
+					 
+				 </div>
+				 
+				 <div>
+				   <div class="afobnmx_cont2Float">
+				   
+				   	 <b><label class="afobnmx_contlabel">Entidad origen</b>
+				     <b><label class="afobnmx_contlabel">Tipo de archivo</b>
+				   </div>
+					
+				   <div class="afobnmx_selectForm">
+				     <input type="text" class="afobnmx_inputForm" id="entidadOrigen" name="entidadOrigen" value=""/>
+					 <select class="afobnmx_select" id="tipoArchivo" name="tipoArchivo">
+						<option value="">-- seleccione --</option>
+						<option value="INPUT">INPUT</option>
+						<option value="OUTPUT">OUTPUT</option>
+					</select>
+					
+			       </div>
+					 
+				 </div>
+				 
+				 <div>
+				   <div class="afobnmx_cont2Float">
+				     <b><label class="afobnmx_contlabel">Entidad destino</b>
+				     <b><label class="afobnmx_contlabel">Estado de ejecución</b>
+				   </div>
+					
+				   <div class="afobnmx_selectForm">
+					 <input type="text" class="afobnmx_inputForm" id="entidadDestino" name="entidadDestino" value=""/>
+					 <select class="afobnmx_select" id="estadoEjecucion" name="estadoEjecucion" >
+							<option value="">-- seleccione --</option>
+							<option value="RUNNING">RUNNING</option>
+							<option value="SUCCESS">SUCCESS</option>
+							<option value="FAILED">FAILED</option>
+							<option value="REPROCESED">REPROCESED</option>
+						</select>
+			       </div>
+					 
+				 </div>
+				 
+				  <div>
+				  	<div class="afobnmx_cont2Float">
+				     <b><label class="afobnmx_contlabel">Fecha inicio ejecución</b>
+				     <b><label class="afobnmx_contlabel">Fecha fin ejecución</b>
+				   </div>
+					
+				   <div class="afobnmx_selectForm">
+					 <table cellspacing="0">
+				   		<tr >
+				   			<td >
+				   				<input type="text" readonly class="afobnmx_datepicker" data-date-format="dd/mm/yyyy" id="fechaInicioEjecucion" name="fechaInicioEjecucion" value=""/>
+				   			</td>
+				   			<td>&emsp;</td><td>&emsp;</td><td>&emsp;</td><td>&emsp;</td>
+				   			<td >
+			   					<input type="text" readonly class="afobnmx_datepicker" data-date-format="dd/mm/yyyy" id="fechaFinEjecucion" name="fechaFinEjecucion" value=""/>
+				   			</td>
+				   		</tr>
+				   </table>
+			       </div>
+				 </div>
+				 <div>
+				   <div class="afobnmx_cont2Float">
+				     <b><label class="afobnmx_contlabel">Fecha de llegada</b>
+				     <b><label class="afobnmx_contlabel">&nbsp;</label></b>
+				   </div>
+				   
+				   <div class="afobnmx_selectForm">
+					 <table cellspacing="0">
+				   		<tr >
+				   			<td >
+				   				<input type="text" readonly class="afobnmx_datepicker" id="fechaLlegada" name="fechaLlegada" value="" />
+				   			</td>
+				   			<td>&emsp;</td><td>&emsp;</td><td>&emsp;</td>
+				   		</tr>
+				   </table>
+			       </div>
+			       <br>
+			       <br>
+			       <br>
+			       <br>
+			       <br>
+			       <br>
+			       <br>
+			       <br>
+			       <div class="afobnmx_separador"></div> 
+				   <table cellspacing="0">
+				   		<tr >
+				   			<td >
+				   				<a class="afobnmx_bott" onclick="generarPaginacion()">Buscar</a>
+				   			</td>
+				   			<td>&emsp;</td><td>&emsp;</td>
+				   			<td >
+				   				<a class="afobnmx_bott" onclick="document.getElementById('formBusquedaProcesosArchivos').reset()">Limpiar</a>
+				   			</td>
+				   		</tr>
+				   </table>
+				 </div>
+				<br/>
+				<br/>
+				<div>
+			 </div>
+			</form>
+			</div>
+			
+		</div>
+		</div>
+		<div id="wrapper" >
+		<br/>
+	    <br/>
+	    <br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+	 	
+			<div id="sinFiltros" class="alert alert-danger" style="display:none;">
+        		<label >Proporcionar un criterio de búsqueda</label>  
+      		</div>
+      		<div id="sinRegistros" class="alert alert-danger" style="display:none;">
+        		<label >No se encontraron resultados de búsqueda</label>  
+      		</div>
+      		<div id="sinSeleccion" class="alert alert-danger" style="display:none;">
+        		<label >Favor de seleccionar un registro</label>  
+      		</div>
+			<div id='divjqgrid'>
+				<table id='grid'></table>
+				<div id='pager'></div>
+			</div>
+			<br>
+			<table cellspacing="10">
+		   		<tr >
+		   			<td >
+		   				<a id="botonMuestraAcciones" readonly class="afobnmx_bott"  onclick="muestraAcciones()" style="display:none;" >Ver acciones</a> 
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td >
+		   				<a id="botonExportaArc" readonly class="afobnmx_bott" href="/componentesGenerales/bitacoraEjecucionesArchivoXls" style="display:none;" >Exportar xls</a> 
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td>
+		   				<a id="botonExportaArcPdf" readonly class="afobnmx_bott"  href="/componentesGenerales/bitacoraEjecucionesArchivoPdf" style="display:none;" >Exportar pdf </a>
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td >
+		   				<a id="botonRegresarEjecuciones" readonly class="afobnmx_bott"  onclick="borrarEjecuciones()" style="display:none;" >Regresar</a> 
+		   			</td>
+		   		</tr>
+			 </table>	  
+			<br>
+			<br>
+			<div id='divjqgrid'>
+				<table id='gridPrc'></table>
+				<div id='pagerPrc'></div>
+			</div>
+			<br>
+			<table cellspacing="10">
+		   		<tr >
+		   			<td >
+		   				<a id="botonMuestraIncidencias" readonly class="afobnmx_bott"  onclick="muestraIncidencias()" style="display:none;" >Ver incidencias</a> 
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td>
+		   				<a id="botonExportaPrc" readonly class="afobnmx_bott"  href="/componentesGenerales/bitacoraAccionesEjecucionXls" style="display:none;" >Exportar xls</a>
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td>
+		   				<a id="botonExportaPrcPdf" readonly class="afobnmx_bott"  href="/componentesGenerales/bitacoraAccionesEjecucionPdf" style="display:none;" >Exportar pdf</a>
+		   			</td>
+		   			<td>&emsp;</td><td>&emsp;</td>
+		   			<td >
+		   				<a id="botonRegresarAcciones" readonly class="afobnmx_bott"  onclick="borrarAcciones()" style="display:none;" >Regresar</a> 
+		   			</td>
+		   		</tr>
+			 </table>	
+		</div>
+		
+		
+		
+		
+		<div class="modal fade" id="incidenciasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" >
+		  <div class="modal-dialog  modal-lg" role="document">
+		    <div class="modal-content" >
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+        		</div>
+        		<div class="modal-body">
+					<div id='divjqgrid'>
+						<table id='gridInc'></table>
+						<div id='pagerInc'></div>
+					</div>
+				</div>		
+			<div class="modal-footer">
+		        <a readonly class="afobnmx_bott" href="/componentesGenerales/bitacoraIncidenciasAccionXls" >Exportar xls </a>
+		        
+		        <a readonly class="afobnmx_bott" href="/componentesGenerales/bitacoraIncidenciasAccionPdf" >Exportar pdf</a>
+		        
+		        <a readonly class="afobnmx_bott" onclick="$('#incidenciasModal').modal('hide')"  >Regresar</a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+	<script>
+		/*<![CDATA[*/
+	    $( function() {
+	    	var message = ["ArchivoSonar01","CG0001","CG0002","CG0003","CG0004","CG0005","CG0006","CG0007","CG0008","CG0009","CG0010","CG0011","Id_Archivo_Regression_Test","12345","AR16388","AR16388-1","AR16388-11","AR16388-12","AR16388-13","AR16388-14","AR16388-15","AR16388-16","AR16388-17","AR16388-18","AR16388-19","AR16388-2","AR16388-20","AR16388-3","AR16388-4","AR16388-5","AR16388-6","AR16388-7","AR16388-8","AR16388-9","ARCHIVO PARA PROBAR ESTATUS","ARM16388","ARM16388-2","Arc_Prueba_datos","Archivo 1 de S1 y C1","Archivo con contenedor diaria","Archivo en deploy nuevo","Archivo nuevo 1","Archivo nuevo 2.","Archivo_Both","Archivo_Cont.Hra","CG0010","CG0012","CG0013","CG0014","El campo se debe poblar con 35 cara","El campo se poblar\u00E1 con 35 caracte","FILE  TESTING STATUS PROBLEM","FILE STATUS PROBLEM 2","File 1","File 2","File 3","File 4","File 6","File 7","File n5","Nuevo Archivo","Otrapruebadeestatus","OtrapruebadeestatusII","OtrapruebadeestatusIII","PRUEBA DE ACT_TYPE","PRUEBA DE ACT_TYPE NONE","TEST DE DEFECTOS","TIPO DE ACUSE NODE","W3kNm2S9tChD","W3kNm2S9tChD11","ZDVGADFG","archivo 1","archivo 1, sistema 1, contenedor1","archivo sin reedireccionar","arvhivo_test","asd","asdfuio","el campo es de 35 caracteres v","especial01","prueba ACK","pruebaestatus","uno","5xxxx","5yACUSE","ARCHIVO_ACUSE_TEST","ARCHIVO_DEV_1","ARCHIVO_NODE22","ARCHIVO_TEST01","ARCHIVO_TEST_ACUSE","ARCHIVO_TEST_FINAL","ARCHIVO_TEST_NONE","ARCHIVO_ULTIMO","ARCHI_DEV_DOS","ARCHI_x","Archivo2","Archvivo2-2","PRUEBA_ALERT","TEST_ACK_01","TEST_ARCHIVO_UNO","Usuario","XXXX_TEST","arch_uno","archivo","archivo_test","archivo_xxx","asfnkljn","njknk","prueba-1","sdgdfg","user","ARCHIVO 3-10","Archivo S4, C4","Archivo_Prueba_CampDescripci\u00F3","Archivo_Prueba_Descripci\u00F3n","Archivo_Segundo","Archivo_prueba_status","Id_archivo_S4C3","Id_archivo_S4C3_2","Id_archivo_S4C3_3","Id_archivo_S4C3_4","Id_archivo_S4C3_5","Id_archivo_S4C3_6","Id_archivo_S4C3_7","Id_archivo_S4C3_8","PruebaAR16388-5","PruebaAR16388-6","archivo 4 para prueba node","archivoARM16388-4","archivoprueba1","el campo es de 30 caracteres v","xyz","ARC HEEE","ARCH HEEE","ARCHIVO_TEST_ACK_OK","ARCHIVO_TEST_DESCRIP","ARCHIVO_TEST_JS","ARCHIVO_TEST_NODE","ARCHIVO_TEST_TIPOARCHIVO","ARCHI_TEST_BOTH","ARM16388-01","ARM16388-02","Act Archivo Acuse","Archivo BOTH Acuse","Archivo MAIL Acuse","Archivo NODE Acuse","Archivo NONE Acuse","Archivo Node","Archivo activo","Archivo de prueba Roles vs Ser","Archivo validaci\u00F3n","Archivo_Proc_Asig","Archivo_Proc_Asig_2","BOTH_1","BOTH_2","BOTH_3","CG0014","CG0015","Campo obligatorio","ID_Archivo_Prueba_Status","Id Archivo Roles 2","Id_Archivo_GEOC","Id_Archivo_GEOC_02","Id_Archivo_NODE","Identificador NODE","Identificador archivo BOTH","Identificador archivo NODE","Prueba DTA_TYPE y ACK_TYPE","Prueba FILE_STATUS","Prueba_env\u00EDo","TEST_BOTH","abc","abc file","archivo inactivo","el campo es de 35 caracteres v","jkvjklasdf\u00F1jl","prueba de archivo ack","prueba estatus xxxxxx","qa1","CG0015","SALDOS_AUTOMATICOS","SALDOS_AUTOMATICOS1","SALDOS_ESPECIALES","SALDOS_REVERSOS"];
+	        $( "#idArchivo" ).autocomplete({
+	          source: message
+	        });
+	      } );
+		/*]]>*/
+	</script>
+	<script type="text/javascript">
+		
+		$( document ).ready(function() {
+			$( "#fechaLlegada" ).datepicker({ dateFormat: 'dd/mm/yy' }).val();
+			$( "#fechaInicioEjecucion" ).datepicker({ dateFormat: 'dd/mm/yy' }).val();
+			$( "#fechaFinEjecucion" ).datepicker({ dateFormat: 'dd/mm/yy' }).val();
+		});
+		
+		function generarPaginacion(){
+			$("#grid").GridUnload();
+			$("#gridPrc").GridUnload();
+			$('#sinFiltros').hide();
+			$('#sinRegistros').hide();
+			$('#botonExportaArc').hide();
+			$('#botonExportaPrc').hide();
+			$('#botonExportaArcPdf').hide();
+			$('#botonMuestraAcciones').hide();
+			$('#botonExportaPrcPdf').hide();
+			$('#botonRegresarEjecuciones').hide();
+			$('#sinSeleccion').hide();
+			$('#botonMuestraIncidencias').hide();
+    		$('#botonRegresarAcciones').hide();
+			var mapaColumnas =  new Map();
+			mapaColumnas.set("idProceso","Proceso");
+			mapaColumnas.set("idArchivo","Identificador del archivo");
+			mapaColumnas.set("idArchivoRelacionado","Identificador del archivo relacionado");
+			mapaColumnas.set("tipoArchivo","Tipo de archivo");
+			mapaColumnas.set("estadoEjecucion","Estado de ejecución");
+			mapaColumnas.set("fechaLlegada","Fecha de llegada");
+			mapaColumnas.set("fechaProceso","Fecha de proceso de recepción");
+			mapaColumnas.set("fechaInicioEjecucion","Fecha de ejecución");
+			mapaColumnas.set("horaInicioEjecucion","Hora de ejecución");
+			mapaColumnas.set("fechaFinEjecucion","Fecha fin ejecución");
+			mapaColumnas.set("horaFinEjecucion","Hora fin ejecución");
+			mapaColumnas.set("entidadOrigen","Entidad origen");
+			mapaColumnas.set("entidadDestino","Entidad destino");
+			mapaColumnas.set("totalRechazos","Total de rechazos");
+			mapaColumnas.set("totalIncidencias","Total de incidencias");
+			mapaColumnas.set("acuse","Acuse");
+			mapaColumnas.set("idSistema","Sistema"); 
+			
+			var mapaFiltros = validarFiltrosBusqueda();
+			var tituloGrid = "Bitácora de ejecuciones del archivo";
+			var urlMetodo = "/componentesGenerales/obtieneProcesosArchivos"
+			if(mapaFiltros.size==0){
+				$('#sinFiltros').show();
+			}
+			else{
+				generaTablarPaginacion(mapaFiltros,mapaColumnas,tituloGrid,urlMetodo);
+			}
+	
+	
+		};
+		
+		function generarPaginacionPrc(idArchivo, idSistema){
+			var mapaColumnas =  new Map();
+			mapaColumnas.set("totalRechazos","Número de rechazos");
+			mapaColumnas.set("totalIncidencias","Número de incidencias");
+			mapaColumnas.set("fechaInicioEjecucion","Fecha de ejecución");
+			mapaColumnas.set("horaInicioEjecucion","Hora de ejecución");
+			mapaColumnas.set("fechaFinEjecucion","Fecha fin ejecución");
+			mapaColumnas.set("horaFinEjecucion","Hora fin ejecución");
+			mapaColumnas.set("estadoEjecucion","Estado de ejecución de la acción");
+			mapaColumnas.set("idArchivo","Arch");
+			mapaColumnas.set("idSistema","Sistema");
+			mapaColumnas.set("idBatch","Batch");
+			var mapaFiltros = new Map();
+			mapaFiltros.set("idArchivo",idArchivo);
+			mapaFiltros.set("idSistema",idSistema);
+			var tituloGrid = "Bitácora de acciones de la ejecución";
+			var urlMetodo = "/componentesGenerales/obtieneProcesos"
+			
+			generaTablarPaginacionPrc(mapaFiltros,mapaColumnas,tituloGrid,urlMetodo);
+
+		};
+		
+		function generarPaginacionInc(idSistema, idBatch, idArchivo){
+			var mapaColumnas =  new Map();
+			mapaColumnas.set("secuenciaRegistro","Secuencia del registro");
+			mapaColumnas.set("tipoRegistro","Tipo de registro");
+			mapaColumnas.set("idRegistro","Valor identificador del registro");
+			mapaColumnas.set("secuenciaError","Secuencia del error ");
+			mapaColumnas.set("claveError","Clave del error");
+			mapaColumnas.set("descripcionError","Descripción del error");
+			mapaColumnas.set("datoError","Dato del error");
+			var mapaFiltros = new Map();
+			mapaFiltros.set("idSistema",idSistema);
+			mapaFiltros.set("idBatch",idBatch);
+			mapaFiltros.set("idArchivo",idArchivo);
+			var tituloGrid = "Bitácora de incidencias de la acción";
+			var urlMetodo = "/componentesGenerales/obtieneIncidencias"
+			
+			generaTablarPaginacionInc(mapaFiltros,mapaColumnas,tituloGrid,urlMetodo);
+
+		};
+		
+	</script>
+
+	</div>
+
+
+</body>
+<footer>
+	
+	<div>
+<div id="wrapper" align="center">
+	<div class="footer">
+	   <hr>
+	   <div class="afobnmx_logoFooter">
+	     <div class="afobnmx_copyright">&#169;&nbsp;2018&nbsp;Citigroup&nbsp;Inc</div>
+	   </div>
+	</div>
+</div>
+</div>
+	
+</footer>
+</html>

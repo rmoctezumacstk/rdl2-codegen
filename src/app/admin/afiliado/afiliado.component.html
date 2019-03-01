@@ -1,0 +1,238 @@
+<div class="container" id="wrapper">
+  <div class="row justify-content-md-center">
+    <div class="col-auto">
+      <h1 class="afobnmx_persInfo">
+        <label>Agregar Afiliado</label>
+      </h1>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class=" col-md-10">
+      <div id="div-alert">
+        <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+      </div>
+
+      <form class="needs-validation mt-1" id="formularioContenedor" [formGroup]="afiliadoForm" (submit)="saveAfiliado()">
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="nss">NSS:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="nss" id="nss" class="form-control" />
+              <control-messages [control]="afiliadoForm.controls.nss" class="invalid_format"></control-messages>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="nombre">Nombre:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="nombre" id="nombre" class="form-control" />
+              <control-messages [control]="afiliadoForm.controls.nombre" class="invalid_format"></control-messages>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="apellido_paterno">Apellido Paterno:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="apellido_paterno" id="apellido_paterno" class="form-control" />
+              <control-messages [control]="afiliadoForm.controls.apellido_paterno" class="invalid_format"></control-messages>
+          </div>
+        </div> 
+        
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="apellido_materno">Apellido Materno:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="apellido_materno" id="apellido_materno" class="form-control" />
+              <control-messages [control]="afiliadoForm.controls.apellido_materno" class="invalid_format"></control-messages>
+          </div>
+        </div>         
+
+        <div class="form-group row">
+          <div class="col-md-3 afobnmx_contlabel3 font-weight-bold text-right"><label>Grupo:*</label></div>
+          <div class="col-md-4">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="grupo" id="grupo" value="Masculino">
+              <label class="form-check-label" for="Masculino">Masculino</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="grupo" id="grupo" value="Femenino">
+              <label class="form-check-label" for="Femenino">Femenino</label>
+            </div>
+            <control-messages [control]="afiliadoForm.controls.grupo" class="invalid_format"></control-messages>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-3 afobnmx_contlabel3 font-weight-bold text-right">Beneficiario:*</div>
+          <div class="col-md-6">
+              <div class="input-group">
+                <input class="form-control" formControlName="beneficiario">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary search" (click)="open(content)" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <control-messages [control]="afiliadoForm.controls.beneficiario" class="invalid_format"></control-messages>
+            </div>
+        </div>        
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="observaciones">Observaciones:*</label>
+          </div>
+          <div class="col-md-6">
+              <textarea formControlName="observaciones" id="observaciones" class="form-control"></textarea>
+              <control-messages [control]="afiliadoForm.controls.observaciones" class="invalid_format"></control-messages>
+          </div>
+        </div>    
+
+        <div class="form-group row">
+          <div class="col-md-3 afobnmx_contlabel3 font-weight-bold text-right"><label>Fecha de Inicio:*</label></div>
+          <div class="col-md-6">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" formControlName="fecha_afiliacion"
+                      [displayMonths]="displayMonths" [navigation]="navigation" [outsideDays]="outsideDays"
+                      [showWeekNumbers]="showWeekNumbers" ngbDatepicker #fecha_afiliacion="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="fecha_afiliacion.toggle()" type="button">
+                  <i class="fa fa-calendar"></i>
+                </button>
+              </div>
+            </div>
+            <control-messages [control]="afiliadoForm.controls.fecha_afiliacion" class="invalid_format"></control-messages>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-3 afobnmx_contlabel3 font-weight-bold text-right">Foto:*</div>
+          <div class="col-md-4">
+              <input type="file" class="form-control-file" id="foto" formControlName="foto">
+              <control-messages [control]="afiliadoForm.controls.foto" class="invalid_format"></control-messages>
+          </div>
+        </div>
+  
+        <div class="form-group row">
+          <div class="col-md-3 afobnmx_contlabel3 font-weight-bold text-right">Acta de Nacimiento:*</div>
+          <div class="col-md-4">
+              <input type="file" class="form-control-file" id="acta_nacimiento" formControlName="acta_nacimiento">
+              <control-messages [control]="afiliadoForm.controls.acta_nacimiento" class="invalid_format"></control-messages>
+          </div>
+        </div>          
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="email">Correo:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="email" id="email" class="form-control" />
+              <control-messages [control]="afiliadoForm.controls.email" class="invalid_format"></control-messages>
+          </div>
+        </div>  
+        
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="semanas_cotizadas">Semanas_cotizadas:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="number" formControlName="semanas_cotizadas" class="form-control" id="semanas_cotizadas" pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" maxlength="20" minlength="1"/>
+              <control-messages [control]="afiliadoForm.controls.semanas_cotizadas" class="invalid_format"></control-messages>
+          </div>
+        </div>  
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="monto_pension">Monto:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="number" formControlName="monto_pension" class="form-control" id="monto_pension" pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" maxlength="20" minlength="1"/>
+              <control-messages [control]="afiliadoForm.controls.monto_pension" class="invalid_format"></control-messages>
+          </div>
+        </div>  
+
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="dato_decimal">Dato Decimal:*</label>
+          </div>
+          <div class="col-md-6">
+              <input type="number" formControlName="dato_decimal" class="form-control" id="dato_decimal" pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" maxlength="20" minlength="1"/>
+              <control-messages [control]="afiliadoForm.controls.dato_decimal" class="invalid_format"></control-messages>
+          </div>
+        </div>  
+        
+        <div class="form-group row">
+          <div class="col-md-3 text-right">
+            <label class="afobnmx_contlabel3 font-weight-bold" for="idSistema">Sistema:*</label>
+          </div>
+          <div class="col-md-6">
+            <select id="idSistema" class="form-control"
+              required name="idSistema">
+              <option value="0">-- Seleccione --</option>
+              <option value="PRB-CG">PRB-CG</option>
+              <option value="SISTEMA 1">SISTEMA 1</option>
+              <option value="SISTEMA 2">SISTEMA 2</option>
+              <option value="SISTEMA 3">SISTEMA 3</option>
+              <option value="SISTEMA 4">SISTEMA 4</option>
+              <option value="SISTEMA 5">SISTEMA 5</option>
+              <option value="SYM">SYM</option>
+            </select>
+            <!-- <div class="invalid-feedback">Campo requerido.</div> -->
+          </div>
+        </div> 
+      
+
+        <div class="form-group row justify-content-end">
+          <button type="submit" class="afobnmx_bott">Cancelar</button>
+          <button type="submit" class="afobnmx_bott">Guardar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Modal -->
+  <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Beneficiario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="beneficiarioForm">
+            <div class="form-group row">
+              <div class="col-md-3 text-right">
+                <label class="afobnmx_contlabel3 font-weight-bold" for="archivo">Archivo:*</label>
+              </div>
+              <div class="col-md-6">
+                  <input type="text" formControlName="archivo" id="archivo" class="form-control" />
+                  <control-messages [control]="beneficiarioForm.controls.archivo" class="invalid_format"></control-messages>
+              </div>
+            </div> 
+
+            <div class="form-group row">
+              <div class="col-md-3 text-right">
+                <label class="afobnmx_contlabel3 font-weight-bold" for="proceso">Proceso:*</label>
+              </div>
+              <div class="col-md-6">
+                  <input type="text" formControlName="proceso" id="proceso" class="form-control" />
+                  <control-messages [control]="beneficiarioForm.controls.proceso" class="invalid_format"></control-messages>
+              </div>
+            </div> 
+        </form>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="afobnmx_bott"  (click)="modal.close('Save click')">Cancelar</button>
+      </div>
+    </ng-template> 
+
+  <!-- </div> -->

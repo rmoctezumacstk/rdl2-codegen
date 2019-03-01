@@ -1,0 +1,619 @@
+body{
+
+margin:0px 0px 0px 0px;
+padding:0px 0px 0px 0px;
+background-image: url("../images/bodybg.png");
+}
+
+table, th, td {
+    border: none;
+    border-collapse: collapse;
+}
+
+@font-face{
+font-family:Interstate;
+src:url("../fonts/Interstate.ttf");
+}
+
+#wrapper {
+    margin: 0 auto;
+    padding: 0px 10px 20px;
+    padding: 0px 0px 20px;
+    width:72.9%;
+    min-width:73.1%;
+    max-width:1260px;
+    background-color:#fff;
+   
+}
+
+ .afobnmx_header {
+    position:relative;
+    z-index:6;
+	background: url("../images/global_bgd_header.png") repeat-x scroll 0 0 transparent;
+	height: 136px;
+  
+}
+
+.afobnmx_header .afobnmx_barra_negra {
+    margin-bottom: 5px;
+    padding-right: 2px;
+    overflow: hidden;
+    height: 22px;
+}
+
+#wrapper .afobnmx_search_wrapper_js{
+    background: none;/*url("../images/bgd-search.png") no-repeat 0 0;*/ 
+    float:right;
+    height:16px;
+    margin-right:26px;
+    margin-top:4px;
+
+
+}
+
+.afobnmx_leng_txt{margin-left: 70%;
+                 }
+
+.afobnmx_headerLogo {
+    display: inline-block;
+    float: right;
+    /* margin: 2.5% 3.7% 0% 0%; */
+    margin-right: 25px;
+    margin-top: 20px;
+}
+
+.afobnmx_headerTitle{
+margin-right:76.7%;
+font-family:arial;
+font-weight: 100;
+color: #fff;
+font-size:30px;
+vertical-align: middle;
+}
+
+.afobnmx_lenguajes { 
+  font-family:Interstate;
+  padding: 0% 0% 0.6% 0%;
+  background:rgba(0, 0, 0, 0.86);
+  width: 12%;
+  height: auto;
+  margin: -7.4% 0% 0% 65%;
+  position: relative;
+  visibility: hidden;
+  z-index: 8888;
+  border-radius: 6px;
+  -o-border-radius:6px;
+  -ms-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -khtml-border-radius: 6px;
+}
+div#wrapper div.afobnmx_header div a.afobnmx_txt_leng span {
+ font-size: 10px;
+ color: #fff;
+ text-decoration:none;
+ font-family:Arial;
+}
+
+.afobnmx_icoTrian{vertical-align: middle;
+                 }
+
+ul.afobnmx_leng_list li a{
+ font-family: Interstate;
+ margin-left:-100%;
+ color: #ffffff;
+ font-weight: 200;
+}
+
+ul.afobnmx_leng_list {
+ list-style: none;
+}
+
+.afobnmx_headerTit{
+    margin:2.5% 75% 0% 0%;
+    font-family:Interstate;
+    color:#fff;
+    z-index:9999;
+    position:absolute;
+}
+
+.afobnmx_menu {
+width: 100%;
+margin:-5% 0% 0% -5%;
+z-index:7777;
+position:relative;
+}
+
+
+.afobnmx_menuList {
+list-style: none;
+font-family: arial;
+}
+
+
+a.afobnmx_listMenu {
+
+    text-decoration: none;
+    color: #fff;
+    vertical-align: middle;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.afobnmx_listMenu li {
+float: left;
+padding: 0% 2% 0% 2%;
+margin-top: 2.4%;
+vertical-align: middle;
+}
+
+.afobnmx_listMenu li:hover{
+background:#008CE6;
+height: 25px;
+margin-top: 2.2%;
+}
+
+.afobnmx_linkList {
+float: left; 
+padding: 0% 1.1% 0% 1.1%;
+}
+
+.afobnmx_linkList:hover{
+color:#008CE6;
+
+}
+li.afobnmx_linkBarr {
+float:left;
+padding: 0% 1% 0% 1%;
+}
+
+hr {
+width:89%; 
+border:#dddddd 1px solid;
+}
+
+.afobnmx_salir{
+background:#008CE6;
+float: right;
+width:30.5%;
+margin:2.1% -37% 0% 0%;
+height: 26px;
+position:relative;
+
+
+}
+
+a .afobnmx_salir{
+text-decoration: none;
+font-family: arial;
+font-size:15px;
+color: #ffffff; 
+}
+
+.afobnmx_iconSalir {
+    padding: 3% 0% 0% 9%;
+}
+
+.afobnmx_logoFooter {
+    background: url("../images/global_footer_logo.jpg") no-repeat;
+    height: 18px;
+    margin:0% 69% 0% 0%;
+    padding-left: 40px;
+    padding-top: 6px;
+    font-size: 11px;
+    width: 150px;
+}
+
+.afobnmx_linkFooter{
+width: 100%;
+height: 30px;
+padding: 0% 0% 0% 0%;
+margin-top:46%;
+
+}
+
+div.afobnmx_linkFooter ul.afobnmx_linkFooList {
+list-style: none;
+font-family: arial;
+font-size:10px;
+color:#97999B;
+}
+
+.afobnmx_copyLegal{
+font-size: 12px;
+color:#97999B;
+font-family: arial;
+text-align:left;
+margin:0% 40% 0% 0% ;
+width: 50%;
+}
+
+.afobnmx_copyright{
+font-size: 12px;
+color:#97999B;
+font-family:arial;
+text-align:right;
+margin:-10% 0% 0% 465%;
+width: 50%;
+}
+.afobnmx_contPadd {padding-bottom:21%;}
+.afobnmx_contForm1{
+	
+float:left;
+display: inline-block;
+}
+
+.afobnmx_listForm1 {
+background-repeat: repeat-x;
+width: 184px;
+list-style:none;
+font-family: arial;
+font-size: 12px;
+color: #595959;
+padding: 10px 7px 10px 10px;
+}
+.afobnmx_contForm1 ul{list-style: none;}
+
+
+.afobnmx_contForm1 li:hover{background:#f2f1f2;}
+
+.afobnmx_listForm1:hover{color:#008CE6;}
+
+div.afobnmx_listForm1 ul {
+list-style:none;
+
+}
+
+
+.afobnmx_listForm2 {
+width:55.1%;
+height:50px;
+display:inline-block;
+float:left;
+margin:0px 36px 0px 36px;
+}
+
+.afobnmx_cont2Float {
+display:in line;
+float:left;
+}
+
+.afobnmx_buscFloat {
+display:in line;
+float:left;
+margin: 12% 15% 0% -19%;
+}
+
+
+.afobnmx_contlabel{
+margin-left:0%;
+width:200px;
+color:#595959;
+font-family:arial;
+font-size: 12px;
+}
+
+.afobnmx_contLabel2{
+color:#595959;
+font-family:arial;
+font-size:12px;
+margin:4px 171px 0px 0px;
+float: left;
+}
+
+.afobnmx_contlabel3{
+margin-left:0%;
+color:#595959;
+font-family:arial;
+font-size: 13px;
+display: inline;
+}
+
+.afobnmx_select{
+width:200px;
+height:25px;
+font-size: 14px;
+margin:3% -40% 0% 0%;
+}
+
+.afobnmx_select2{
+font-size: 14px;
+}
+ 
+.afobnmx_inputForm{
+height: 24px;
+border: 1px silver solid;
+font-size: 15px;
+width: 200px;
+padding-left: 5px;
+line-height: 24px;
+margin: 3% -20% 3% 0%;
+float: left;
+}
+
+.afobnmx_datepicker{
+height: 25px;
+border: 1px silver solid;
+font-size: 15px;
+width: 177px;
+margin: 0% 0% 0% 0%;
+float: left;
+}
+
+.afobnmx_datepick{
+vertical-align: middle;
+margin: 1% 37px 0% 0%;
+float: left;
+}
+
+.afobnmx_radioForm{
+font-size: 15px;
+margin: 7% 95% 0% 0%;
+}
+
+.breadcrumb  {
+color: #97999B;
+float: left;
+font-size: 12px;
+left: 152px;
+position: relative;
+top: 4px;
+left: 4px;
+z-index: 1;
+font-family: arial;
+padding-bottom: 3%;
+	
+
+} 	
+
+
+.breadcrumb a {
+text-decoration: none;
+color: #97999B;
+}
+
+div.afobnmx_listForm2 h1.afobnmx_pageTitle{
+margin-right:75%;
+font-family: arial;
+font-size:24px;
+color:#002D72;
+font-weight: 200;	
+}
+
+.afobnmx_titleParr{
+text-align: left;
+font-family: arial;
+font-size: 12px;
+color:#53565A;
+}
+
+.afobnmx_selectForm{
+display:in line;
+float:left;
+font-face:arial;
+color: #fff;
+}
+
+.afobnmx_buscForm{
+display:in line;
+float:left;
+font-face:arial;
+color: #fff;
+margin:14% 0% 0% -28.5%;
+}
+
+.afobnmx_datepickerForm{
+display:in line;
+float:left;
+font-face:arial;
+color: #fff;
+margin:4% 0% 0% 0%;
+}
+
+.afobnmx_persInfo{
+font-size:18px;
+font-family:arial;
+color:#97999B;
+font-weight: 300;
+padding-bottom: 5px;
+}
+
+.afobnmx_separador{
+background-image: url("../images/dotted_line_tile.png");
+background-position: center bottom;
+background-repeat: repeat-x;
+/* padding:0% 0% 40% 0%; */
+padding:0% 0% 5% 0%;
+width: 100%;
+}
+.afobnmx_separador2{
+background-image: url("../images/dotted_line_tile.png");
+background-position: center bottom;
+background-repeat: repeat-x;
+padding:0% 0% 50% 0%;
+width: 118%;
+}
+
+.afobnmx_buscSepara{
+background-image: url("../images/dotted_line_tile.png");
+background-position: center bottom;
+background-repeat: repeat-x;
+padding:0% 1% 26% 0%;
+width: 118%;
+}
+
+.afobnmx_bott {
+    background: none repeat scroll 0 0 #00BDF2;
+    color: #FFFFFF !important;
+    cursor: pointer;
+	font-weight: bolder;
+	font-family: arial;
+	font-size:13px;
+    margin-top: 15px;
+    padding: 5px;
+    float: left;
+    overflow: hidden;
+	text-decoration: none;
+}
+
+.afobnmx_bott:hover {
+
+    background: none repeat scroll 0 0 #008CE6;
+    color: #FFFFFF;
+
+}
+
+.afobnmx_buscBott:hover {
+
+    background: none repeat scroll 0 0 #008CE6;
+    color: #FFFFFF;
+
+}
+
+.afoBnmx_borderFocus {
+	border-color:#008CE6 !important;
+
+}
+
+.afobnmx_labelSelect{
+font-family: arial;
+font-size:10px;
+color:#666666;
+margin: 3% 0% 3% 0%;
+}
+
+.afobnmx_divLabelPadd{
+padding:2% 0% 2% 2%;
+}
+
+/*----Grid estilos---*/
+
+.afobnmx_menuGrid {
+    width: 70%;
+    margin: -13.6% 0% 0% 0%;
+    z-index: 7777;
+    position: relative;
+}
+
+.afobnmx_logoFooterGrid {
+    background: url("../images/global_footer_logo.jpg") no-repeat;
+    height: 18px;
+    margin:0% 0% 0% 7%;
+    padding-left: 40px;
+    padding-top: 6px;
+    font-size: 11px;
+    width: 150px;
+}
+
+.afobnmx_linkFooterGrid{
+width: 100%;
+height: 30px;
+padding: 0% 0% 0% 0%;
+margin-top:51%;
+}
+
+div.afobnmx_linkFooterGrid ul.afobnmx_linkFooList {
+list-style: none;
+font-family: arial;
+font-size:10px;
+color:#97999B;
+}
+
+table.paddTab {
+width:165%;
+margin:0% 33% 0% 0%;
+}
+
+table.paddTab tbody tr th{
+padding:1% 2% 1% 2%;
+}
+
+.gridStyle {background:#002d72;
+	        color:#fff;
+	        font-family:arial;
+	        font-size:9px;
+           }
+
+table td {
+    padding: 5px 3px;
+	color:#666666;
+	font-family:arial;
+	font-size:10px;
+}
+
+table tr {
+    margin-top: 3px;
+}
+
+table#jqGrid tr td {
+    text-align:center;
+}
+
+table tr.headerTable {
+    border-bottom: 1px solid #666;
+}
+
+table.paddTab tbody tr td {
+    text-align: center;   
+}
+
+.afobnmx_centerGrid{
+margin:0% 0% 0% 10%;
+}
+
+/*-----jqgrid-----*/
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border:none !important;
+    background: #002d72 !important;;
+    font-weight: normal;
+    color: #ffffff!important;;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active{
+	border:none !important;
+	
+	
+}
+
+.ui-widget.ui-widget-content {
+    border:none !important;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv {
+    overflow:none !important;	
+	
+}
+
+table#jqGrid tbody tr td {
+    padding: 2px 3px;
+}
+
+table#jqGrid tbody tr td {
+	border:none;
+}
+
+table#jqGrid tbody tr td {
+	border-bottom: 1px dotted #666666;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv::-webkit-scrollbar {
+	width: 7px;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv::-webkit-scrollbar-thumb {
+	background:#eee;
+	border-radius: 5px;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv{
+	overflow-x:scroll !important;	
+	
+}
+
+tr {background:#fff;}
+
+
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {
+    border: #666666 1px solid !important;   
+}

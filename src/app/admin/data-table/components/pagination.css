@@ -1,0 +1,63 @@
+.pagination-box {
+    position: relative;
+    margin-top: -10px;
+}
+.pagination-range {
+    margin-top: 7px;
+    margin-left: 3px;
+    display: inline-block;
+    font-size: 10px;
+    float: right;
+    margin-top: -15px;
+}
+.pagination-controllers {
+    /* float: right; */
+    font-size: 10px;
+    text-align: center;
+}
+.pagination-controllers input {
+    /* min-width: 60px; */
+    /*padding: 1px 0px 0px 5px;*/
+    text-align: center;
+    height: 15px;
+    width: 30px;
+    font-size: 10px;
+    margin-top: 15px;
+}
+
+
+
+.pagination-limit {
+    margin-right: 25px;
+    display: inline-table;
+    width: 80px;
+}
+.pagination-pages {
+    display: inline-block;
+}
+.pagination-page {
+    width: 130px;
+    display: inline-table;
+}
+.pagination-box button {
+    outline: none !important;
+}
+.pagination-prevpage,
+.pagination-nextpage,
+.pagination-firstpage,
+.pagination-lastpage {
+    vertical-align: top;
+    height: 10px;
+    color: gray;
+}
+.pagination-reload {
+    color: gray;
+    font-size: 12px;
+}
+
+span {
+    margin-top: 15px !important; 
+    padding-left: 5px;
+    padding-right: 5px;
+}
+    

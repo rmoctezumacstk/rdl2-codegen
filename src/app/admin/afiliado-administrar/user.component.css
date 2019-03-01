@@ -1,0 +1,29 @@
+
+:host ::ng-deep .data-table-row {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: center;
+}
+
+:host ::ng-deep .table thead th {
+    padding: 0px;
+   font-size: 10px;
+   height: 20px;
+    border: none;
+}
+
+:host ::ng-deep .table tr td {
+    font-size: 8px;
+    height: 18px;
+    padding: 0px;
+    background: white;
+ }
+
+ :host ::ng-deep .table tr {
+     padding: 0px;
+    font-size: 8px;
+    height: 18px;
+ }

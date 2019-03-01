@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    
+    <title>Actualizar Contenedor</title>
+    <link rel="stylesheet" href=".../../resources/css/bootstrap.min.css" >
+    <link rel="stylesheet" href=".../../resources/css/jquery-ui.css"> 
+	<link rel="stylesheet" href=".../../resources/css/ui.jqgrid.css"> 
+	<link rel="stylesheet" type="text/css" media="all" href=".../../resources/css/estilos.css" />
+	<link rel="stylesheet" href=".../../resources/css/buttonStyle.css"> 
+	<script type="text/javascript" src=".../../resources/js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src=".../../resources/js/jquery-ui.js"></script>
+	<script type="text/javascript" src=".../../resources/js/bootstrap.bundle.js" ></script>
+    <script type="text/javascript" src=".../../resources/js/paginador.js" ></script>
+	<script type="text/javascript" src=".../../resources/js/jquery.jqgrid.src.js"></script>
+	<script type="text/javascript" src=".../../resources/js/grid.locale-es.js"></script>
+	<script type="text/javascript" src=".../../resources/js/generalComponent.js"></script>
+	
+</head>
+<body>
+	<div>
+<div id="wrapper" align="center">
+	<div class="container afobnmx_header">
+		<div class="row afobnmx_leng_txt">
+			<a class="afobnmx_txt_leng"> <span>| Ver. 1.0.9.16 al
+					09/02/2019 </span> | <span>MS57614</span> | <span></span>
+			</a>
+		</div>
+
+		<div class="row justify-content-end">
+			<a class="afobnmx_headerLogo"> <img
+				src=".../../resources/img/logoCiti.png" alt="citibanamex">
+			</a>
+		</div>
+		<div class="row mt-1 justify-content-start afobnmx_menu">
+			<ul class="nav">
+
+
+				<li class="nav-item"><a class="nav-link text-white"
+					href="/componentesGenerales/">Home</a></li>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Consultas</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"
+								href="/componentesGenerales/consultaRecepcionEnvioArchivos">Procesos
+								archivos</a>
+						</div></li>
+				</div>
+				
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Reenv&iacute;o</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="/componentesGenerales/consultaReenvioArchivos">Archivos</a>
+						</div>
+					</li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Contenedor</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaContenedor">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Archivo</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaArchivo">Actualizar</a>
+							</div>
+						</div>
+					</li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Env&iacute;o de archivo</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaEnvioArchivo">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+
+				<div>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle text-white" data-toggle="dropdown"
+						href="#">Procesos</a>
+						<div class="dropdown-menu">
+							
+							<div>
+								<a class="dropdown-item" href="/componentesGenerales/modificaProceso">Actualizar</a>
+							</div>
+						</div></li>
+				</div>
+			</ul>
+		</div>
+
+	</div>
+
+</div></div>
+
+
+	<div>
+	<div class="container" id="wrapper">
+		<div class="row justify-content-md-center">
+			<div class="col-auto">
+				<h1 class="afobnmx_persInfo">
+					<label>Actualizar configuraci&oacute;n de contenedor</label>
+				</h1>
+			</div>
+		</div>
+		<div class="row justify-content-md-center">
+			<div class=" col-md-10">
+				
+				<div id="div-alert">
+					
+	
+					
+				</div>
+
+				<form class="needs-validation mt-1" id="formularioContenedor"
+					action="/componentesGenerales/actualizarContenedor"
+					method="post" novalidate accept-charset="UTF-8">
+
+					<div class="form-group row">
+						<div class="col-md-2 text-right">
+							<label class="afobnmx_contlabel3 font-weight-bold" for="idSistema">Sistema:*</label>
+						</div>
+						<div class="col-md-6">
+							<select id="idSistema" class="form-control"
+								required name="idSistema">
+								<option value="0">-- Seleccione --</option>
+								<option value="PRB-CG">PRB-CG</option>
+								<option value="SISTEMA 1">SISTEMA 1</option>
+								<option value="SISTEMA 2">SISTEMA 2</option>
+								<option value="SISTEMA 3">SISTEMA 3</option>
+								<option value="SISTEMA 4">SISTEMA 4</option>
+								<option value="SISTEMA 5">SISTEMA 5</option>
+								<option value="SYM">SYM</option>
+							</select>
+							<div class="invalid-feedback">Campo requerido.</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-2 text-right">
+							<label class="afobnmx_contlabel3 font-weight-bold" for="contenedor">Contenedor:*</label>
+						</div>
+						<div class="col-md-6">
+
+							 <select
+								id="contenedor" class="form-control"
+								onchange="getContenedorInfo()"
+								required name="nombreContenendor">
+								<option value="0">-- Seleccione --</option>
+							</select>
+
+							<div class="invalid-feedback">Campo requerido.</div>
+						</div>
+					</div>
+
+					<div class="form-group row align-items-center">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-4 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="frecuencia">Frecuencia:*</label>
+								</div>
+								<div class="col-md-8">
+									<select id="frecuencia" class="form-control"
+										onchanr="ocultarCampos()" required name="frecuencia">
+										<option value="">-- Seleccione --</option>
+										<option value="DIARIA">DIARIA</option>
+										<option value="CONTINUA">CONTINUA</option>
+									</select>
+									<div class="invalid-feedback">Campo requerido.</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-6 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="calendar_exec">Calendario de
+										ejecuci&oacute;n:</label>
+								</div>
+								<div class="col-md-6">
+									<select id="calendar_exec" class="form-control" name="calendarioEjecucion">
+										<option value="0">-- Seleccione --</option>
+										
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-4 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="descripcion">Descripci&oacute;n:</label>
+								</div>
+								<div class="col-md-8">
+									<textarea class="form-control" rows="2" id="descripcion"
+										maxlength="80" name="descripcion"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-6 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="calendarioExclusion">Calendario de
+										exclusi&oacute;n:</label>
+								</div>
+								<div class="col-md-6">
+									<select id="calendarioExclusion" class="form-control" name="calendarioExclusion">
+										<option value="0">-- Seleccione --</option>
+										
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Condicion y Hora  inicio-->
+					<div class="form-group row">
+						<div class="col-md-6">
+							<div class="row" id="div-condicion" hidden="">
+								<div class="col-md-4 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="condicion">Condici&oacute;n:</label>
+								</div>
+								<div class="col-md-8 align-self-center">
+									<select class="form-control" type="text" name="condicion"
+										id="condicion">
+										<option value="0">-- Seleccione --</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="row" id="div-plan">
+								<div class="col-md-4 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="plan">Plan:*</label>
+								</div>
+								<div class="col-md-8">
+									<input class="form-control" type="text" name="plan" id="plan"
+										maxlength="60" required value="">
+									<div class="invalid-feedback">Campo requerido.</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-6 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="time_start">Hora de inicio:*</label>
+								</div>
+								<div class="col-md-6" id="div-horaInicio">
+									<input id="horaInicio" name="horaInicio"
+										type="hidden" value="">
+									<div class="row">
+										<input class="form-control col-md-4" id="hour" type="number" min="0" max="23" maxlength="2" value="" required>
+										<div class="col-md-2">:</div>
+	  									<input class="form-control col-md-4" id="min" type="number" min="0" max="59" maxlength="2" value="" required>
+	  									
+										<div class="invalid-feedback" id="lblHoraInicio">Campo requerido.</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-md-2 text-right">
+							<label class="afobnmx_contlabel3 font-weight-bold">D&iacute;as semana:</label>
+						</div>
+						<div class="col-md-10">
+							<input class="form-control" type="hidden" name="diasSemana"
+								id="diasSemana" value="">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia1"
+									name="checkDia" value="su"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia1">Domingo</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia2"
+									name="checkDia" value="mo"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia2">Lunes</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia3"
+									name="checkDia" value="tu"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia3">Martes</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia4"
+									name="checkDia" value="we"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia4">Mi&eacute;rcoles</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia5"
+									name="checkDia" value="th"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia5">Jueves</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia6"
+									name="checkDia" value="fr"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia6">Viernes</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="dia7"
+									name="checkDia" value="sa"> <label
+									class="form-check-label afobnmx_contlabel3" for="dia7">S&aacute;bado</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row" id="div-var-fecha">
+						<div class="col-md-6">
+							<div class="row">
+								<div class="col-md-4 text-right">
+									<label class="afobnmx_contlabel3 font-weight-bold" for="var_date">Variable fecha:*</label>
+								</div>
+								<div class="col-md-8">
+									<input class="form-control" type="text" name="variableFecha"
+										id="var_date" value="" required
+										maxlength="20">
+									<div class="invalid-feedback">Campo requerido.</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="form-group row justify-content-end">
+						<a class="afobnmx_bott" href="/componentesGenerales/modificaContenedor">Cancelar</a>
+						<button class="btn btn-info float-right btn-style-citi" type="submit"
+							id="btn_aceptar">Guardar</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	
+		(function() {
+			'use strict';
+
+			window.addEventListener('load',
+					function() {
+						// Fetch all the forms we want to apply custom Bootstrap validation styles to
+						var forms = document
+								.getElementsByClassName('needs-validation');
+						// Loop over them and prevent submission
+						var validation = Array.prototype.filter.call(forms,
+								function(form) {
+									form.addEventListener('submit', function(
+											event) {
+										if (form.checkValidity() === false) {
+											event.preventDefault();
+											event.stopPropagation();
+										}
+										form.classList.add('was-validated');
+									}, false);
+								});
+					}, false);
+		})();
+
+		$(document).ready( function() {
+	    	$('#eventoAlert').delay(2000).fadeOut();
+	    });
+
+		$(document).ready(function(){
+			
+			$("#frecuencia").change(function(){
+				
+				var frecuencia = $(this).val();
+				$("#div-condicion").removeAttr( "hidden" );
+				
+				if(frecuencia == "DIARIA"){
+					$("#div-plan").show();
+					$("#div-var-fecha").show();
+					
+					$("#condicion").val("0");
+					
+					$("#var_date").prop("required",'true');
+					$("#plan").prop("required",'true');
+					
+					$("#div-condicion").hide();
+					
+				} else if (frecuencia == "CONTINUA"){
+					$("#plan").val("");
+					$("#var_date").val("");
+					
+					$("#var_date").removeAttr('required');
+					$("#plan").removeAttr('required');
+					
+					$("#div-plan").hide();
+					$("#div-var-fecha").hide();
+					
+					$("#div-condicion").show();
+					
+					var idSistema = $("#idSistema").val();
+			
+					getListCondicion(idSistema, "0");
+				}
+				
+			});
+			
+			$("#hour").change(function(){
+				var hour = $("#hour").val();
+				console.log("Valor hora: " + hour);
+				if(hour >= 0 && hour <= 9){
+					var value = pad_with_zeroes(hour,2);
+					$("#hour").val(value);
+				} else if(hour >= 10 && hour <= 23){
+					$("#hour").val(hour);
+				} else {
+					$("#hour").val("");
+				}
+				
+			});
+			
+			$("#min").change(function(){
+				var min = $("#min").val();
+				console.log("Valor minutos: " + min);
+				if(min >= 0 && min <= 9){
+					var value = pad_with_zeroes(min,2);
+					$("#min").val(value);
+				} else if(min >= 10 && min <= 59){
+					$("#min").val(min);
+				} else {
+					$("#min").val("");
+				}
+				
+			});
+			
+			$("#formularioContenedor").submit(function() {
+				var diasSemana = "";
+				console.log("Submit Formulario");
+				
+				$("input[name='checkDia']:checked").each(function(i, value) {
+					console.log($(value).val());
+					diasSemana += $(value).val() + ",";
+				});
+				console.log("dias semana: " + diasSemana.slice(0, -1));
+				$("#diasSemana").val(diasSemana.slice(0, -1));
+				
+				$("#lblHoraInicio").text("Campo requerido.");
+				
+				if($("#condicion").val() == "0"){
+					$("#condicion").val("");
+					$("#condicion").attr('');
+				}
+				
+				if($("#idSistema").val() == "0"){
+					$("#idSistema").val("");
+				}
+				if($("#contenedor").val() == "0"){
+					$("#contenedor").val("");
+				}
+				
+				var hour = $("#hour").val();
+				var min = $("#min").val();
+				var time = "";
+				if(hour >= 0 && hour <= 23 ){
+					if(min >= 0 && min <= 59 ){
+						time = hour + ":" + min;
+					} else {
+					 	$("#lblHoraInicio").text("Formato [HH] : [mm]");
+					 	return false;
+					}
+				} else {
+					 $("#lblHoraInicio").text("Formato [HH] : [mm]");
+					 return false;
+				}
+				
+				$("#horaInicio").val(time);
+			}); 
+			
+			$("#idSistema").change(function() {
+				$(".alert").alert('close');
+				var idSistema = $("#idSistema").val();
+				if(idSistema != "0"){
+					$("#formularioContenedor").trigger("reset");
+					$("#idSistema").val(idSistema);
+					jQuery.post("/componentesGenerales/obtieneContenedores", {
+						idSistema : idSistema
+					}).done(function(data) {
+						$("#contenedor").empty();
+						$('#calendar_exec').empty();
+						$('#calendarioExclusion').empty();
+						
+						var option = new Option("-- Seleccione --", "0");
+						$("#contenedor").append(option);
+						
+						console.log("lista Contenedores");
+						Object.keys(data.listaContenedores).forEach(function(key) {
+							var value = data.listaContenedores[key].contenedor;
+							$('#contenedor').append(new Option(value, value));
+						});
+						
+						var option = new Option("-- Seleccione --", "0");
+						$("#calendar_exec").append($(option));
+						$("#calendarioExclusion").append(new Option("-- Seleccione --", "0"));
+						console.log("lista Calendario");
+						Object.keys(data.listaCalendario).forEach(function(key) {
+							var value = data.listaCalendario[key].calendarName;
+							var optionEjecucion = new Option(value, value);
+							$('#calendar_exec').append($(optionEjecucion));
+							
+							var optionExclusion = new Option(value, value);
+							$('#calendarioExclusion').append($(optionExclusion));
+						});
+					});
+				}
+			});
+			
+		});
+		
+		function getListCondicion(idSistema, value){
+			jQuery.post("/componentesGenerales/obtieneCondicion", {
+				idSistema : idSistema
+			}).done(function(data) {
+				//Espera un Array de String en el data.
+				$("#condicion").empty();
+				$('#condicion').append(new Option("-- Selecciona --", "0"))
+				data.forEach(function(element) {
+					console.log("Contenedor: " + element);
+					$('#condicion').append(new Option(element, element));
+				});
+				$('#condicion').val(value);
+			}); 
+		}
+		
+		function pad_with_zeroes(number, length) {
+		    var my_string = '' + number;
+		    while (my_string.length < length) {
+		        my_string = '0' + my_string;
+		    }
+		
+		    return my_string;
+		
+		}
+		
+		function cancelar(){
+			var form = document.getElementById("formularioContenedor");
+  			form.classList.remove("was-validated");
+  			document.getElementById("formularioContenedor").reset();
+  			
+		}
+		
+		function getContenedorInfo() {
+			var idSistema = document.getElementById("idSistema").value;
+			var contenedor = document.getElementById("contenedor").value;
+			console.log("Enviar IdSistema: " + idSistema);
+			if(contenedor != "0"){
+				jQuery.post("/componentesGenerales/obtieneContenedorInfo", {
+					idSistema : idSistema,
+					contenedor : contenedor
+				}).done(
+				function(data) {
+					console.log(data);
+					$('#frecuencia').val(data.frecuencia);
+					$('#calendar_exec').val(data.calendarioEjecucion);
+					$('#calendarioExclusion').val(data.calendarioExclusion);
+					$('#descripcion').val(data.descripcion);
+					$('#horaInicio').val(data.horaInicio);
+					
+					$("#div-condicion").removeAttr( "hidden" );
+					
+					if (data.frecuencia == "DIARIA") {
+						$("#plan").val(data.plan);
+						$("#var_date").val(data.variableFecha);
+						$("#condicion").val("0");
+						
+						$("#div-plan").show();
+						$("#div-var-fecha").show();
+						$("#div-condicion").hide();
+						
+						$("#var_date").prop("required",'true');
+						$("#plan").prop("required",'true');
+						
+					} else if (data.frecuencia == "CONTINUA") {
+						$("#plan").val("");
+						$("#var_date").val("");
+						
+						$("#var_date").removeAttr('required');
+						$("#plan").removeAttr('required');
+						
+						$("#div-plan").hide();
+						$("#div-var-fecha").hide();
+						$("#div-condicion").show();
+						
+						getListCondicion(data.sistema, data.condicion);
+						console.log("SE INSERTA EL VALOR DEL SELECT CONDICION");
+						console.log("condicion: " + data.condicion);
+					}
+					
+					if(data.horaInicio != null && data.horaInicio != ""){
+						var time = data.horaInicio.split(":");
+						$("#hour").val(time[0]);
+						$("#min").val(time[1]);
+						
+						console.log("Hora Inicial: " + data.horaInicio);
+					}
+					
+					if(data.diasSemana != null && data.diasSemana != ""){
+						var dias = data.diasSemana.split(",");
+					    Object.keys(dias).forEach(function(i) {
+								$("input[name='checkDia'][value='"+ dias[i] + "']").prop('checked', true);
+						});
+					}
+					
+				});
+			}
+		}
+
+	</script>
+</div>
+
+
+</body>
+<footer>
+	
+	<div>
+<div id="wrapper" align="center">
+	<div class="footer">
+	   <hr>
+	   <div class="afobnmx_logoFooter">
+	     <div class="afobnmx_copyright">&#169;&nbsp;2018&nbsp;Citigroup&nbsp;Inc</div>
+	   </div>
+	</div>
+</div>
+</div>
+	
+</footer>
+</html>

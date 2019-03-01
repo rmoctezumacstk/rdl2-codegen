@@ -1,0 +1,229 @@
+<div>
+    <div id="wrapper"  align="center" style="height: 500px">
+        <div class="afobnmx_contPadd">
+        <!-- <div class="afobnmx_contForm1">
+            <ul>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            <li><div class="afobnmx_listForm1"></div></li>
+            </ul>
+        </div> -->
+    
+        <div class="afobnmx_listForm2">
+            <form id="formBusquedaProcesosArchivos">
+            
+            <br/>
+            <h1 class="afobnmx_persInfo"><label >Búsqueda de afiliados</label></h1>
+    
+            <div class="form-group row">
+                <div class="afobnmx_cont2Float">
+                <b><label class="afobnmx_contlabel col-md-6">Identificador del archivo</label></b>
+                <b><label class="afobnmx_contlabel col-md-6">Proceso</label></b>
+                </div>  
+                <div class="afobnmx_selectForm">
+                <input type="text" class="afobnmx_inputForm" id="idArchivo" name="idArchivo" value=""/>
+                <select class="afobnmx_select" id="idProceso" name="idProceso" >
+                    <option value="">-- seleccione --</option>
+                    <option value="dfgsd_ack">dfgsd_ack</option>
+                    <option value="XXXX_TEST_ack">XXXX_TEST_ack</option>
+                </select>  
+                </div>
+            </div>
+                
+            <div class="form-group row">
+                <div class="afobnmx_cont2Float">
+                <b><label class="afobnmx_contlabel col-md-6">Entidad origen</label></b>
+                <b><label class="afobnmx_contlabel col-md-6">Tipo de archivo</label></b>
+                </div>
+                <div class="afobnmx_selectForm">
+                <input type="text" class="afobnmx_inputForm" id="entidadOrigen" name="entidadOrigen" value=""/>
+                <select class="afobnmx_select" id="tipoArchivo" name="tipoArchivo">
+                    <option value="">-- seleccione --</option>
+                    <option value="INPUT">INPUT</option>
+                    <option value="OUTPUT">OUTPUT</option>
+                </select>
+                </div>
+            </div>
+                
+            <div class="form-group row">
+                <div class="afobnmx_cont2Float">
+                <b><label class="afobnmx_contlabel col-md-6">Entidad destino</label></b>
+                <b><label class="afobnmx_contlabel col-md-6">Estado de ejecución</label></b>
+                </div>
+                <div class="afobnmx_selectForm">
+                <input type="text" class="afobnmx_inputForm" id="entidadDestino" name="entidadDestino" value=""/>
+                <select class="afobnmx_select" id="estadoEjecucion" name="estadoEjecucion" >
+                    <option value="">-- seleccione --</option>
+                    <option value="RUNNING">RUNNING</option>
+                    <option value="SUCCESS">SUCCESS</option>
+                    <option value="FAILED">FAILED</option>
+                    <option value="REPROCESED">REPROCESED</option>
+                </select>
+                </div>
+            </div>
+    
+            <div class="form-group row">
+        
+                <div class="afobnmx_separador"></div> 
+    
+            
+                        <a class="afobnmx_bott">Buscar</a>
+                       
+                        <a class="afobnmx_bott">Limpiar</a>
+                      
+            </div>
+            </form>
+
+
+            
+        </div>
+        </div>
+    </div>      
+
+<div style="margin: auto; max-width: 1000px; margin-bottom: 50px;">
+    <data-table 
+        headerTitle="Afiliados"
+        [items]="items"
+        [itemCount]="itemCount"
+        (reload)="reloadItems($event)"
+        (rowClick)="rowClick($event)"
+        (rowDoubleClick)="rowDoubleClick($event)"
+        [rowTooltip]="rowTooltip">
+
+        <data-table-column
+            [property]="'id'"
+            [header]="'Id'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>
+
+        <data-table-column
+            [property]="'nombre'"
+            [header]="'Nombre'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>
+        
+        <data-table-column
+            [property]="'nss'"
+            [header]="'NSS'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>
+
+        <data-table-column
+            [property]="'apellido_paterno'"
+            [header]="'Apellido Paterno'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>
+
+        <data-table-column
+            [property]="'apellido_materno'"
+            [header]="'Apellido Materno'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>   
+        
+        <data-table-column
+            [property]="'fecha_afiliacion'"
+            [header]="'Date'"
+            [sortable]="true">
+            <ng-template #dataTableCell let-item="item">
+                <span>{{item.date | date:'dd-MM-yyyy'}}</span>
+            </ng-template>
+        </data-table-column> 
+        
+        <data-table-column
+            [property]="'foto'"
+            [header]="'Foto'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>   
+
+        <data-table-column
+            [property]="'monto_pension'"
+            [header]="'Monto'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>  
+
+        <data-table-column
+            [property]="'email'"
+            [header]="'Correo'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>  
+
+        <data-table-column
+            [property]="'genero'"
+            [header]="'Genero'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>  
+
+        <data-table-column
+            [property]="'semanas_cotizadas'"
+            [header]="'Semanas Cotizadas'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>  
+
+        <!-- <data-table-column
+            [property]="'name'"
+            [header]="'Name'"
+            [sortable]="true"
+            [resizable]="true">
+        </data-table-column>
+        <data-table-column
+            [property]="'date'"
+            [header]="'Date'"
+            [sortable]="true">
+            <ng-template #dataTableCell let-item="item">
+                <span>{{item.date | date:'yyyy-MM-dd'}}</span>
+            </ng-template>
+        </data-table-column> 
+        <data-table-column
+            property="phoneNumber"
+            header="Phone number"
+            width="150px">
+        </data-table-column>
+        <data-table-column
+            [property]="'jobTitle'"
+            [header]="'Job title'"
+            [visible]="false">
+        </data-table-column>
+        <data-table-column
+            [property]="'active'"
+            [header]="'Active'"
+            [width]="100"
+            [resizable]="true">
+            <ng-template #dataTableHeader let-item="item">
+                <span style="color: rgb(232, 0, 0)">Active</span>
+            </ng-template>
+            <ng-template #dataTableCell let-item="item">
+                <span style="color: grey">
+                <span class="glyphicon glyphicon-ok" *ngIf="item.active"></span>
+                <span class="glyphicon glyphicon-remove" *ngIf="!item.active"></span>
+                </span>
+            </ng-template>
+        </data-table-column>  -->
+    </data-table>
+</div>
+
+<div class="row">
+      
+    <a id="botonMuestraAcciones"  class="afobnmx_bott"   >Ver acciones</a> 
+
+    <a id="botonExportaArc"  class="afobnmx_bott" >Exportar xls</a> 
+
+    <a id="botonExportaArcPdf"  class="afobnmx_bott"  >Exportar pdf </a>
+
+    <a id="botonRegresarEjecuciones" class="afobnmx_bott" >Regresar</a> 
+
+</div> 
+
