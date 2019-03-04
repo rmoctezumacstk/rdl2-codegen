@@ -81,7 +81,9 @@ class Rdl2Generator extends AbstractGenerator {
 		screenModelGenerator.doGenerate(resource, fsa)
 		screenHtmlGenerator.doGenerate(resource, fsa)
 		
-		
+		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
+			jsonServerGenerator.doGenerator(s, fsa)
+		}
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
@@ -90,7 +92,7 @@ class Rdl2Generator extends AbstractGenerator {
 			// Clarity Entity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
-			jsonServerGenerator.doGenerator(r, fsa)
+	
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)

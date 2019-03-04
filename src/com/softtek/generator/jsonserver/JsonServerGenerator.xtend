@@ -38,10 +38,11 @@ class JsonServerGenerator {
 	Faker faker = new Faker(new Locale("es-MX"))
 	SimpleDateFormat formatter = formatter = new SimpleDateFormat("yyyy-MMM-dd", new Locale("es-MX"))
 
-	def doGenerator(Resource resource, IFileSystemAccess2 fsa) {
-		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			fsa.generateFile("json-server/server/" + m.name.toLowerCase + "/server.js", genServerJs(resource, fsa))	
-			m.generateCodeByModule(fsa)
+	def doGenerator(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
+		fsa.generateFile("json-server/server.js", genServerJs(s, fsa))	
+
+		for (m: s.modules_ref){
+			m.module_ref.generateCodeByModule(fsa)
 		}
 	}
 	
@@ -617,7 +618,7 @@ class JsonServerGenerator {
 	/*
 	 * server.js
 	 */
-	def CharSequence genServerJs(Resource resource, IFileSystemAccess2 fsa) '''
+	def CharSequence genServerJs(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
 		const fs = require("fs");
 		const bodyParser = require("body-parser");
 		const jsonServer = require("json-server");
@@ -629,9 +630,9 @@ class JsonServerGenerator {
 		const FileSync = require("lowdb/adapters/FileSync");
 		
 		const server = jsonServer.create();
-		«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-			const router_«m.name.toLowerCase» = jsonServer.router("./database/«m.name.toLowerCase»/entities.json");
-			const bizdb_«m.name.toLowerCase» = JSON.parse(fs.readFileSync("./database/«m.name.toLowerCase»/entities.json", "UTF-8"));
+		«FOR m : s.modules_ref»
+		const router_«m.module_ref.name.toLowerCase» = jsonServer.router("./database/«m.module_ref.name.toLowerCase»/entities.json");
+		const bizdb_«m.module_ref.name.toLowerCase»  = JSON.parse(fs.readFileSync("./database/«m.module_ref.name.toLowerCase»/entities.json", "UTF-8"));
 		«ENDFOR»
 		const router_auth = jsonServer.router("./database/auth.json");
 		const authdb = JSON.parse(fs.readFileSync("./database/auth.json", "UTF-8"));
@@ -644,9 +645,9 @@ class JsonServerGenerator {
 		const permission_schema = require("./schemas/auth/permissions");
 		const permission_assignment_schema = require("./schemas/auth/permission_assignment");
 		
-		«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-			«FOR e : m.elements.filter(Entity)»
-				«e.genEntityJoiSchema(m)»
+		«FOR m : s.modules_ref»
+			«FOR e : m.module_ref.elements.filter(Entity)»
+				«e.genEntityJoiSchema(m.module_ref)»
 			«ENDFOR»
 		«ENDFOR»
 		
@@ -794,10 +795,11 @@ class JsonServerGenerator {
 		
 		    const auth_entities = Object.keys(authdb);
 		    let entities = auth_entities;
-		    «FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-		      const biz_entities_«m.name.toLowerCase» = Object.keys(bizdb_«m.name.toLowerCase»);
-		      entities = _.union(entities, biz_entities_«m.name.toLowerCase»);
-		    «ENDFOR»
+
+    		«FOR m : s.modules_ref»
+    		const biz_entities_«m.module_ref.name.toLowerCase» = Object.keys(bizdb_«m.module_ref.name.toLowerCase»);
+    		entities = _.union(entities, biz_entities_«m.module_ref.name.toLowerCase»);
+    		«ENDFOR»
 
 		    const pathname_tokens = q.pathname.split("/");
 		    resources = _.intersection(entities, pathname_tokens);
@@ -904,11 +906,11 @@ class JsonServerGenerator {
 		          }
 		          break;
 		          
-				«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-					«FOR e : m.elements.filter(Entity)»
-						«e.genEntityJoiValidate(m)»
+		        «FOR m : s.modules_ref»
+					«FOR e : m.module_ref.elements.filter(Entity)»
+						«e.genEntityJoiValidate(m.module_ref)»
 					«ENDFOR»
-				«ENDFOR»
+		        «ENDFOR»  
 		      }
 		    }
 		
@@ -1101,10 +1103,10 @@ class JsonServerGenerator {
 		});
 		
 		server.use("/api/v1/auth", router_auth);
-		«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-			server.use("/api/v1/«m.name.toLowerCase»", router_«m.name.toLowerCase»);
-		«ENDFOR»
-		
+        «FOR m : s.modules_ref»
+			server.use("/api/v1/«m.module_ref.name.toLowerCase»", router_«m.module_ref.name.toLowerCase»);
+        «ENDFOR»  
+
 		server.listen(3000, () => {
 		  console.log("Run Auth API Server (port: 3000)");
 		});
