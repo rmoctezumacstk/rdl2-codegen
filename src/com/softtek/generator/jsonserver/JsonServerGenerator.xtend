@@ -39,9 +39,8 @@ class JsonServerGenerator {
 	SimpleDateFormat formatter = formatter = new SimpleDateFormat("yyyy-MMM-dd", new Locale("es-MX"))
 
 	def doGenerator(Resource resource, IFileSystemAccess2 fsa) {
-		fsa.generateFile("json-server/server.js", genServerJs(resource, fsa))
-		
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
+			fsa.generateFile("json-server/server/" + m.name.toLowerCase + "/server.js", genServerJs(resource, fsa))	
 			m.generateCodeByModule(fsa)
 		}
 	}
@@ -646,9 +645,8 @@ class JsonServerGenerator {
 		const permission_assignment_schema = require("./schemas/auth/permission_assignment");
 		
 		«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-			«FOR e : m.elements»
-«««				«e.genEntityJoiSchema(m)»
-«e»
+			«FOR e : m.elements.filter(Entity)»
+				«e.genEntityJoiSchema(m)»
 			«ENDFOR»
 		«ENDFOR»
 		
@@ -907,11 +905,9 @@ class JsonServerGenerator {
 		          break;
 		          
 				«FOR m : resource.allContents.toIterable.filter(typeof(Module))»
-					«FOR e : m.elements»
-«««						«e.genEntityJoiValidate(m)»
-«e»
+					«FOR e : m.elements.filter(Entity)»
+						«e.genEntityJoiValidate(m)»
 					«ENDFOR»
-					
 				«ENDFOR»
 		      }
 		    }
