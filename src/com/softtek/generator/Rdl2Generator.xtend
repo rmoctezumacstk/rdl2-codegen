@@ -27,6 +27,7 @@ import com.softtek.generator.clarity.screen.admin.ScreenModuleGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
+import com.softtek.generator.jsonserver.JsonServerGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -51,11 +52,14 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject ScreenModelGenerator screenModelGenerator
 	@Inject ScreenHtmlGenerator screenHtmlGenerator
 	
-	// Clrity Admin
+	// Clarity Admin
 	@Inject AdminHtmlClarityGenerator adminHtmlClarityGenerator
 	@Inject AdminRoutingClarityGenerator adminRoutingClarityGenerator
 	@Inject AdminModuleClarityGenerator adminModuleClarityGenerator
 	@Inject AdminTsClarityGenerator adminTsClarityGenerator
+	
+	// Json Server
+	@Inject JsonServerGenerator jsonServerGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -77,6 +81,8 @@ class Rdl2Generator extends AbstractGenerator {
 		screenModelGenerator.doGenerate(resource, fsa)
 		screenHtmlGenerator.doGenerate(resource, fsa)
 		
+		
+		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
@@ -84,6 +90,7 @@ class Rdl2Generator extends AbstractGenerator {
 			// Clarity Entity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
+			jsonServerGenerator.doGenerator(r, fsa)
 		}
 		
 		bashRDLGenerator.doGenerator(resource, fsa)
