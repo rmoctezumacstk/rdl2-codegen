@@ -28,6 +28,9 @@ import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -61,6 +64,11 @@ class Rdl2Generator extends AbstractGenerator {
 	// Json Server
 	@Inject JsonServerGenerator jsonServerGenerator
 	
+	// Banamex Front
+	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
+	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
+	@Inject CrudComponentIntegrationGenerator crudComponentIntegrationGenerator
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -84,6 +92,10 @@ class Rdl2Generator extends AbstractGenerator {
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			jsonServerGenerator.doGenerator(s, fsa)
 		}
+		
+		crudComponentHtmlGenerator.doGenerate(resource, fsa)
+		crudComponentMessagesGenerator.doGenerate(resource, fsa)
+		crudComponentIntegrationGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
