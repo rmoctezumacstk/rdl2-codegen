@@ -74,7 +74,7 @@ class CrudComponentIntegrationImplGenerator {
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
+«««		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
 	«ENDIF»
 	'''	
 	
@@ -98,7 +98,7 @@ class CrudComponentIntegrationImplGenerator {
 	
 	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipFieldGetSetOneImport(t, f.name)»		
+«««		«f.superType.genRelationshipFieldGetSetOneImport(t, f.name)»		
 	«ENDIF»
 	'''	
 	
