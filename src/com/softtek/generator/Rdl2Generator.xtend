@@ -31,6 +31,7 @@ import com.softtek.generator.jsonserver.JsonServerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationImplGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -68,6 +69,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
 	@Inject CrudComponentIntegrationGenerator crudComponentIntegrationGenerator
+	@Inject CrudComponentIntegrationImplGenerator crudComponentIntegrationImplGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -96,6 +98,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentHtmlGenerator.doGenerate(resource, fsa)
 		crudComponentMessagesGenerator.doGenerate(resource, fsa)
 		crudComponentIntegrationGenerator.doGenerate(resource, fsa)
+		crudComponentIntegrationImplGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)

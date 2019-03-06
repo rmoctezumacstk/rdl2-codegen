@@ -17,12 +17,12 @@ class CrudComponentIntegrationGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/" + e.name.toLowerCase.toFirstUpper + "Repository.java", e.genAppHtml(m))
+				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/" + e.name.toLowerCase.toFirstUpper + "Repository.java", e.genJavaIntegration(m))
 			}
 		}
 	}
 	
-	def CharSequence genAppHtml(Entity e, Module m) '''
+	def CharSequence genJavaIntegration(Entity e, Module m) '''
 	package mx.com.aforebanamex.plata.integration;
 	
 	import java.util.List;
