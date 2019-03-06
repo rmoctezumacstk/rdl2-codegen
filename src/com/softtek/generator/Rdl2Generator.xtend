@@ -32,6 +32,9 @@ import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentServiceImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentModelGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -65,11 +68,14 @@ class Rdl2Generator extends AbstractGenerator {
 	// Json Server
 	@Inject JsonServerGenerator jsonServerGenerator
 	
-	// Banamex Front
+	// Banamex
 	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
 	@Inject CrudComponentIntegrationGenerator crudComponentIntegrationGenerator
 	@Inject CrudComponentIntegrationImplGenerator crudComponentIntegrationImplGenerator
+	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
+	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
+	@Inject CrudComponentModelGenerator crudComponentModelGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -99,6 +105,9 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentMessagesGenerator.doGenerate(resource, fsa)
 		crudComponentIntegrationGenerator.doGenerate(resource, fsa)
 		crudComponentIntegrationImplGenerator.doGenerate(resource, fsa)
+		crudComponentServiceImplGenerator.doGenerate(resource, fsa)
+		crudComponentServiceGenerator.doGenerate(resource, fsa)
+		crudComponentModelGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
