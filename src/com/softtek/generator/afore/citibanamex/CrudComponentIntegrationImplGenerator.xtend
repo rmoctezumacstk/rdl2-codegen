@@ -17,6 +17,7 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
 
 class CrudComponentIntegrationImplGenerator {
 	
@@ -73,17 +74,17 @@ class CrudComponentIntegrationImplGenerator {
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDouble("«f.name.toUpperCase»"));'''	
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
-«««	«IF  f !== null && !f.upperBound.equals('*')»
-«««		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
-«««	«ENDIF»
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
+	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
-«««	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper»Enum.getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper»Enum.getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-«««	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper».getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper».getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
 	'''
 	
 	def dispatch getAttributeImport(EntityTextField f, Entity t)''''''
@@ -97,17 +98,17 @@ class CrudComponentIntegrationImplGenerator {
 	def dispatch getAttributeImport(EntityCurrencyField f, Entity t)''''''	
 	
 	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
-«««	«IF  f !== null && !f.upperBound.equals('*')»
-«««		«f.superType.genRelationshipFieldGetSetOneImport(t, f.name)»		
-«««	«ENDIF»
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipFieldGetSetOneImport(t, f.name)»		
+	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOneImport(Enum e, Entity t, String name) ''' 	
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
+	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOneImport(Entity e, Entity t, String name) ''' 
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
 	'''
 	
 }
