@@ -35,6 +35,8 @@ import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationImplGener
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModelGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -76,6 +78,8 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
 	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
+	@Inject CrudComponentDaoGenerator crudComponentDaoGenerator
+	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -108,6 +112,8 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentServiceImplGenerator.doGenerate(resource, fsa)
 		crudComponentServiceGenerator.doGenerate(resource, fsa)
 		crudComponentModelGenerator.doGenerate(resource, fsa)
+		crudComponentDaoGenerator.doGenerate(resource, fsa)
+		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)
