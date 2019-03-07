@@ -10,10 +10,6 @@ import com.softtek.generator.utils.UIFlowUtils
 
 class CrudComponentHtmlGenerator {
 	
-	var entityUtils = new EntityUtils
-	var entityFieldUtils = new EntityFieldUtils
-	var uiFlowUtils = new UIFlowUtils
-	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
@@ -46,9 +42,10 @@ class CrudComponentHtmlGenerator {
 	<script type="text/javascript" src=".../../resources/js/jquery.jqgrid.src.js"></script>
 	<script type="text/javascript" src=".../../resources/js/grid.locale-es.js"></script>
 	<script type="text/javascript" src=".../../resources/js/bootstrapvalidator.js"></script>
-	<script type="text/javascript" src=".../../resources/js/main.js"></script>
-	<script type="text/javascript" src=".../../resources/js/modelo.js"></script>
 	<script type="text/javascript" src=".../../resources/js/datatables.js"></script>
+	<script type="text/javascript" src=".../../resources/js/main.js"></script>
+	<script type="text/javascript" src=".../../resources/js/modelo«e.name.toLowerCase.toFirstUpper».js"></script>
+
 	</head>
 	<body>
 		<div th:fragment="header" class="afobnmx_header">
@@ -95,7 +92,7 @@ class CrudComponentHtmlGenerator {
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="modalNuevo«e.name.toLowerCase.toFirstUpper»" th:text="#{title.modal.new}"></h4>
+						<h4 class="modal-title" id="modalNuevo«e.name.toLowerCase.toFirstUpper»" th:text="#{title.«e.name.toLowerCase».modal.new}"></h4>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>

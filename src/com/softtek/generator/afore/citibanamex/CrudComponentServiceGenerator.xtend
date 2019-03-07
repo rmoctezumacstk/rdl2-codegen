@@ -20,7 +20,6 @@ class CrudComponentServiceGenerator {
 	
 	import mx.com.aforebanamex.plata.helper.PaginadoHelper«e.name.toLowerCase.toFirstUpper»;
 	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
-	import java.util.List;
 	
 	public interface «e.name.toLowerCase.toFirstUpper»Service {
 		«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»);

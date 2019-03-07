@@ -1,6 +1,5 @@
 package com.softtek.generator.jsonserver
 
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Enum

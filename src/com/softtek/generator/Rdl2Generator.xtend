@@ -40,6 +40,10 @@ import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentRepositoryImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginatorHelperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginadorGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentSqlGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -86,7 +90,10 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentRepositoryImplGenerator crudComponentRepositoryImplGenerator
 	@Inject CrudComponentPaginatorHelperGenerator crudComponentPaginatorHelperGenerator
 	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
-	
+	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
+	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
+	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
+	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -108,12 +115,8 @@ class Rdl2Generator extends AbstractGenerator {
 		screenModelGenerator.doGenerate(resource, fsa)
 		screenHtmlGenerator.doGenerate(resource, fsa)
 		
-		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
-			jsonServerGenerator.doGenerator(s, fsa)
-		}
-		
+		// Banamex
 		crudComponentHtmlGenerator.doGenerate(resource, fsa)
-		crudComponentMessagesGenerator.doGenerate(resource, fsa)
 		crudComponentServiceImplGenerator.doGenerate(resource, fsa)
 		crudComponentServiceGenerator.doGenerate(resource, fsa)
 		crudComponentModelGenerator.doGenerate(resource, fsa)
@@ -124,6 +127,18 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentRepositoryImplGenerator.doGenerate(resource, fsa)
 		crudComponentPaginatorHelperGenerator.doGenerate(resource, fsa)
 		crudComponentPaginadorGenerator.doGenerate(resource, fsa)
+		crudComponentSqlGenerator.doGenerate(resource, fsa)
+		crudComponentModeloGenerator.doGenerate(resource, fsa)
+		
+		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
+			// Json Server
+			jsonServerGenerator.doGenerator(s, fsa)
+			
+			// Banamex
+			crudComponentConsultasGenerator.doGenerate(s, fsa)
+			crudComponentConstantsGenerator.doGenerate(s, fsa)
+			crudComponentMessagesGenerator.doGenerate(s, fsa)
+		}		
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)

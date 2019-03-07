@@ -10,7 +10,7 @@ class CrudComponentRepositoryImplGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/" + e.name.toLowerCase.toFirstUpper + "RepositoryImpl.java", e.genJavaRepositoryImpl(m))
+				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/impl/" + e.name.toLowerCase.toFirstUpper + "RepositoryImpl.java", e.genJavaRepositoryImpl(m))
 			}
 		}
 	}
@@ -141,6 +141,7 @@ class CrudComponentRepositoryImplGenerator {
 			
 			return paginadoHelper«e.name.toLowerCase.toFirstUpper»;
 		}
+	}
 	'''
 	
 }
