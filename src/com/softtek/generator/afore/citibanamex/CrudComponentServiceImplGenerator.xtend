@@ -18,12 +18,11 @@ class CrudComponentServiceImplGenerator {
 	def CharSequence genJavaServiceImpl(Entity e, Module m) '''
 	package mx.com.aforebanamex.plata.service.impl;
 	
-	import java.util.List;
-	
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
 	
-	import mx.com.aforebanamex.plata.integration.«e.name.toLowerCase.toFirstUpper»;
+	import mx.com.aforebanamex.plata.helper.PaginadoHelper«e.name.toLowerCase.toFirstUpper»;
+	import mx.com.aforebanamex.plata.integration.«e.name.toLowerCase.toFirstUpper»Repository;
 	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
 	import mx.com.aforebanamex.plata.service.«e.name.toLowerCase.toFirstUpper»Service;
 	
@@ -34,36 +33,35 @@ class CrudComponentServiceImplGenerator {
 		private «e.name.toLowerCase.toFirstUpper»Repository «e.name.toLowerCase»Repository;
 	
 		@Override
-		public «e.name.toLowerCase.toFirstUpper» findById(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			return «e.name.toLowerCase»Repository.findById(«e.name.toLowerCase»);
+		public «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
+			return «e.name.toLowerCase»Repository.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
 	
 		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> findAll(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			return «e.name.toLowerCase»Repository.findAll(«e.name.toLowerCase»);
+		public int eliminar«e.name.toLowerCase.toFirstUpper»(int id) {
+			return «e.name.toLowerCase»Repository.eliminar«e.name.toLowerCase.toFirstUpper»(id);
 		}
 	
 		@Override
-		public int delete(int id) {
-			return «e.name.toLowerCase»Repository.delete(id);
+		public int agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
+			return «e.name.toLowerCase»Repository.agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
 	
 		@Override
-		public int add(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			return «e.name.toLowerCase»Repository.add(«e.name.toLowerCase»);
-		}
-	
-		@Override
-		public int update(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			return «e.name.toLowerCase»Repository.update(«e.name.toLowerCase»);
+		public int actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
+			return «e.name.toLowerCase»Repository.actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
 		
 		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> findAllPagination(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», Integer page, Integer rows){
-			return «e.name.toLowerCase»Repository.findAllPagination(«e.name.toLowerCase», (page - 1) * rows, (page) * rows);
+		public PaginadoHelper«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», Integer page, Integer rows){
+			PaginadoHelper«e.name.toLowerCase.toFirstUpper» paginadoHelper = «e.name.toLowerCase»Repository.obtener«e.name.toLowerCase.toFirstUpper»s(«e.name.toLowerCase», (page - 1) * rows, (page) * rows);
+			paginadoHelper.setPaginaActual(page);
+			paginadoHelper.setTotalPaginas(paginadoHelper.getTotalRegistros()/rows+((paginadoHelper.getTotalRegistros()%rows)==0?0:1));
+			return paginadoHelper;
 		}
 	
 	}
+
 	'''
 	
 }

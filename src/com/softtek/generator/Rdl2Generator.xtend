@@ -30,13 +30,16 @@ import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentIntegrationImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentRepositoryGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentMapperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModelGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentRepositoryImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentPaginatorHelperGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentPaginadorGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -73,13 +76,17 @@ class Rdl2Generator extends AbstractGenerator {
 	// Banamex
 	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
-	@Inject CrudComponentIntegrationGenerator crudComponentIntegrationGenerator
-	@Inject CrudComponentIntegrationImplGenerator crudComponentIntegrationImplGenerator
+	@Inject CrudComponentMapperGenerator crudComponentMapperGenerator
 	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
 	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
 	@Inject CrudComponentDaoGenerator crudComponentDaoGenerator
 	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
+	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
+	@Inject CrudComponentRepositoryImplGenerator crudComponentRepositoryImplGenerator
+	@Inject CrudComponentPaginatorHelperGenerator crudComponentPaginatorHelperGenerator
+	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
+	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -107,13 +114,16 @@ class Rdl2Generator extends AbstractGenerator {
 		
 		crudComponentHtmlGenerator.doGenerate(resource, fsa)
 		crudComponentMessagesGenerator.doGenerate(resource, fsa)
-		crudComponentIntegrationGenerator.doGenerate(resource, fsa)
-		crudComponentIntegrationImplGenerator.doGenerate(resource, fsa)
 		crudComponentServiceImplGenerator.doGenerate(resource, fsa)
 		crudComponentServiceGenerator.doGenerate(resource, fsa)
 		crudComponentModelGenerator.doGenerate(resource, fsa)
 		crudComponentDaoGenerator.doGenerate(resource, fsa)
 		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
+		crudComponentMapperGenerator.doGenerate(resource, fsa)
+		crudComponentRepositoryGenerator.doGenerate(resource, fsa)
+		crudComponentRepositoryImplGenerator.doGenerate(resource, fsa)
+		crudComponentPaginatorHelperGenerator.doGenerate(resource, fsa)
+		crudComponentPaginadorGenerator.doGenerate(resource, fsa)
 		
 		for(r:resource.resourceSet.resources){
 			screenGenerator.doGenerate(r, fsa)

@@ -4,9 +4,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
-import com.softtek.generator.utils.EntityUtils
-import com.softtek.generator.utils.EntityFieldUtils
-import com.softtek.generator.utils.UIFlowUtils
 import com.softtek.rdl2.EntityTextField
 import com.softtek.rdl2.EntityLongTextField
 import com.softtek.rdl2.EntityDateField
@@ -19,11 +16,7 @@ import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
 
-class CrudComponentIntegrationImplGenerator {
-	
-	var entityUtils = new EntityUtils
-	var entityFieldUtils = new EntityFieldUtils
-	var uiFlowUtils = new UIFlowUtils
+class CrudComponentMapperGenerator {
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -47,7 +40,7 @@ class CrudComponentIntegrationImplGenerator {
 	«f.getAttributeImport(e)»
 	«ENDFOR» 
 	
-	public class «e.name.toLowerCase.toFirstUpper»Mapper implements RowMapper< Semaforo > {
+	public class «e.name.toLowerCase.toFirstUpper»Mapper implements RowMapper< «e.name.toLowerCase.toFirstUpper» > {
 	
 	        @Override
 	        public «e.name.toLowerCase.toFirstUpper» mapRow(ResultSet rs, int rowNum) throws SQLException {

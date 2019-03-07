@@ -4,6 +4,20 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
+import com.softtek.generator.utils.EntityUtils
+import com.softtek.generator.utils.EntityFieldUtils
+import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
 
 class CrudComponentModelGenerator {
 	
@@ -30,34 +44,22 @@ class CrudComponentModelGenerator {
 		private static final long serialVersionUID = 1L;
 		@Digits(integer=16, fraction=0, message="El id«e.name.toLowerCase.toFirstUpper» es incorrecto.")
 		private Integer id«e.name.toLowerCase.toFirstUpper»;
-		@Size(min=0,max=99, message="El nombre es incorrecto.")
-		private String nombre;
-		@Size(min=0,max=99, message="El descripcion es incorrecto.")
-		private String descripcion;
-		@Size(min=0,max=1, message="El desempenio es incorrecto.")
-		private String desempenio;
-		@Size(min=0,max=99, message="El descripcionEdoIndicador es incorrecto.")
-		private String descripcionEdoIndicador;
-		@Size(min=0,max=99, message="El descripcionTipoMedida es incorrecto.")
-		private String descripcionTipoMedida;
-		@Valid
-		private List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper»;
-		private String valorVerde;
-		private String valorAmarillo;
-		private String valorRojo;
-		
+		«FOR f : e.entity_fields»
+		«f.getAttribute(e)»
+		«ENDFOR» 
+
 		public «e.name.toLowerCase.toFirstUpper»(){}
 		
-		public «e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper», String nombre, String descripcion, String desempenio, String descripcionEdoIndicador,
-				String descripcionTipoMedida, List<Valor«e.name.toLowerCase.toFirstUpper»> valor«e.name.toLowerCase.toFirstUpper») {
+		public «e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper», 
+		«FOR f : e.entity_fields SEPARATOR ','»
+		«f.getAttributeConstructor(e)»
+		«ENDFOR» 
+		) {
 			super();
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
-			this.nombre = nombre;
-			this.descripcion = descripcion;
-			this.desempenio = desempenio;
-			this.descripcionEdoIndicador = descripcionEdoIndicador;
-			this.descripcionTipoMedida = descripcionTipoMedida;
-			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+			«FOR f : e.entity_fields»
+			«f.getAttributeField(e)»
+			«ENDFOR» 
 		}
 		
 		public Integer getId«e.name.toLowerCase.toFirstUpper»() {
@@ -66,78 +68,278 @@ class CrudComponentModelGenerator {
 		public void setId«e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper») {
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
 		}
-		public String getNombre() {
-			return nombre;
-		}
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
-		public String getDescripcion() {
-			return descripcion;
-		}
-		public void setDescripcion(String descripcion) {
-			this.descripcion = descripcion;
-		}
-		public String getDesempenio() {
-			return desempenio;
-		}
-		public void setDesempenio(String desempenio) {
-			this.desempenio = desempenio;
-		}
-		public String getDescripcionEdoIndicador() {
-			return descripcionEdoIndicador;
-		}
-		public void setDescripcionEdoIndicador(String descripcionEdoIndicador) {
-			this.descripcionEdoIndicador = descripcionEdoIndicador;
-		}
-		public String getDescripcionTipoMedida() {
-			return descripcionTipoMedida;
-		}
-		public void setDescripcionTipoMedida(String descripcionTipoMedida) {
-			this.descripcionTipoMedida = descripcionTipoMedida;
-		}
-	
-		public List<Valor«e.name.toLowerCase.toFirstUpper»> getValor«e.name.toLowerCase.toFirstUpper»() {
-			return valores«e.name.toLowerCase.toFirstUpper»;
-		}
-	
-		public void setValor«e.name.toLowerCase.toFirstUpper»(List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper») {
-			this.valores«e.name.toLowerCase.toFirstUpper» = valores«e.name.toLowerCase.toFirstUpper»;
-		}
-	
-		public List<Valor«e.name.toLowerCase.toFirstUpper»> getValores«e.name.toLowerCase.toFirstUpper»() {
-			return valores«e.name.toLowerCase.toFirstUpper»;
-		}
-	
-		public void setValores«e.name.toLowerCase.toFirstUpper»(List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper») {
-			this.valores«e.name.toLowerCase.toFirstUpper» = valores«e.name.toLowerCase.toFirstUpper»;
-		}
-	
-		public String getValorVerde() {
-			return valorVerde;
-		}
-	
-		public void setValorVerde(String valorVerde) {
-			this.valorVerde = valorVerde;
-		}
-	
-		public String getValorAmarillo() {
-			return valorAmarillo;
-		}
-	
-		public void setValorAmarillo(String valorAmarillo) {
-			this.valorAmarillo = valorAmarillo;
-		}
-	
-		public String getValorRojo() {
-			return valorRojo;
-		}
-	
-		public void setValorRojo(String valorRojo) {
-			this.valorRojo = valorRojo;
-		}
 		
+		«FOR f : e.entity_fields»
+		«f.getAttributeFieldGet(e)»
+		«ENDFOR»
+
+		«FOR f : e.entity_fields»
+		«f.getAttributeFieldSet(e)»
+		«ENDFOR»
 	}
+	'''
+	
+	
+	/* Get Attribute */	
+	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private String «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private String «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Date «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityImageField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private String «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityFileField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private String «f.name.toLowerCase»;	
+	'''
+	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private String «f.name.toLowerCase»;	
+	'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Double «f.name.toLowerCase»;	
+	'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Int «f.name.toLowerCase»;	
+	'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Double «f.name.toLowerCase»;	
+	'''	
+	
+	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
+		«««		@Valid
+		«««		private List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper»;	
+«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
+	'''
+	
+	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
+«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	/* Get Attribute Field */
+	def dispatch getAttributeField(EntityTextField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityLongTextField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityDateField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityImageField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityFileField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityEmailField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityDecimalField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityIntegerField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityCurrencyField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''	
+	
+	def dispatch getAttributeField(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipGetSetOne(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipGetSetOne(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationshipGetSetOne(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	/* Get Attribute Get */
+	def dispatch getAttributeFieldGet(EntityTextField f, Entity t)'''
+	public String get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityLongTextField f, Entity t)'''
+	public String get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityDateField f, Entity t)'''
+	public Date get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityImageField f, Entity t)'''
+	public String get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityFileField f, Entity t)'''
+	public String get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityEmailField f, Entity t)'''
+	public String get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityDecimalField f, Entity t)'''
+	public Double get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityIntegerField f, Entity t)'''
+	public Int get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityCurrencyField f, Entity t)'''
+	public Double get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''	
+	
+	def dispatch getAttributeFieldGet(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipGetOne(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipGetOne(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationshipGetOne(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''		
+
+	/* Get Attribute Set */
+	def dispatch getAttributeFieldSet(EntityTextField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityLongTextField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityDateField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Date «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityImageField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityFileField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityEmailField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityDecimalField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Double «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityIntegerField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Int «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityCurrencyField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Double «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''	
+	
+	def dispatch getAttributeFieldSet(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipSetOne(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipSetOne(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationshipSetOne(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	/* Get Attribute Constructor */
+	def dispatch getAttributeConstructor(EntityTextField f, Entity t)'''
+	String «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityLongTextField f, Entity t)'''
+	String «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityDateField f, Entity t)'''
+	Date «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityImageField f, Entity t)'''
+	String «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityFileField f, Entity t)'''
+	String «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityEmailField f, Entity t)'''
+	String «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityDecimalField f, Entity t)'''
+	Double «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityIntegerField f, Entity t)'''
+	Int «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeConstructor(EntityCurrencyField f, Entity t)'''
+	Double «f.name.toLowerCase»
+	'''	
+	
+	def dispatch getAttributeConstructor(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipConstructor(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipConstructor(Enum e, Entity t, String name) ''' 
+	String «e.name.toLowerCase»
+	'''
+	
+	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
+	String «e.name.toLowerCase»
 	'''
 	
 }
