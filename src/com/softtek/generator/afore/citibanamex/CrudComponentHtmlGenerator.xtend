@@ -7,6 +7,17 @@ import com.softtek.rdl2.Entity
 import com.softtek.generator.utils.EntityUtils
 import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
 
 class CrudComponentHtmlGenerator {
 	
@@ -99,6 +110,17 @@ class CrudComponentHtmlGenerator {
 						</button>
 					</div>
 					
+					<div class="container-body">
+						<form class="needs-validation mt-1" id="formularioNew«e.name.toLowerCase.toFirstUpper»" novalidate>
+							«FOR f : e.entity_fields»
+							«f.getAttribute(e)»
+							«ENDFOR» 
+							<div class="modal-footer ">
+								<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
+								<button type="submit" class="btn-style-citi" id="agregarSemaforo">Guardar</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -127,5 +149,147 @@ class CrudComponentHtmlGenerator {
 	
 	</body>
 	</html>
+	'''
+	
+		/* Get Attribute Field */
+	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityImageField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityFileField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+	<div class="row">
+		<div class="col-lg-6 form-group">
+			<div class="col-lg-12 text-left">
+				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+			</div>
+			<div class="col-lg-12">
+				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+					name="«f.name.toLowerCase»New" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
+			</div>
+		</div>
+	</div>
+	'''	
+	
+	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationship(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
 	'''
 }

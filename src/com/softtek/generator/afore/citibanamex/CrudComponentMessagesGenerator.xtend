@@ -7,6 +7,17 @@ import com.softtek.rdl2.Entity
 import com.softtek.generator.utils.EntityUtils
 import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
 
 class CrudComponentMessagesGenerator {
 	
@@ -192,9 +203,10 @@ class CrudComponentMessagesGenerator {
 	def dispatch genEntity(Entity e, Module m) '''
 	
 	#Configuración de la pantalla «e.name.toLowerCase.toFirstUpper»
-	label.«e.name.toLowerCase».busqueda.nombre: Nombre del «e.name.toLowerCase»
-	label.«e.name.toLowerCase».busqueda.medida: Medida del «e.name.toLowerCase»
-	label.«e.name.toLowerCase».busqueda.estado: Estado del «e.name.toLowerCase»
+	«FOR f : e.entity_fields»
+	«f.getAttribute(e)»
+	«ENDFOR» 
+	
 	label.«e.name.toLowerCase».modal.descripcion: Descripci\u00F3n del «e.name.toLowerCase»
 	label.«e.name.toLowerCase».modal.minimo: M\u00ednimo
 	label.«e.name.toLowerCase».modal.maximo: M\u00e1ximo
@@ -213,4 +225,46 @@ class CrudComponentMessagesGenerator {
 	label.«e.name.toLowerCase».modal.delete.message: Desea eliminar el «e.name.toLowerCase.toFirstUpper»
 	'''	
 	
+	/* Attribute */
+	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityImageField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityFileField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	'''	
+	
+	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationship(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
 }
