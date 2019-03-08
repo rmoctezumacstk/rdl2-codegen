@@ -109,11 +109,13 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	«name.toUpperCase» int not null,
+	«««name.toUpperCase» int not null,
+	foreign key (CVE_«name.toUpperCase») references CGG_«name.toUpperCase»(CVE_«name.toUpperCase»)
 	'''
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	«name.toUpperCase» int not null,
+	«««name.toUpperCase» int not null,
+	foreign key (CVE_«name.toUpperCase») references CGG_«name.toUpperCase»(CVE_«name.toUpperCase»)
 	'''
 	
 	/* Get Attribute Column*/
