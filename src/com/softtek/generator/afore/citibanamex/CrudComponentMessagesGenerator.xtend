@@ -22,7 +22,7 @@ import com.softtek.rdl2.Enum
 class CrudComponentMessagesGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/src/main/resources/messages_es"+ ".properties", genJavaConstants(s, fsa))	
+		fsa.generateFile("banamex/src/main/resources/messages/messages_es"+ ".properties", genJavaConstants(s, fsa))	
 	}
 	
 	def CharSequence genJavaConstants(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''

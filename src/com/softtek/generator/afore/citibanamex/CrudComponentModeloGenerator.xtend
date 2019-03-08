@@ -1,11 +1,26 @@
 package com.softtek.generator.afore.citibanamex
 
+import javax.inject.Inject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
+import com.softtek.rdl2.Enum
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.generator.utils.EntityFieldUtils
 
 class CrudComponentModeloGenerator {
+	
+	@Inject EntityFieldUtils entityFieldUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
@@ -99,65 +114,25 @@ class CrudComponentModeloGenerator {
 		$("#agregar«e.name.toLowerCase.toFirstUpper»").click(function () {
 			var validate = false;
 			var id«e.name.toLowerCase.toFirstUpper» = Number($('input:radio[name=«e.name.toLowerCase»Radios]:checked').val());
-			var nombre = $('#nombreNew').val();
-			var medida = $('#medidaNew').val();
-			var descripcion = $('#descripcionNew').val();
-			var minimoGreen = $('#minimoGreenNew').val();
-			var maximoGreen = $('#maximoGreenNew').val();
-			var minimoYellow = $('#minimoYellowNew').val();
-			var maximoYellow = $('#maximoYellowNew').val();
-			var minimoRed = $('#minimoRedNew').val();
-			var maximoRed = $('#maximoRedNew').val();
 			
-			if(minimoGreen >= maximoGreen){
-				$('#minimoGreenNew').val("");
-				validate = true;
+			«FOR f : e.entity_fields»
+				«f.getAttributeEntityJQuery(e)»
+			«ENDFOR»
+
+			var modelo = {"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
+				«FOR f : e.entity_fields»
+					«f.getAttributeEntityLabelValue(e)»
+				«ENDFOR»
+			};
+
+		    if(«getIfRequiredAttrbutes(e)»){
 				$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
+			}else if(validate == false){
+				jsonAjax("/componentesGenerales/agregar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
+				mostrarAlertSuccess(MENSAJE_GUARDADO_EXITOSO);
+				$("#formularioNew«e.name.toLowerCase.toFirstUpper»").reset();
+				$(".modalNew«e.name.toLowerCase.toFirstUpper»").modal('hide');
 			}
-			if(minimoYellow >= maximoYellow){
-				$('#minimoYellowNew').val("");
-				validate = true;
-				$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}
-			if(minimoRed >= maximoRed){
-				$('#minimoRedNew').val("");
-				validate = true;
-				$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}
-			
-				var modelo = {"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-						"nombre" : nombre,
-						"descripcion" : descripcion,
-						"desempenio" : 1,
-						"estadoIndicador" : {
-							"cveEdoIndicador": 1
-							},
-						"tipoMedida" : {
-							"cveTipoMedida": medida
-							},
-						"valores«e.name.toLowerCase.toFirstUpper»":[{
-							"cveColor«e.name.toLowerCase.toFirstUpper»": 1,
-							"valorMinimo": minimoGreen,
-							"valorMaximo": maximoGreen
-						},{
-							"cveColor«e.name.toLowerCase.toFirstUpper»": 2,
-							"valorMinimo": minimoYellow,
-							"valorMaximo": maximoYellow
-						},{
-							"cveColor«e.name.toLowerCase.toFirstUpper»": 3,
-							"valorMinimo": minimoRed,
-							"valorMaximo": maximoRed
-						}],
-						};
-		
-				if(nombre == "" || medida == "" || minimoGreen == "" || maximoGreen == "" || minimoYellow == "" || maximoYellow == "" || minimoRed == "" || maximoRed==""){
-					$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-				}else if(validate == false){
-					jsonAjax("/componentesGenerales/agregar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
-					mostrarAlertSuccess(MENSAJE_GUARDADO_EXITOSO);
-					$("#formularioNew«e.name.toLowerCase.toFirstUpper»").reset();
-					$(".modalNew«e.name.toLowerCase.toFirstUpper»").modal('hide');
-				}
 			
 		});
 		
@@ -191,13 +166,9 @@ class CrudComponentModeloGenerator {
 					"pagina":1,
 					"filas":10,
 					"payload":{
-					"nombre": $("#nombreSemaf").val(),
-					"estadoIndicador" : {
-						"cveEdoIndicador": Number($("#descripcionEdoIndicador").val())
-						},
-					"tipoMedida" : {
-						"cveTipoMedida": Number($("#descripcionTipoMedida").val())
-						}
+					«FOR f : e.entity_fields SEPARATOR ","»
+						«f.getAttributeEntitySearch(e)»
+					«ENDFOR»	
 					}
 			};
 			
@@ -205,7 +176,7 @@ class CrudComponentModeloGenerator {
 			
 			
 			
-			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»ss",modelo,inicioDatos);
+			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 		});
 		
 		
@@ -215,13 +186,9 @@ class CrudComponentModeloGenerator {
 					"pagina":1,
 					"filas":10,
 					"payload":{
-						"nombre": $("#nombreSemaf").val(),
-						"estadoIndicador" : {
-							"cveEdoIndicador": $("#descripcionEdoIndicador").val()
-							},
-						"tipoMedida" : {
-							"cveTipoMedida": $("#descripcionTipoMedida").val()
-							}
+						«FOR f : e.entity_fields SEPARATOR ","»
+							«f.getAttributeEntitySearch(e)»
+						«ENDFOR»	
 						}
 			};
 			
@@ -229,75 +196,31 @@ class CrudComponentModeloGenerator {
 					"pagina":1,
 					"filas":10,
 					"payload":{
-						"nombre" : "",
-						"estadoIndicador" : {
-							"cveEdoIndicador": 0
-							},
-						"tipoMedida" : {
-							"cveTipoMedida": 0
-							}
+						«FOR f : e.entity_fields SEPARATOR ","»
+							«f.getAttributeEntitySearch(e)»
+						«ENDFOR»	
 						}
 					};
 			
-			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»ss",modelo,inicioDatos);
+			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 		});
 		
 		
 		$("#editar«e.name.toLowerCase.toFirstUpper»").click(function() {
 			var validate = false;
 			var id«e.name.toLowerCase.toFirstUpper» = $('input:radio[name=radio«e.name.toLowerCase.toFirstUpper»s]:checked').val();
-			var nombre = $('#nombreEdit').val();
-			var medida = $('#medidaEdit').val();
-			var descripcion = $('#descripcionEdit').val();
-			var minimoGreen = $('#minimoGreenEdit').val();
-			var maximoGreen = $('#maximoGreenEdit').val();
-			var minimoYellow = $('#minimoYellowEdit').val();
-			var maximoYellow = $('#maximoYellowEdit').val();
-			var minimoRed = $('#minimoRedEdit').val();
-			var maximoRed = $('#maximoRedEdit').val();
-			
-			if(minimoGreen >= maximoGreen){
-				$('#minimoGreenEdit').val("");
-				validate = true;
-				$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}
-			if(minimoYellow >= maximoYellow){
-				$('#minimoYellowEdit').val("");
-				validate = true;
-				$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}
-			if(minimoRed >= maximoRed){
-				$('#minimoRedEdit').val("");
-				validate = true;
-				$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}
+
+			«FOR f : e.entity_fields»
+				«f.getAttributeEntityJQuery(e)»
+			«ENDFOR»
 			
 			var modelo = {"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-					"nombre" : nombre,
-					"descripcion" : descripcion,
-					"desempenio" : 1,
-					"estadoIndicador" : {
-						"cveEdoIndicador": 1
-						},
-					"tipoMedida" : {
-						"cveTipoMedida": medida
-						},
-					"valores«e.name.toLowerCase.toFirstUpper»":[{
-						"cveColor«e.name.toLowerCase.toFirstUpper»": 1,
-						"valorMinimo": minimoGreen,
-						"valorMaximo": maximoGreen
-					},{
-						"cveColor«e.name.toLowerCase.toFirstUpper»": 2,
-						"valorMinimo": minimoYellow,
-						"valorMaximo": maximoYellow
-					},{
-						"cveColor«e.name.toLowerCase.toFirstUpper»": 3,
-						"valorMinimo": minimoRed,
-						"valorMaximo": maximoRed
-					}],
+						«FOR f : e.entity_fields»
+							«f.getAttributeEntityLabelValue(e)»
+						«ENDFOR»
 					};
 	
-				if(nombre == "" || medida == "" || minimoGreen == "" || maximoGreen == "" || minimoYellow == "" || maximoYellow == "" || minimoRed == "" || maximoRed==""){
+				if(«getIfRequiredAttrbutes(e)»){
 					$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
 				}else if(validate == false){
 					jsonAjax("/componentesGenerales/actualizar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
@@ -333,7 +256,7 @@ class CrudComponentModeloGenerator {
 						}
 				}
 			};
-		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»ss",modelo,inicioDatos);
+		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 	}
 	
 	function paginarTabla(pagina){
@@ -350,7 +273,7 @@ class CrudComponentModeloGenerator {
 						}
 				}
 			};
-		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»ss",modelo,inicioDatos);
+		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 	}
 	
 	//function inicioDatos(data){
@@ -476,5 +399,158 @@ class CrudComponentModeloGenerator {
 		$("#grid").trigger("reloadGrid");
 	}	
 	'''
+	def dispatch getIfRequiredAttrbutes(Entity e){
+		var isFirst = true
+		var ifValidation = ""
+		
+		for( f : e.entity_fields ){
+			var operator = " || "
+			
+			if( isFirst ){
+				operator = ""
+				isFirst = false
+			}
+		
+			if( entityFieldUtils.isFieldRequired(f) ){
+				ifValidation += operator + f.name.toLowerCase + "== \"\""
+			}
+		}
+		
+		return ifValidation
+	}
+	
+	//---------------------------------------------------------------------------------------------------
+	//--------------------------------- CODIGO PARA GENERAR EVENTOS JQUERY ------------------------------
+	//---------------------------------------------------------------------------------------------------
+	def dispatch getAttributeEntityRefJQuery(Entity tr, EntityReferenceField f, Entity t, String name)'''
+		var «name.toLowerCase» = $('#«name.toLowerCase»New').val();
+	'''
+ 	def dispatch getAttributeEntityRefJQuery(Enum tr, EntityReferenceField f, Entity t, String name)'''
+		var «tr.name.toLowerCase» = $('#«tr.name.toLowerCase»New').val();
+	'''
+	
+	def dispatch getAttributeEntityJQuery(EntityReferenceField f, Entity t)'''
+		«IF  f !== null && !f.upperBound.equals('*')»
+			«f.superType.getAttributeEntityRefJQuery(f, t, f.name)»
+		«ENDIF»
+	'''
+	
+	def dispatch getAttributeEntityJQuery(EntityTextField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	
+	def dispatch getAttributeEntityJQuery(EntityLongTextField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityDateField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityImageField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityFileField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityEmailField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityDecimalField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();		
+	'''
+	def dispatch getAttributeEntityJQuery(EntityIntegerField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityCurrencyField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''	
+	
+	//----------------------------------------------------------------------------------------------------
+	//--------------------------------- CODIGO PARA GENERAR LABELS - VALUES ------------------------------
+	//----------------------------------------------------------------------------------------------------
+	def dispatch getAttributeEntityRefLabelValue(Entity tr, EntityReferenceField f, Entity t, String name)'''
+		"«name.toLowerCase»" : «name.toLowerCase»,
+	'''
+ 	def dispatch getAttributeEntityRefLabelValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
+		"«tr.name.toLowerCase»" : «tr.name.toLowerCase»,
+	'''
+	
+	def dispatch getAttributeEntityLabelValue(EntityReferenceField f, Entity t)'''
+		«IF  f !== null && !f.upperBound.equals('*')»
+			«f.superType.getAttributeEntityRefLabelValue(f, t, f.name)»
+		«ENDIF»
+	'''
+	
+	def dispatch getAttributeEntityLabelValue(EntityTextField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	
+	def dispatch getAttributeEntityLabelValue(EntityLongTextField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityDateField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityImageField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityFileField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityEmailField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityDecimalField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityIntegerField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityCurrencyField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»,
+	'''
+	
+
+	def dispatch getAttributeEntityRefLabelValueSearch(Entity tr, EntityReferenceField f, Entity t, String name)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+ 	def dispatch getAttributeEntityRefLabelValueSearch(Enum tr, EntityReferenceField f, Entity t, String name)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	
+	def dispatch getAttributeEntitySearch(EntityReferenceField f, Entity t)'''
+		«IF  f !== null && !f.upperBound.equals('*')»
+			«f.superType.getAttributeEntityRefLabelValueSearch(f, t, f.name)»
+		«ENDIF»
+	'''
+	
+	def dispatch getAttributeEntitySearch(EntityTextField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()	
+	'''
+	
+	def dispatch getAttributeEntitySearch(EntityLongTextField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityDateField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityImageField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityFileField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityEmailField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityDecimalField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityIntegerField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityCurrencyField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''	
+	
 	
 }

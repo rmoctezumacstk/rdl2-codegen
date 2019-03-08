@@ -97,6 +97,7 @@ class CrudComponentPaginatorHelperGenerator {
 			return "JqgridResponse [paginaActual=" + paginaActual + ", totalPaginas=" + totalPaginas + ", totalRegistros="
 					+ totalRegistros + ", listaRegistros=" + payload + "]";
 		}
+	}
 	'''
 	
 }

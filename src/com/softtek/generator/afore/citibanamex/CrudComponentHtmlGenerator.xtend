@@ -21,6 +21,10 @@ import com.softtek.rdl2.Enum
 
 class CrudComponentHtmlGenerator {
 	
+	var entityUtils = new EntityUtils
+	var entityFieldUtils = new EntityFieldUtils
+	var uiFlowUtils = new UIFlowUtils
+	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
@@ -65,7 +69,6 @@ class CrudComponentHtmlGenerator {
 						28/01/2019 |</span>
 				</a>
 			</div>
-	
 			<div class="container">
 				<div class="afobnmx_headerLogo">
 					<img src=".../../resources/img/logoCiti.png" alt="citibanamex">
@@ -79,19 +82,31 @@ class CrudComponentHtmlGenerator {
 			<div id="alertDanger"></div>
 	
 			<div class="formTop">
-				<span class="titleStaticForm">Consultar «e.name.toLowerCase»</span>
+				<span class="titleStaticForm">Consultar «entityUtils.getEntityName(e)»</span>
 				<hr>
 				<form id="formBusquedar«e.name.toLowerCase.toFirstUpper»">
-					
+					<div class="row">
+					«FOR f : e.entity_fields»
+					«f.getAttributeSearch(e)»
+					«ENDFOR»
+					</div>
+					<div class="row">
+						<div class="col-md-6"></div>
+						<div class="col-md-6">
+							<button name="buscar" id="buscar" type="button"
+								class="btn-style-citi float-right mx-0" th:text="#{label.busqueda.buscar}"></button>
+							<button name="limpiar" id="limpiar" type="button"
+								class="btn-style-citi float-right mx-2" th:text="#{label.busqueda.limpiar}"></button>
+						</div>
+					</div>					
 				</form>
 			</div>
 			<span class="tituloTabla" th:text="#{span.titulo.tabla}"></span>
-		
 			<div class="table-responsive">
-				<table class="table table-bordered" id="semaforo">
+				<table class="table table-bordered" id="«e.name.toLowerCase»">
 					<thead class="bg-info">
 						<tr>
-							<th scope="col">Seleccione</th>
+							<th scope="col" style="width: 70px;">Seleccione</th>
 							«FOR f : e.entity_fields»
 							«f.getAttributeTitle(e)»
 							«ENDFOR»
@@ -173,7 +188,23 @@ class CrudComponentHtmlGenerator {
 			<div class="modal-dialog modal-sm modal-dialog-centered"
 				role="document">
 				<div class="modal-content">
-					
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalEliminarTitle"  th:text="#{title.«e.name.toLowerCase».modal.delete}"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="text-center">
+							<p th:text="#{label.«e.name.toLowerCase».modal.delete.message}"></p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
+						<button type="button" class="btn-style-citi"
+							id="eliminar«e.name.toLowerCase.toFirstUpper»Confirm">Aceptar</button>
+					</div>					
 				</div>
 			</div>
 		</div>
@@ -506,6 +537,85 @@ class CrudComponentHtmlGenerator {
 	'''
 	
 	def dispatch genRelationshipTitle(Entity e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''	
+	
+	/* Get Attribute Search */
+	def dispatch getAttributeSearch(EntityTextField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityLongTextField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityDateField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityImageField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityFileField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityEmailField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityDecimalField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityIntegerField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityCurrencyField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''	
+	
+	def dispatch getAttributeSearch(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipSearch(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipSearch(Enum e, Entity t, String name) ''' 
+	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch genRelationshipSearch(Entity e, Entity t, String name) ''' 
 	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
 	'''	
 	

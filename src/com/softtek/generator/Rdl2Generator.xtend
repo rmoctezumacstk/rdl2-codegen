@@ -44,6 +44,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentSqlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -94,6 +95,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
+	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -129,6 +131,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentPaginadorGenerator.doGenerate(resource, fsa)
 		crudComponentSqlGenerator.doGenerate(resource, fsa)
 		crudComponentModeloGenerator.doGenerate(resource, fsa)
+		crudComponentControllerGenerator.doGenerate(resource, fsa)
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server

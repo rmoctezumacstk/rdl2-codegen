@@ -9,7 +9,7 @@ class EntityUtils {
 	/*
 	 * getEntityName
 	 */
-	def static getEntityName(Entity e) {
+	def dispatch getEntityName(Entity e) {
 		var name = e.name
 		if (e.glossary !== null) {
 			name = e.glossary.glossary_name.label
@@ -20,7 +20,7 @@ class EntityUtils {
 	/*
 	 * getEntityDescription
 	 */
-	def static getEntityDescription(Entity e) {
+	def dispatch getEntityDescription(Entity e) {
 		var description = ""
 		if (e.glossary !== null) {
 			description = e.glossary.glossary_description.label
@@ -31,7 +31,7 @@ class EntityUtils {
 	/*
 	 * getToStringField
 	 */
-	def getToStringField(Entity entity) {
+	def dispatch getToStringField(Entity entity) {
 		for (m : entity.entity_methods) {
 			if (m.name == "toString") {
 				for (s : m.def_statements) {

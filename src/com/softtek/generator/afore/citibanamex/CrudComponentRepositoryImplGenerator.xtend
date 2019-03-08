@@ -107,34 +107,12 @@ class CrudComponentRepositoryImplGenerator {
 			PaginadoHelper«e.name.toLowerCase.toFirstUpper» paginadoHelper«e.name.toLowerCase.toFirstUpper» = new PaginadoHelper«e.name.toLowerCase.toFirstUpper»();
 			
 			String condicion = "";
-	//		if (!«e.name.toLowerCase».getNombre().equals("")) {
-	//			condicion += ComponentesGeneralesConstantsHelper.SEMAFORO_NOMBRE + «e.name.toLowerCase».getNombre() + ComponentesGeneralesConstantsHelper.SEMAFORO_NOMBRE_CIERRE;
-	//		}
-	//		if (!«e.name.toLowerCase».getEstadoIndicador().getCveEdoIndicador().equals(0L)) {
-	//			condicion += ComponentesGeneralesConstantsHelper.SEMAFORO_ESTADO_INDICADOR + «e.name.toLowerCase».getEstadoIndicador().getCveEdoIndicador();
-	//		}
-	//		if (!«e.name.toLowerCase».getTipoMedida().getCveTipoMedida().equals(0L)) {
-	//			condicion += ComponentesGeneralesConstantsHelper.SEMAFORO_TIPO_MEDIDA + «e.name.toLowerCase».getTipoMedida().getCveTipoMedida();
-	//		}
 			
 			int total = jdbcTemplate.queryForObject(obtenerConsulta("«e.name.toLowerCase».consulta.registros") + condicion, new Object[]{}, (rs, rowNum) -> rs.getInt(1));
 	
 	
 			List<«e.name.toLowerCase.toFirstUpper»> «e.name.toLowerCase»s = jdbcTemplate.query(obtenerConsulta("«e.name.toLowerCase».consulta.todos") + condicion + ComponentesGeneralesConstantsHelper.LIMIT + valorMinimo + ComponentesGeneralesConstantsHelper.COMA + valorMaximo,
 					new Object[] {}, new «e.name.toLowerCase.toFirstUpper»Mapper());
-	//		for («e.name.toLowerCase.toFirstUpper» sem : «e.name.toLowerCase»s) {
-	//			List<Valor«e.name.toLowerCase.toFirstUpper»> valor«e.name.toLowerCase.toFirstUpper»s = jdbcTemplate.query(
-	//					obtenerConsulta("«e.name.toLowerCase».valor.consulta.id"), new Object[] { sem.getId«e.name.toLowerCase.toFirstUpper»() },
-	//					new Valor«e.name.toLowerCase.toFirstUpper»Mapper());
-	//			sem.setValor«e.name.toLowerCase.toFirstUpper»(valor«e.name.toLowerCase.toFirstUpper»s);
-	//		}
-			
-	//		for («e.name.toLowerCase.toFirstUpper» s : «e.name.toLowerCase»s) {
-	//			s.setValorVerde(s.getValores«e.name.toLowerCase.toFirstUpper»().get(0).getValorMinimo() + "-" + s.getValores«e.name.toLowerCase.toFirstUpper»().get(0).getValorMaximo() );
-	//			s.setValorAmarillo(s.getValores«e.name.toLowerCase.toFirstUpper»().get(1).getValorMinimo() + "-" + s.getValores«e.name.toLowerCase.toFirstUpper»().get(1).getValorMaximo() );
-	//			s.setValorRojo(s.getValores«e.name.toLowerCase.toFirstUpper»().get(2).getValorMinimo() + "-" + s.getValores«e.name.toLowerCase.toFirstUpper»().get(2).getValorMaximo() );
-	//			
-	//		}
 			
 			paginadoHelper«e.name.toLowerCase.toFirstUpper».setTotalRegistros(total);
 			paginadoHelper«e.name.toLowerCase.toFirstUpper».setPayload(«e.name.toLowerCase»s);;
