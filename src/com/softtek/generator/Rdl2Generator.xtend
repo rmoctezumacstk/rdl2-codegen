@@ -31,6 +31,7 @@ import com.softtek.generator.jsonserver.JsonServerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -73,6 +74,8 @@ class Rdl2Generator extends AbstractGenerator {
 	// DAOImpl
 	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
 	
+	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -96,6 +99,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentControllerGenerator.doGenerate(resource, fsa)
 		crudComponentDaoGenerator.doGenerate(resource, fsa)
 		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
+		crudComponentModeloGenerator.doGenerate(resource, fsa)
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			jsonServerGenerator.doGenerator(s, fsa)
