@@ -19,6 +19,7 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import java.util.ArrayList
 
 class CrudComponentSqlGenerator {
 	
@@ -35,6 +36,13 @@ class CrudComponentSqlGenerator {
 	}
 	
 	def CharSequence genJavaSql(Entity e, Module m) '''
+	«var ArrayList lstReferencesEntity = this.getReferencesEntities(e)»
+	//----------------------------------------- referencias del entity -----------------------------------------
+	«FOR r : lstReferencesEntity»
+		«r»
+	«ENDFOR»
+	//----------------------------------------------------------------------------------------------------------
+	
 	create table CGT_«e.name.toUpperCase» (
 	«FOR f : e.entity_fields»
 	«f.getAttribute(e)»
@@ -72,6 +80,24 @@ class CrudComponentSqlGenerator {
 	«ENDFOR»	
 	);		
 	'''
+
+	def dispatch getReferencesEntities(Entity e){
+		var ArrayList<String> lstReferencesEntity = new ArrayList();
+		
+		for(f : e.entity_fields.filter(EntityReferenceField)){
+			//lstReferencesEntity.add(f.name);
+			//lstReferencesEntity.add(f.superType.eClass.instanceTypeName);
+			lstReferencesEntity.add(f.superType.toString);
+		}
+		
+		return lstReferencesEntity;
+	}
+	
+	def dispatch printReferencesEntity(Module m, ArrayList<String> re){
+		for (Entity e : m.elements.filter(Entity)){
+			
+		}
+	}
 
 	/* Get Attribute */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
