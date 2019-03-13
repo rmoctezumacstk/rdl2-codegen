@@ -545,6 +545,11 @@ class EntityFieldUtils {
 				}
 			}
 		}
+		
+		if(fieldData.length > 100){
+			fieldData = fieldData.substring(0, 90)
+		}
+		
 		return fieldData
 	}
 	

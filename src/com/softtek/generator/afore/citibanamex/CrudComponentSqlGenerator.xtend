@@ -43,7 +43,7 @@ class CrudComponentSqlGenerator {
 			«IF enm.name.equals(erName)»
 				create table CGG_«erName.toUpperCase»(
 				«FOR attr : enm.enum_literals»
-					«attr.key» varchar(100) not null,
+					«attr.key.toUpperCase» varchar(100) not null,
 				«ENDFOR»
 				CVE_«erName.toUpperCase» int(2) auto_increment,
 				primary key(CVE_«erName.toUpperCase»)
@@ -84,7 +84,7 @@ class CrudComponentSqlGenerator {
 				«FOR i:0..2»
 					insert into CGG_«erName.toUpperCase» (
 					«FOR attr : enm.enum_literals SEPARATOR ","»
-					"«attr.key.toString»"
+					"«attr.key.toString.toUpperCase»"
 					«ENDFOR»
 					) values(
 					«FOR attr : enm.enum_literals SEPARATOR ","»
@@ -124,7 +124,7 @@ class CrudComponentSqlGenerator {
 		«ENDFOR»	
 		, true);
 	«ENDFOR»		
-	«««//------------------------------------------------------------------------------------------------------------
+	«««//------------------------------------------------------------------------------------------------------------«»
 	'''
 	
 	def dispatch getReferencesEntities(Entity e){
@@ -178,11 +178,13 @@ class CrudComponentSqlGenerator {
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
+	def dispatch genRelationship(Enum e, Entity t, String name) '''
+	CVE_«e.name.toUpperCase» int(2),
 	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
-	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
+	def dispatch genRelationship(Entity e, Entity t, String name) '''
+	CVE_«e.name.toUpperCase» int(2),
 	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
@@ -222,11 +224,11 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch genRelationshipColumn(Enum e, Entity t, String name) ''' 
-	"«e.name.toUpperCase»"
+	"CVE_«e.name.toUpperCase»"
 	'''
 	
 	def dispatch genRelationshipColumn(Entity e, Entity t, String name) ''' 
-	"«e.name.toUpperCase»"
+	"CVE_«e.name.toUpperCase»"
 	'''	
 
 	/* Get Attribute Data*/
