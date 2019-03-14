@@ -50,6 +50,7 @@ class CrudComponentMapperGenerator {
         		«FOR f : e.entity_fields»
         		«f.getAttribute(e)»
         		«ENDFOR» 
+        		«e.name.toLowerCase».setEstadoLogico(rs.getBoolean("ESTADO_LOGICO"));
 	            return «e.name.toLowerCase»;
 	
 	        }
@@ -77,7 +78,9 @@ class CrudComponentMapperGenerator {
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper».getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+	«name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «name.toLowerCase.toFirstUpper»();
+	«name.toLowerCase».setId«name.toLowerCase.toFirstUpper»(rs.getInt("ID_«name.toUpperCase»"));
+	«t.name.toLowerCase».set«name.toLowerCase.toFirstUpper»(«name.toLowerCase»);
 	'''
 	
 	def dispatch getAttributeImport(EntityTextField f, Entity t)''''''

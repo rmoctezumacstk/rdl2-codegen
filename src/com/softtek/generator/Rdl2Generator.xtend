@@ -35,16 +35,18 @@ import com.softtek.generator.afore.citibanamex.CrudComponentMapperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModelGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentRepositoryImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginatorHelperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginadorGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentSqlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentJsGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryImplGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -85,8 +87,6 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
 	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
-	@Inject CrudComponentDaoGenerator crudComponentDaoGenerator
-	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
 	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
 	@Inject CrudComponentRepositoryImplGenerator crudComponentRepositoryImplGenerator
 	@Inject CrudComponentPaginatorHelperGenerator crudComponentPaginatorHelperGenerator
@@ -94,8 +94,12 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
 	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
-	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
+	@Inject CrudComponentJsGenerator crudComponentModeloGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
+	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
+	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
+	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
+	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -122,8 +126,6 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentServiceImplGenerator.doGenerate(resource, fsa)
 		crudComponentServiceGenerator.doGenerate(resource, fsa)
 		crudComponentModelGenerator.doGenerate(resource, fsa)
-		crudComponentDaoGenerator.doGenerate(resource, fsa)
-		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
 		crudComponentMapperGenerator.doGenerate(resource, fsa)
 		crudComponentRepositoryGenerator.doGenerate(resource, fsa)
 		crudComponentRepositoryImplGenerator.doGenerate(resource, fsa)
@@ -141,6 +143,10 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentConsultasGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 			crudComponentMessagesGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoServiceGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){

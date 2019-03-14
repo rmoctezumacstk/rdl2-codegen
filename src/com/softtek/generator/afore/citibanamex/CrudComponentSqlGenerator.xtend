@@ -19,6 +19,7 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import java.util.ArrayList
 
 class CrudComponentSqlGenerator {
 	
@@ -35,44 +36,113 @@ class CrudComponentSqlGenerator {
 	}
 	
 	def CharSequence genJavaSql(Entity e, Module m) '''
+	«var ArrayList<String> lstReferencesEntity = this.getReferencesEntities(e)»
+	«««//----------------------------------------- Creacion de tablas -----------------------------------------
+	«FOR enm : m.elements.filter(typeof(Enum))»
+		«FOR erName : lstReferencesEntity»
+			«IF enm.name.equals(erName)»
+				create table CGG_«erName.toUpperCase»(
+				«FOR attr : enm.enum_literals»
+					«attr.key» varchar(100) not null,
+				«ENDFOR»
+				CVE_«erName.toUpperCase» int(2) auto_increment,
+				primary key(CVE_«erName.toUpperCase»)
+				);
+			«ENDIF»
+		« ENDFOR»
+	«ENDFOR»
+	«FOR entity : m.elements.filter(typeof(Entity))»
+		«FOR erName : lstReferencesEntity»
+			«IF entity.name.equals(erName)»
+				create table CGG_«erName.toUpperCase»(
+				«FOR f : entity.entity_fields»
+					«f.getAttribute(entity)»
+				«ENDFOR» 
+				ENABLED boolean not null,
+				CVE_«erName.toUpperCase» int(2) auto_increment,
+				primary key(CVE_«erName.toUpperCase»)
+				);
+			«ENDIF»
+		«ENDFOR»
+	«ENDFOR»
+	
 	create table CGT_«e.name.toUpperCase» (
 	«FOR f : e.entity_fields»
 	«f.getAttribute(e)»
 	«ENDFOR» 
-	ID_«e.name.toUpperCase» bigint auto_increment
+	ENABLED boolean not null,
+	ID_«e.name.toUpperCase» bigint auto_increment,
+	primary key(ID_«e.name.toUpperCase»)
 	);
-	
-	insert into CGT_«e.name.toUpperCase» (
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeColumn(e)»
-	«ENDFOR»
-	) values(
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeData(e)»
-	«ENDFOR»	
-	);
-	
-	insert into CGT_«e.name.toUpperCase» (
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeColumn(e)»
-	«ENDFOR»
-	) values(
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeData(e)»
-	«ENDFOR»	
-	);
-	
-	insert into CGT_«e.name.toUpperCase» (
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeColumn(e)»
-	«ENDFOR»
-	) values(
-	«FOR f : e.entity_fields SEPARATOR ","»
-	«f.getAttributeData(e)»
-	«ENDFOR»	
-	);		
-	'''
+	«««//------------------------------------------------------------------------------------------------------
 
+	
+	«««//-------------------------------------------- Creacion de registros -----------------------------------------
+	«FOR enm : m.elements.filter(typeof(Enum))»
+		«FOR erName : lstReferencesEntity»
+			«IF enm.name.equals(erName)»
+				«FOR i:0..2»
+					insert into CGG_«erName.toUpperCase» (
+					«FOR attr : enm.enum_literals SEPARATOR ","»
+					"«attr.key.toString»"
+					«ENDFOR»
+					) values(
+					«FOR attr : enm.enum_literals SEPARATOR ","»
+					'«attr.value.toString»'
+					«ENDFOR»	
+					);
+				«ENDFOR»	
+			«ENDIF»
+		« ENDFOR»
+	«ENDFOR»
+	«FOR entity : m.elements.filter(typeof(Entity))»
+		«FOR erName : lstReferencesEntity»
+			«IF entity.name.equals(erName)»
+				«FOR i:0..2»
+					insert into CGG_«erName.toUpperCase» (
+					«FOR f : entity.entity_fields SEPARATOR ","»
+					«f.getAttributeColumn(entity).toString»
+					«ENDFOR»
+					, "ENABLED") values(
+					«FOR f : entity.entity_fields SEPARATOR ","»
+					«f.getAttributeData(entity).toString»
+					«ENDFOR»	
+					, true);
+				«ENDFOR»	
+			«ENDIF»
+		«ENDFOR»
+	«ENDFOR»
+
+	«FOR i:0..2»
+		insert into CGT_«e.name.toUpperCase» (
+		«FOR f : e.entity_fields SEPARATOR ","»
+		«f.getAttributeColumn(e).toString»
+		«ENDFOR»
+		, "ENABLED") values(
+		«FOR f : e.entity_fields SEPARATOR ","»
+		«f.getAttributeData(e).toString»
+		«ENDFOR»	
+		, true);
+	«ENDFOR»		
+	«««//------------------------------------------------------------------------------------------------------------
+	'''
+	
+	def dispatch getReferencesEntities(Entity e){
+		var ArrayList<String> lstReferencesEntity = new ArrayList();
+		
+		for(f : e.entity_fields.filter(EntityReferenceField)){
+			if( f.eCrossReferences.head.eClass.name.equals("Entity") ){ 	
+				var entity = f.eCrossReferences.head as Entity;
+				lstReferencesEntity.add(entity.name);	
+			}else{
+				var enum = f.eCrossReferences.head as Enum;
+				lstReferencesEntity.add(enum.name);
+			}
+		}
+		
+		return lstReferencesEntity;
+	}
+	
 	/* Get Attribute */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
 	«f.name.toUpperCase» varchar(100) not null,
@@ -104,16 +174,16 @@ class CrudComponentSqlGenerator {
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationship(t, f.name)»		
+		«f.superType.genRelationship(t, f.name)»
 	«ENDIF»
 	'''	
 	
 	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	«name.toUpperCase» int not null,
+	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	«name.toUpperCase» int not null,
+	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
 	/* Get Attribute Column*/
@@ -147,7 +217,7 @@ class CrudComponentSqlGenerator {
 	
 	def dispatch getAttributeColumn(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipColumn(t, f.name)»		
+		«f.superType.genRelationshipColumn(t, f.name)»
 	«ENDIF»
 	'''	
 	
@@ -158,7 +228,6 @@ class CrudComponentSqlGenerator {
 	def dispatch genRelationshipColumn(Entity e, Entity t, String name) ''' 
 	"«e.name.toUpperCase»"
 	'''	
-
 	/* Get Attribute Data*/
 	def dispatch getAttributeData(EntityTextField f, Entity t)'''
 	'«entityFieldUtils.fakerDomainData(f)»'
@@ -189,10 +258,10 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
 	«entityFieldUtils.fakerDomainData(f)»
-«««	«IF  f !== null && !f.upperBound.equals('*')»
 «««		«f.superType.genRelationshipData(t, f.name)»		
-«««	«ENDIF»
+	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipData(Enum e, Entity t, String name) ''' 

@@ -21,6 +21,10 @@ import com.softtek.rdl2.Enum
 
 class CrudComponentMessagesGenerator {
 	
+	var entityUtils = new EntityUtils
+	var entityFieldUtils = new EntityFieldUtils
+	var uiFlowUtils = new UIFlowUtils
+	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
 		fsa.generateFile("banamex/src/main/resources/messages/messages_es"+ ".properties", genJavaConstants(s, fsa))	
 	}
@@ -201,8 +205,9 @@ class CrudComponentMessagesGenerator {
 	'''
 	
 	def dispatch genEntity(Entity e, Module m) '''
-	
+	################################################################
 	#Configuración de la pantalla «e.name.toLowerCase.toFirstUpper»
+	################################################################
 	«FOR f : e.entity_fields»
 	«f.getAttribute(e)»
 	«ENDFOR» 
@@ -218,53 +223,45 @@ class CrudComponentMessagesGenerator {
 	boton.«e.name.toLowerCase».actualizar: Actualizar
 	boton.«e.name.toLowerCase».eliminar: Eliminar
 	
-	title.«e.name.toLowerCase».modal.new: Registrar «e.name.toLowerCase.toFirstUpper»
-	title.«e.name.toLowerCase».modal.edit: Actualizar «e.name.toLowerCase.toFirstUpper»
-	title.«e.name.toLowerCase».modal.delete: Eliminar «e.name.toLowerCase.toFirstUpper»
+	title.«e.name.toLowerCase».modal.new: Registrar «entityUtils.getEntityName(e)»
+	title.«e.name.toLowerCase».modal.edit: Actualizar «entityUtils.getEntityName(e)»
+	title.«e.name.toLowerCase».modal.delete: Eliminar «entityUtils.getEntityName(e)»
 	
 	label.«e.name.toLowerCase».modal.delete.message: Desea eliminar el «e.name.toLowerCase.toFirstUpper»
 	'''	
 	
 	/* Attribute */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «f.name.toLowerCase.toFirstUpper» del «t.name.toLowerCase»
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	'''	
-	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationship(t, f.name)»		
+	label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»: «entityFieldUtils.getFieldGlossaryName(f)»
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
-	'''
-	
-	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
-	'''
 }

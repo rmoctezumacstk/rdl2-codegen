@@ -33,6 +33,7 @@ class CrudComponentHtmlGenerator {
 		}
 	}
 	
+	/* Archivo Principal */
 	def CharSequence genAppHtml(Entity e, Module m) '''
 	<!DOCTYPE html>
 	<html th:fragment="layout (title, body)"
@@ -101,6 +102,8 @@ class CrudComponentHtmlGenerator {
 					</div>					
 				</form>
 			</div>
+			
+			<!-- Table -->
 			<span class="tituloTabla" th:text="#{span.titulo.tabla}"></span>
 			<div class="table-responsive">
 				<table class="table table-bordered" id="«e.name.toLowerCase»">
@@ -123,7 +126,7 @@ class CrudComponentHtmlGenerator {
 					data-target=".modalNew«e.name.toLowerCase.toFirstUpper»" th:text="#{boton.«e.name.toLowerCase».agregar}"></button>
 			</div>
 		</div>
-	
+		
 		<!-- The Modal New -->
 		<div class="modal fade modalNew«e.name.toLowerCase.toFirstUpper»" tabindex="-1" role="dialog"
 			aria-labelledby="modalNuevo«e.name.toLowerCase.toFirstUpper»" aria-hidden="true"
@@ -140,18 +143,21 @@ class CrudComponentHtmlGenerator {
 					
 					<div class="container-body">
 						<form class="needs-validation mt-1" id="formularioNew«e.name.toLowerCase.toFirstUpper»" novalidate>
+							<div class="row">
 							«FOR f : e.entity_fields»
 							«f.getAttribute(e)»
 							«ENDFOR» 
+							</div>
 							<div class="modal-footer ">
 								<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
-								<button type="submit" class="btn-style-citi" id="agregarSemaforo">Guardar</button>
+								<button type="submit" class="btn-style-citi" id="agregar«e.name.toLowerCase.toFirstUpper»">Guardar</button>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+		<!-- ./The Modal New -->
 	
 		<!-- The Modal Edit -->
 		<div class="modal fade modal«e.name.toLowerCase.toFirstUpper»Editar" tabindex="-1" role="dialog"
@@ -164,23 +170,26 @@ class CrudComponentHtmlGenerator {
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						
-						<div class="container-body">
-							<form class="needs-validation mt-1" id="formularioEdit«e.name.toLowerCase.toFirstUpper»" novalidate>
-							«FOR f : e.entity_fields»
-							«f.getAttributeEdit(e)»
-							«ENDFOR»
-							<div class="modal-footer">
-								<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
-								<button type="submit" class="btn-style-citi"
-									name="editarSemaforo" id="editarSemaforo">Guardar</button>
-							</div>
-							</form>
+					</div>
+					<div class="container-body">
+						<form class="needs-validation mt-1" id="formularioEdit«e.name.toLowerCase.toFirstUpper»" novalidate>
+						<div class="row">
+						«FOR f : e.entity_fields»
+						«f.getAttributeEdit(e)»
+						«ENDFOR»
 						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
+							<button type="submit" class="btn-style-citi"
+								name="editar«e.name.toLowerCase.toFirstUpper»" id="editar«e.name.toLowerCase.toFirstUpper»">Guardar</button>
+						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+		<!-- ./The Modal Edit -->
+		
 		<!-- Modal -->
 		<div class="modal fade eliminar«e.name.toLowerCase.toFirstUpper»Modal" id="eliminar«e.name.toLowerCase.toFirstUpper»Modal"
 			tabindex="-1" role="dialog" aria-labelledby="modalEliminarTitle"
@@ -212,332 +221,333 @@ class CrudComponentHtmlGenerator {
 	</body>
 	</html>
 	'''
+	/* ./Archivo Principal */
+	
 	
 	/* Get Attribute Field */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»New" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''	
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationship(t, f.name)»		
+		«f.superType.genRelationship(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationship(Enum e, Entity t, String name, String glossaryName) '''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label> 
+		</div>
+		<div class="col-lg-12">
+		<select name="«glossaryName»"
+			id="«name.toLowerCase»New" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».cve«name.toLowerCase.toFirstUpper»}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+		</div>
+	</div>
 	'''
 	
-	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationship(Entity e, Entity t, String name, String glossaryName) ''' 
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label> 
+		</div>
+		<div class="col-lg-12">
+		<select name="«glossaryName»"
+			id="«name.toLowerCase.toFirstUpper»New" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».clave}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+		</div>
+	</div>
 	'''
 	
 	/* Get Attribute Field */
 	def dispatch getAttributeEdit(EntityTextField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityLongTextField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityDateField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityImageField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityFileField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityEmailField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityDecimalField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityIntegerField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityCurrencyField f, Entity t)'''
-	<div class="row">
-		<div class="col-lg-6 form-group">
-			<div class="col-lg-12 text-left">
-				<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
-			</div>
-			<div class="col-lg-12">
-				<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-					name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
-			</div>
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{label.form.campo.required}"></div>
 		</div>
 	</div>
 	'''	
 	
 	def dispatch getAttributeEdit(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipEdit(t, f.name)»		
+		«f.superType.genRelationshipEdit(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»		
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationshipEdit(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationshipEdit(Enum e, Entity t, String name, String glossaryName) ''' 
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label> 
+		</div>
+		<div class="col-lg-12">
+		<select name="«glossaryName»"
+			id="descripcion«name.toLowerCase.toFirstUpper»" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».cve«name.toLowerCase.toFirstUpper»}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+		</div>
+	</div>
 	'''
 	
-	def dispatch genRelationshipEdit(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationshipEdit(Entity e, Entity t, String name, String glossaryName) ''' 
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label> 
+		</div>
+		<div class="col-lg-12">
+		<select name="«glossaryName»"
+			id="«name.toLowerCase»Edit" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».clave}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+		</div>
+	</div>
 	'''	
 	
 	/* Get Attribute Field */
 	def dispatch getAttributeTitle(EntityTextField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityLongTextField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityDateField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityImageField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityFileField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityEmailField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityDecimalField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityIntegerField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
 	def dispatch getAttributeTitle(EntityCurrencyField f, Entity t)'''
-	<th scope="col">«f.name.toLowerCase.toFirstUpper»</th>
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''	
-	
 	def dispatch getAttributeTitle(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipTitle(t, f.name)»		
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	«ENDIF»
-	'''	
-	
-	def dispatch genRelationshipTitle(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
-	'''
-	
-	def dispatch genRelationshipTitle(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
 	'''	
 	
 	/* Get Attribute Search */
@@ -607,16 +617,30 @@ class CrudComponentHtmlGenerator {
 	
 	def dispatch getAttributeSearch(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipSearch(t, f.name)»		
+		«f.superType.genRelationshipSearch(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationshipSearch(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationshipSearch(Enum e, Entity t, String name, String glossaryName) ''' 
+	<div class="col-md-4">
+		<label for="«name.toLowerCase»Semaf" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label>
+		<select name="«glossaryName»"
+			id="«name.toLowerCase»Semaf" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».clave}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+	</div>
 	'''
 	
-	def dispatch genRelationshipSearch(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	def dispatch genRelationshipSearch(Entity e, Entity t, String name, String glossaryName) ''' 
+	<div class="col-md-4">
+		<label for="«name.toLowerCase»Semaf" class="col-form-label" th:text="#{label.«t.name.toLowerCase».busqueda.«name.toLowerCase»}"></label>
+		<select name="«glossaryName»"
+			id="«name.toLowerCase»Semaf" class="form-control" required>
+			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».clave}" th:utext="${«name.toLowerCase».descripcion}"/>
+		</select>
+	</div>
 	'''	
 	
 }

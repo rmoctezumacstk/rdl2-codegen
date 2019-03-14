@@ -4,6 +4,17 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
 
 class CrudComponentControllerGenerator {
 	
@@ -41,6 +52,11 @@ class CrudComponentControllerGenerator {
 	import mx.com.aforebanamex.plata.model.TipoMedida;
 	import mx.com.aforebanamex.plata.service.CatalogoService;
 	import mx.com.aforebanamex.plata.service.«e.name.toLowerCase.toFirstUpper»Service;
+	
+	«FOR f : e.entity_fields»
+	«f.getAttributeImport(e)»
+	«ENDFOR»	
+	
 		
 	@Controller
 	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController {
@@ -54,26 +70,23 @@ class CrudComponentControllerGenerator {
 		@GetMapping(value = "/«e.name.toLowerCase»")
 		public String «e.name.toLowerCase»(Model model) {
 			logger.debug("Se ingresa a la pantalla de «e.name.toLowerCase»");
-«««			model.addAttribute("tipoMedidas", catalogoService.obtenerTipoMedida());
-«««			model.addAttribute("edo«e.name.toLowerCase.toFirstUpper»s", catalogoService.obtenerEstadoIndicador());
+			«FOR f : e.entity_fields»
+			«f.getAttribute(e)»
+			«ENDFOR»
 			Paginador«e.name.toLowerCase.toFirstUpper» paginador = new Paginador«e.name.toLowerCase.toFirstUpper»();
 			paginador.setFilas(10);
 			paginador.setPagina(1);
 			«e.name.toLowerCase.toFirstUpper» sem = new «e.name.toLowerCase.toFirstUpper»();
-«««			«e.name.toLowerCase».setNombre("");
-«««			EstadoIndicador estadoIndicador = new EstadoIndicador();
-«««			estadoIndicador.setCveEdoIndicador(0L);
-«««			«e.name.toLowerCase».setEstadoIndicador(estadoIndicador);
-«««			TipoMedida tipoMedida = new TipoMedida();
-«««			tipoMedida.setCveTipoMedida(0L);
-«««			«e.name.toLowerCase».setTipoMedida(tipoMedida);
+			«FOR f : e.entity_fields»
+			«f.getAttributeSet(e)»
+			«ENDFOR»			
 			paginador.setPayload(sem);
 			model.addAttribute("lista«e.name.toLowerCase.toFirstUpper»", obtener«e.name.toLowerCase.toFirstUpper»s(model,paginador));
 			return ComponentesGeneralesConstantsHelper.RUTA_«e.name.toUpperCase»;
 		}
 	
-		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»")
-		public @ResponseBody «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
+		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»s")
+		public @ResponseBody «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
 			logger.debug("Se solicita obtener un «e.name.toLowerCase» con el id: {}",«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
 			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
@@ -113,5 +126,106 @@ class CrudComponentControllerGenerator {
 		}
 	}
 		
+	'''
+	
+	/* Get Attribute */
+	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityImageField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityFileField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+	'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+	'''	
+	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+	«f.superType.genRelationship(t, f.name)»		
+	«ENDIF»
+	'''	
+	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
+	'''
+	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
+	model.addAttribute("«name.toLowerCase»", catalogoService.obtener«name.toLowerCase.toFirstUpper»());
+	'''
+	
+	/* Get Attribute Set */
+	def dispatch getAttributeSet(EntityTextField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityLongTextField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityDateField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityImageField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityFileField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityEmailField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»("");
+	'''
+	def dispatch getAttributeSet(EntityDecimalField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»(0.0);
+	'''
+	def dispatch getAttributeSet(EntityIntegerField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»(0);
+	'''
+	def dispatch getAttributeSet(EntityCurrencyField f, Entity t)'''
+	sem.set«f.name.toLowerCase.toFirstUpper»(0.0);
+	'''	
+	def dispatch getAttributeSet(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+	«f.superType.genRelationshipSet(t, f.name)»		
+	«ENDIF»
+	'''	
+	def dispatch genRelationshipSet(Enum e, Entity t, String name) ''' 
+	'''
+	def dispatch genRelationshipSet(Entity e, Entity t, String name) ''' 
+	«name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «name.toLowerCase.toFirstUpper»();
+	«name.toLowerCase».setId«name.toLowerCase.toFirstUpper»(0);
+	sem.set«name.toLowerCase.toFirstUpper»(«name.toLowerCase»);
+	'''
+	
+	/* Get Attribute Import*/
+	def dispatch getAttributeImport(EntityTextField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityLongTextField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityDateField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityImageField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityFileField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityEmailField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityDecimalField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityIntegerField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityCurrencyField f, Entity t)'''
+	'''	
+	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+	«f.superType.genRelationshipImport(t, f.name)»		
+	«ENDIF»
+	'''	
+	def dispatch genRelationshipImport(Enum e, Entity t, String name) ''' 
+	'''
+	def dispatch genRelationshipImport(Entity e, Entity t, String name) ''' 
+	import mx.com.aforebanamex.plata.model.«name.toLowerCase.toFirstUpper»;
 	'''
 }

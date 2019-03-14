@@ -47,6 +47,8 @@ class CrudComponentModelGenerator {
 		«FOR f : e.entity_fields»
 		«f.getAttribute(e)»
 		«ENDFOR» 
+		
+		private Boolean estadoLogico;
 
 		public «e.name.toLowerCase.toFirstUpper»(){}
 		
@@ -54,12 +56,14 @@ class CrudComponentModelGenerator {
 		«FOR f : e.entity_fields SEPARATOR ','»
 		«f.getAttributeConstructor(e)»
 		«ENDFOR» 
+		Boolean estadoLogico
 		) {
 			super();
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
 			«FOR f : e.entity_fields»
 			«f.getAttributeField(e)»
 			«ENDFOR» 
+			this.estadoLogico = estadoLogico;
 		}
 		
 		public Integer getId«e.name.toLowerCase.toFirstUpper»() {
@@ -68,6 +72,14 @@ class CrudComponentModelGenerator {
 		public void setId«e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper») {
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
 		}
+		
+		public Boolean getEstadoLogico() {
+			return estadoLogico;
+		}
+	
+		public void setEstadoLogico(Boolean estadoLogico) {
+			this.estadoLogico = estadoLogico;
+		}	
 		
 		«FOR f : e.entity_fields»
 		«f.getAttributeFieldGet(e)»
@@ -125,13 +137,13 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
-		«««		@Valid
-		«««		private List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper»;	
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
+	@Valid
+	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	@Valid
+	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
 	'''
 	
 	/* Get Attribute Field */
@@ -170,11 +182,11 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetSetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	this.«name.toLowerCase» = «name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipGetSetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	this.«name.toLowerCase» = «name.toLowerCase»;
 	'''
 	
 	/* Get Attribute Get */
@@ -235,7 +247,9 @@ class CrudComponentModelGenerator {
 	'''
 	
 	def dispatch genRelationshipGetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public «name.toLowerCase.toFirstUpper» get«name.toLowerCase.toFirstUpper»() {
+		return «name.toLowerCase»;
+	}
 	'''		
 
 	/* Get Attribute Set */
@@ -292,11 +306,13 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipSetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	««« this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
 	'''
 	
 	def dispatch genRelationshipSetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public void set«name.toLowerCase.toFirstUpper»(«name.toLowerCase.toFirstUpper» «name.toLowerCase») {
+		this.«name.toLowerCase» = «name.toLowerCase»;
+	}
 	'''
 	
 	/* Get Attribute Constructor */
@@ -330,16 +346,16 @@ class CrudComponentModelGenerator {
 	
 	def dispatch getAttributeConstructor(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipConstructor(t, f.name)»		
+	«f.superType.genRelationshipConstructor(t, f.name)»		
 	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipConstructor(Enum e, Entity t, String name) ''' 
-	String «e.name.toLowerCase»
+	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»
 	'''
 	
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
-	String «e.name.toLowerCase»
+	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»
 	'''
 	
 }
