@@ -20,7 +20,7 @@ class CrudComponentServiceImplGenerator {
 	
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
-	
+	----------------------------------------------
 	import com.aforebanamex.plata.base.model.RequestPlata;
 	import com.aforebanamex.plata.base.model.ResponsePlata;
 	import com.aforebanamex.plata.base.service.BaseBusinessService;
