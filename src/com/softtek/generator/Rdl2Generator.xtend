@@ -9,6 +9,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import javax.inject.Inject
 import com.softtek.generator.bash.BashRDLGenerator
+import com.softtek.generator.functionalspecs.FunctionalSpecsRDLGenerator
 import com.softtek.generator.uiprototype.ScreenGenerator
 import com.softtek.generator.uiprototype.AppTagGenerator
 import com.softtek.generator.uiprototype.IndexJsGenerator
@@ -45,10 +46,15 @@ import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
+import com.softtek.rdl2.Entity
+import java.util.ArrayList
+import java.util.List
+import java.util.HashSet
 
 class Rdl2Generator extends AbstractGenerator {
 
 	@Inject BashRDLGenerator bashRDLGenerator
+	@Inject FunctionalSpecsRDLGenerator functionalSpecsRDLGenerator
 	
 	@Inject IndexJsGenerator indexJsGenerator
 	@Inject AppTagGenerator appTagGenerator
@@ -133,6 +139,8 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentModeloGenerator.doGenerate(resource, fsa)
 		crudComponentControllerGenerator.doGenerate(resource, fsa)
 		
+		var accModules = new HashSet()
+		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server
 			jsonServerGenerator.doGenerator(s, fsa)
@@ -153,7 +161,18 @@ class Rdl2Generator extends AbstractGenerator {
 	
 		}
 		
-		bashRDLGenerator.doGenerator(resource, fsa)
+		
+		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
+			for (m: s.modules_ref){
+			 accModules.add(m.module_ref.name)
+		    }
+		   bashRDLGenerator.doGenerator(accModules, fsa)
+		}
+		
+	
+		for(r:resource.resourceSet.resources){
+		 functionalSpecsRDLGenerator.doGeneratorUml(r, fsa)
+		}
 	}
 	
 	override afterGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
