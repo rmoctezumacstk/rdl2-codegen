@@ -47,6 +47,9 @@ import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceGener
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentJDBCRepositoryImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentJDBCRepositoryGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -100,6 +103,8 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
 	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
 	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
+	@Inject CrudComponentJDBCRepositoryImplGenerator crudComponentJDBCRepositoryImplGenerator
+	@Inject CrudComponentJDBCRepositoryGenerator crudComponentJDBCRepositoryGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -134,6 +139,8 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentSqlGenerator.doGenerate(resource, fsa)
 		crudComponentModeloGenerator.doGenerate(resource, fsa)
 		crudComponentControllerGenerator.doGenerate(resource, fsa)
+		crudComponentJDBCRepositoryImplGenerator.doGenerate(resource, fsa)
+		crudComponentJDBCRepositoryGenerator.doGenerate(resource, fsa)
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server
