@@ -21,37 +21,26 @@ class CrudComponentControllerGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/controller/" + e.name.toLowerCase.toFirstUpper + "Controller.java", e.generateController(m))
+				fsa.generateFile("banamex/src/main/java/com/aforebanamex/plata/cg/mn/controller/" + e.name.toLowerCase.toFirstUpper + "Controller.java", e.generateController(m))
 			}
 		}
 	}
 	
 	
 	def CharSequence generateController(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.controller;
+	package com.aforebanamex.plata.cg.mn.controller;
 	
-	import javax.validation.Valid;
-	
-	import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Controller;
-	import org.springframework.ui.Model;
-	import org.springframework.validation.Errors;
-	import org.springframework.web.bind.annotation.GetMapping;
-	import org.springframework.web.bind.annotation.PostMapping;
-	import org.springframework.web.bind.annotation.RequestBody;
-	import org.springframework.web.bind.annotation.RequestMapping;
-	import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-	import mx.com.aforebanamex.plata.base.controller.BaseController;
-	import mx.com.aforebanamex.plata.helper.ComponentesGeneralesConstantsHelper;
-	import mx.com.aforebanamex.plata.helper.PaginadoHelper«e.name.toLowerCase.toFirstUpper»;
-	import mx.com.aforebanamex.plata.model.EstadoIndicador;
-	import mx.com.aforebanamex.plata.model.Paginador«e.name.toLowerCase.toFirstUpper»;
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
-	import mx.com.aforebanamex.plata.model.TipoMedida;
-	import mx.com.aforebanamex.plata.service.CatalogoService;
-	import mx.com.aforebanamex.plata.service.«e.name.toLowerCase.toFirstUpper»Service;
+import com.aforebanamex.plata.base.controller.BaseController;
+import com.aforebanamex.plata.base.model.RequestPlata;
+import com.aforebanamex.plata.base.model.ResponsePlata;
+import com.aforebanamex.plata.cg.mn.service.«e.name.toLowerCase.toFirstUpper»Service;
+import com.aforebanamex.plata.comunes.model.mn.«e.name.toLowerCase.toFirstUpper»;
 	
 	«FOR f : e.entity_fields»
 	«f.getAttributeImport(e)»
@@ -59,70 +48,44 @@ class CrudComponentControllerGenerator {
 	
 		
 	@Controller
-	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController {
+	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController<«e.name.toLowerCase.toFirstUpper», «e.name.toLowerCase.toFirstUpper»> {
 		
 		@Autowired
 		private «e.name.toLowerCase.toFirstUpper»Service «e.name.toLowerCase»Service;
 		
-		@Autowired
-		private CatalogoService catalogoService;
-		
-		@GetMapping(value = "/«e.name.toLowerCase»")
-		public String «e.name.toLowerCase»(Model model) {
-			logger.debug("Se ingresa a la pantalla de «e.name.toLowerCase»");
-			«FOR f : e.entity_fields»
-			«f.getAttribute(e)»
-			«ENDFOR»
-			Paginador«e.name.toLowerCase.toFirstUpper» paginador = new Paginador«e.name.toLowerCase.toFirstUpper»();
-			paginador.setFilas(10);
-			paginador.setPagina(1);
-			«e.name.toLowerCase.toFirstUpper» sem = new «e.name.toLowerCase.toFirstUpper»();
-			«FOR f : e.entity_fields»
-			«f.getAttributeSet(e)»
-			«ENDFOR»			
-			paginador.setPayload(sem);
-			model.addAttribute("lista«e.name.toLowerCase.toFirstUpper»", obtener«e.name.toLowerCase.toFirstUpper»s(model,paginador));
-			return ComponentesGeneralesConstantsHelper.RUTA_«e.name.toUpperCase»;
+		@Override
+		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»")
+		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtener(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio la petición - consultar el «e.name.toLowerCase» en mn: {}", data.toString());
+			return «e.name.toLowerCase»Service.obtener(data);
 		}
 	
+		@Override
 		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»s")
-		public @ResponseBody «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
-			logger.debug("Se solicita obtener un «e.name.toLowerCase» con el id: {}",«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
+		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio la petición - consultar todos los «e.name.toLowerCase»s en mn: {}", data.toString());
+			return «e.name.toLowerCase»Service.obtenerTodos(data);
 		}
 	
-		@PostMapping(value="/agregar«e.name.toLowerCase.toFirstUpper»", produces = "application/json", consumes = "application/json")
-		public @ResponseBody «e.name.toLowerCase.toFirstUpper» agregar«e.name.toLowerCase.toFirstUpper»(@RequestBody @Valid «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», 
-				Errors errors){
-			logger.debug("Se solicita agregar el «e.name.toLowerCase»: {}",ReflectionToStringBuilder.toString(«e.name.toLowerCase»));
-			if(errors.hasErrors()) {
-				return new «e.name.toLowerCase.toFirstUpper»();
-			}
-			«e.name.toLowerCase».setId«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»Service.agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»));
-			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
+		@Override
+		@RequestMapping(value="/agregar«e.name.toLowerCase.toFirstUpper»")
+		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> agregar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio la petición - agregar «e.name.toLowerCase» en mn: {}", data.toString());
+			return «e.name.toLowerCase»Service.agregar(data);
 		}
 	
-		@PostMapping(value="/eliminar«e.name.toLowerCase.toFirstUpper»", produces = "application/json")
-		public @ResponseBody int eliminar«e.name.toLowerCase.toFirstUpper»(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
-			logger.debug("Se solicita eliminar un «e.name.toLowerCase» con el id: {}",«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-			return «e.name.toLowerCase»Service.eliminar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
+		@Override
+		@RequestMapping(value="/actualizar«e.name.toLowerCase.toFirstUpper»")
+		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> actualizar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio la petición - actualizar «e.name.toLowerCase» en mn: {}", data.toString());
+			return «e.name.toLowerCase»Service.actualizar(data);
 		}
 	
-		@PostMapping(value="/actualizar«e.name.toLowerCase.toFirstUpper»", produces = "application/json", consumes = "application/json")
-		public @ResponseBody int actualizar«e.name.toLowerCase.toFirstUpper»(@RequestBody @Valid «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», 
-				Errors errors){
-				logger.debug("Se solicita actualizar el «e.name.toLowerCase»: {}",ReflectionToStringBuilder.toString(«e.name.toLowerCase»));
-			if(errors.hasErrors()) {
-				return 0;
-			}
-			return «e.name.toLowerCase»Service.actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
-		}
-		
-		/*Obtenemos los «e.name.toLowerCase» filtrando por nombre, tipoMedia y Estado Indicador*/
-		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»s", produces = "application/json", consumes = "application/json")
-		public @ResponseBody PaginadoHelper«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(Model model, @RequestBody Paginador«e.name.toLowerCase.toFirstUpper» paginador){
-«««			logger.debug("Se solicita obtener los «e.name.toLowerCase»s: nombre={}, estado={}, medida:{}",paginador.getPayload().getNombre(),paginador.getPayload().getEstadoIndicador().getCveEdoIndicador(),paginador.getPayload().getTipoMedida().getCveTipoMedida());
-			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»s(paginador.getPayload(),paginador.getPagina(),paginador.getFilas());
+		@Override
+		@RequestMapping(value="/eliminar«e.name.toLowerCase.toFirstUpper»")
+		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> eliminar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio la petición - eliminar «e.name.toLowerCase» en mn: {}", data.toString());
+			return «e.name.toLowerCase»Service.eliminar(data);
 		}
 	}
 		
@@ -220,12 +183,12 @@ class CrudComponentControllerGenerator {
 	'''	
 	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.genRelationshipImport(t, f.name)»		
+	«f.superType.genRelationshipImport(t, f.name)»
 	«ENDIF»
 	'''	
 	def dispatch genRelationshipImport(Enum e, Entity t, String name) ''' 
 	'''
 	def dispatch genRelationshipImport(Entity e, Entity t, String name) ''' 
-	import mx.com.aforebanamex.plata.model.«name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.comunes.model.mn.«name.toLowerCase.toFirstUpper»;
 	'''
 }

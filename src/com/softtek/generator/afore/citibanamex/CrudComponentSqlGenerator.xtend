@@ -66,7 +66,7 @@ class CrudComponentSqlGenerator {
 		«ENDFOR»
 	«ENDFOR»
 	
-	create table CGT_«e.name.toUpperCase» (
+	create table CGTJPB_«e.name.toUpperCase» (
 	«FOR f : e.entity_fields»
 	«f.getAttribute(e)»
 	«ENDFOR» 
