@@ -10,7 +10,7 @@ class CrudComponentJDBCRepositoryGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/com/aforebanamex/plata/cg/mn/repository/"+e.name.toLowerCase.toFirstUpper+"JDBCRepository.java", e.genJavaJDBCRepository(m))
+				fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/repository/"+e.name.toLowerCase.toFirstUpper+"JDBCRepository.java", e.genJavaJDBCRepository(m))
 			}
 		}
 	}
@@ -21,8 +21,8 @@ class CrudComponentJDBCRepositoryGenerator {
 		import com.aforebanamex.plata.base.model.RequestPlata;
 		import com.aforebanamex.plata.base.model.ResponsePlata;
 		import com.aforebanamex.plata.base.repository.BaseRepository;
-		import com.aforebanamex.plata.comunes.model.mn.«e.name.toLowerCase.toFirstUpper»;
-				
+		import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
+		
 		public interface «e.name.toLowerCase.toFirstUpper»JDBCRepository extends BaseRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> {
 		
 		}

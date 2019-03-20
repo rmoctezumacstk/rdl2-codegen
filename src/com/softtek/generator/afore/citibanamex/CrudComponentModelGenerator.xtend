@@ -24,13 +24,13 @@ class CrudComponentModelGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/model/" + e.name.toLowerCase.toFirstUpper + ".java", e.genJavaModel(m))
+				fsa.generateFile("banamex/common/src/main/java/com/aforebanamex/plata/comunes/model/cg/" + e.name.toLowerCase.toFirstUpper + ".java", e.genJavaModel(m))
 			}
 		}
 	}
 	
 	def CharSequence genJavaModel(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.model;
+	package com.aforebanamex.plata.comunes.model.cg;
 	
 	import java.io.Serializable;
 	import java.util.List;
@@ -39,7 +39,9 @@ class CrudComponentModelGenerator {
 	import javax.validation.constraints.Digits;
 	import javax.validation.constraints.Size;
 	
-	public class «e.name.toLowerCase.toFirstUpper» implements Serializable{
+	import com.aforebanamex.plata.base.model.BaseSerizalizableModel;
+	
+	public class «e.name.toLowerCase.toFirstUpper» extends BaseSerizalizableModel{
 		
 		private static final long serialVersionUID = 1L;
 		@Digits(integer=16, fraction=0, message="El id«e.name.toLowerCase.toFirstUpper» es incorrecto.")
@@ -53,7 +55,7 @@ class CrudComponentModelGenerator {
 		public «e.name.toLowerCase.toFirstUpper»(){}
 		
 		public «e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper», 
-		«FOR f : e.entity_fields SEPARATOR ','»
+		«FOR f : e.entity_fields»
 		«f.getAttributeConstructor(e)»
 		«ENDFOR» 
 		Boolean estadoLogico
@@ -182,7 +184,7 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetSetOne(Enum e, Entity t, String name) ''' 
-	this.«name.toLowerCase» = «name.toLowerCase»;
+	this.«e.name.toLowerCase» = «e.name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipGetSetOne(Entity e, Entity t, String name) ''' 
@@ -243,7 +245,9 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public «e.name.toLowerCase.toFirstUpper» get«e.name.toLowerCase.toFirstUpper»() {
+		return «e.name.toLowerCase»;
+	}
 	'''
 	
 	def dispatch genRelationshipGetOne(Entity e, Entity t, String name) ''' 
@@ -306,7 +310,9 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipSetOne(Enum e, Entity t, String name) ''' 
-	««« this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public void set«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
+		this.«e.name.toLowerCase» = «e.name.toLowerCase»;
+	}
 	'''
 	
 	def dispatch genRelationshipSetOne(Entity e, Entity t, String name) ''' 
@@ -317,31 +323,31 @@ class CrudComponentModelGenerator {
 	
 	/* Get Attribute Constructor */
 	def dispatch getAttributeConstructor(EntityTextField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityLongTextField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityDateField f, Entity t)'''
-	Date «f.name.toLowerCase»
+	Date «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityImageField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityFileField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityEmailField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityDecimalField f, Entity t)'''
-	Double «f.name.toLowerCase»
+	Double «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityIntegerField f, Entity t)'''
-	Int «f.name.toLowerCase»
+	Int «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityCurrencyField f, Entity t)'''
-	Double «f.name.toLowerCase»
+	Double «f.name.toLowerCase»,
 	'''	
 	
 	def dispatch getAttributeConstructor(EntityReferenceField f, Entity t)'''
@@ -351,11 +357,11 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipConstructor(Enum e, Entity t, String name) ''' 
-	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»
+	«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
 	'''
 	
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
-	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»
+	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
 	'''
 	
 }

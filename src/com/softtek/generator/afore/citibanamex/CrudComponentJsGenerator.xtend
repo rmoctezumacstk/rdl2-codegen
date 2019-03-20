@@ -25,141 +25,78 @@ class CrudComponentJsGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/webapp/resources/js/modelo" + e.name.toLowerCase.toFirstUpper + ".js", e.genJavaJs(m))
+				fsa.generateFile("banamex/configuracion/src/main/webapp/resources/js/mn/" + e.name.toLowerCase + ".js", e.genJavaJs(m))
 			}
 		}
 	}
 	
 	/* Archivo Principal */
 	def CharSequence genJavaJs(Entity e, Module m) '''
-	/* 
-	 * Numero de version: 1.0
-	 * Fecha: 22/02/2019
-	 * Copyright:  
-	 * 
-	 */
-	
-	//Componentes Genéricos 5.5
-	
-	(function() {
-		'use strict';
-		window.addEventListener('load', function() {
-			var forms = document.getElementsByClassName('needs-validation');
-			Array.prototype.filter.call(forms, function(form) {
-				form.addEventListener('submit', function(event) {
-					if (form.checkValidity() === false) {
-						event.preventDefault();
-						event.stopPropagation();
-					}
-					form.classList.add('was-validated');
-				}, false);
-			});
-		}, false);
-	})();
-	
-	function enableButton(name, status){
-		$("#"+name).prop("disabled", status);
-	}
-	
-	function cleanForm(name){
-		document.getElementById(name).reset();
-		$("#"+name).removeClass("was-validated");
-	}
-	
-	function tableClean(id){
-		$('#'+id).remove();  
-	}
-	
-	function methodGenericPost(path, model){
-		jQuery.post(path, model, "json").done(function(data) {
-			location.reload();
-		});
-	}
-	
-	$(window).on("resize", function () {
-	    var $grid = $("#grid");
-	    var newWidth = $grid.closest(".ui-jqgrid").parent().width();
-	    $grid.jqGrid("setGridWidth", newWidth, true);
-	});
-	
-	
 	$(document).ready(function() {
 		
-		$('#«e.name.toLowerCase»').DataTable({
-	        "searching": false,
-	        language: {
-	            "decimal": "",
-	            "emptyTable": "No hay información",
-	            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-	            "infoEmpty": "Mostrando 0 to 0 of 0 registros",
-	            "infoFiltered": "(Filtrado de _MAX_ total registros)",
-	            "infoPostFix": "",
-	            "thousands": ",",
-	            "lengthMenu": "Mostrar _MENU_ registros",
-	            "loadingRecords": "Cargando...",
-	            "processing": "Procesando...",
-	            "search": "Buscar:",
-	            "zeroRecords": "Sin resultados encontrados",
-	            "paginate": {
-	                "first": "Primero",
-	                "last": "Ultimo",
-	                "next": "Siguiente",
-	                "previous": "Anterior"
-	            }
-	        }
-	    });
-	
-		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",
-		{"pagina":1,"filas":10,"payload":{
-		«FOR f : e.entity_fields SEPARATOR ","»
-			«f.getAttributeValue(e)»
-		«ENDFOR»
+		crearCabeceras();
+			
+		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",{"paginado":{"pagina":1,"registrosMostrados":10},"payload":{
+			«FOR f : e.entity_fields SEPARATOR ","»
+				«f.getAttributeValue(e)»
+			«ENDFOR»
 		}},inicioDatos);
-	
-		//Guardar un «e.name.toLowerCase»
+		
+		urlGlobal = "/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s";
+		
 		$("#agregar«e.name.toLowerCase.toFirstUpper»").click(function () {
 			var validate = false;
-			var id«e.name.toLowerCase.toFirstUpper» = Number($('input:radio[name=«e.name.toLowerCase»Radios]:checked').val());
-			
+			var id«e.name.toLowerCase.toFirstUpper» = Number($('input:radio[name=«e.name.toLowerCase.toFirstUpper»Radios]:checked').val());
+
 			«FOR f : e.entity_fields»
 				«f.getAttributeEntityJQueryAgregar(e)»
 			«ENDFOR»
-
-			var modelo = {"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-				«FOR f : e.entity_fields SEPARATOR ","»
-					«f.getAttributeEntityLabelValue(e)»
-				«ENDFOR»
+			
+			var modelo = {
+					"paginado":{
+						"pagina":1,
+						"registrosMostrados":10
+					},
+					"payload":{
+						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
+						«FOR f : e.entity_fields SEPARATOR ","»
+							«f.getAttributeEntityLabelValue(e)»
+						«ENDFOR»
+					}
 			};
-
+		
 		    if(«getIfRequiredAttrbutes(e)»){
 				$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
 			}else if(validate == false){
-				jsonAjax("/componentesGenerales/agregar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
+				jsonAjax("/configuracion/agregar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
 				mostrarAlertSuccess(MENSAJE_GUARDADO_EXITOSO);
 				$("#formularioNew«e.name.toLowerCase.toFirstUpper»").reset();
 				$(".modalNew«e.name.toLowerCase.toFirstUpper»").modal('hide');
 			}
+
 			
 		});
 		
-		//Seleccionar «e.name.toLowerCase» por id
+		//Seleccionar «e.name.toLowerCase.toFirstUpper» por id
 		$("#actualizar«e.name.toLowerCase.toFirstUpper»").click(function() {
 			
-			if($("input[name='radio«e.name.toLowerCase.toFirstUpper»s']:radio").is(':checked')){
-				var id = $('input:radio[name=radio«e.name.toLowerCase.toFirstUpper»s]:checked').val();
+			if($("input[name='radioIndex']:radio").is(':checked')){
+				var id = $('input:radio[name=radioIndex]:checked').val();
 				var modelo = {
+						"payload":{
 						"id«e.name.toLowerCase.toFirstUpper»": Number(id)
+						}
 				};
-				jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,actualizar«e.name.toLowerCase.toFirstUpper»);
+				jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»",modelo,actualizar«e.name.toLowerCase.toFirstUpper»);
 			}else{
 				mostrarAlertWarning(MENSAJE_ERROR_OPEN_ACTUALIZAR);
 			}
 		});
 		
-		//Eliminar «e.name.toLowerCase» por id
+		//Seleccionar «e.name.toLowerCase.toFirstUpper» por id
 		$("#eliminar«e.name.toLowerCase.toFirstUpper»").click(function() {
 			
-			if($("input[name='radio«e.name.toLowerCase.toFirstUpper»s']:radio").is(':checked')){
+			if($("input[name='radioIndex']:radio").is(':checked')){
 				$("#eliminar«e.name.toLowerCase.toFirstUpper»Modal").modal('show');
 			}else{
 				mostrarAlertWarning(MENSAJE_ERROR_OPEN_ACTUALIZAR);
@@ -169,73 +106,69 @@ class CrudComponentJsGenerator {
 		
 		$("#buscar").click(function(){
 			
-			«FOR f : e.entity_fields»
-				«f.getAttributeSearch(e)»
-			«ENDFOR»
-			
+		«FOR f : e.entity_fields»
+			«f.getAttributeSearch(e)»
+		«ENDFOR»	
+	
 			var modelo = {
-					"pagina":1,
-					"filas":10,
+					"paginado":{
+						"pagina":1,
+						"registrosMostrados":10
+					},
 					"payload":{
 					«FOR f : e.entity_fields SEPARATOR ","»
 						«f.getAttributeEntitySearch(e)»
-					«ENDFOR»	
+					«ENDFOR»						
 					}
 			};
 			
-			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
+			jsonAjax(urlGlobal,modelo,inicioDatos);
 		});
 		
 		
 		$("#limpiar").click(function() {
+			cleanForm("formBusquedar«e.name.toLowerCase.toFirstUpper»");
 			
 			«FOR f : e.entity_fields»
 				«f.getAttributeSearch(e)»
-			«ENDFOR»
+			«ENDFOR»	
 			
-			cleanForm("formBusquedar«e.name.toLowerCase.toFirstUpper»");
 			var modelo = {
-					"pagina":1,
-					"filas":10,
+					"paginado":{
+						"pagina":1,
+						"registrosMostrados":10
+					},
 					"payload":{
 						«FOR f : e.entity_fields SEPARATOR ","»
 							«f.getAttributeEntitySearch(e)»
-						«ENDFOR»	
-						}
+						«ENDFOR»
+					}									
 			};
 			
-			var modelo0 = {
-					"pagina":1,
-					"filas":10,
-					"payload":{
-						«FOR f : e.entity_fields SEPARATOR ","»
-							«f.getAttributeEntityClean(e)»
-						«ENDFOR»	
-						}
-					};
-			
-			jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
+			jsonAjax(urlGlobal,modelo,inicioDatos);
 		});
 		
 		
 		$("#editar«e.name.toLowerCase.toFirstUpper»").click(function() {
 			var validate = false;
-			var id«e.name.toLowerCase.toFirstUpper» = $('input:radio[name=radio«e.name.toLowerCase.toFirstUpper»s]:checked').val();
-
+			var id«e.name.toLowerCase.toFirstUpper» = $('input:radio[name=radioIndex]:checked').val();
 			«FOR f : e.entity_fields»
 				«f.getAttributeEntityJQueryEdit(e)»
 			«ENDFOR»
 			
-			var modelo = {"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
+			var modelo = {
+					"payload":{
+						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
 						«FOR f : e.entity_fields SEPARATOR ","»
 							«f.getAttributeEntityLabelValue(e)»
 						«ENDFOR»
-					};
+					}
+				};
 	
 				if(«getIfRequiredAttrbutes(e)»){
 					$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
 				}else if(validate == false){
-					jsonAjax("/componentesGenerales/actualizar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
+					jsonAjax("/configuracion/actualizar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
 					mostrarAlertSuccess(MENSAJE_ACTUALIZADO_EXITOSO);
 					$("#formularioEdit«e.name.toLowerCase.toFirstUpper»").reset();
 					$(".modal«e.name.toLowerCase.toFirstUpper»Editar").modal('hide');
@@ -244,156 +177,54 @@ class CrudComponentJsGenerator {
 		
 		$("#eliminar«e.name.toLowerCase.toFirstUpper»Confirm").click(function(){
 			var modelo = {
-						"id«e.name.toLowerCase.toFirstUpper»": Number($('input:radio[name=radio«e.name.toLowerCase.toFirstUpper»s]:checked').val())
+					"payload":{
+						"id«e.name.toLowerCase.toFirstUpper»": Number($('input:radio[name=radioIndex]:checked').val())
+					}
 				};
 			
-			jsonAjax("/componentesGenerales/eliminar«e.name.toLowerCase.toFirstUpper»",modelo,iniciarTabla);
+			jsonAjax("/configuracion/eliminar«e.name.toLowerCase.toFirstUpper»",modelo,iniciarTabla);
 			mostrarAlertSuccess(MENSAJE_ELIMINADO_EXITOSO);
 			iniciarTabla();
 			$(".eliminar«e.name.toLowerCase.toFirstUpper»Modal").modal('hide');
 		});
 	});
 	
-	function iniciarTabla(){
-		
-			«FOR f : e.entity_fields»
-				«f.getAttributeSearch(e)»
-			«ENDFOR»		
-		
+	function obtenerModelo(){
 		var modelo = {
-				"pagina":1,
-				"filas":10,
-				"payload":{
 				«FOR f : e.entity_fields SEPARATOR ","»
 					«f.getAttributeEntitySearch(e)»
-				«ENDFOR»	
-				}
-			};
-		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
+				«ENDFOR»
+			}
+		console.log
+		return modelo;
 	}
 	
-	function paginarTabla(pagina){
+	function cleanForm(name){
+		document.getElementById(name).reset();
+		$("#"+name).removeClass("was-validated");
+	}
+	
+	function iniciarTabla(){
 		var modelo = {
-				"pagina":pagina,
-				"filas":$("#«e.name.toLowerCase»_length select").val(),
-				"payload":{
+				"paginado":{
+				"pagina":1,
+				"registrosMostrados":10
+			},
+			"payload":{
 				«FOR f : e.entity_fields SEPARATOR ","»
-					«f.getAttributePaginarTabla(e)»
-				«ENDFOR»	
+					«f.getAttributeValue(e)»
+				«ENDFOR»				
 				}
 			};
-		jsonAjax("/componentesGenerales/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
+		jsonAjax(urlGlobal,modelo,inicioDatos);
 	}
 	
-	//function inicioDatos(data){
-	//	getTable(data);
-	//}
-	
-	function inicioDatos(info){
+	function actualizar«e.name.toLowerCase.toFirstUpper»(info){
 		var data = info.payload;
-	    $('#«e.name.toLowerCase»').dataTable( {
-	        data : data,
-	        destroy:true,
-	        columns: [{
-	            data:   "id«e.name.toLowerCase.toFirstUpper»",
-	            render: function ( data, type, row ) {
-	                if ( type === 'display' ) {
-	                    return '<input type="radio" name="radio«e.name.toLowerCase.toFirstUpper»s" class="editor-active" value="'+data+'">';
-	                }
-	                return data;
-	            },
-	            className: "dt-body-center"
-	        },
-			«FOR f : e.entity_fields SEPARATOR ","»
-				«f.getAttributeInicioDatos(e)»
-			«ENDFOR»	
-	        ],
-	        "searching": false,
-	        language: {
-	            "decimal": "",
-	            "emptyTable": "No hay información",
-	            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-	            "infoEmpty": "Mostrando 0 to 0 of 0 registros",
-	            "infoFiltered": "(Filtrado de _MAX_ total registros)",
-	            "infoPostFix": "",
-	            "thousands": ",",
-	            "lengthMenu": "Mostrar _MENU_ registros",
-	            "loadingRecords": "Cargando...",
-	            "processing": "Procesando...",
-	            "search": "Buscar:",
-	            "zeroRecords": "Sin resultados encontrados",
-	            "paginate": {
-	                "first": "Primero",
-	                "last": "Ultimo",
-	                "next": "Siguiente",
-	                "previous": "Anterior"
-	            }
-	        }
-	    });
-	    
-	    $("#«e.name.toLowerCase»_info").html("Mostrando "+(((info.paginaActual-1)*$("#«e.name.toLowerCase»_length select").val())+1)+" a "+((info.totalPaginas==info.paginaActual)?info.totalRegistros:(info.paginaActual*$("#«e.name.toLowerCase»_length select").val()))+" de "+info.totalRegistros+" registros");
-	
-	    for(i = 2; i<=info.totalPaginas;i++){
-	    	$("#«e.name.toLowerCase»_paginate .next").before('<span><a class="paginate_button current" aria-controls="«e.name.toLowerCase»" data-dt-idx="'+i+'" tabindex="0">'+i+'</a></span>');
-	    }
-	    
-	
-		
-		$(".paginate_button").click(function(){
-			paginarTabla($(this).data("dt-idx"));
-		});
-	}
-	
-	function buscarDatos(data){
-		$("#grid").clearGridData();
-		$("#grid").jqGrid('setGridParam', {data:data});
-		$("#grid").trigger("reloadGrid");
-	}
-	
-	function actualizar«e.name.toLowerCase.toFirstUpper»(data){
-	«FOR f : e.entity_fields»
-		«f.getAttributeUpdate(e)»
-	«ENDFOR»
+		«FOR f : e.entity_fields»
+			«f.getAttributeUpdate(e)»
+		«ENDFOR»
 		$('.modal«e.name.toLowerCase.toFirstUpper»Editar').modal('show');
-	}
-	
-	function vacio(){}
-	
-	function getTable(results){ 
-		$("#grid").clearGridData();
-		$("#grid").jqGrid({
-			datatype: "local",
-			data: results,
-		    colNames:['Seleccionar',
-			«FOR f : e.entity_fields SEPARATOR ","»
-			«f.getAttributeTitle(e)»
-			«ENDFOR»],
-		    colModel :[ 
-		    	{ name: 'id«e.name.toLowerCase.toFirstUpper»', label: 'id«e.name.toLowerCase.toFirstUpper»', width: 50, align:'center',
-		            formatter: function radio(cellValue, option) {
-		                return '<input type="radio" name="radio«e.name.toLowerCase.toFirstUpper»s" value="'+cellValue+'"/>';
-		            } 
-		        },
-		      	«FOR f : e.entity_fields SEPARATOR ","»
-		      		«f.getAttributeGetTable(e)»
-		      	«ENDFOR»  
-		    ],
-		    search:true,
-		    pagination:true,
-		    pager: '#pager',
-		    loadonce: true,
-		    rowNum:10,
-		   	rowList:[10,20,50,100],
-		   	height: 250,
-		   	scrollOffset:0,
-		   	autowidth: true,
-		   	shrinkToFit: true,
-		    pginput: true,
-		    pgbuttons: true,
-		    viewrecords: true,
-			rownumbers: false,
-	  }); 
-		$("#grid").trigger("reloadGrid");
 	}	
 	'''
 	/* ./Archivo Principal */
