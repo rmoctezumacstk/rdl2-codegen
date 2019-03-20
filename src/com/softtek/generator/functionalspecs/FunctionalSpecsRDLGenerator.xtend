@@ -35,11 +35,11 @@ import com.softtek.rdl2.Task
 import com.softtek.rdl2.CommandQuery
 
 class FunctionalSpecsRDLGenerator {
-	var accChapters="";
+	var accChapters = new HashSet<String>()
 	def doGeneratorUml(Resource resource, IFileSystemAccess2 fsa) {
 		
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			accChapters=accChapters+generateChaptersMainDocumentTex(resource, fsa) 
+			accChapters.add(generateChaptersMainDocumentTex(resource, fsa).toString) 
 		}
 		
 		fsa.generateFile("functional-specs/functional-spec.tex", generateMainDocumentTex(resource,fsa,accChapters))
@@ -47,7 +47,7 @@ class FunctionalSpecsRDLGenerator {
 			
 		 
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
-			for (e : m.elements.filter(typeof(Entity))) {
+			//for (e : m.elements.filter(typeof(Entity))) {
 			fsa.generateFile("functional-specs/domain-model/DOM-" + m.name + "/domain-model.plantuml", m.generateModuleDOMEntityDiagram)
 			
 			fsa.generateFile("functional-specs/domain-model/DOM-" + m.name + "/domain-model-enum.plantuml", m.generateModuleDOMEnumDiagram)
@@ -56,7 +56,7 @@ class FunctionalSpecsRDLGenerator {
 			fsa.generateFile("functional-specs/ui-specs/UI-" + m.name + ".tex", m.generateModuleUI)
 			m.generateUCDiagrams(fsa)
 			//fsa.generateFile("cypress/integration/" + m.name + "-Screenshots.js", m.generateModuleScreenshotUI)
-			}
+			//}
 		}
 	}
 	
@@ -1105,11 +1105,11 @@ class FunctionalSpecsRDLGenerator {
 				\item El Operador elige el comando [Buscar].
 				\item El Sistema determina que los datos de la forma [Criterios de B\'usqueda (\ref{tab:ui-search-criteria-«entity.name.toLowerCase»-form})] est\'an completos.
 					\begin{enumerate}
-						\item Escenario Alterno 01: Datos incompletos.
+						\item Excepci\'on 01: Datos incompletos.
 					\end{enumerate}
 				\item El Sistema obtiene informaci\'on de acuerdo a los Criterios de B\'usqueda seleccionados.
 					\begin{enumerate}
-						\item Excepci\'on 01: No se encontr\'o informaci\'on.
+						\item Excepci\'on 02: No se encontr\'o informaci\'on.
 					\end{enumerate}
 				\item El Sistema muestra la lista [Resultados de B\'usqueda (\ref{tab:ui-search-results-«entity.name.toLowerCase»-form})].
 				\item Fin del Caso de Uso.
@@ -1117,16 +1117,16 @@ class FunctionalSpecsRDLGenerator {
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Escenario Alterno 01. Datos incompletos} \\
+			\textbf{Excepci\'on 01. Datos incompletos} \\
 			\begin{enumerate}
 				\item El Sistema determina que los datos de la forma [Criterios de B\'usqueda (\ref{tab:ui-search-criteria-«entity.name.toLowerCase»-form})] est\'an incompletos.
 				\item El Sistema muestra los campos de la forma [Criterios de B\'usqueda (\ref{tab:ui-search-criteria-«entity.name.toLowerCase»-form})] que son obligatorios.
-				\item Fin del Escenario Alterno.
+				\item Fin de la Excepci\'on.
 			\end{enumerate}
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Excepci\'on 01. No se encontr\'o informaci\'on} \\
+			\textbf{Excepci\'on 02. No se encontr\'o informaci\'on} \\
 			\begin{enumerate}
 				\item El Sistema no obtiene informaci\'on de acuerdo a los Criterios de B\'usqueda seleccionados.
 				\item El Sistema avisa que no encontr\'o informaci\'on [(\ref{tab:ui-nosearch-«entity.name.toLowerCase»-page})].
@@ -1180,11 +1180,11 @@ class FunctionalSpecsRDLGenerator {
 				\item El Operador elige el comando [Agregar].
 				\item El Sistema determina que los datos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] est\'an completos.
 					\begin{enumerate}
-						\item Escenario Alterno 01: Datos incompletos.
+						\item Excepci\'on 01: Datos incompletos.
 					\end{enumerate}
 				\item El Sistema determina que los datos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] son v\'alidos.
 					\begin{enumerate}
-						\item Excepci\'on 01: Datos inv\'alidos.
+						\item Excepci\'on 02: Datos inv\'alidos.
 					\end{enumerate}
 				\item El Sistema crea un nuevo registro en la entidad [«entity.entityName»].
 				\item Fin del Caso de Uso.
@@ -1192,16 +1192,16 @@ class FunctionalSpecsRDLGenerator {
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Escenario Alterno 01} \\
+			\textbf{Excepci\'on 01} \\
 			\begin{enumerate}
 				\item El Sistema determina que los datos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] est\'an incompletos.
 				\item El Sistema muestra los campos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] que son obligatorios.
-				\item Fin del Escenario Alterno.
+				\item Fin de la Excepci\'on.
 			\end{enumerate}
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Excepci\'on 01} \\
+			\textbf{Excepci\'on 02} \\
 			\begin{enumerate}
 				\item El Sistema determina que los datos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] son inv\'alidos.
 				\item El Sistema muestra los campos de la forma [Agregar «entity.entityName» (\ref{tab:ui-create-«entity.name.toLowerCase»-form})] que son inv\'alidos e indica la raz\'on.
@@ -1258,11 +1258,11 @@ class FunctionalSpecsRDLGenerator {
 				\item El Operador elige el comando [Agregar].
 				\item El Sistema determina que los datos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] est\'an completos.
 					\begin{enumerate}
-						\item Escenario Alterno 01: Datos incompletos.
+						\item Excepci\'on 01: Datos incompletos.
 					\end{enumerate}
 				\item El Sistema determina que los datos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] son v\'alidos.
 					\begin{enumerate}
-						\item Excepci\'on 01: Datos inv\'alidos.
+						\item Excepci\'on 02: Datos inv\'alidos.
 					\end{enumerate}
 				\item El Sistema modifica el registro en la entidad [«entity.entityName»].
 				\item Fin del Caso de Uso.
@@ -1270,16 +1270,16 @@ class FunctionalSpecsRDLGenerator {
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Escenario Alterno 01} \\
+			\textbf{Excepci\'on 01} \\
 			\begin{enumerate}
 				\item El Sistema determina que los datos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] est\'an incompletos.
 				\item El Sistema muestra los campos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] que son obligatorios.
-				\item Fin del Escenario Alterno.
+				\item Fin de la Excepci\'on.
 			\end{enumerate}
 		\end{tabular}
 		
 		\begin{tabular}{ p{15.5cm} }
-			\textbf{Excepci\'on 01} \\
+			\textbf{Excepci\'on 02} \\
 			\begin{enumerate}
 				\item El Sistema determina que los datos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] son inv\'alidos.
 				\item El Sistema muestra los campos de la forma [Editar «entity.entityName» (\ref{tab:ui-update-«entity.name.toLowerCase»-form})] que son inv\'alidos e indica la raz\'on.
@@ -2349,7 +2349,7 @@ class FunctionalSpecsRDLGenerator {
 		«ENDFOR»
 	'''
 	
-	def CharSequence generateMainDocumentTex(Resource resource, IFileSystemAccess2 fsa, String chapters) '''
+	def CharSequence generateMainDocumentTex(Resource resource, IFileSystemAccess2 fsa, HashSet<String> chapters) '''
 		\documentclass[10pt, letterpaper]{report}
 		
 		%% packages
@@ -2404,8 +2404,9 @@ class FunctionalSpecsRDLGenerator {
 		\fancyhead[OC]{\leftmark}
 		\fancyhead[EC]{\rightmark}
 		\cfoot{\thepage}
-		«chapters»
-		
+		«FOR chapter : chapters»
+		«chapter»
+		«ENDFOR»
 		\printglossary
 		
 		\end{document}

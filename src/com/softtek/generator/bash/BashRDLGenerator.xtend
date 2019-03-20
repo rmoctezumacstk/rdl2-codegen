@@ -54,6 +54,7 @@ class BashRDLGenerator {
 		cp -r ../prototipo/src/tabledata/* $1/src/tabledata
 		cp ../prototipo/src/index.js $1/src
 		
+		
 		cp -r ../functional-specs/* $1/functional-specs/.
 		cp $1/src/img/* $1/functional-specs/img
 		
