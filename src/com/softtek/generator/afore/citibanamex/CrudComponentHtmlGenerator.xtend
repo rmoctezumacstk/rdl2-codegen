@@ -205,16 +205,15 @@ class CrudComponentHtmlGenerator {
 	</div>	
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	<div class="col-lg-6 form-group">
+	<div class="col-lg-12 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label"  th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
-			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
-				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<textarea class="form-control" id="«f.name.toLowerCase»New"  name="«f.name.toLowerCase»New" maxlength="100" rows="3"></textarea>
 			<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
 		</div>
-	</div>	
+	</div>
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
 	<div class="col-lg-6 form-group">
@@ -351,16 +350,15 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''
 	def dispatch getAttributeEdit(EntityLongTextField f, Entity t)'''
-	<div class="col-lg-6 form-group">
+	<div class="col-lg-12 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label"  th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
-			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
-				name="«f.name.toLowerCase»Edit" maxlength="100" required>
-				<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+			<textarea class="form-control" id="«f.name.toLowerCase»Edit"  name="«f.name.toLowerCase»Edit" maxlength="100" rows="3"></textarea>
+			<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
 		</div>
-	</div>
+	</div>	
 	'''
 	def dispatch getAttributeEdit(EntityDateField f, Entity t)'''
 	<div class="col-lg-6 form-group">

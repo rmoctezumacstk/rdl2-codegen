@@ -101,10 +101,10 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
-//	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
-//	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
-//	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
-//	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
+	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
+	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
+	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
+	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
 	@Inject CrudComponentJDBCRepositoryGenerator crudComponentJDBCRepositoryGenerator
 	@Inject CrudComponentJDBCRepositoryImplGenerator crudComponentJDBCRepositoryImplGenerator
 	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
@@ -165,10 +165,10 @@ class Rdl2Generator extends AbstractGenerator {
 //			crudComponentConsultasGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 //			crudComponentMessagesGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoServiceGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoServiceGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){
