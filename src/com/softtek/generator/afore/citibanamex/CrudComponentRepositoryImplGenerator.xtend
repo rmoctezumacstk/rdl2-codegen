@@ -66,7 +66,7 @@ class CrudComponentRepositoryImplGenerator {
 			String uri = super.retrieveUri("services.url.mn");
 			HttpHeaders headers = new HttpHeaders();
 	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
-			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtener«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtener«e.name.toLowerCase.toFirstUpper»s", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
 			return response.getBody();
 		}
 	

@@ -60,6 +60,36 @@ class CrudComponentHtmlGenerator {
 				<span class="titleStaticForm" th:text="#{mn.«e.name.toLowerCase».consulta.titulo}"></span>
 				<hr>
 				<form id="formBusquedar«e.name.toLowerCase.toFirstUpper»">
+
+					<!--  Codigo Adicional -->
+					<!--
+					<div class="row">
+						<div class="col-md-4">
+							<label for="modulosSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.modulo}"></label>
+							<select name="Modulo" id="moduloSemaf" class="form-control" required>
+								<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+								<option th:each="modulo : ${modulo}"  th:value="${modulo.idModulo}" th:utext="${modulo.descripcion}"/>
+							</select>
+						</div>		
+						<div class="col-md-4">
+							<label for="procesosSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.procesos}"></label>
+							<select name="Proceso padre" id="procesosSemaf" class="form-control" required>
+								<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+								<option th:each="procesos : ${procesos}" th:value="${procesos.idProcesos}" th:utext="${procesos.descripcion}"/>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<label for="subprocesoSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.subproceso}"></label>
+							<select name="Subproceso padre"
+								id="subprocesoSemaf" class="form-control" required>
+								<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+								<option th:each="subproceso : ${subproceso}" th:value="${subproceso.idSubproceso}" th:utext="${subproceso.descripcion}"/>
+							</select>
+						</div>
+					</div>
+					-->
+					<!--  ./Codigo Adicional -->
+					
 					<div class="row">
 						«FOR f : e.entity_fields»
 						«f.getAttributeSearch(e)»
@@ -108,10 +138,53 @@ class CrudComponentHtmlGenerator {
 					<div class="container-body">
 						<form class="needs-validation mt-1" id="formularioNew«e.name.toLowerCase.toFirstUpper»"
 							novalidate>
+							<!--  Codigo Adicional -->
+							<!--
+							<div class="row">	
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="modulo" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.modulo}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Modulo padre"
+										id="moduloNew" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="modulo : ${modulo}" th:value="${modulo.idModulo}" th:utext="${modulo.descripcion}"/>
+									</select>
+									</div>
+								</div>						
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="proceso" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.proceso}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Proceso padre"
+										id="procesoNew" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="procesos : ${procesos}" th:value="${procesos.idProcesos}" th:utext="${procesos.descripcion}"/>
+									</select>
+									</div>
+								</div>						
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="subproceso" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.subproceso}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Subproceso padre"
+										id="SubprocesoNew" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="subproceso : ${subproceso}" th:value="${subproceso.idSubproceso}" th:utext="${subproceso.descripcion}"/>
+									</select>
+									</div>
+								</div>
+							</div>	
+							-->
+							<!--  ./Codigo Adicional -->
+							
 							<div class="row">
 								«FOR f : e.entity_fields»
 								«f.getAttribute(e)»
-								«ENDFOR»	
+								«ENDFOR»
 							</div>
 							<div class="modal-footer ">
 								<button type="button" class="btn-style-citi" data-dismiss="modal">Cerrar</button>
@@ -139,10 +212,54 @@ class CrudComponentHtmlGenerator {
 					</div>
 					<div class="container-body">
 						<form class="needs-validation mt-1" id="formularioEdit«e.name.toLowerCase.toFirstUpper»" novalidate>
+						
+							<!--  Codigo Adicional -->
+							<!--
 							<div class="row">
-							«FOR f : e.entity_fields»
-							«f.getAttributeEdit(e)»
-							«ENDFOR»
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="modulo" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.modulo}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Modulo padre"
+										id="moduloEdit" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="modulo : ${modulo}" th:value="${modulo.idModulo}" th:utext="${modulo.descripcion}"/>
+									</select>
+									</div>
+								</div>
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="proceso" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.proceso}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Proceso padre"
+										id="procesoEdit" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="procesos : ${procesos}" th:value="${procesos.idProcesos}" th:utext="${procesos.descripcion}"/>
+									</select>
+									</div>
+								</div>
+								<div class="col-lg-6 form-group">
+									<div class="col-lg-12 text-left">
+									<label for="subproceso" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.subproceso}"></label> 
+									</div>
+									<div class="col-lg-12">
+									<select name="Subproceso padre"
+										id="subprocesoEdit" class="form-control" required>
+										<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
+										<option th:each="subproceso : ${subproceso}" th:value="${subproceso.idSubproceso}" th:utext="${subproceso.descripcion}"/>
+									</select>
+									</div>
+								</div>												
+							</div>
+							-->
+							<!--  ./Codigo Adicional -->						
+
+							<div class="row">
+								«FOR f : e.entity_fields»
+								«f.getAttributeEdit(e)»
+								«ENDFOR»
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn-style-citi" data-dismiss="modal" th:text="#{cg.cerrar}"></button>
