@@ -17,7 +17,7 @@ import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
 import java.util.ArrayList
 
-class CrudComponentH2Generator {
+class CrudComponentOracleGenerator {
 	
 	var acctables = new ArrayList<String>()
 	
@@ -34,50 +34,49 @@ class CrudComponentH2Generator {
 		for(t:acctables){
 		  tables=tables+t
 		}
-		fsa.generateFile("banamex/src/main/resources/h2queries/script.sql", tables)
+		fsa.generateFile("banamex/src/main/resources/oraclequeries/script.sql", tables)
 	}
 	
 
 	def CharSequence genJavaSql(Entity e, Module m) '''
 	
-	create table CGT_«e.name.toUpperCase»(
+	CREATE TABLE cgt_«e.name.toLowerCase»(
 	«FOR f : e.entity_fields»
 		«f.getAttribute(e)»
 	«ENDFOR» 
-	ENABLED boolean not null,
-	CVE_«e.name.toUpperCase» int(2) auto_increment,
-	primary key(CVE_«e.name.toUpperCase»)
+	cve_«e.name.toLowerCase»_id NUMBER(10) NOT NULL,
+	CONSTRAINT cgt_«e.name.toLowerCase»_pk PRIMARY KEY (cve_«e.name.toLowerCase»_id)
 	);
 				
 	'''
 	
 	/* Get Attribute */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	«f.name.toUpperCase» varchar(100) not null,
+	«f.name.toLowerCase» VARCHAR2(100) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	«f.name.toUpperCase» varchar(100) not null,
+	«f.name.toLowerCase» VARCHAR2(100) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	«f.name.toUpperCase» date(100) not null,
+	«f.name.toLowerCase» DATE NOT NULL,
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	«f.name.toUpperCase» varchar(100) not null,
+	«f.name.toLowerCase» VARCHAR2(100) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	«f.name.toUpperCase» varchar(100) not null,
+	«f.name.toLowerCase» VARCHAR2(100) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	«f.name.toUpperCase» varchar(100) not null,
+	«f.name.toLowerCase» VARCHAR2(100) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	«f.name.toUpperCase» double not null,
+	«f.name.toLowerCase» NUMBER(20,2) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	«f.name.toUpperCase» int not null,
+	«f.name.toLowerCase» NUMBER(20) NOT NULL,
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	«f.name.toUpperCase» decimal(20,2) not null,
+	«f.name.toLowerCase» NUMBER(20,2) NOT NULL,
 	'''	
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
@@ -87,13 +86,15 @@ class CrudComponentH2Generator {
 	'''	
 	
 	def dispatch genRelationship(Enum e, Entity t, String name) '''
-	CVE_«e.name.toUpperCase» int(2),
-	foreign key (CVE_«e.name.toUpperCase») references CGT_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
+	CONSTRAINT fk_cve_«e.name.toLowerCase»
+	FOREIGN KEY (cve_«e.name.toLowerCase»_id) 
+	REFERENCES cgt_«e.name.toLowerCase»(cve_«e.name.toLowerCase»_id)
 	'''
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) '''
-	CVE_«e.name.toUpperCase» int(2),
-	foreign key (CVE_«e.name.toUpperCase») references CGT_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
+	CONSTRAINT fk_cve_«e.name.toLowerCase»
+	FOREIGN KEY (cve_«e.name.toLowerCase»_id) 
+	REFERENCES cgt_«e.name.toLowerCase»(cve_«e.name.toLowerCase»_id)
 	'''
 	
 }
