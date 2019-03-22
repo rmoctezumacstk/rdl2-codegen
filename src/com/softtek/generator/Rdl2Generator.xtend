@@ -38,6 +38,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentModelGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginatorHelperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentPaginadorGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentSqlGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
@@ -104,6 +105,7 @@ class Rdl2Generator extends AbstractGenerator {
 //	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
 //	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
 //	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
+	@Inject CrudComponentH2Generator crudComponentH2Generator
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
@@ -146,7 +148,9 @@ class Rdl2Generator extends AbstractGenerator {
 //		crudComponentPaginatorHelperGenerator.doGenerate(resource, fsa)
 //		crudComponentPaginadorGenerator.doGenerate(resource, fsa)
 //		crudComponentSqlGenerator.doGenerate(resource, fsa)
-
+        for(r:resource.resourceSet.resources){
+		 crudComponentH2Generator.doGenerate(r,fsa)
+		}
 		crudComponentModelGenerator.doGenerate(resource, fsa)
 		crudComponentControllerGenerator.doGenerate(resource, fsa)
 		crudComponentRepositoryGenerator.doGenerate(resource, fsa)
