@@ -71,6 +71,11 @@ class CrudComponentControllerGenerator {
 		@Override
 		@GetMapping(value=MNConstantesHelper.URL_PAGINA_«e.name.toUpperCase»)
 		public String pagina(Model model) {
+			
+			//model.addAttribute("modulo", catalogosMNService.obtenerCatalogoModulo());
+			//model.addAttribute("proceso", catalogosMNService.obtenerCatalogoProcesos());
+			//model.addAttribute("subproceso", catalogosMNService.obtenerCatalogoSubproceso());
+	
 			model.addAttribute("cabeceras", "Seleccione,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeColumn(e)»«ENDFOR»");	
 			model.addAttribute("origenDatos", "id«e.name.toLowerCase.toFirstUpper»,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeData(e)»«ENDFOR»");
 			return MNConstantesHelper.PAGINA_«e.name.toUpperCase»;
