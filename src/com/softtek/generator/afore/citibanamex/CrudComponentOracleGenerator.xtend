@@ -41,11 +41,10 @@ class CrudComponentOracleGenerator {
 	def CharSequence genJavaSql(Entity e, Module m) '''
 	
 	CREATE TABLE cgt_«e.name.toLowerCase»(
+	cve_«e.name.toLowerCase»_id NUMBER(5) PRIMARY KEY
 	«FOR f : e.entity_fields»
 		«f.getAttribute(e)»
 	«ENDFOR» 
-	cve_«e.name.toLowerCase»_id NUMBER(10) NOT NULL,
-	CONSTRAINT cgt_«e.name.toLowerCase»_pk PRIMARY KEY (cve_«e.name.toLowerCase»_id)
 	);
 				
 	'''

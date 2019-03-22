@@ -19,8 +19,8 @@ import java.util.ArrayList
 
 class CrudComponentH2Generator {
 	
-	var acctables = new ArrayList<String>()
 	
+	var acctables = new ArrayList<String>()
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			acctables.add("-----------------------------------------\n")
