@@ -21,21 +21,19 @@ class CrudComponentMapperGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/impl/" + e.name.toLowerCase.toFirstUpper + "Mapper.java", e.genJavaIntegrationImpl(m))
+				fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/repository/impl/" + e.name.toLowerCase.toFirstUpper + "Mapper.java", e.genJavaMapperImpl(m))
 			}
 		}
 	}
 	
-	def CharSequence genJavaIntegrationImpl(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.integration.impl;
+	def CharSequence genJavaMapperImpl(Entity e, Module m) '''
+	package com.aforebanamex.plata.cg.mn.repository.impl;
 	
 	import java.sql.ResultSet;
 	import java.sql.SQLException;
 	
 	import org.springframework.jdbc.core.RowMapper;
-	
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
-	
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 	«FOR f : e.entity_fields»
 	«f.getAttributeImport(e)»
 	«ENDFOR» 
@@ -50,6 +48,7 @@ class CrudComponentMapperGenerator {
         		«FOR f : e.entity_fields»
         		«f.getAttribute(e)»
         		«ENDFOR» 
+        		«e.name.toLowerCase».setEstadoLogico(rs.getBoolean("ESTADO_LOGICO"));
 	            return «e.name.toLowerCase»;
 	
 	        }
@@ -73,11 +72,16 @@ class CrudComponentMapperGenerator {
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
-	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper»Enum.getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+    «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = new «e.name.toLowerCase.toFirstUpper»();
+    «e.name.toLowerCase».setCve«e.name.toLowerCase.toFirstUpper»(rs.getLong("CVE_«e.name.toUpperCase»"));
+    «e.name.toLowerCase».setDescripcion(«e.name.toLowerCase.toFirstUpper»Enum.getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+    «t.name.toLowerCase».set«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-	«t.name.toLowerCase».setDescripcion«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper».getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
+	«name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «name.toLowerCase.toFirstUpper»();
+	«name.toLowerCase».setId«name.toLowerCase.toFirstUpper»(rs.getInt("ID_«name.toUpperCase»"));
+	«t.name.toLowerCase».set«name.toLowerCase.toFirstUpper»(«name.toLowerCase»);
 	'''
 	
 	def dispatch getAttributeImport(EntityTextField f, Entity t)''''''
@@ -97,11 +101,12 @@ class CrudComponentMapperGenerator {
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOneImport(Enum e, Entity t, String name) ''' 	
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»Enum;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOneImport(Entity e, Entity t, String name) ''' 
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 	'''
 	
 }

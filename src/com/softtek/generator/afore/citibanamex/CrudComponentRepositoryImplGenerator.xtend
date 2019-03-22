@@ -5,120 +5,104 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
 
+import com.softtek.rdl2.EntityTextField
+import com.softtek.rdl2.EntityLongTextField
+import com.softtek.rdl2.EntityDateField
+import com.softtek.rdl2.EntityImageField
+import com.softtek.rdl2.EntityFileField
+import com.softtek.rdl2.EntityEmailField
+import com.softtek.rdl2.EntityDecimalField
+import com.softtek.rdl2.EntityIntegerField
+import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityReferenceField
+import com.softtek.rdl2.Enum
+
 class CrudComponentRepositoryImplGenerator {
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/impl/" + e.name.toLowerCase.toFirstUpper + "RepositoryImpl.java", e.genJavaRepositoryImpl(m))
+				fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/repository/mn/impl/" + e.name.toLowerCase.toFirstUpper + "RestRepositoryImpl.java", e.genJavaRepositoryImpl(m))
 			}
 		}
 	}
 	
 	def CharSequence genJavaRepositoryImpl(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.integration.impl;
+	package com.aforebanamex.plata.configuracion.repository.mn.impl;
 	
-	import java.sql.PreparedStatement;
-	import java.util.HashMap;
-	import java.util.List;
-	import java.util.Map;
-	
-	import org.springframework.jdbc.support.GeneratedKeyHolder;
-	import org.springframework.jdbc.support.KeyHolder;
+	import org.springframework.core.ParameterizedTypeReference;
+	import org.springframework.http.HttpEntity;
+	import org.springframework.http.HttpHeaders;
+	import org.springframework.http.HttpMethod;
+	import org.springframework.http.ResponseEntity;
 	import org.springframework.stereotype.Repository;
+	import org.springframework.web.client.RestTemplate;
 	
-	import mx.com.aforebanamex.plata.base.integration.BaseJdbcH2Repository;
-	import mx.com.aforebanamex.plata.helper.ComponentesGeneralesConstantsHelper;
-	import mx.com.aforebanamex.plata.helper.PaginadoHelper«e.name.toLowerCase.toFirstUpper»;
-	import mx.com.aforebanamex.plata.integration.«e.name.toLowerCase.toFirstUpper»Repository;
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
-	//import mx.com.aforebanamex.plata.model.Valor«e.name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.base.model.RequestPlata;
+	import com.aforebanamex.plata.base.model.ResponsePlata;
+	import com.aforebanamex.plata.base.restClient.BaseRestCliente;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.configuracion.repository.mn.«e.name.toLowerCase.toFirstUpper»RestRepository;
 	
 	@Repository
-	public class «e.name.toLowerCase.toFirstUpper»RepositoryImpl extends BaseJdbcH2Repository implements «e.name.toLowerCase.toFirstUpper»Repository {
+	public class «e.name.toLowerCase.toFirstUpper»RestRepositoryImpl extends BaseRestCliente implements «e.name.toLowerCase.toFirstUpper»RestRepository {
 	
-		public «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("id", «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-			«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»Response = namedParameterJdbcTemplate.queryForObject(
-					obtenerConsulta("«e.name.toLowerCase».consulta.id"), params,
-					new «e.name.toLowerCase.toFirstUpper»Mapper());
-	//		List<Valor«e.name.toLowerCase.toFirstUpper»> valor«e.name.toLowerCase.toFirstUpper»s = jdbcTemplate.query(obtenerConsulta("«e.name.toLowerCase».valor.consulta.id"),
-	//				new Object[] { «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»() }, new Valor«e.name.toLowerCase.toFirstUpper»Mapper());
-	//		«e.name.toLowerCase»Response.setValor«e.name.toLowerCase.toFirstUpper»(valor«e.name.toLowerCase.toFirstUpper»s);
-			return «e.name.toLowerCase»Response;
-	
-		}
-	
-		public int agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-	
-			jdbcTemplate.update(connection -> {
-				PreparedStatement ps = connection.prepareStatement(
-						obtenerConsulta("«e.name.toLowerCase».insertar"));
-	//			ps.setString(1, «e.name.toLowerCase».getNombre());
-	//			ps.setString(2, «e.name.toLowerCase».getDescripcion());
-	//			ps.setString(3, «e.name.toLowerCase».getDesempenio());
-	//			ps.setLong(4, «e.name.toLowerCase».getEstadoIndicador().getCveEdoIndicador());
-	//			ps.setLong(5, «e.name.toLowerCase».getTipoMedida().getCveTipoMedida());
-				return ps;
-			}, keyHolder);
-			Long key = (long) keyHolder.getKey();
-	//		for (Valor«e.name.toLowerCase.toFirstUpper» valor«e.name.toLowerCase.toFirstUpper» : «e.name.toLowerCase».getValor«e.name.toLowerCase.toFirstUpper»()) {
-	//			jdbcTemplate.update(
-	//					obtenerConsulta("«e.name.toLowerCase».valor.insert"),
-	//					new Object[] { key, valor«e.name.toLowerCase.toFirstUpper».getCveColor«e.name.toLowerCase.toFirstUpper»(), valor«e.name.toLowerCase.toFirstUpper».getValorMaximo(),
-	//							valor«e.name.toLowerCase.toFirstUpper».getValorMinimo() });
-	//		}
-			logger.info("RESGISTRO INSERTADO: " + key.intValue());
-			return key.intValue();
-		}
-	
-		public int eliminar«e.name.toLowerCase.toFirstUpper»(int id) {
-			jdbcTemplate.update(obtenerConsulta("«e.name.toLowerCase».valor.eliminar"), new Object[] { id });
-			return jdbcTemplate.update(obtenerConsulta("«e.name.toLowerCase».eiminar"), new Object[] { id });
+		
+		@Override
+		public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtener(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+			logger.info("Se recibio en el repository obtener: {}", data.toString());
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();
+	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtener«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
 		}
 	
 		@Override
-		public int actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-			KeyHolder keyHolder = new GeneratedKeyHolder();
-			jdbcTemplate.update(connection -> {
-				PreparedStatement ps = connection.prepareStatement(
-						obtenerConsulta("«e.name.toLowerCase».actualizar"));
-	//			ps.setString(1, «e.name.toLowerCase».getNombre());
-	//			ps.setString(2, «e.name.toLowerCase».getDescripcion());
-	//			ps.setString(3, «e.name.toLowerCase».getDesempenio());
-	//			ps.setLong(4, «e.name.toLowerCase».getEstadoIndicador().getCveEdoIndicador());
-	//			ps.setLong(5, «e.name.toLowerCase».getTipoMedida().getCveTipoMedida());
-				ps.setInt(6, «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-				return ps;
-			}, keyHolder);
-	//		for (Valor«e.name.toLowerCase.toFirstUpper» valor«e.name.toLowerCase.toFirstUpper» : «e.name.toLowerCase».getValor«e.name.toLowerCase.toFirstUpper»()) {
-	//			jdbcTemplate.update(
-	//					obtenerConsulta("«e.name.toLowerCase».valor.actualizar"),
-	//					new Object[] { valor«e.name.toLowerCase.toFirstUpper».getValorMaximo(), valor«e.name.toLowerCase.toFirstUpper».getValorMinimo(),
-	//							«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»(), valor«e.name.toLowerCase.toFirstUpper».getCveColor«e.name.toLowerCase.toFirstUpper»() });
-	//		}
-			return «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»();
+		public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+			logger.info("Se recibio en el repository obtenerTodos: {}", data.toString());
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();
+	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtener«e.name.toLowerCase.toFirstUpper»s", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
 		}
-		
-		public PaginadoHelper«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», Integer valorMinimo, Integer valorMaximo) {
-			
-			PaginadoHelper«e.name.toLowerCase.toFirstUpper» paginadoHelper«e.name.toLowerCase.toFirstUpper» = new PaginadoHelper«e.name.toLowerCase.toFirstUpper»();
-			
-			String condicion = "";
-			
-			int total = jdbcTemplate.queryForObject(obtenerConsulta("«e.name.toLowerCase».consulta.registros") + condicion, new Object[]{}, (rs, rowNum) -> rs.getInt(1));
 	
-	
-			List<«e.name.toLowerCase.toFirstUpper»> «e.name.toLowerCase»s = jdbcTemplate.query(obtenerConsulta("«e.name.toLowerCase».consulta.todos") + condicion + ComponentesGeneralesConstantsHelper.LIMIT + valorMinimo + ComponentesGeneralesConstantsHelper.COMA + valorMaximo,
-					new Object[] {}, new «e.name.toLowerCase.toFirstUpper»Mapper());
-			
-			paginadoHelper«e.name.toLowerCase.toFirstUpper».setTotalRegistros(total);
-			paginadoHelper«e.name.toLowerCase.toFirstUpper».setPayload(«e.name.toLowerCase»s);;
-			
-			return paginadoHelper«e.name.toLowerCase.toFirstUpper»;
+		@Override
+		public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+			logger.info("Se recibio en el repository agregar: {}", data.toString());
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();
+	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"agregar«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
 		}
+	
+		@Override
+		public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+			logger.info("Se recibio en el repository actualizar: {}", data.toString());
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();
+	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"actualizar«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
+		}
+	
+		@Override
+		public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> eliminar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+			logger.info("Se recibio en el repository eliminar: {}", data.toString());
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();
+	        HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>> requestEntity = new HttpEntity<RequestPlata<«e.name.toLowerCase.toFirstUpper»>>(data, headers);
+			ResponseEntity<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"eliminar«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<ResponsePlata<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
+		}
+	
 	}
 	'''
 	

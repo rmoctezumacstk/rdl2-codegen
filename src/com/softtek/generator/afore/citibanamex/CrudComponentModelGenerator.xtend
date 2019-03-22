@@ -24,13 +24,13 @@ class CrudComponentModelGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/model/" + e.name.toLowerCase.toFirstUpper + ".java", e.genJavaModel(m))
+				fsa.generateFile("banamex/common/src/main/java/com/aforebanamex/plata/comunes/model/cg/" + e.name.toLowerCase.toFirstUpper + ".java", e.genJavaModel(m))
 			}
 		}
 	}
 	
 	def CharSequence genJavaModel(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.model;
+	package com.aforebanamex.plata.comunes.model.cg;
 	
 	import java.io.Serializable;
 	import java.util.List;
@@ -39,7 +39,9 @@ class CrudComponentModelGenerator {
 	import javax.validation.constraints.Digits;
 	import javax.validation.constraints.Size;
 	
-	public class «e.name.toLowerCase.toFirstUpper» implements Serializable{
+	import com.aforebanamex.plata.base.model.BaseSerizalizableModel;
+	
+	public class «e.name.toLowerCase.toFirstUpper» extends BaseSerizalizableModel{
 		
 		private static final long serialVersionUID = 1L;
 		@Digits(integer=16, fraction=0, message="El id«e.name.toLowerCase.toFirstUpper» es incorrecto.")
@@ -47,19 +49,23 @@ class CrudComponentModelGenerator {
 		«FOR f : e.entity_fields»
 		«f.getAttribute(e)»
 		«ENDFOR» 
+		
+		private Boolean estadoLogico;
 
 		public «e.name.toLowerCase.toFirstUpper»(){}
 		
 		public «e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper», 
-		«FOR f : e.entity_fields SEPARATOR ','»
+		«FOR f : e.entity_fields»
 		«f.getAttributeConstructor(e)»
 		«ENDFOR» 
+		Boolean estadoLogico
 		) {
 			super();
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
 			«FOR f : e.entity_fields»
 			«f.getAttributeField(e)»
 			«ENDFOR» 
+			this.estadoLogico = estadoLogico;
 		}
 		
 		public Integer getId«e.name.toLowerCase.toFirstUpper»() {
@@ -68,6 +74,14 @@ class CrudComponentModelGenerator {
 		public void setId«e.name.toLowerCase.toFirstUpper»(Integer id«e.name.toLowerCase.toFirstUpper») {
 			this.id«e.name.toLowerCase.toFirstUpper» = id«e.name.toLowerCase.toFirstUpper»;
 		}
+		
+		public Boolean getEstadoLogico() {
+			return estadoLogico;
+		}
+	
+		public void setEstadoLogico(Boolean estadoLogico) {
+			this.estadoLogico = estadoLogico;
+		}	
 		
 		«FOR f : e.entity_fields»
 		«f.getAttributeFieldGet(e)»
@@ -125,13 +139,13 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
-		«««		@Valid
-		«««		private List<Valor«e.name.toLowerCase.toFirstUpper»> valores«e.name.toLowerCase.toFirstUpper»;	
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»Enum;
+	@Valid
+	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-«««	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	@Valid
+	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
 	'''
 	
 	/* Get Attribute Field */
@@ -170,11 +184,11 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetSetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	this.«e.name.toLowerCase» = «e.name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipGetSetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	this.«name.toLowerCase» = «name.toLowerCase»;
 	'''
 	
 	/* Get Attribute Get */
@@ -231,11 +245,15 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public «e.name.toLowerCase.toFirstUpper» get«e.name.toLowerCase.toFirstUpper»() {
+		return «e.name.toLowerCase»;
+	}
 	'''
 	
 	def dispatch genRelationshipGetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public «name.toLowerCase.toFirstUpper» get«name.toLowerCase.toFirstUpper»() {
+		return «name.toLowerCase»;
+	}
 	'''		
 
 	/* Get Attribute Set */
@@ -292,54 +310,58 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipSetOne(Enum e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public void set«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
+		this.«e.name.toLowerCase» = «e.name.toLowerCase»;
+	}
 	'''
 	
 	def dispatch genRelationshipSetOne(Entity e, Entity t, String name) ''' 
-	«««			this.valores«e.name.toLowerCase.toFirstUpper» = valor«e.name.toLowerCase.toFirstUpper»;
+	public void set«name.toLowerCase.toFirstUpper»(«name.toLowerCase.toFirstUpper» «name.toLowerCase») {
+		this.«name.toLowerCase» = «name.toLowerCase»;
+	}
 	'''
 	
 	/* Get Attribute Constructor */
 	def dispatch getAttributeConstructor(EntityTextField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityLongTextField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityDateField f, Entity t)'''
-	Date «f.name.toLowerCase»
+	Date «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityImageField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityFileField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityEmailField f, Entity t)'''
-	String «f.name.toLowerCase»
+	String «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityDecimalField f, Entity t)'''
-	Double «f.name.toLowerCase»
+	Double «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityIntegerField f, Entity t)'''
-	Int «f.name.toLowerCase»
+	Int «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityCurrencyField f, Entity t)'''
-	Double «f.name.toLowerCase»
+	Double «f.name.toLowerCase»,
 	'''	
 	
 	def dispatch getAttributeConstructor(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipConstructor(t, f.name)»		
+	«f.superType.genRelationshipConstructor(t, f.name)»		
 	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipConstructor(Enum e, Entity t, String name) ''' 
-	String «e.name.toLowerCase»
+	«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
 	'''
 	
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
-	String «e.name.toLowerCase»
+	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
 	'''
 	
 }

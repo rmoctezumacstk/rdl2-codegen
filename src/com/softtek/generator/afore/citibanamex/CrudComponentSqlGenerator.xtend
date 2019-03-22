@@ -124,7 +124,11 @@ class CrudComponentSqlGenerator {
 		«ENDFOR»	
 		, true);
 	«ENDFOR»		
+<<<<<<< HEAD
+	«««//------------------------------------------------------------------------------------------------------------
+=======
 	«««//------------------------------------------------------------------------------------------------------------«»
+>>>>>>> bde0f9cf8d8c3229dde215afed96a5903acf9df6
 	'''
 	
 	def dispatch getReferencesEntities(Entity e){
@@ -173,7 +177,7 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
-	«IF  f !== null /*&& !f.upperBound.equals('*')*/»
+	«IF  f !== null && !f.upperBound.equals('*')»
 		«f.superType.genRelationship(t, f.name)»
 	«ENDIF»
 	'''	
@@ -185,6 +189,7 @@ class CrudComponentSqlGenerator {
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) '''
 	CVE_«e.name.toUpperCase» int(2),
+>>>>>>> bde0f9cf8d8c3229dde215afed96a5903acf9df6
 	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
@@ -218,7 +223,7 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch getAttributeColumn(EntityReferenceField f, Entity t)'''
-	«IF  f !== null /*&& !f.upperBound.equals('*')*/»
+	«IF  f !== null && !f.upperBound.equals('*')»
 		«f.superType.genRelationshipColumn(t, f.name)»
 	«ENDIF»
 	'''	
@@ -230,7 +235,6 @@ class CrudComponentSqlGenerator {
 	def dispatch genRelationshipColumn(Entity e, Entity t, String name) ''' 
 	"CVE_«e.name.toUpperCase»"
 	'''	
-
 	/* Get Attribute Data*/
 	def dispatch getAttributeData(EntityTextField f, Entity t)'''
 	'«entityFieldUtils.fakerDomainData(f)»'
@@ -261,10 +265,10 @@ class CrudComponentSqlGenerator {
 	'''	
 	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
 	«entityFieldUtils.fakerDomainData(f)»
-«««	«IF  f !== null && !f.upperBound.equals('*')»
 «««		«f.superType.genRelationshipData(t, f.name)»		
-«««	«ENDIF»
+	«ENDIF»
 	'''	
 	
 	def dispatch genRelationshipData(Enum e, Entity t, String name) ''' 

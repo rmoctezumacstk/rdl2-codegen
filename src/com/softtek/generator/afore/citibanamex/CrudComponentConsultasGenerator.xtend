@@ -1,6 +1,5 @@
 package com.softtek.generator.afore.citibanamex
 
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
@@ -8,9 +7,7 @@ import com.softtek.rdl2.Entity
 class CrudComponentConsultasGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		
 		fsa.generateFile("banamex/src/main/resources/querys/consultas.properties", genJavaConsultas(s, fsa))	
-
 	}
 	
 	def CharSequence genJavaConsultas(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
@@ -287,9 +284,12 @@ class CrudComponentConsultasGenerator {
 	«e.name.toLowerCase».consulta.id = select ID_«e.name.toUpperCase»,«FOR f : e.entity_fields SEPARATOR ','»«f.name.toUpperCase»«ENDFOR» from CGT_«e.name.toUpperCase» where ID_«e.name.toUpperCase»=:id
 	«e.name.toLowerCase».consulta.todos = select ID_«e.name.toUpperCase», «FOR f : e.entity_fields SEPARATOR ','»«f.name.toUpperCase»«ENDFOR» from CGT_«e.name.toUpperCase» where 1=1
 	«e.name.toLowerCase».consulta.registros = select count(1) from CGT_«e.name.toUpperCase» where 1=1
-	«e.name.toLowerCase».insertar = insert into CGT_«e.name.toUpperCase» («FOR f : e.entity_fields SEPARATOR ','»«f.name.toUpperCase»«ENDFOR») values(?,?,?,?,?)
+	«e.name.toLowerCase».insertar = insert into CGT_«e.name.toUpperCase» («FOR f : e.entity_fields SEPARATOR ','»«f.name.toUpperCase»«ENDFOR») values(«FOR f : e.entity_fields SEPARATOR ','»?«ENDFOR»)
 	«e.name.toLowerCase».eiminar = delete from CGT_«e.name.toUpperCase» where ID_«e.name.toUpperCase»=?
-	«e.name.toLowerCase».actualizar = update CGT_«e.name.toUpperCase» «FOR f : e.entity_fields SEPARATOR ','»set «f.name.toUpperCase»= ? «ENDFOR» where ID_«e.name.toUpperCase»=?
+	«e.name.toLowerCase».actualizar = update CGT_«e.name.toUpperCase» set «FOR f : e.entity_fields SEPARATOR ','» «f.name.toUpperCase»= ? «ENDFOR» where ID_«e.name.toUpperCase»=?
+	
+	# Catalogo «e.name.toLowerCase.toFirstUpper»
+	«e.name.toLowerCase».catalogo = select ID_«e.name.toUpperCase», CLAVE, DESCRIPCION from CGG_«e.name.toUpperCase»
 	
 	'''
 	

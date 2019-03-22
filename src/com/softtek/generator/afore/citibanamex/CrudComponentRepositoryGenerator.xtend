@@ -10,23 +10,21 @@ class CrudComponentRepositoryGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/integration/" + e.name.toLowerCase.toFirstUpper + "Repository.java", e.genJavaRepository(m))
+				fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/repository/mn/" + e.name.toLowerCase.toFirstUpper + "RestRepository.java", e.genJavaRepository(m))
 			}
 		}
 	}
 	
 	def CharSequence genJavaRepository(Entity e, Module m) '''
-	package mx.com.aforebanamex.plata.integration;
+	package com.aforebanamex.plata.configuracion.repository.mn;
 	
-	import mx.com.aforebanamex.plata.helper.PaginadoHelper«e.name.toLowerCase.toFirstUpper»;
-	import mx.com.aforebanamex.plata.model.«e.name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.base.model.RequestPlata;
+	import com.aforebanamex.plata.base.model.ResponsePlata;
+	import com.aforebanamex.plata.base.repository.BaseRepository;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 	
-	public interface «e.name.toLowerCase.toFirstUpper»Repository {
-		«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»);
-		int eliminar«e.name.toLowerCase.toFirstUpper»(int id);
-		int agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»);
-		int actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»);
-		PaginadoHelper«e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»s(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», Integer valorMinimo, Integer valorMaximo);
+	public interface «e.name.toLowerCase.toFirstUpper»RestRepository extends BaseRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> {
+	
 	}
 	
 	'''
