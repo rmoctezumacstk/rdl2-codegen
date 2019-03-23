@@ -225,7 +225,24 @@ class CrudComponentJsGenerator {
 			«f.getAttributeUpdate(e)»
 		«ENDFOR»
 		$('.modal«e.name.toLowerCase.toFirstUpper»Editar').modal('show');
+	}
+	
+	function paginarTabla(pagina){
+		var modelo = {
+				"paginado":{
+					"pagina":pagina,
+					"registrosMostrados":Number($("#datostabla_length select").val())
+				},
+				"payload":{
+					«FOR f : e.entity_fields SEPARATOR ","»
+					«f.getAttributePaginarTabla(e)»
+					«ENDFOR»
+				}
+			};
+		console.log(modelo);
+		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 	}	
+	
 	'''
 	/* ./Archivo Principal */
 	
