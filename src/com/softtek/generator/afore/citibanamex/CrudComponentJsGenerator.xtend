@@ -461,7 +461,7 @@ class CrudComponentJsGenerator {
 	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": 0}
 	'''
  	def dispatch getAttributeEntityRefValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	"«tr.name.toLowerCase»" : ""
+	"«name.toLowerCase»" : ""
 	'''
 	
 	/* getAttributeEntityClean */
@@ -494,8 +494,15 @@ class CrudComponentJsGenerator {
 	'''	
 	def dispatch getAttributeEntityClean(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	"«f.name.toLowerCase»" : {"id«f.name.toLowerCase.toFirstUpper»": 0}
+		«f.superType.getAttributeEntityRefClean(f, t, f.name)»
 	«ENDIF»
+	'''	
+
+	def dispatch getAttributeEntityRefClean(Entity tr, EntityReferenceField f, Entity t, String name)'''
+	"«f.name.toLowerCase»" : {"id«f.name.toLowerCase.toFirstUpper»": 0}
+	'''
+ 	def dispatch getAttributeEntityRefClean(Enum tr, EntityReferenceField f, Entity t, String name)'''
+	"«name.toLowerCase»" : {"id«name.toLowerCase.toFirstUpper»": 0}
 	'''	
 	
 	/* getAttributeUpdate */
