@@ -138,6 +138,7 @@ class CrudComponentJsMainGenerator {
 	function inicioDatos(info){
 		console.log(info);
 		var data = info.payloades;
+		var paginado = info.paginado;
 		
 	    var tabla = $('#datostabla').dataTable( {
 	        data : data,
@@ -166,18 +167,47 @@ class CrudComponentJsMainGenerator {
 	        }
 	    });
 	    
-	    $("#«e.name.toLowerCase»_info").html("Mostrando 1 a 10 de "+info.totalRegistros+" registros");
+	    $("#«e.name.toLowerCase»_info").html("Mostrando "+(paginado.valorMinimo+1)+" a "+(paginado.valorMaximo>paginado.totalRegistros?paginado.totalRegistros:paginado.valorMaximo)+" de "+paginado.totalRegistros+" registros");
 	
-	    for(i = 2; i<=info.totalPaginas;i++){
-	    	$("#«e.name.toLowerCase»_paginate .next").before('<span><a class="paginate_button current" aria-controls="«e.name.toLowerCase»" data-dt-idx="'+i+'" tabindex="0">'+i+'</a></span>');
-	    }
+	    generarPaginado(paginado);
 		
-		$(".paginate_button").click(function(){
-			console.log($(this).data("dt-idx"));
-			paginarTabla($(this).data("dt-idx"));
+		$(".page-item").click(function(){
+			console.log("Valor enlace" + $(this).children("a:not(.inactivo)").data("value"));
+			if(!$(this).children("a").hasClass("inactivo")){
+				paginarTabla($(this).children("a").data("value"));
+			}
 		});
 	}	
 	
+	
+	function generarPaginado(data){
+	    
+	    var paginado = '<nav aria-label="..."><ul class="pagination">';
+	    	if(data.pagina==1){
+	    		paginado += '<li class="page-item disabled"><a class="page-link inactivo" href="#" tabindex="-1">Anterior</a></li>';
+	    	}else{
+	    		paginado += '<li class="page-item"><a class="page-link" href="#" tabindex="-1" data-value="'+(data.pagina-1)+'">Anterior</a></li>';
+	    	}
+	    	
+	    	console.log(data.totalPaginas);
+	    	for(i = 1; i<=data.totalPaginas;i++){
+	    		if(i==data.pagina){
+	    			paginado += '<li class="page-item active"><a class="page-link" href="#" data-value="'+i+'">'+i+' <span class="sr-only">(current)</span></a></li>';
+	    		}else{
+	    			paginado += '<li class="page-item"><a class="page-link" href="#" data-value="'+i+'">'+i+'</a></li>';
+	    		}
+	    	}
+	    	
+	    	if(data.pagina==data.totalPaginas){
+	    		paginado += '<li class="page-item disabled"><a class="page-link inactivo" href="#" tabindex="-1">Siguiente</a></li>';
+	    	}else{
+	    		paginado += '<li class="page-item"><a class="page-link" href="#" data-value="'+(data.pagina+1)+'">Siguiente</a></li>';
+	    	}
+	    	
+	    	paginado += '</ul></nav>';
+	
+	    $("#«e.name.toLowerCase»_paginate").empty().append(paginado);
+	}	
 	'''
 	
 }
