@@ -122,7 +122,8 @@ class CrudComponentJsMainGenerator {
 	        data:   origenDatos[0],
 	        render: function ( data, type, row ) {
 	            if ( type === 'display' ) {
-	                return '<input type="radio" name="radioIndex" class="editor-active" value="'+data+'">';
+	                «««return '<input type="radio" name="radioIndex" class="editor-active" value="'+data+'">';
+	                return '<label class="containerradio"><input type="radio" style="align:center" name="radio" value="'+data+'"><span class="checkmark"></span></label>';
 	            }
 	            return data;
 	        },
@@ -140,15 +141,25 @@ class CrudComponentJsMainGenerator {
 		var data = info.payloades;
 		var paginado = info.paginado;
 		
+		«««------------------------------------------
+		if(data == 'undefined'){
+			data = info;
+		}
+		console.log(data);
+		«««------------------------------------------
+		
 	    var tabla = $('#datostabla').dataTable( {
 	        data : data,
 	        destroy:true,
 	        columns: columnas(data),
+	        ««««---------------------------
+	        "pageLength": paginado.registrosMostrados,
+	        ««««---------------------------
 	        "searching": false,
 	        language: {
 	            "decimal": "",
 	            "emptyTable": "No hay informaci\u00F3n",
-	            "info": "Mostrando 23 a _END_ de _TOTAL_ registros",
+	            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
 	            "infoEmpty": "Mostrando 0 to 0 of 0 registros",
 	            "infoFiltered": "(Filtrado de _MAX_ total registros)",
 	            "infoPostFix": "",
@@ -167,10 +178,16 @@ class CrudComponentJsMainGenerator {
 	        }
 	    });
 	    
-	    $("#«e.name.toLowerCase»_info").html("Mostrando "+(paginado.valorMinimo+1)+" a "+(paginado.valorMaximo>paginado.totalRegistros?paginado.totalRegistros:paginado.valorMaximo)+" de "+paginado.totalRegistros+" registros");
+	    $("#datostabla_info").html("Mostrando "+(paginado.valorMinimo+1)+" a "+(paginado.valorMaximo>paginado.totalRegistros?paginado.totalRegistros:paginado.valorMaximo)+" de "+paginado.totalRegistros+" registros");
 	
 	    generarPaginado(paginado);
-		
+	    «««----------------------------------------------
+	    $("#datostabla_length select").val(paginado.registrosMostrados);
+	    
+	    $("#datostabla_length select").change(function(){
+			iniciarTabla();
+		});
+	    «««----------------------------------------------
 		$(".page-item").click(function(){
 			console.log("Valor enlace" + $(this).children("a:not(.inactivo)").data("value"));
 			if(!$(this).children("a").hasClass("inactivo")){
@@ -206,7 +223,7 @@ class CrudComponentJsMainGenerator {
 	    	
 	    	paginado += '</ul></nav>';
 	
-	    $("#«e.name.toLowerCase»_paginate").empty().append(paginado);
+	    $("#datostabla_paginate").empty().append(paginado);
 	}	
 	'''
 	
