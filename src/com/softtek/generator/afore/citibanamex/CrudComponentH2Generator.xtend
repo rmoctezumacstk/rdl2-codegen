@@ -44,11 +44,10 @@ class CrudComponentH2Generator {
 	«FOR f : e.entity_fields»
 		«f.getAttribute(e)»
 	«ENDFOR» 
-	ENABLED boolean not null,
-	CVE_«e.name.toUpperCase» int(2) auto_increment,
-	primary key(CVE_«e.name.toUpperCase»)
+	ESTADO_LOGICO boolean not null,
+	ID_«e.name.toUpperCase» int(2) auto_increment,
+	primary key(ID_«e.name.toUpperCase»)
 	);
-				
 	'''
 	
 	/* Get Attribute */
@@ -93,7 +92,7 @@ class CrudComponentH2Generator {
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) '''
 	CVE_«e.name.toUpperCase» int(2),
-	foreign key (CVE_«e.name.toUpperCase») references CGT_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
+	foreign key (ID_«e.name.toUpperCase») references CGT_«e.name.toUpperCase»(ID_«e.name.toUpperCase»),
 	'''
 	
 }
