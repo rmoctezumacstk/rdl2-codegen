@@ -107,7 +107,6 @@ class Rdl2Generator extends AbstractGenerator {
 //	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
 //	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
 //	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
-	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
@@ -125,6 +124,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentEnumGenerator crudComponentEnumGenerator
 	@Inject CrudComponentModelEnumGenerator crudComponentModelEnumGenerator
 	@Inject CrudComponentMNConstantsHelperGenerator crudComponentMNConstantsHelperGenerator
+	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -186,6 +186,7 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
+			crudComponentConstantsGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){
