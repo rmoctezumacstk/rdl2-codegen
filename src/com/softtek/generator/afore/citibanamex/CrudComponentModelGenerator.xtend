@@ -145,7 +145,7 @@ class CrudComponentModelGenerator {
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
 	@Valid
-	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
+	private «e.name.toLowerCase.toFirstUpper» «name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
@@ -189,7 +189,7 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetSetOne(Enum e, Entity t, String name) ''' 
-	this.«e.name.toLowerCase» = «e.name.toLowerCase»;
+	this.«name.toLowerCase» = «name.toLowerCase»;
 	'''
 	
 	def dispatch genRelationshipGetSetOne(Entity e, Entity t, String name) ''' 
@@ -250,8 +250,8 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipGetOne(Enum e, Entity t, String name) ''' 
-	public «e.name.toLowerCase.toFirstUpper» get«e.name.toLowerCase.toFirstUpper»() {
-		return «e.name.toLowerCase»;
+	public «e.name.toLowerCase.toFirstUpper» get«name.toLowerCase.toFirstUpper»() {
+		return «name.toLowerCase»;
 	}
 	'''
 	
@@ -315,8 +315,8 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipSetOne(Enum e, Entity t, String name) ''' 
-	public void set«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase») {
-		this.«e.name.toLowerCase» = «e.name.toLowerCase»;
+	public void set«name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «name.toLowerCase») {
+		this.«name.toLowerCase» = «name.toLowerCase»;
 	}
 	'''
 	
@@ -362,7 +362,7 @@ class CrudComponentModelGenerator {
 	'''	
 	
 	def dispatch genRelationshipConstructor(Enum e, Entity t, String name) ''' 
-	«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
+	«e.name.toLowerCase.toFirstUpper» «name.toLowerCase»,
 	'''
 	
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 

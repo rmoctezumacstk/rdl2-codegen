@@ -59,6 +59,9 @@ import com.softtek.rdl2.Entity
 import java.util.ArrayList
 import java.util.List
 import java.util.HashSet
+import com.softtek.generator.afore.citibanamex.CrudComponentModelEnumGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentEnumGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentMNConstantsHelperGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -119,6 +122,9 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentServiceMNGenerator crudComponentServiceMNGenerator
 	@Inject CrudComponentControllerMNGenerator crudComponentControllerMNGenerator
 	@Inject CrudComponentJsMainGenerator crudComponentJsMainGenerator
+	@Inject CrudComponentEnumGenerator crudComponentEnumGenerator
+	@Inject CrudComponentModelEnumGenerator crudComponentModelEnumGenerator
+	@Inject CrudComponentMNConstantsHelperGenerator crudComponentMNConstantsHelperGenerator
 	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -162,6 +168,8 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentMapperGenerator.doGenerate(resource, fsa)
 		crudComponentControllerMNGenerator.doGenerate(resource, fsa)	
 		crudComponentJsMainGenerator.doGenerate(resource, fsa)	
+		crudComponentEnumGenerator.doGenerate(resource, fsa)	
+		crudComponentModelEnumGenerator.doGenerate(resource, fsa)
 		
 		var accModules = new HashSet()
 		
@@ -177,6 +185,7 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
+			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){
