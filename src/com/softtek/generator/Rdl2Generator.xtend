@@ -64,6 +64,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentEnumGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMNConstantsHelperGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentQuerysGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -129,6 +130,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
+	@Inject CrudComponentH2Generator crudComponentH2Generator
 	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -202,6 +204,8 @@ class Rdl2Generator extends AbstractGenerator {
 			// Clarity Entity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
+			
+			crudComponentH2Generator.doGenerate(r,fsa)
 	
 		}
 		
