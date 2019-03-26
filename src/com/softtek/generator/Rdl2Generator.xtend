@@ -62,6 +62,7 @@ import java.util.HashSet
 import com.softtek.generator.afore.citibanamex.CrudComponentModelEnumGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentEnumGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMNConstantsHelperGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentQuerysGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -125,6 +126,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentModelEnumGenerator crudComponentModelEnumGenerator
 	@Inject CrudComponentMNConstantsHelperGenerator crudComponentMNConstantsHelperGenerator
 	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
+	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
 	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -187,6 +189,7 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
+			crudComponentQuerysGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){

@@ -288,18 +288,27 @@ import com.softtek.rdl2.Entity
 		<entry key="mn.consulta.«e.name.toLowerCase».id">
 			<![CDATA[
 				select 
-				ID_REGLANEGOCIO,CLAVE,DESCRIPCION,ESTADO_LOGICO 
+				
+				ID_«e.name.toUpperCase»,
+				«FOR f : e.entity_fields»
+				«f.getAttribute(e)»
+				«ENDFOR»
+				ESTADO_LOGICO 
 				from 
-				CGT_REGLANEGOCIO 
+				CGT_«e.name.toUpperCase» 
 				where ID_REGLANEGOCIO=:id and ESTADO_LOGICO = 'true'
 			]]>
 		</entry>
 		<entry key="mn.consulta.«e.name.toLowerCase».registros">
 			<![CDATA[
 				select 
-				ID_REGLANEGOCIO,CLAVE,DESCRIPCION,ESTADO_LOGICO 
+				ID_«e.name.toUpperCase»,
+				«FOR f : e.entity_fields»
+				«f.getAttribute(e)»
+				«ENDFOR»
+				ESTADO_LOGICO 
 				from 
-				CGT_REGLANEGOCIO
+				CGT_«e.name.toUpperCase»
 				where 1=1 and ESTADO_LOGICO = 'true'
 			]]>
 		</entry>
@@ -307,14 +316,14 @@ import com.softtek.rdl2.Entity
 			<![CDATA[
 				select 
 				count(1) 
-				from CGT_REGLANEGOCIO
+				from CGT_«e.name.toUpperCase»
 				where 1=1 and ESTADO_LOGICO = 'true'
 			]]>
 		</entry>
 		<entry key="mn.inserta.«e.name.toLowerCase».db">
 			<![CDATA[
 				insert into 
-				CGT_REGLANEGOCIO
+				CGT_«e.name.toUpperCase»
 				(CLAVE,DESCRIPCION,ESTADO_LOGICO ) 
 				values(:clave,:descripcion,:estadoLogico)
 			]]>
@@ -322,15 +331,19 @@ import com.softtek.rdl2.Entity
 		<entry key="mn.actualizar.«e.name.toLowerCase»">
 			<![CDATA[
 				update 
-				CGT_REGLANEGOCIO
-				set CLAVE=:clave, DESCRIPCION=:descripcion, ESTADO_LOGICO=:estadoLogico 
-				where ID_REGLANEGOCIO=:idReglanegocio
+				CGT_«e.name.toUpperCase»
+				set 
+				«FOR f : e.entity_fields»
+				«f.getAttributeUpdate(e)»
+				«ENDFOR»
+				ESTADO_LOGICO=:estadoLogico 
+				where ID_«e.name.toUpperCase»=:id«e.name.toLowerCase.toFirstUpper»
 			]]>
 		</entry>
 		<entry key="mn.eliminar.«e.name.toLowerCase»">
 			<![CDATA[
 				update 
-				CGT_REGLANEGOCIO
+				CGT_«e.name.toUpperCase»
 				set ESTADO_LOGICO=?
 				where ID_REGLANEGOCIO=?
 			]]>
@@ -338,9 +351,17 @@ import com.softtek.rdl2.Entity
 		<entry key="mn.inserta.«e.name.toLowerCase»">
 			<![CDATA[
 				insert into 
-				CGT_REGLANEGOCIO
-				(CLAVE,DESCRIPCION,ESTADO_LOGICO ) 
-				values(:clave,:descripcion,:estadoLogico)
+				CGT_«e.name.toUpperCase»
+				(
+				«FOR f : e.entity_fields»
+				«f.getAttribute(e)»
+				«ENDFOR»
+				ESTADO_LOGICO ) 
+				values(
+				«FOR f : e.entity_fields»
+				«f.getAttributeValues(e)»
+				«ENDFOR»
+				:estadoLogico)
 			]]>
 		</entry>		
 		<!-- ./«e.name.toLowerCase.toFirstUpper» -->	
@@ -348,10 +369,135 @@ import com.softtek.rdl2.Entity
 		«ENDFOR»
 	
 	</properties>
-
-
 	'''
 	
+	/* Get Attribute */	
+	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityDateField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityImageField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityFileField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+«f.name.toUpperCase»,
+	'''	
 	
+	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipFieldGetSetOne(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
+«name.toUpperCase»,
+	'''
+	
+	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
+«name.toUpperCase»,
+	'''	
+	
+	/* Get Attribute Update*/	
+	def dispatch getAttributeUpdate(EntityTextField f, Entity t)'''
+	«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityLongTextField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityDateField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityImageField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityFileField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityEmailField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityDecimalField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityIntegerField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityCurrencyField f, Entity t)'''
+«f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''	
+	
+	def dispatch getAttributeUpdate(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipUpdate(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipUpdate(Enum e, Entity t, String name) '''
+	«name.toUpperCase»=:«name.toLowerCase», 
+	'''
+	
+	def dispatch genRelationshipUpdate(Entity e, Entity t, String name) ''' 
+«name.toUpperCase»=:«name.toLowerCase», 
+	'''	
+
+	/* Get Attribute Values*/	
+	def dispatch getAttributeValues(EntityTextField f, Entity t)'''
+	:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityLongTextField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityDateField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityImageField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityFileField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityEmailField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityDecimalField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityIntegerField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityCurrencyField f, Entity t)'''
+:«f.name.toLowerCase»,
+	'''	
+	
+	def dispatch getAttributeValues(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.genRelationshipValues(t, f.name)»		
+	«ENDIF»
+	'''	
+	
+	def dispatch genRelationshipValues(Enum e, Entity t, String name) '''
+:«name.toLowerCase»,
+	'''
+	
+	def dispatch genRelationshipValues(Entity e, Entity t, String name) ''' 
+:«name.toLowerCase»,
+	'''		
 	
 }
