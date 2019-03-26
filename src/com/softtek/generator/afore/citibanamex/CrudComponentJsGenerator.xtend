@@ -37,7 +37,7 @@ class CrudComponentJsGenerator {
 		crearCabeceras();
 			
 		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",{"paginado":{"pagina":1,"registrosMostrados":10},"payload":{
-			«FOR f : e.entity_fields SEPARATOR ","»
+			«FOR f : e.entity_fields»
 				«f.getAttributeValue(e)»
 			«ENDFOR»
 		}},inicioDatos);
@@ -59,7 +59,7 @@ class CrudComponentJsGenerator {
 					},
 					"payload":{
 						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-						«FOR f : e.entity_fields SEPARATOR ","»
+						«FOR f : e.entity_fields»
 							«f.getAttributeEntityLabelValue(e)»
 						«ENDFOR»
 					}
@@ -443,31 +443,31 @@ class CrudComponentJsGenerator {
 	
 	/* getAttributeValue */
 	def dispatch getAttributeValue(EntityTextField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""
+	"«f.name.toLowerCase»" : "",
 	'''
 	def dispatch getAttributeValue(EntityLongTextField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""	
+	"«f.name.toLowerCase»" : "",
 	'''
 	def dispatch getAttributeValue(EntityDateField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""	
+	"«f.name.toLowerCase»" : "",	
 	'''
 	def dispatch getAttributeValue(EntityImageField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""	
+	"«f.name.toLowerCase»" : "",	
 	'''
 	def dispatch getAttributeValue(EntityFileField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""
+	"«f.name.toLowerCase»" : "",
 	'''
 	def dispatch getAttributeValue(EntityEmailField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""	
+	"«f.name.toLowerCase»" : "",	
 	'''
 	def dispatch getAttributeValue(EntityDecimalField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""
+	"«f.name.toLowerCase»" : "",
 	'''
 	def dispatch getAttributeValue(EntityIntegerField f, Entity t)'''
-	"«f.name.toLowerCase»" : 0	
+	"«f.name.toLowerCase»" : 0,	
 	'''
 	def dispatch getAttributeValue(EntityCurrencyField f, Entity t)'''
-	"«f.name.toLowerCase»" : ""	
+	"«f.name.toLowerCase»" : "",	
 	'''	
 	def dispatch getAttributeValue(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
@@ -475,10 +475,10 @@ class CrudComponentJsGenerator {
 	«ENDIF»
 	'''
 	def dispatch getAttributeEntityRefValue(Entity tr, EntityReferenceField f, Entity t, String name)'''
-	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": 0}
+	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": 0},
 	'''
  	def dispatch getAttributeEntityRefValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	"«name.toLowerCase»" : ""
+	"«tr.name.toLowerCase»" : {"cve«tr.name.toLowerCase.toFirstUpper»": 0},
 	'''
 	
 	/* getAttributeEntityClean */
@@ -720,7 +720,7 @@ class CrudComponentJsGenerator {
 		var «name.toLowerCase» = Number($("#«name.toLowerCase»New").val());
 	'''
  	def dispatch getAttributeEntityRefJQueryAgregar(Enum tr, EntityReferenceField f, Entity t, String name)'''
-		var «tr.name.toLowerCase» = $('#«tr.name.toLowerCase»New').val();
+		var «tr.name.toLowerCase» = Number($('#«tr.name.toLowerCase»New').val());
 	'''
 	def dispatch getAttributeEntityJQueryAgregar(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
