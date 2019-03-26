@@ -84,6 +84,28 @@ class CrudComponentJDBCRepositoryImplGenerator {
 				
 				logger.info("Los «e.name.toLowerCase»s son: " + «e.name.toLowerCase»s.size());
 				
+				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
+				//	List<Subproceso> subprocesos = jdbcTemplate.query(
+				//		retrieveSentence("«e.name.toLowerCase».subproceso.consulta.id"), new Object[] {id},
+				//		new SubprocesoMapper());
+				//      mod.setSubproceso(subproceso.get(0));	
+				//}
+				
+				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
+				//	List<Procesos> procesos = jdbcTemplate.query(
+				//		retrieveSentence("«e.name.toLowerCase».procesos.consulta.id"), new Object[] {id},
+				//		new ProcesosMapper());	
+				// 		subproceso.get(0).setProcesos(procesos.get(0));
+				//      mod.setSubproceso(subproceso.get(0));	
+				//}	
+				
+				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
+				//	List<Modulo> modulos = jdbcTemplate.query(
+				//		retrieveSentence("«e.name.toLowerCase».odulo.consulta.id"), new Object[] {id},
+				//		new ModuloMapper());	
+	 			// 		mod.setSubproceso(subproceso.get(0));
+				//}				
+				
 				paginado.setTotalRegistros(total);
 				paginado.setTotalPaginas(paginado.getTotalRegistros()/paginado.getRegistrosMostrados()+((paginado.getTotalRegistros()%paginado.getRegistrosMostrados())==0?0:1));
 				
@@ -336,7 +358,7 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''	
 	
 	def dispatch getAttributeRefValue(Enum e, Entity t, String name) ''' 
-	params.addValue("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
+	params.addValue("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	def dispatch getAttributeRefValue(Entity e, Entity t, String name) ''' 
@@ -379,7 +401,7 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''	
 	
 	def dispatch getAttributeRefPut(Enum e, Entity t, String name) ''' 
-	params.put("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
+	params.put("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	def dispatch getAttributeRefPut(Entity e, Entity t, String name) ''' 
