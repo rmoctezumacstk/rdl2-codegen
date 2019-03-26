@@ -150,7 +150,7 @@ class CrudComponentModelGenerator {
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
 	@Valid
-	private «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»;
+	private «e.name.toLowerCase.toFirstUpper» «name.toLowerCase»;
 	'''
 	
 	/* Get Attribute Field */
@@ -256,7 +256,7 @@ class CrudComponentModelGenerator {
 	'''
 	
 	def dispatch genRelationshipGetOne(Entity e, Entity t, String name) ''' 
-	public «name.toLowerCase.toFirstUpper» get«name.toLowerCase.toFirstUpper»() {
+	public «e.name.toLowerCase.toFirstUpper» get«name.toLowerCase.toFirstUpper»() {
 		return «name.toLowerCase»;
 	}
 	'''		
@@ -321,7 +321,7 @@ class CrudComponentModelGenerator {
 	'''
 	
 	def dispatch genRelationshipSetOne(Entity e, Entity t, String name) ''' 
-	public void set«name.toLowerCase.toFirstUpper»(«name.toLowerCase.toFirstUpper» «name.toLowerCase») {
+	public void set«name.toLowerCase.toFirstUpper»(«e.name.toLowerCase.toFirstUpper» «name.toLowerCase») {
 		this.«name.toLowerCase» = «name.toLowerCase»;
 	}
 	'''
@@ -366,7 +366,7 @@ class CrudComponentModelGenerator {
 	'''
 	
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
-	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
+	«e.name.toLowerCase.toFirstUpper» «name.toLowerCase»,
 	'''
 	
 		/* getAttributeImport */
