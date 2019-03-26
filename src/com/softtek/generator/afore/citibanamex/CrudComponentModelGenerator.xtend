@@ -34,12 +34,17 @@ class CrudComponentModelGenerator {
 	
 	import java.io.Serializable;
 	import java.util.List;
+	import java.util.Date;
 	
 	import javax.validation.Valid;
 	import javax.validation.constraints.Digits;
 	import javax.validation.constraints.Size;
 	
 	import com.aforebanamex.plata.base.model.BaseSerizalizableModel;
+	
+	«FOR f : e.entity_fields»
+	«f.getAttributeImport(e)»
+	«ENDFOR» 
 	
 	public class «e.name.toLowerCase.toFirstUpper» extends BaseSerizalizableModel{
 		
@@ -125,7 +130,7 @@ class CrudComponentModelGenerator {
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
 	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
-	private Int «f.name.toLowerCase»;	
+	private Integer «f.name.toLowerCase»;	
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
 	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
@@ -228,7 +233,7 @@ class CrudComponentModelGenerator {
 	}
 	'''
 	def dispatch getAttributeFieldGet(EntityIntegerField f, Entity t)'''
-	public Int get«f.name.toLowerCase.toFirstUpper»() {
+	public Integer get«f.name.toLowerCase.toFirstUpper»() {
 		return «f.name.toLowerCase»;
 	}
 	'''
@@ -293,7 +298,7 @@ class CrudComponentModelGenerator {
 	}
 	'''
 	def dispatch getAttributeFieldSet(EntityIntegerField f, Entity t)'''
-	public void set«f.name.toLowerCase.toFirstUpper»(Int «f.name.toLowerCase») {
+	public void set«f.name.toLowerCase.toFirstUpper»(Integer «f.name.toLowerCase») {
 		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
 	}
 	'''
@@ -344,7 +349,7 @@ class CrudComponentModelGenerator {
 	Double «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityIntegerField f, Entity t)'''
-	Int «f.name.toLowerCase»,
+	Integer «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityCurrencyField f, Entity t)'''
 	Double «f.name.toLowerCase»,
@@ -363,5 +368,40 @@ class CrudComponentModelGenerator {
 	def dispatch genRelationshipConstructor(Entity e, Entity t, String name) ''' 
 	«name.toLowerCase.toFirstUpper» «e.name.toLowerCase»,
 	'''
+	
+		/* getAttributeImport */
+	def dispatch getAttributeImport(EntityTextField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityLongTextField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityDateField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityImageField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityFileField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityEmailField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityDecimalField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityIntegerField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityCurrencyField f, Entity t)'''
+	'''	
+	
+	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
+	«IF  f !== null && !f.upperBound.equals('*')»
+		«f.superType.getAttributeRefImport(t, f.name)»
+	«ENDIF»
+	'''	
+	
+	def dispatch getAttributeRefImport(Enum e, Entity t, String name) ''' 
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»Enum;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
+	'''
+	
+	def dispatch getAttributeRefImport(Entity e, Entity t, String name) ''' 
+	import com.aforebanamex.plata.comunes.model.cg.«name.toLowerCase.toFirstUpper»;
+	'''	
 	
 }
