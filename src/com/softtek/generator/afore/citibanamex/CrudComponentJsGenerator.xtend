@@ -17,6 +17,9 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentJsGenerator {
 	
@@ -264,6 +267,15 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeEntityJQuery(EntityDateField f, Entity t)'''
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
 	'''
+	def dispatch getAttributeEntityJQuery(EntityDateTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQuery(EntityBooleanField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
 	def dispatch getAttributeEntityJQuery(EntityImageField f, Entity t)'''
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
 	'''
@@ -306,6 +318,15 @@ class CrudComponentJsGenerator {
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»Edit').val();
 	'''
 	def dispatch getAttributeEntityJQueryEdit(EntityDateField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»Edit').val();
+	'''
+	def dispatch getAttributeEntityJQueryEdit(EntityDateTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»Edit').val();
+	'''
+	def dispatch getAttributeEntityJQueryEdit(EntityTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»Edit').val();
+	'''
+	def dispatch getAttributeEntityJQueryEdit(EntityBooleanField f, Entity t)'''
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»Edit').val();
 	'''
 	def dispatch getAttributeEntityJQueryEdit(EntityImageField f, Entity t)'''
@@ -351,6 +372,15 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeEntityLabelValue(EntityDateField f, Entity t)'''
 		"«f.name.toLowerCase»" : «f.name.toLowerCase»
 	'''
+	def dispatch getAttributeEntityLabelValue(EntityDateTimeField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityTimeField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»
+	'''
+	def dispatch getAttributeEntityLabelValue(EntityBooleanField f, Entity t)'''
+		"«f.name.toLowerCase»" : «f.name.toLowerCase»
+	'''
 	def dispatch getAttributeEntityLabelValue(EntityImageField f, Entity t)'''
 		"«f.name.toLowerCase»" : «f.name.toLowerCase»
 	'''
@@ -391,6 +421,15 @@ class CrudComponentJsGenerator {
 	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
 	'''
 	def dispatch getAttributeEntitySearch(EntityDateField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityDateTimeField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityTimeField f, Entity t)'''
+	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
+	'''
+	def dispatch getAttributeEntitySearch(EntityBooleanField f, Entity t)'''
 	"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()		
 	'''
 	def dispatch getAttributeEntitySearch(EntityImageField f, Entity t)'''
@@ -434,6 +473,15 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeValue(EntityDateField f, Entity t)'''
 	"«f.name.toLowerCase»" : ""	
 	'''
+	def dispatch getAttributeValue(EntityDateTimeField f, Entity t)'''
+	"«f.name.toLowerCase»" : ""	
+	'''
+	def dispatch getAttributeValue(EntityTimeField f, Entity t)'''
+	"«f.name.toLowerCase»" : ""	
+	'''
+	def dispatch getAttributeValue(EntityBooleanField f, Entity t)'''
+	"«f.name.toLowerCase»" : ""	
+	'''
 	def dispatch getAttributeValue(EntityImageField f, Entity t)'''
 	"«f.name.toLowerCase»" : ""	
 	'''
@@ -474,6 +522,15 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeEntityClean(EntityDateField f, Entity t)'''
 	"«f.name.toLowerCase»": ""
 	'''
+	def dispatch getAttributeEntityClean(EntityDateTimeField f, Entity t)'''
+	"«f.name.toLowerCase»": ""
+	'''
+	def dispatch getAttributeEntityClean(EntityTimeField f, Entity t)'''
+	"«f.name.toLowerCase»": ""
+	'''
+	def dispatch getAttributeEntityClean(EntityBooleanField f, Entity t)'''
+	"«f.name.toLowerCase»": ""
+	'''
 	def dispatch getAttributeEntityClean(EntityImageField f, Entity t)'''
 	"«f.name.toLowerCase»": ""
 	'''
@@ -506,6 +563,15 @@ class CrudComponentJsGenerator {
 	$("#«f.name.toLowerCase»Edit").val(data.«f.name.toLowerCase»);
 	'''
 	def dispatch getAttributeUpdate(EntityDateField f, Entity t)'''
+	$("#«f.name.toLowerCase»Edit").val(data.«f.name.toLowerCase»);
+	'''
+	def dispatch getAttributeUpdate(EntityDateTimeField f, Entity t)'''
+	$("#«f.name.toLowerCase»Edit").val(data.«f.name.toLowerCase»);
+	'''
+	def dispatch getAttributeUpdate(EntityTimeField f, Entity t)'''
+	$("#«f.name.toLowerCase»Edit").val(data.«f.name.toLowerCase»);
+	'''
+	def dispatch getAttributeUpdate(EntityBooleanField f, Entity t)'''
 	$("#«f.name.toLowerCase»Edit").val(data.«f.name.toLowerCase»);
 	'''
 	def dispatch getAttributeUpdate(EntityImageField f, Entity t)'''
@@ -544,6 +610,9 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeSearch(EntityTextField f, Entity t)''''''
 	def dispatch getAttributeSearch(EntityLongTextField f, Entity t)''''''
 	def dispatch getAttributeSearch(EntityDateField f, Entity t)''''''
+	def dispatch getAttributeSearch(EntityDateTimeField f, Entity t)''''''
+	def dispatch getAttributeSearch(EntityTimeField f, Entity t)''''''
+	def dispatch getAttributeSearch(EntityBooleanField f, Entity t)''''''
 	def dispatch getAttributeSearch(EntityImageField f, Entity t)''''''
 	def dispatch getAttributeSearch(EntityFileField f, Entity t)''''''
 	def dispatch getAttributeSearch(EntityEmailField f, Entity t)''''''
@@ -567,6 +636,9 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributePaginarTabla(EntityTextField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
 	def dispatch getAttributePaginarTabla(EntityLongTextField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
 	def dispatch getAttributePaginarTabla(EntityDateField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
+	def dispatch getAttributePaginarTabla(EntityDateTimeField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
+	def dispatch getAttributePaginarTabla(EntityTimeField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
+	def dispatch getAttributePaginarTabla(EntityBooleanField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
 	def dispatch getAttributePaginarTabla(EntityImageField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
 	def dispatch getAttributePaginarTabla(EntityFileField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
 	def dispatch getAttributePaginarTabla(EntityEmailField f, Entity t)'''"«f.name.toLowerCase»": $("#«f.name.toLowerCase»Semaf").val()'''
@@ -590,6 +662,9 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeInicioDatos(EntityTextField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
 	def dispatch getAttributeInicioDatos(EntityLongTextField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
 	def dispatch getAttributeInicioDatos(EntityDateField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
+	def dispatch getAttributeInicioDatos(EntityDateTimeField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
+	def dispatch getAttributeInicioDatos(EntityTimeField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
+	def dispatch getAttributeInicioDatos(EntityBooleanField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
 	def dispatch getAttributeInicioDatos(EntityImageField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
 	def dispatch getAttributeInicioDatos(EntityFileField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
 	def dispatch getAttributeInicioDatos(EntityEmailField f, Entity t)'''{"data" : "«f.name.toLowerCase»", className: "dt-body-center"}'''
@@ -612,6 +687,9 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeGetTable(EntityTextField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
 	def dispatch getAttributeGetTable(EntityLongTextField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
 	def dispatch getAttributeGetTable(EntityDateField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
+	def dispatch getAttributeGetTable(EntityDateTimeField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
+	def dispatch getAttributeGetTable(EntityTimeField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
+	def dispatch getAttributeGetTable(EntityBooleanField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
 	def dispatch getAttributeGetTable(EntityImageField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
 	def dispatch getAttributeGetTable(EntityFileField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
 	def dispatch getAttributeGetTable(EntityEmailField f, Entity t)'''{name:'«f.name.toLowerCase»', index:'«f.name.toLowerCase»', align:'center'}'''
@@ -640,6 +718,16 @@ class CrudComponentJsGenerator {
 	def dispatch getAttributeTitle(EntityDateField f, Entity t)'''
 	'«entityFieldUtils.getFieldGlossaryName(f)»'
 	'''
+	def dispatch getAttributeTitle(EntityDateTimeField f, Entity t)'''
+	'«entityFieldUtils.getFieldGlossaryName(f)»'
+	'''
+	def dispatch getAttributeTitle(EntityTimeField f, Entity t)'''
+	'«entityFieldUtils.getFieldGlossaryName(f)»'
+	'''
+	def dispatch getAttributeTitle(EntityBooleanField f, Entity t)'''
+	'«entityFieldUtils.getFieldGlossaryName(f)»'
+	'''
+	
 	def dispatch getAttributeTitle(EntityImageField f, Entity t)'''
 	'«entityFieldUtils.getFieldGlossaryName(f)»'
 	'''
@@ -672,6 +760,15 @@ class CrudComponentJsGenerator {
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
 	'''
 	def dispatch getAttributeEntityJQueryAgregar(EntityDateField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQueryAgregar(EntityDateTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQueryAgregar(EntityTimeField f, Entity t)'''
+		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
+	'''
+	def dispatch getAttributeEntityJQueryAgregar(EntityBooleanField f, Entity t)'''
 		var «f.name.toLowerCase» = $('#«f.name.toLowerCase»New').val();
 	'''
 	def dispatch getAttributeEntityJQueryAgregar(EntityImageField f, Entity t)'''

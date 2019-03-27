@@ -15,6 +15,9 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentMapperGenerator {
 	
@@ -58,6 +61,9 @@ class CrudComponentMapperGenerator {
 	def dispatch getAttribute(EntityTextField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
@@ -87,6 +93,9 @@ class CrudComponentMapperGenerator {
 	def dispatch getAttributeImport(EntityTextField f, Entity t)''''''
 	def dispatch getAttributeImport(EntityLongTextField f, Entity t)''''''
 	def dispatch getAttributeImport(EntityDateField f, Entity t)''''''
+	def dispatch getAttributeImport(EntityDateTimeField f, Entity t)''''''
+	def dispatch getAttributeImport(EntityTimeField f, Entity t)''''''
+	def dispatch getAttributeImport(EntityBooleanField f, Entity t)''''''
 	def dispatch getAttributeImport(EntityImageField f, Entity t)''''''
 	def dispatch getAttributeImport(EntityFileField f, Entity t)''''''
 	def dispatch getAttributeImport(EntityEmailField f, Entity t)''''''

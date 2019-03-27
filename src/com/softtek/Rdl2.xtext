@@ -87,7 +87,10 @@ EntityField:
 	EntityEmailField     |
 	EntityDecimalField   |
 	EntityIntegerField   |
-	EntityCurrencyField
+	EntityCurrencyField  |
+	EntityBooleanField   |
+	EntityTimeField      |
+	EntityDateTimeField
 ;
 
 EntityTextConstraintDef:
@@ -220,6 +223,58 @@ EntityCurrencyField:
 EntityAttr:
 	glossary         = Glossary                |
 	widget           = Widget                  |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+
+EntityBooleanField:
+	'field' name=ID ':' 'Boolean'
+	('{'
+	  (attrs += EntityBooleanAttr)+
+	'}')?
+;
+
+EntityBooleanAttr:
+   'default' ':' default=BOOLEAN               |
+	glossary         = Glossary                |
+	widget           = WidgetDate              |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+EntityDateTimeField:
+	'field' name=ID ':' 'DateTime'
+	('{'
+	  (attrs += EntityDateTimeFieldAttr)+
+	'}')?
+;
+
+EntityDateTimeFieldAttr:
+   'default' ':' default=DATE                  |
+	glossary         = Glossary                |
+	widget           = WidgetDate              |
+	constraint       = EntityTextConstraintDef |
+	db_map           = DBMapField              |
+	data_domain      = DataDomain              |
+	business_rule    = BusinessRule
+;
+
+EntityTimeField:
+	'field' name=ID ':' 'Time'
+	('{'
+	  (attrs += EntityTimeFieldAttr)+
+	'}')?
+;
+
+EntityTimeFieldAttr:
+   'default' ':' default=DATE                  |
+	glossary         = Glossary                |
+	widget           = WidgetDate              |
 	constraint       = EntityTextConstraintDef |
 	db_map           = DBMapField              |
 	data_domain      = DataDomain              |
@@ -393,12 +448,17 @@ ActionEdit:
 ActionDelete:
    'delete' ':' value = ('true' | 'false')
 ;
+
+ActionView:
+   'view' ':' value = ('true' | 'false')
+;
   
 Action:
 	ActionSearch |
 	ActionAdd    |
 	ActionEdit   |
-	ActionDelete 
+	ActionDelete |
+	ActionView
 ;
 
 Actions:

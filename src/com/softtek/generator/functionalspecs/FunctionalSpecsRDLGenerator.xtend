@@ -33,6 +33,11 @@ import com.softtek.rdl2.EntityTextFieldAttr
 import com.softtek.rdl2.PageContainer
 import com.softtek.rdl2.Task
 import com.softtek.rdl2.CommandQuery
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeFieldAttr
+import com.softtek.rdl2.EntityTimeFieldAttr
 
 class FunctionalSpecsRDLGenerator {
 	var accChapters = new HashSet<String>()
@@ -131,6 +136,15 @@ class FunctionalSpecsRDLGenerator {
 	def dispatch genEntityFieldDOM(EntityDateField field, Entity e) '''
 		«nameOrBusinessRuleEntityField(field)»
 	'''
+	def dispatch genEntityFieldDOM(EntityDateTimeField field, Entity e) '''
+		«nameOrBusinessRuleEntityField(field)»
+	'''
+	def dispatch genEntityFieldDOM(EntityTimeField field, Entity e) '''
+		«nameOrBusinessRuleEntityField(field)»
+	'''
+	def dispatch genEntityFieldDOM(EntityBooleanField field, Entity e) '''
+		«nameOrBusinessRuleEntityField(field)»
+	'''
 	
 	def dispatch genEntityFieldDOM(EntityImageField field, Entity e) '''
 		«nameOrBusinessRuleEntityField(field)»
@@ -181,6 +195,33 @@ class FunctionalSpecsRDLGenerator {
 			}
 		}
 		return (f.name + " : Date")
+	}
+	
+	def dispatch nameOrBusinessRuleEntityField(EntityDateTimeField f){
+		for( a : f.attrs){
+			if(a.business_rule !== null){
+				return ("/" + f.name + " : Date");
+			}
+		}
+		return (f.name + " : Date")
+	}
+	
+	def dispatch nameOrBusinessRuleEntityField(EntityTimeField f){
+		for( a : f.attrs){
+			if(a.business_rule !== null){
+				return ("/" + f.name + " : Date");
+			}
+		}
+		return (f.name + " : Date")
+	}
+	
+	def dispatch nameOrBusinessRuleEntityField(EntityBooleanField f){
+		for( a : f.attrs){
+			if(a.business_rule !== null){
+				return ("/" + f.name + " : Boolean");
+			}
+		}
+		return (f.name + " : Boolean")
 	}
 	
 	def dispatch nameOrBusinessRuleEntityField(EntityImageField f){
@@ -260,7 +301,17 @@ class FunctionalSpecsRDLGenerator {
 	
 	def dispatch genEntityRelationshipDOM(EntityLongTextField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
 	'''
+	
 	def dispatch genEntityRelationshipDOM(EntityDateField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
+	'''
+	
+	def dispatch genEntityRelationshipDOM(EntityDateTimeField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
+	'''
+	
+	def dispatch genEntityRelationshipDOM(EntityTimeField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
+	'''
+	
+	def dispatch genEntityRelationshipDOM(EntityBooleanField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
 	'''
 	
 	def dispatch genEntityRelationshipDOM(EntityImageField field, Entity e, Module m, HashSet<String> bidirectionalRelationships) '''
@@ -380,6 +431,24 @@ class FunctionalSpecsRDLGenerator {
 				return true
 		 	}
 		  }
+	  if (f instanceof EntityDateTimeField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return true
+		 	}
+		  }
+	  if (f instanceof EntityTimeField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return true
+		 	}
+		  }
+	  if (f instanceof EntityBooleanField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return true
+		 	}
+		  }
 	  if (f instanceof EntityImageField)
 		  for( a : f.attrs) {
 		 	if(a.business_rule !== null){
@@ -439,6 +508,24 @@ class FunctionalSpecsRDLGenerator {
 		 	}
 		  }
 	  if (f instanceof EntityDateField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return a.business_rule.code + "&" + a.business_rule.description
+		 	}
+		  }
+	  if (f instanceof EntityDateTimeField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return a.business_rule.code + "&" + a.business_rule.description
+		 	}
+		  }
+	  if (f instanceof EntityTimeField)
+		  for( a : f.attrs) {
+		 	if(a.business_rule !== null){
+				return a.business_rule.code + "&" + a.business_rule.description
+		 	}
+		  }
+	  if (f instanceof EntityBooleanField)
 		  for( a : f.attrs) {
 		 	if(a.business_rule !== null){
 				return a.business_rule.code + "&" + a.business_rule.description
@@ -1442,6 +1529,42 @@ class FunctionalSpecsRDLGenerator {
 		
 		return isExposed;
 	}
+	
+	def dispatch isExposedFilterEntityField(EntityDateTimeField f){
+		var isExposed = false;
+		
+		for(EntityDateTimeFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty){
+				isExposed = "true".equals(a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter);
+			}
+		}
+		
+		return isExposed;
+	}
+	
+	def dispatch isExposedFilterEntityField(EntityTimeField f){
+		var isExposed = false;
+		
+		for(EntityTimeFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty){
+				isExposed = "true".equals(a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter);
+			}
+		}
+		
+		return isExposed;
+	}
+	
+	def dispatch isExposedFilterEntityField(EntityBooleanField f){
+		var isExposed = false;
+		
+		/*for(EntityBooleanFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetExposedFilter) !== null && !a.widget.attrs.filter(WidgetExposedFilter).isEmpty){
+				isExposed = "true".equals(a.widget.attrs.filter(WidgetExposedFilter).get(0).exposed_filter);
+			}
+		}
+		*/
+		return isExposed;
+	}
 
 	def dispatch isExposedFilterEntityField(EntityImageField f){
 		var isExposed = false;
@@ -1561,6 +1684,42 @@ class FunctionalSpecsRDLGenerator {
 				isDisplayResult = "true".equals(a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result);
 			}
 		}
+		
+		return isDisplayResult;
+	}
+	
+	def dispatch isDisplayResultEntityField(EntityDateTimeField f){
+		var isDisplayResult = false;
+		
+		for(EntityDateTimeFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty){
+				isDisplayResult = "true".equals(a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result);
+			}
+		}
+		
+		return isDisplayResult;
+	}
+	
+	def dispatch isDisplayResultEntityField(EntityTimeField f){
+		var isDisplayResult = false;
+		
+		for(EntityTimeFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty){
+				isDisplayResult = "true".equals(a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result);
+			}
+		}
+		
+		return isDisplayResult;
+	}
+	
+	def dispatch isDisplayResultEntityField(EntityBooleanField f){
+		var isDisplayResult = false;
+		
+		/*for(EntityBooleanFieldAttr a : f.attrs){
+			if(a.widget !== null && a.widget.attrs.filter(WidgetDisplayResult) !== null && !a.widget.attrs.filter(WidgetDisplayResult).isEmpty){
+				isDisplayResult = "true".equals(a.widget.attrs.filter(WidgetDisplayResult).get(0).display_result);
+			}
+		}*/
 		
 		return isDisplayResult;
 	}
@@ -1851,7 +2010,38 @@ class FunctionalSpecsRDLGenerator {
 		}
 		return mapCharToLatex(fieldName)
 	}
+	
 	def dispatch fieldDescription(EntityDateField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_description.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldDescription(EntityDateTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_description.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldDescription(EntityTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_description.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldDescription(EntityBooleanField field) {
 		var fieldName = field.name
 		for (attr : field.attrs) {
 			if (attr.glossary !== null) {
@@ -1949,7 +2139,38 @@ class FunctionalSpecsRDLGenerator {
 		}
 		return mapCharToLatex(fieldName)
 	}
+	
 	def dispatch fieldLabel(EntityDateField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldLabel(EntityDateTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldLabel(EntityTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return mapCharToLatex(fieldName)
+	}
+	
+	def dispatch fieldLabel(EntityBooleanField field) {
 		var fieldName = field.name
 		for (attr : field.attrs) {
 			if (attr.glossary !== null) {
@@ -2032,8 +2253,21 @@ class FunctionalSpecsRDLGenerator {
 	def dispatch fieldWidget(EntityLongTextField field) {
 		return "TextArea"
 	}
+	
 	def dispatch fieldWidget(EntityDateField field) {
 		return "DatePicker"
+	}
+	
+	def dispatch fieldWidget(EntityDateTimeField field) {
+		return "DatePicker"
+	}
+	
+	def dispatch fieldWidget(EntityTimeField field) {
+		return "DatePicker"
+	}
+	
+	def dispatch fieldWidget(EntityBooleanField field) {
+		return "TextBox"
 	}
 	
 	def dispatch fieldWidget(EntityImageField field) {
@@ -2073,8 +2307,21 @@ class FunctionalSpecsRDLGenerator {
 	def dispatch fieldType(EntityLongTextField field) {
 		return "Long Text"
 	}
+	
 	def dispatch fieldType(EntityDateField field) {
 		return "Date"
+	}
+	
+	def dispatch fieldType(EntityDateTimeField field) {
+		return "Date"
+	}
+	
+	def dispatch fieldType(EntityTimeField field) {
+		return "Date"
+	}
+	
+	def dispatch fieldType(EntityBooleanField field) {
+		return "Boolean"
 	}
 	
 	def dispatch fieldType(EntityImageField field) {
@@ -2148,6 +2395,51 @@ class FunctionalSpecsRDLGenerator {
 		«ENDFOR»
 	'''
 	def dispatch fieldConstraints(EntityDateField field) '''
+		«FOR attr : field.attrs»
+			«IF attr.constraint !== null»
+				\begin{minipage}[t]{0.2\textwidth}
+				\begin{itemize}[noitemsep,nolistsep]
+				\setlength{\itemindent}{-.5cm}
+				«FOR constraint : attr.constraint.constraints»
+					\item «constraint.fieldTextConstraint»
+				«ENDFOR»
+				\end{itemize}
+				\end{minipage}
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	def dispatch fieldConstraints(EntityDateTimeField field) '''
+		«FOR attr : field.attrs»
+			«IF attr.constraint !== null»
+				\begin{minipage}[t]{0.2\textwidth}
+				\begin{itemize}[noitemsep,nolistsep]
+				\setlength{\itemindent}{-.5cm}
+				«FOR constraint : attr.constraint.constraints»
+					\item «constraint.fieldTextConstraint»
+				«ENDFOR»
+				\end{itemize}
+				\end{minipage}
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	def dispatch fieldConstraints(EntityTimeField field) '''
+		«FOR attr : field.attrs»
+			«IF attr.constraint !== null»
+				\begin{minipage}[t]{0.2\textwidth}
+				\begin{itemize}[noitemsep,nolistsep]
+				\setlength{\itemindent}{-.5cm}
+				«FOR constraint : attr.constraint.constraints»
+					\item «constraint.fieldTextConstraint»
+				«ENDFOR»
+				\end{itemize}
+				\end{minipage}
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	def dispatch fieldConstraints(EntityBooleanField field) '''
 		«FOR attr : field.attrs»
 			«IF attr.constraint !== null»
 				\begin{minipage}[t]{0.2\textwidth}

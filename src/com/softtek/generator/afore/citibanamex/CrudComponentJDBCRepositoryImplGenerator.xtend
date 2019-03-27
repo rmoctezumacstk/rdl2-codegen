@@ -16,7 +16,9 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
-
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentJDBCRepositoryImplGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
@@ -155,6 +157,12 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''
 	def dispatch getAttributeImport(EntityDateField f, Entity t)'''
 	'''
+	def dispatch getAttributeImport(EntityDateTimeField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityTimeField f, Entity t)'''
+	'''
+	def dispatch getAttributeImport(EntityBooleanField f, Entity t)'''
+	'''
 	def dispatch getAttributeImport(EntityImageField f, Entity t)'''
 	'''
 	def dispatch getAttributeImport(EntityFileField f, Entity t)'''
@@ -195,6 +203,23 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	}	
 	'''
 	def dispatch getAttributeCondicion(EntityDateField f, Entity t)'''
+	if (!«t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»().equals("")) {
+		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase» + «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE;
+	}	
+	'''
+	def dispatch getAttributeCondicion(EntityDateTimeField f, Entity t)'''
+	if (!«t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»().equals("")) {
+		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase» + «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE;
+	}	
+	'''
+	
+	def dispatch getAttributeCondicion(EntityTimeField f, Entity t)'''
+	if (!«t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»().equals("")) {
+		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase» + «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE;
+	}	
+	'''
+	
+	def dispatch getAttributeCondicion(EntityBooleanField f, Entity t)'''
 	if (!«t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»().equals("")) {
 		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase» + «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE;
 	}	
@@ -256,6 +281,15 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	def dispatch getAttributeColumn(EntityDateField f, Entity t)'''
 	
 	'''
+	def dispatch getAttributeColumn(EntityDateTimeField f, Entity t)'''
+	
+	'''
+	def dispatch getAttributeColumn(EntityTimeField f, Entity t)'''
+	
+	'''
+	def dispatch getAttributeColumn(EntityBooleanField f, Entity t)'''
+	
+	'''
 	def dispatch getAttributeColumn(EntityImageField f, Entity t)'''
 	
 	'''
@@ -310,6 +344,15 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	def dispatch getAttributeValue(EntityDateField f, Entity t)'''
 	params.addValue("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
 	'''
+	def dispatch getAttributeValue(EntityDateTimeField f, Entity t)'''
+	params.addValue("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
+	def dispatch getAttributeValue(EntityTimeField f, Entity t)'''
+	params.addValue("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
+	def dispatch getAttributeValue(EntityBooleanField f, Entity t)'''
+	params.addValue("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
 	def dispatch getAttributeValue(EntityImageField f, Entity t)'''
 	params.addValue("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
 	'''
@@ -351,6 +394,15 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	params.put("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
 	'''
 	def dispatch getAttributePut(EntityDateField f, Entity t)'''
+	params.put("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
+	def dispatch getAttributePut(EntityDateTimeField f, Entity t)'''
+	params.put("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
+	def dispatch getAttributePut(EntityTimeField f, Entity t)'''
+	params.put("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
+	'''
+	def dispatch getAttributePut(EntityBooleanField f, Entity t)'''
 	params.put("«f.name.toLowerCase»", «t.name.toLowerCase».get«f.name.toLowerCase.toFirstUpper»());	
 	'''
 	def dispatch getAttributePut(EntityImageField f, Entity t)'''

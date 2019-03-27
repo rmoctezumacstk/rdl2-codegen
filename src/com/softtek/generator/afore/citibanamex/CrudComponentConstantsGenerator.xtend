@@ -14,6 +14,9 @@ import com.softtek.rdl2.EntityEmailField
 import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentConstantsGenerator {
 	
@@ -133,6 +136,18 @@ class CrudComponentConstantsGenerator {
 	public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
+	'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
+	'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
 	public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
 	public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''

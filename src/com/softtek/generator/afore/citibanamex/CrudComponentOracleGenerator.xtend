@@ -16,6 +16,9 @@ import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
 import java.util.ArrayList
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeField
 
 class CrudComponentOracleGenerator {
 	
@@ -77,7 +80,15 @@ class CrudComponentOracleGenerator {
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
 	«f.name.toLowerCase» NUMBER(20,2) NOT NULL,
 	'''	
-	
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	«f.name.toLowerCase» NUMBER(1) NOT NULL,
+	'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	«f.name.toLowerCase» DATE NOT NULL,
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	«f.name.toLowerCase» DATE NOT NULL,
+	'''
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('1')»
 		«f.superType.genRelationship(t, f.name)»

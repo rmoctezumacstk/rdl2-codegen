@@ -18,6 +18,9 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeField
 
 class CrudComponentHtmlGenerator {
 	
@@ -344,6 +347,45 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
+	
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>	
+	'''
+	
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>	
+	'''
+	
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
+				name="«f.name.toLowerCase»New" maxlength="100" required>
+			<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>	
+	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
@@ -489,6 +531,42 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
+	def dispatch getAttributeEdit(EntityDateTimeField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttributeEdit(EntityTimeField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>
+	'''
+	def dispatch getAttributeEdit(EntityBooleanField f, Entity t)'''
+	<div class="col-lg-6 form-group">
+		<div class="col-lg-12 text-left">
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+		</div>
+		<div class="col-lg-12">
+			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
+				name="«f.name.toLowerCase»Edit" maxlength="100" required>
+				<div class="invalid-feedback" th:text="#{cg.error.requerido}"></div>
+		</div>
+	</div>
+	'''
 	def dispatch getAttributeEdit(EntityImageField f, Entity t)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
@@ -608,6 +686,15 @@ class CrudComponentHtmlGenerator {
 	def dispatch getAttributeTitle(EntityDateField f, Entity t)'''
 	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
+	def dispatch getAttributeTitle(EntityDateTimeField f, Entity t)'''
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
+	'''
+	def dispatch getAttributeTitle(EntityTimeField f, Entity t)'''
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
+	'''
+	def dispatch getAttributeTitle(EntityBooleanField f, Entity t)'''
+	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
+	'''
 	def dispatch getAttributeTitle(EntityImageField f, Entity t)'''
 	<th scope="col">«entityFieldUtils.getFieldGlossaryName(f)»</th>
 	'''
@@ -648,6 +735,27 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''
 	def dispatch getAttributeSearch(EntityDateField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityDateTimeField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityTimeField f, Entity t)'''
+	<div class="col-md-4">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
+			class="form-control" id="«f.name.toLowerCase»Semaf" required>
+	</div>
+	'''
+	def dispatch getAttributeSearch(EntityBooleanField f, Entity t)'''
 	<div class="col-md-4">
 		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
