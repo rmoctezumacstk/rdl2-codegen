@@ -62,6 +62,9 @@ import java.util.HashSet
 import com.softtek.generator.afore.citibanamex.CrudComponentModelEnumGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentEnumGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMNConstantsHelperGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentQuerysGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -107,7 +110,6 @@ class Rdl2Generator extends AbstractGenerator {
 //	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
 //	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
 //	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
-	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
@@ -125,6 +127,10 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentEnumGenerator crudComponentEnumGenerator
 	@Inject CrudComponentModelEnumGenerator crudComponentModelEnumGenerator
 	@Inject CrudComponentMNConstantsHelperGenerator crudComponentMNConstantsHelperGenerator
+	@Inject CrudComponentConstantsGenerator crudComponentConstantsGenerator
+	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
+	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
+	@Inject CrudComponentH2Generator crudComponentH2Generator
 	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -186,6 +192,9 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
+			crudComponentConstantsGenerator.doGenerate(s, fsa)
+			crudComponentQuerysGenerator.doGenerate(s, fsa)
+			crudComponentMensajesESGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){
@@ -195,6 +204,8 @@ class Rdl2Generator extends AbstractGenerator {
 			// Clarity Entity
 			screenClarityHtmlGenerator.doGenerate(r, fsa)
 			screenClarityTsGenerator.doGenerate(r,fsa)
+			
+			crudComponentH2Generator.doGenerate(r,fsa)
 	
 		}
 		

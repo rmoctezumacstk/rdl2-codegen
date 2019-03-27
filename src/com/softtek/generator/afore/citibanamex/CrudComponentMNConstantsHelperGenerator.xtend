@@ -52,7 +52,7 @@ class CrudComponentMNConstantsHelperGenerator {
 	
 	def dispatch genEntity(Entity e, Module m) '''
 		public static final String PAGINA_«e.name.toUpperCase» 		= "mn/«e.name.toLowerCase»";
-		public static final String URL_PAGINA_«e.name.toUpperCase» 	= "/s«e.name.toLowerCase»";
+		public static final String URL_PAGINA_«e.name.toUpperCase» 	= "/«e.name.toLowerCase»";
 	'''	
 	
 	
