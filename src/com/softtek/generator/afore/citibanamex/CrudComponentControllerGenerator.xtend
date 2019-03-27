@@ -64,62 +64,70 @@ class CrudComponentControllerGenerator {
 		private «e.name.toLowerCase.toFirstUpper»Service «e.name.toLowerCase»Service;
 		
 		@Autowired
-		private CatalogosMNService catalogosMNService;
-	
-		@Override
-		@GetMapping(value=MNConstantesHelper.URL_PAGINA_«e.name.toUpperCase»)
-		public String pagina(Model model) {
-			
-			// Catalogos Adicionales
-			//model.addAttribute("modulo", catalogosMNService.obtenerCatalogoModulo());
-			//model.addAttribute("proceso", catalogosMNService.obtenerCatalogoProcesos());
-			//model.addAttribute("subproceso", catalogosMNService.obtenerCatalogoSubproceso());
-			
-			// Enumeraciones y Catalogos por Entidad
-			«FOR f : e.entity_fields.filter(EntityReferenceField)»
-			«f.getAttributeCatalog(e,f.name)»
-			«ENDFOR»	
-			
-			model.addAttribute("cabeceras", "Seleccione,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeColumn(e)»«ENDFOR»");	
-			model.addAttribute("origenDatos", "id«e.name.toLowerCase.toFirstUpper»,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeData(e)»«ENDFOR»");
-			return MNConstantesHelper.PAGINA_«e.name.toUpperCase»;
-		}	
+		private CatalogoService catalogoService;
 		
-		@Override
+		@GetMapping(value = "/«e.name.toLowerCase»")
+		public String «e.name.toLowerCase»(Model model) {
+			logger.debug("Se ingresa a la pantalla de «e.name.toLowerCase»");
+			model.addAttribute("tipoMedidas", catalogoService.obtenerTipoMedida());
+			model.addAttribute("edo«e.name.toLowerCase.toFirstUpper»s", catalogoService.obtenerEstadoIndicador());
+			Paginador paginador = new Paginador();
+			paginador.setFilas(10);
+			paginador.setPagina(1);
+			«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = new «e.name.toLowerCase.toFirstUpper»();
+			«e.name.toLowerCase».setNombre("");
+			EstadoIndicador estadoIndicador = new EstadoIndicador();
+			estadoIndicador.setCveEdoIndicador(0L);
+			«e.name.toLowerCase».setEstadoIndicador(estadoIndicador);
+			TipoMedida tipoMedida = new TipoMedida();
+			tipoMedida.setCveTipoMedida(0L);
+			«e.name.toLowerCase».setTipoMedida(tipoMedida);
+			paginador.setPayload(«e.name.toLowerCase»);
+			model.addAttribute("lista«e.name.toLowerCase.toFirstUpper»", obtener«e.name.toLowerCase.toFirstUpper»s(model,paginador));
+			return ComponentesGeneralesConstantsHelper.RUTA_«e.name.toUpperCase»;
+		}
+	
 		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»")
-		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtener(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-			logger.info("Se recibio la petición - consultar el «e.name.toLowerCase»: {}", data.toString());
-			return «e.name.toLowerCase»Service.obtener(data);
+		public @ResponseBody «e.name.toLowerCase.toFirstUpper» obtener«e.name.toLowerCase.toFirstUpper»(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
+			logger.debug("Se solicita obtener un «e.name.toLowerCase» con el id: {}",«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
+			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
 	
-		@Override
-		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»s")
-		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-			logger.info("Se recibio la petición - consultar todos los «e.name.toLowerCase»s: {}", data.toString());
-			return «e.name.toLowerCase»Service.obtenerTodos(data);
+		@PostMapping(value="/agregar«e.name.toLowerCase.toFirstUpper»", produces = "application/json", consumes = "application/json")
+		public @ResponseBody «e.name.toLowerCase.toFirstUpper» agregar«e.name.toLowerCase.toFirstUpper»(@RequestBody @Valid «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», 
+				Errors errors){
+			logger.debug("Se solicita agregar el «e.name.toLowerCase»: {}",ReflectionToStringBuilder.toString(«e.name.toLowerCase»));
+			if(errors.hasErrors()) {
+				return new «e.name.toLowerCase.toFirstUpper»();
+			}
+			«e.name.toLowerCase».setId«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»Service.agregar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»));
+			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
 	
-		@Override
-		@RequestMapping(value="/agregar«e.name.toLowerCase.toFirstUpper»")
-		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> agregar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-			logger.info("Se recibio la petición - agregar «e.name.toLowerCase»: {}", data.toString());
-			return «e.name.toLowerCase»Service.agregar(data);
+		@PostMapping(value="/eliminar«e.name.toLowerCase.toFirstUpper»", produces = "application/json")
+		public @ResponseBody int eliminar«e.name.toLowerCase.toFirstUpper»(@RequestBody «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»){
+			logger.debug("Se solicita eliminar un «e.name.toLowerCase» con el id: {}",«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
+			return «e.name.toLowerCase»Service.eliminar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
 		}
 	
-		@Override
-		@RequestMapping(value="/actualizar«e.name.toLowerCase.toFirstUpper»")
-		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> actualizar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-			logger.info("Se recibio la petición - actualizar «e.name.toLowerCase»: {}", data.toString());
-			return «e.name.toLowerCase»Service.actualizar(data);
+		@PostMapping(value="/actualizar«e.name.toLowerCase.toFirstUpper»", produces = "application/json", consumes = "application/json")
+		public @ResponseBody int actualizar«e.name.toLowerCase.toFirstUpper»(@RequestBody @Valid «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase», 
+				Errors errors){
+				logger.debug("Se solicita actualizar el «e.name.toLowerCase»: {}",ReflectionToStringBuilder.toString(«e.name.toLowerCase»));
+			if(errors.hasErrors()) {
+				return 0;
+			}
+			return «e.name.toLowerCase»Service.actualizar«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 		}
-	
-		@Override
-		@RequestMapping(value="/eliminar«e.name.toLowerCase.toFirstUpper»")
-		public @ResponseBody ResponsePlata<«e.name.toLowerCase.toFirstUpper»> eliminar(@RequestBody RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-			logger.info("Se recibio la petición - eliminar «e.name.toLowerCase»: {}", data.toString());
-			return «e.name.toLowerCase»Service.eliminar(data);
+		
+		/*Obtenemos los «e.name.toLowerCase» filtrando por nombre, tipoMedia y Estado Indicador*/
+		@RequestMapping(value="/obtener«e.name.toLowerCase.toFirstUpper»s", produces = "application/json", consumes = "application/json")
+		public @ResponseBody PaginadoHelper obtener«e.name.toLowerCase.toFirstUpper»s(Model model, @RequestBody Paginador paginador){
+			logger.debug("Se solicita obtener los «e.name.toLowerCase»s: nombre={}, estado={}, medida:{}",paginador.getPayload().getNombre(),paginador.getPayload().getEstadoIndicador().getCveEdoIndicador(),paginador.getPayload().getTipoMedida().getCveTipoMedida());
+			return «e.name.toLowerCase»Service.obtener«e.name.toLowerCase.toFirstUpper»s(paginador.getPayload(),paginador.getPagina(),paginador.getFilas());
 		}
-	}		
+	}
+		
 	'''
 	
 	/* Get Attribute Import*/
@@ -145,7 +153,6 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeCatalogRel(Entity e, Entity t, String name) ''' 
 	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
 	'''	
-
 	/* Get Attribute Column*/
 	def dispatch getAttributeColumn(EntityTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityLongTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
@@ -171,5 +178,4 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityIntegerField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityCurrencyField f, Entity t)'''«f.name.toLowerCase»'''	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''«IF  f !== null && !f.upperBound.equals('*')»«f.name.toLowerCase»«ENDIF»'''	
-
 }

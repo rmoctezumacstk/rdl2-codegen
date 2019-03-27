@@ -65,6 +65,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentQuerysGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
+import com.softtek.generator.jsonserver.JsonServerGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -98,7 +99,7 @@ class Rdl2Generator extends AbstractGenerator {
 	
 	// Json Server
 	@Inject JsonServerGenerator jsonServerGenerator
-	
+
 	// Banamex
 	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
@@ -152,7 +153,7 @@ class Rdl2Generator extends AbstractGenerator {
 		screenServiceGenerator.doGenerate(resource, fsa)
 		screenModelGenerator.doGenerate(resource, fsa)
 		screenHtmlGenerator.doGenerate(resource, fsa)
-		
+
 		// Banamex
 		//crudComponentHtmlGenerator.doGenerate(resource, fsa)
 //		crudComponentPaginatorHelperGenerator.doGenerate(resource, fsa)
