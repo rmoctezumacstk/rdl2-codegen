@@ -67,6 +67,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
 
+
 class Rdl2Generator extends AbstractGenerator {
 
 	@Inject BashRDLGenerator bashRDLGenerator
@@ -132,7 +133,6 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
 	@Inject CrudComponentH2Generator crudComponentH2Generator
-	
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)

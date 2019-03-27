@@ -44,7 +44,6 @@ class CrudComponentControllerGenerator {
 	import org.springframework.web.bind.annotation.RequestBody;
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.ResponseBody;
-	
 	import com.aforebanamex.plata.base.controller.BaseController;
 	import com.aforebanamex.plata.base.model.RequestPlata;
 	import com.aforebanamex.plata.base.model.ResponsePlata;
@@ -178,4 +177,5 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityIntegerField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityCurrencyField f, Entity t)'''«f.name.toLowerCase»'''	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''«IF  f !== null && !f.upperBound.equals('*')»«f.name.toLowerCase»«ENDIF»'''	
+
 }
