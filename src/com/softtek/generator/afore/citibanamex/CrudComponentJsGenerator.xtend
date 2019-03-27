@@ -20,6 +20,7 @@ import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityBooleanField
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class CrudComponentJsGenerator {
 	
@@ -228,7 +229,32 @@ class CrudComponentJsGenerator {
 			«f.getAttributeUpdate(e)»
 		«ENDFOR»
 		$('.modal«e.name.toLowerCase.toFirstUpper»Editar').modal('show');
+	}
+	
+	function paginarTabla(pagina){
+		var modelo = {
+				"paginado":{
+					"pagina":pagina,
+					"registrosMostrados":Number($("#datostabla_length select").val())
+				},
+				"payload":{
+					«var state = new State(1)»
+					«FOR f : e.entity_fields»
+					«IF f !== null && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+						«IF state.getCounter() <= 1 »
+						«f.getAttributePaginarTabla(e)»
+						«ELSE»
+						, «f.getAttributePaginarTabla(e)»
+						«ENDIF»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
+					«ENDFOR»
+				}
+			};
+		console.log(modelo);
+		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
 	}	
+	
 	'''
 	/* ./Archivo Principal */
 	
@@ -246,7 +272,9 @@ class CrudComponentJsGenerator {
 			}
 		
 			if( entityFieldUtils.isFieldRequired(f) ){
-				ifValidation += operator + f.name.toLowerCase + "== \"\""
+				if( f !== null && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) ){
+					ifValidation += operator + f.name.toLowerCase + "== \"\""	
+				}
 			}
 		}
 		
@@ -799,6 +827,17 @@ class CrudComponentJsGenerator {
 	«IF  f !== null && !f.upperBound.equals('*')»
 		«f.superType.getAttributeEntityRefJQueryAgregar(f, t, f.name)»
 	«ENDIF»	
-	'''	
+	'''		
+}
+
+/**
+ * Clase para generar funcionalidad de un contador y evitar que los incrementos del contador se pinten como parte de las plantillas.
+ */
+class State {
+	@Accessors
+	var int counter;
 	
+	new(int counter){
+		this.counter = counter;
+	}
 }

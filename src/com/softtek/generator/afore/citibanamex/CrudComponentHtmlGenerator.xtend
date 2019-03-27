@@ -487,7 +487,7 @@ class CrudComponentHtmlGenerator {
 		</div>
 		<div class="col-lg-12">
 		<select name="«glossaryName»"
-			id="«name.toLowerCase.toFirstUpper»New" class="form-control" required>
+			id="«name.toLowerCase»New" class="form-control" required>
 			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
 			<option th:each="«name.toLowerCase» : ${«name.toLowerCase»}" th:value="${«name.toLowerCase».clave}" th:utext="${«name.toLowerCase».descripcion}"/>
 		</select>

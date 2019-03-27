@@ -158,7 +158,6 @@ class CrudComponentControllerGenerator {
 	'''
 	def dispatch getAttributeCatalogRel(Entity e, Entity t, String name) ''' 
 	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
-
 	'''	
 	/* Get Attribute Column*/
 	def dispatch getAttributeColumn(EntityTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''

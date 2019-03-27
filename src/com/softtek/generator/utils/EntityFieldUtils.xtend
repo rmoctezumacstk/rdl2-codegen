@@ -35,6 +35,11 @@ import com.softtek.rdl2.EntityBooleanField
 import com.softtek.rdl2.EntityDateTimeFieldAttr
 import com.softtek.rdl2.EntityTimeFieldAttr
 import com.softtek.rdl2.EntityBooleanAttr
+import org.eclipse.emf.common.util.EList
+import com.softtek.rdl2.EntityField
+import org.eclipse.emf.ecore.util.EObjectContainmentEList
+import com.softtek.rdl2.Rdl2Package
+import com.softtek.rdl2.impl.EntityImpl
 
 class EntityFieldUtils {
 
@@ -756,4 +761,5 @@ class EntityFieldUtils {
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
 		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
 	}
+
 }

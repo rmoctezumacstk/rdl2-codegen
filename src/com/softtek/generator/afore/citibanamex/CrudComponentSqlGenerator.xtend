@@ -124,11 +124,7 @@ class CrudComponentSqlGenerator {
 		«ENDFOR»	
 		, true);
 	«ENDFOR»		
-<<<<<<< HEAD
 	«««//------------------------------------------------------------------------------------------------------------
-=======
-	«««//------------------------------------------------------------------------------------------------------------«»
->>>>>>> bde0f9cf8d8c3229dde215afed96a5903acf9df6
 	'''
 	
 	def dispatch getReferencesEntities(Entity e){
@@ -189,7 +185,6 @@ class CrudComponentSqlGenerator {
 	
 	def dispatch genRelationship(Entity e, Entity t, String name) '''
 	CVE_«e.name.toUpperCase» int(2),
->>>>>>> bde0f9cf8d8c3229dde215afed96a5903acf9df6
 	foreign key (CVE_«e.name.toUpperCase») references CGG_«e.name.toUpperCase»(CVE_«e.name.toUpperCase»),
 	'''
 	
