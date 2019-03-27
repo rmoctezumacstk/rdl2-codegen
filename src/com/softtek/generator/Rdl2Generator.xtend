@@ -29,6 +29,10 @@ import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 
 import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
@@ -135,6 +139,17 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
 	@Inject CrudComponentH2Generator crudComponentH2Generator
 	
+	// Controller
+	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
+	
+	// DAO
+	@Inject CrudComponentDaoGenerator crudComponentDaoGenerator
+	
+	// DAOImpl
+	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
+	
+	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -181,6 +196,11 @@ class Rdl2Generator extends AbstractGenerator {
 		
 		var accModules = new HashSet()
 		
+		
+		crudComponentControllerGenerator.doGenerate(resource, fsa)
+		crudComponentDaoGenerator.doGenerate(resource, fsa)
+		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
+		crudComponentModeloGenerator.doGenerate(resource, fsa)
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server

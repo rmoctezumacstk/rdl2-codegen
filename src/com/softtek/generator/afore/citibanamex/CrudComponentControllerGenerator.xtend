@@ -38,6 +38,7 @@ class CrudComponentControllerGenerator {
 	def CharSequence generateController(Entity e, Module m) '''
 
 
+
 	package com.aforebanamex.plata.configuracion.controller.myn;
 	
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -182,6 +183,5 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityIntegerField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityCurrencyField f, Entity t)'''«f.name.toLowerCase»'''	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''«IF  f !== null && !f.upperBound.equals('*')»«f.name.toLowerCase»«ENDIF»'''	
-
 
 }
