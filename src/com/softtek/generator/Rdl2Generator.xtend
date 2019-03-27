@@ -67,7 +67,6 @@ import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
 
-
 class Rdl2Generator extends AbstractGenerator {
 
 	@Inject BashRDLGenerator bashRDLGenerator

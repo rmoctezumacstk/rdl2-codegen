@@ -35,6 +35,7 @@ class CrudComponentControllerGenerator {
 	
 	
 	def CharSequence generateController(Entity e, Module m) '''
+<<<<<<< .merge_file_a18280
 	package com.aforebanamex.plata.configuracion.controller.myn;
 	
 	import org.springframework.beans.factory.annotation.Autowired;
