@@ -29,6 +29,7 @@ import com.softtek.generator.clarity.screen.admin.ScreenServiceGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenModelGenerator
 import com.softtek.generator.clarity.screen.admin.ScreenHtmlGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
+
 import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMapperGenerator
@@ -66,6 +67,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
+
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -178,6 +180,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentModelEnumGenerator.doGenerate(resource, fsa)
 		
 		var accModules = new HashSet()
+		
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server

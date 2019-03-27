@@ -29,12 +29,14 @@ class CrudComponentControllerGenerator {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
 				fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/controller/myn/" + e.name.toLowerCase.toFirstUpper + "Controller.java", e.generateController(m))
+
 			}
 		}
 	}
 	
 	
 	def CharSequence generateController(Entity e, Module m) '''
+
 
 	package com.aforebanamex.plata.configuracion.controller.myn;
 	
@@ -59,6 +61,7 @@ class CrudComponentControllerGenerator {
 	
 	@Controller
 	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController<«e.name.toLowerCase.toFirstUpper», «e.name.toLowerCase.toFirstUpper»> {
+
 
 		
 		@Autowired
