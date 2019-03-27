@@ -83,69 +83,69 @@ class CrudComponentMensajesESGenerator {
 	
 	/* Get Attribute */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	mn.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	«ENDIF»
 	'''	
 	
 	/* Get Attribute */
 	def dispatch getAttributeCg(EntityTextField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityLongTextField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityDateField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityImageField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityFileField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityEmailField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityDecimalField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityIntegerField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityCurrencyField f, Entity t)'''
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''	
 	def dispatch getAttributeCg(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	cg.«t.name.toLowerCase».«f.name.toFirstLower»=«entityFieldUtils.getFieldGlossaryName(f)»
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	«ENDIF»
 	'''	
 }

@@ -296,7 +296,7 @@ import com.softtek.rdl2.Entity
 				ESTADO_LOGICO 
 				from 
 				CGT_«e.name.toUpperCase» 
-				where ID_REGLANEGOCIO=:id and ESTADO_LOGICO = 'true'
+				where ID_«e.name.toUpperCase»=:id and ESTADO_LOGICO = 'true'
 			]]>
 		</entry>
 		<entry key="mn.consulta.«e.name.toLowerCase».registros">
@@ -345,7 +345,7 @@ import com.softtek.rdl2.Entity
 				update 
 				CGT_«e.name.toUpperCase»
 				set ESTADO_LOGICO=?
-				where ID_REGLANEGOCIO=?
+				where ID_«e.name.toUpperCase»=?
 			]]>
 		</entry>
 		<entry key="mn.inserta.«e.name.toLowerCase»">

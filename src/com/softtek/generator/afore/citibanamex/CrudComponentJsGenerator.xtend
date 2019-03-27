@@ -208,8 +208,7 @@ class CrudComponentJsGenerator {
 		var modelo = {
 				"paginado":{
 				"pagina":1,
-				«««"registrosMostrados":10
-				"registrosMostrados":Number($("#datostabla_length select").val())
+				"registrosMostrados":10
 			},
 			"payload":{
 				«FOR f : e.entity_fields SEPARATOR ","»
