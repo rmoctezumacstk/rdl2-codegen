@@ -29,6 +29,12 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 import org.apache.commons.lang3.RandomStringUtils
 import java.text.NumberFormat
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeFieldAttr
+import com.softtek.rdl2.EntityTimeFieldAttr
+import com.softtek.rdl2.EntityBooleanAttr
 
 class EntityFieldUtils {
 
@@ -100,6 +106,60 @@ class EntityFieldUtils {
 		var required = true
 		
 		for(EntityDateFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityDateTimeField field) {
+		var required = true
+		
+		for(EntityDateTimeFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityTimeField field) {
+		var required = true
+		
+		for(EntityTimeFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityBooleanField field) {
+		var required = true
+		
+		for(EntityBooleanAttr a : field.attrs) {
 			if( a.constraint !== null ) {
 				for (EntityTextConstraint c : a.constraint.constraints) {
 					if (c.entityTextConstraint !== null) {
@@ -266,6 +326,36 @@ class EntityFieldUtils {
 		return fieldName
 	}
 	
+	def dispatch getFieldGlossaryName(EntityDateTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryName(EntityTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryName(EntityBooleanField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
 	def dispatch getFieldGlossaryName(EntityImageField field) {
 		var fieldName = field.name
 		for (attr : field.attrs) {
@@ -361,6 +451,36 @@ class EntityFieldUtils {
 	}
 
 	def dispatch getFieldGlossaryDescription(EntityDateField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryDescription(EntityDateTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryDescription(EntityTimeField field) {
+		var fieldName = field.name
+		for (attr : field.attrs) {
+			if (attr.glossary !== null) {
+				fieldName = attr.glossary.glossary_name.label
+			}
+		}
+		return fieldName
+	}
+	
+	def dispatch getFieldGlossaryDescription(EntityBooleanField field) {
 		var fieldName = field.name
 		for (attr : field.attrs) {
 			if (attr.glossary !== null) {
@@ -571,6 +691,34 @@ class EntityFieldUtils {
 		return fieldData
 	}
 	
+	def dispatch fakerDomainData(EntityDateTimeField field) {
+		var fieldData = dateFormatter.format(faker.date().past(800, TimeUnit.DAYS))
+		
+		for (attr : field.attrs) {
+			if (attr.data_domain !== null) {
+				if (attr.data_domain.domain.toString=="Date::time") {
+					fieldData = timeFormatter.format(faker.date().past(800, TimeUnit.HOURS))
+				}
+			}
+		}
+
+		return fieldData
+	}
+	
+	def dispatch fakerDomainData(EntityTimeField field) {
+		var fieldData = dateFormatter.format(faker.date().past(800, TimeUnit.DAYS))
+		
+		for (attr : field.attrs) {
+			if (attr.data_domain !== null) {
+				if (attr.data_domain.domain.toString=="Date::time") {
+					fieldData = timeFormatter.format(faker.date().past(800, TimeUnit.HOURS))
+				}
+			}
+		}
+
+		return fieldData
+	}
+	
 	def dispatch fakerDomainData(EntityImageField field) {
 		var image = "https://fakeimg.pl/150x150/?text=Picture&font=lobster"
 		
@@ -586,6 +734,10 @@ class EntityFieldUtils {
 	}
 	
 	def dispatch fakerDomainData(EntityFileField field) {
+		return ""
+	}
+	
+	def dispatch fakerDomainData(EntityBooleanField field) {
 		return ""
 	}
 	

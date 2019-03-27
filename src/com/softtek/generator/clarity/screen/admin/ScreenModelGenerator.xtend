@@ -14,7 +14,9 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
-import com.softtek.rdl2.Enum 
+import com.softtek.rdl2.Enum import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class ScreenModelGenerator {
 	
@@ -42,12 +44,21 @@ class ScreenModelGenerator {
 	«f.name.toLowerCase»: number = null;
 	«f.name.toLowerCase»Aux: Date = new Date();
 	'''
+	def dispatch getAttributes(EntityDateTimeField      f, Module m, Entity t)'''
+	«f.name.toLowerCase»: number = null;
+	«f.name.toLowerCase»Aux: DateTime = new DateTime();
+	'''
+	def dispatch getAttributes(EntityTimeField      f, Module m, Entity t)'''
+	«f.name.toLowerCase»: number = null;
+	«f.name.toLowerCase»Aux: DateTime = new DateTime();
+	'''
 	def dispatch getAttributes(EntityImageField     f, Module m, Entity t)'''«f.name.toLowerCase»: string = null;'''
 	def dispatch getAttributes(EntityFileField      f, Module m, Entity t)'''«f.name.toLowerCase»: string = null;'''
 	def dispatch getAttributes(EntityEmailField     f, Module m, Entity t)'''«f.name.toLowerCase»: string = null;'''
 	def dispatch getAttributes(EntityDecimalField   f, Module m, Entity t)'''«f.name.toLowerCase»: number = null;'''
 	def dispatch getAttributes(EntityIntegerField   f, Module m, Entity t)'''«f.name.toLowerCase»: number = null;'''
 	def dispatch getAttributes(EntityCurrencyField  f, Module m, Entity t)'''«f.name.toLowerCase»: number = null;'''
+	def dispatch getAttributes(EntityBooleanField  f, Module m, Entity t)'''«f.name.toLowerCase»: boolean = false;'''
 	def dispatch getAttributes(EntityReferenceField f, Module m, Entity t)'''
 	«IF !f.upperBound.equals('*')»
 		«f.superType.getAttributesRef(m,t, f.name)»

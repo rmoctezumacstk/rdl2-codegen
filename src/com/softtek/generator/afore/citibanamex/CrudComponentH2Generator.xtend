@@ -16,6 +16,9 @@ import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
 import java.util.ArrayList
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
 
 class CrudComponentH2Generator {
 	
@@ -78,6 +81,15 @@ class CrudComponentH2Generator {
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
 	«f.name.toUpperCase» decimal(20,2) not null,
 	'''	
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	«f.name.toUpperCase» boolean not null,
+	'''	
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	«f.name.toUpperCase» date(100) not null,
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	«f.name.toUpperCase» date(100) not null,
+	'''
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('1')»

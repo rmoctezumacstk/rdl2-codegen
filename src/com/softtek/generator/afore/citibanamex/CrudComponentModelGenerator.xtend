@@ -18,6 +18,9 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentModelGenerator {
 	
@@ -107,6 +110,17 @@ class CrudComponentModelGenerator {
 	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
 	private Date «f.name.toLowerCase»;
 	'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Date «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
+	private Date «f.name.toLowerCase»;
+	'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	private Boolean «f.name.toLowerCase»;
+	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
 	@Size(min=0,max=99, message="El «f.name.toLowerCase» es incorrecto.")
 	private String «f.name.toLowerCase»;
@@ -158,6 +172,15 @@ class CrudComponentModelGenerator {
 	def dispatch getAttributeField(EntityDateField f, Entity t)'''
 	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
 	'''
+	def dispatch getAttributeField(EntityDateTimeField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityTimeField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
+	def dispatch getAttributeField(EntityBooleanField f, Entity t)'''
+	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	'''
 	def dispatch getAttributeField(EntityImageField f, Entity t)'''
 	this.«f.name.toLowerCase» = «f.name.toLowerCase»;
 	'''
@@ -204,6 +227,21 @@ class CrudComponentModelGenerator {
 	'''
 	def dispatch getAttributeFieldGet(EntityDateField f, Entity t)'''
 	public Date get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityDateTimeField f, Entity t)'''
+	public Date get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityTimeField f, Entity t)'''
+	public Date get«f.name.toLowerCase.toFirstUpper»() {
+		return «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldGet(EntityBooleanField f, Entity t)'''
+	public Boolean get«f.name.toLowerCase.toFirstUpper»() {
 		return «f.name.toLowerCase»;
 	}
 	'''
@@ -272,6 +310,21 @@ class CrudComponentModelGenerator {
 		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
 	}
 	'''
+	def dispatch getAttributeFieldSet(EntityDateTimeField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Date «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityTimeField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Date «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
+	def dispatch getAttributeFieldSet(EntityBooleanField f, Entity t)'''
+	public void set«f.name.toLowerCase.toFirstUpper»(Boolean «f.name.toLowerCase») {
+		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
+	}
+	'''
 	def dispatch getAttributeFieldSet(EntityImageField f, Entity t)'''
 	public void set«f.name.toLowerCase.toFirstUpper»(String «f.name.toLowerCase») {
 		this.«f.name.toLowerCase» = «f.name.toLowerCase»;
@@ -330,6 +383,15 @@ class CrudComponentModelGenerator {
 	'''
 	def dispatch getAttributeConstructor(EntityDateField f, Entity t)'''
 	Date «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeConstructor(EntityDateTimeField f, Entity t)'''
+	Date «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeConstructor(EntityTimeField f, Entity t)'''
+	Date «f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeConstructor(EntityBooleanField f, Entity t)'''
+	Boolean «f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeConstructor(EntityImageField f, Entity t)'''
 	String «f.name.toLowerCase»,

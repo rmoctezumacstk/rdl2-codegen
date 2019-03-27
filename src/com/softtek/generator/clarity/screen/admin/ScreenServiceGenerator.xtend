@@ -16,6 +16,9 @@ import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.rdl2.EntityReferenceField
 import com.softtek.rdl2.Enum
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
 
 class ScreenServiceGenerator {
 	
@@ -167,7 +170,9 @@ class ScreenServiceGenerator {
 	def dispatch getAttributeGet(EntityDecimalField   f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
 	def dispatch getAttributeGet(EntityIntegerField   f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
 	def dispatch getAttributeGet(EntityCurrencyField  f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
-	
+	def dispatch getAttributeGet(EntityBooleanField   f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
+	def dispatch getAttributeGet(EntityDateTimeField  f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
+	def dispatch getAttributeGet(EntityTimeField  f, Module module, Entity t)'''«f.name.toLowerCase»: this.«t.name.toLowerCase».«f.name.toLowerCase»,'''
 	def dispatch getAttributeGet(EntityReferenceField f, Module module, Entity t)'''
 	«IF !f.upperBound.equals('*')»
 		«f.superType.getAttributeGetRef(module, t, f.name.toLowerCase)»
@@ -198,6 +203,9 @@ class ScreenServiceGenerator {
 	def dispatch getAttributeSet(EntityDecimalField   f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
 	def dispatch getAttributeSet(EntityIntegerField   f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
 	def dispatch getAttributeSet(EntityCurrencyField  f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
+	def dispatch getAttributeSet(EntityTimeField      f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
+	def dispatch getAttributeSet(EntityDateTimeField  f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
+	def dispatch getAttributeSet(EntityBooleanField   f, Module module, Entity t)'''this.«t.name.toLowerCase».«f.name.toLowerCase» = «t.name.toLowerCase».«f.name.toLowerCase»;'''
 	
 	def dispatch getAttributeSet(EntityReferenceField e, Module module, Entity t)'''
 	«IF !e.upperBound.equals('*')»
@@ -228,6 +236,9 @@ class ScreenServiceGenerator {
 	def dispatch getAttributeClear(EntityDecimalField   e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
 	def dispatch getAttributeClear(EntityIntegerField   e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
 	def dispatch getAttributeClear(EntityCurrencyField  e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
+	def dispatch getAttributeClear(EntityTimeField  e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
+	def dispatch getAttributeClear(EntityDateTimeField  e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
+	def dispatch getAttributeClear(EntityBooleanField  e, Module module, Entity t)'''this.«t.name.toLowerCase».«e.name.toLowerCase» = null;'''
 	
 	def dispatch getAttributeClear(EntityReferenceField e, Module module, Entity t)'''
 	«IF !e.upperBound.equals('*')»

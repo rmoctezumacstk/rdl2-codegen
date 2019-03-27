@@ -19,6 +19,9 @@ import com.softtek.rdl2.Enum
 import com.softtek.generator.utils.EntityUtils
 import com.softtek.generator.utils.EntityFieldUtils
 import com.softtek.generator.utils.UIFlowUtils
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentControllerGenerator {
 	
@@ -155,11 +158,15 @@ class CrudComponentControllerGenerator {
 	'''
 	def dispatch getAttributeCatalogRel(Entity e, Entity t, String name) ''' 
 	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
+
 	'''	
 	/* Get Attribute Column*/
 	def dispatch getAttributeColumn(EntityTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityLongTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityDateField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
+	def dispatch getAttributeColumn(EntityDateTimeField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
+	def dispatch getAttributeColumn(EntityTimeField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
+	def dispatch getAttributeColumn(EntityBooleanField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityImageField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityFileField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityEmailField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
@@ -174,6 +181,9 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityTextField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityLongTextField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityDateField f, Entity t)'''«f.name.toLowerCase»'''
+	def dispatch getAttributeData(EntityDateTimeField f, Entity t)'''«f.name.toLowerCase»'''
+	def dispatch getAttributeData(EntityTimeField f, Entity t)'''«f.name.toLowerCase»'''
+	def dispatch getAttributeData(EntityBooleanField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityImageField f, Entity t)'''«f.name.toLowerCase»	'''
 	def dispatch getAttributeData(EntityFileField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityEmailField f, Entity t)'''«f.name.toLowerCase»'''

@@ -30,6 +30,11 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 import org.apache.commons.lang3.RandomStringUtils
 import java.util.Random
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityBooleanField
+import com.softtek.rdl2.EntityDateTimeFieldAttr
+import com.softtek.rdl2.EntityTimeFieldAttr
 
 class JsonServerGenerator {
 
@@ -101,6 +106,18 @@ class JsonServerGenerator {
 	'''
 	
 	def dispatch genDbFieldJson(EntityDateField field, Entity e) '''
+		"«field.name.toLowerCase»": «field.fakerDomainData(e)»,
+	'''
+	
+	def dispatch genDbFieldJson(EntityDateTimeField field, Entity e) '''
+		"«field.name.toLowerCase»": «field.fakerDomainData(e)»,
+	'''
+	
+	def dispatch genDbFieldJson(EntityTimeField field, Entity e) '''
+		"«field.name.toLowerCase»": «field.fakerDomainData(e)»,
+	'''
+	
+	def dispatch genDbFieldJson(EntityBooleanField field, Entity e) '''
 		"«field.name.toLowerCase»": «field.fakerDomainData(e)»,
 	'''
 
@@ -212,6 +229,38 @@ class JsonServerGenerator {
 		«field.name.toLowerCase»: joi
 			.date()
 			.timestamp()
+			«IF field.isFieldRequired»
+				.required(),
+			«ELSE»
+				.optional(),
+			«ENDIF»
+	'''
+	
+	def dispatch genSchemaByField(EntityDateTimeField field) '''
+		«field.name.toLowerCase»: joi
+			.date()
+			.timestamp()
+			«IF field.isFieldRequired»
+				.required(),
+			«ELSE»
+				.optional(),
+			«ENDIF»
+	'''
+	
+	def dispatch genSchemaByField(EntityTimeField field) '''
+		«field.name.toLowerCase»: joi
+			.date()
+			.timestamp()
+			«IF field.isFieldRequired»
+				.required(),
+			«ELSE»
+				.optional(),
+			«ENDIF»
+	'''
+	
+	def dispatch genSchemaByField(EntityBooleanField field) '''
+		«field.name.toLowerCase»: joi
+			.boolean()
 			«IF field.isFieldRequired»
 				.required(),
 			«ELSE»
@@ -357,6 +406,60 @@ class JsonServerGenerator {
 				}
 			}
 		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityDateTimeField field) {
+		var required = true
+		
+		for(EntityDateTimeFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityTimeField field) {
+		var required = true
+		
+		for(EntityTimeFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}
+		
+		return required
+	}
+	
+	def dispatch isFieldRequired(EntityBooleanField field) {
+		var required = true
+		/* 
+		for(EntityBooleanFieldAttr a : field.attrs) {
+			if( a.constraint !== null ) {
+				for (EntityTextConstraint c : a.constraint.constraints) {
+					if (c.entityTextConstraint !== null) {
+						if (c.getEntityTextConstraint.toString == "false") {
+							required = false
+						}						
+					}
+				}
+			}
+		}*/
 		
 		return required
 	}
@@ -507,6 +610,21 @@ class JsonServerGenerator {
 	def dispatch fakerDomainData(EntityDateField field, Entity e) {
 		//return formatter.format(faker.date().past(800, TimeUnit.DAYS))
 		return faker.date().past(800, TimeUnit.DAYS).getTime()
+	}
+	
+	def dispatch fakerDomainData(EntityDateTimeField field, Entity e) {
+		//return formatter.format(faker.date().past(800, TimeUnit.DAYS))
+		return faker.date().past(800, TimeUnit.DAYS).getTime()
+	}
+	
+	def dispatch fakerDomainData(EntityTimeField field, Entity e) {
+		//return formatter.format(faker.date().past(800, TimeUnit.DAYS))
+		return faker.date().past(800, TimeUnit.DAYS).getTime()
+	}
+	
+	def dispatch fakerDomainData(EntityBooleanField field, Entity e) {
+		//return formatter.format(faker.date().past(800, TimeUnit.DAYS))
+		return faker.bool()
 	}
 	
 	def dispatch fakerDomainData(EntityImageField field, Entity e) {
@@ -1165,6 +1283,15 @@ class JsonServerGenerator {
 	'''
 	
 	def dispatch genIntegrityValidation(EntityDateField field, Entity e, Module m) '''
+	'''
+	
+	def dispatch genIntegrityValidation(EntityDateTimeField field, Entity e, Module m) '''
+	'''
+	
+	def dispatch genIntegrityValidation(EntityTimeField field, Entity e, Module m) '''
+	'''
+	
+	def dispatch genIntegrityValidation(EntityBooleanField field, Entity e, Module m) '''
 	'''
 	
 	def dispatch genIntegrityValidation(EntityImageField field, Entity e, Module m) '''
