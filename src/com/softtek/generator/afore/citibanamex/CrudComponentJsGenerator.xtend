@@ -38,7 +38,8 @@ class CrudComponentJsGenerator {
 			
 		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",{"paginado":{"pagina":1,"registrosMostrados":10},"payload":{
 			«FOR f : e.entity_fields»
-				«f.getAttributeValue(e)»
+«««				«f.getAttributeValue(e)»
+				«getAttributes(e)»
 			«ENDFOR»
 		}},inicioDatos);
 		
@@ -208,8 +209,7 @@ class CrudComponentJsGenerator {
 		var modelo = {
 				"paginado":{
 				"pagina":1,
-				«««"registrosMostrados":10
-				"registrosMostrados":Number($("#datostabla_length select").val())
+				"registrosMostrados":10
 			},
 			"payload":{
 				«FOR f : e.entity_fields SEPARATOR ","»
@@ -481,6 +481,30 @@ class CrudComponentJsGenerator {
  	def dispatch getAttributeEntityRefValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
 	"«tr.name.toLowerCase»" : {"cve«tr.name.toLowerCase.toFirstUpper»": 0},
 	'''
+	
+	
+		
+	def dispatch getAttributes(Entity e){
+//		var isFirst = true
+//		var ifValidation = ""
+//		
+//		for( f : e.entity_fields ){
+//			var operator = " || "
+//			
+//			if( isFirst ){
+//				operator = ""
+//				isFirst = false
+//			}
+//			"«f.name.toLowerCase»" : "",
+//		
+//			//if( entityFieldUtils.isFieldRequired(f) ){
+////				ifValidation += operator + f.name.toLowerCase + "== \"\""
+//			//}
+//		}
+//		
+//		return ifValidation
+	}
+	
 	
 	/* getAttributeEntityClean */
 	def dispatch getAttributeEntityClean(EntityTextField f, Entity t)'''
