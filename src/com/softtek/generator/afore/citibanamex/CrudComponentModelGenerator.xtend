@@ -463,7 +463,7 @@ class CrudComponentModelGenerator {
 	'''
 	
 	def dispatch getAttributeRefImport(Entity e, Entity t, String name) ''' 
-	import com.aforebanamex.plata.comunes.model.cg.«name.toLowerCase.toFirstUpper»;
+	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 	'''	
 	
 }
