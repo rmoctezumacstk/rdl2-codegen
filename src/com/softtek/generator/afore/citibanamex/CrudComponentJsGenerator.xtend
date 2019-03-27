@@ -17,6 +17,7 @@ import com.softtek.rdl2.EntityDecimalField
 import com.softtek.rdl2.EntityIntegerField
 import com.softtek.rdl2.EntityCurrencyField
 import com.softtek.generator.utils.EntityFieldUtils
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class CrudComponentJsGenerator {
 	
@@ -37,7 +38,7 @@ class CrudComponentJsGenerator {
 		crearCabeceras();
 			
 		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",{"paginado":{"pagina":1,"registrosMostrados":10},"payload":{
-			«FOR f : e.entity_fields»
+			«FOR f : e.entity_fields SEPARATOR ","»
 				«f.getAttributeValue(e)»
 			«ENDFOR»
 		}},inicioDatos);
@@ -59,7 +60,7 @@ class CrudComponentJsGenerator {
 					},
 					"payload":{
 						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-						«FOR f : e.entity_fields»
+						«FOR f : e.entity_fields SEPARATOR ","»
 							«f.getAttributeEntityLabelValue(e)»
 						«ENDFOR»
 					}
@@ -235,8 +236,19 @@ class CrudComponentJsGenerator {
 					"registrosMostrados":Number($("#datostabla_length select").val())
 				},
 				"payload":{
-					«FOR f : e.entity_fields SEPARATOR ","»
-					«f.getAttributePaginarTabla(e)»
+					«««FOR f : e.entity_fields SEPARATOR ","»
+					«««f.getAttributePaginarTabla(e)»
+					«««ENDFOR»
+					«var state = new State(1)»
+					«FOR f : e.entity_fields»
+					«IF f !== null && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+						«IF state.getCounter() <= 1 »
+						«f.getAttributePaginarTabla(e)»
+						«ELSE»
+						, «f.getAttributePaginarTabla(e)»
+						«ENDIF»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
 					«ENDFOR»
 				}
 			};
@@ -261,7 +273,9 @@ class CrudComponentJsGenerator {
 			}
 		
 			if( entityFieldUtils.isFieldRequired(f) ){
-				ifValidation += operator + f.name.toLowerCase + "== \"\""
+				if( f !== null && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) ){
+					ifValidation += operator + f.name.toLowerCase + "== \"\""	
+				}
 			}
 		}
 		
@@ -444,31 +458,31 @@ class CrudComponentJsGenerator {
 	
 	/* getAttributeValue */
 	def dispatch getAttributeValue(EntityTextField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",
+	"«f.name.toLowerCase»" : ""
 	'''
 	def dispatch getAttributeValue(EntityLongTextField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",
+	"«f.name.toLowerCase»" : ""	
 	'''
 	def dispatch getAttributeValue(EntityDateField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",	
+	"«f.name.toLowerCase»" : ""	
 	'''
 	def dispatch getAttributeValue(EntityImageField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",	
+	"«f.name.toLowerCase»" : ""	
 	'''
 	def dispatch getAttributeValue(EntityFileField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",
+	"«f.name.toLowerCase»" : ""
 	'''
 	def dispatch getAttributeValue(EntityEmailField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",	
+	"«f.name.toLowerCase»" : ""	
 	'''
 	def dispatch getAttributeValue(EntityDecimalField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",
+	"«f.name.toLowerCase»" : ""
 	'''
 	def dispatch getAttributeValue(EntityIntegerField f, Entity t)'''
-	"«f.name.toLowerCase»" : 0,	
+	"«f.name.toLowerCase»" : 0	
 	'''
 	def dispatch getAttributeValue(EntityCurrencyField f, Entity t)'''
-	"«f.name.toLowerCase»" : "",	
+	"«f.name.toLowerCase»" : ""	
 	'''	
 	def dispatch getAttributeValue(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
@@ -476,10 +490,10 @@ class CrudComponentJsGenerator {
 	«ENDIF»
 	'''
 	def dispatch getAttributeEntityRefValue(Entity tr, EntityReferenceField f, Entity t, String name)'''
-	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": 0},
+	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": 0}
 	'''
  	def dispatch getAttributeEntityRefValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	"«tr.name.toLowerCase»" : {"cve«tr.name.toLowerCase.toFirstUpper»": 0},
+	"«tr.name.toLowerCase»" : ""
 	'''
 	
 	/* getAttributeEntityClean */
@@ -512,15 +526,8 @@ class CrudComponentJsGenerator {
 	'''	
 	def dispatch getAttributeEntityClean(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.getAttributeEntityRefClean(f, t, f.name)»
-	«ENDIF»
-	'''	
-
-	def dispatch getAttributeEntityRefClean(Entity tr, EntityReferenceField f, Entity t, String name)'''
 	"«f.name.toLowerCase»" : {"id«f.name.toLowerCase.toFirstUpper»": 0}
-	'''
- 	def dispatch getAttributeEntityRefClean(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	"«name.toLowerCase»" : {"id«name.toLowerCase.toFirstUpper»": 0}
+	«ENDIF»
 	'''	
 	
 	/* getAttributeUpdate */
@@ -721,12 +728,23 @@ class CrudComponentJsGenerator {
 		var «name.toLowerCase» = Number($("#«name.toLowerCase»New").val());
 	'''
  	def dispatch getAttributeEntityRefJQueryAgregar(Enum tr, EntityReferenceField f, Entity t, String name)'''
-		var «tr.name.toLowerCase» = Number($('#«tr.name.toLowerCase»New').val());
+		var «tr.name.toLowerCase» = $('#«tr.name.toLowerCase»New').val();
 	'''
 	def dispatch getAttributeEntityJQueryAgregar(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
 		«f.superType.getAttributeEntityRefJQueryAgregar(f, t, f.name)»
 	«ENDIF»	
-	'''	
+	'''		
+}
+
+/**
+ * Clase para generar funcionalidad de un contador y evitar que los incrementos del contador se pinten como parte de las plantillas.
+ */
+class State {
+	@Accessors
+	var int counter;
 	
+	new(int counter){
+		this.counter = counter;
+	}
 }

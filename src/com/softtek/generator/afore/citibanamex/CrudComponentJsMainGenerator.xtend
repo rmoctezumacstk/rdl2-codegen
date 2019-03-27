@@ -122,8 +122,8 @@ class CrudComponentJsMainGenerator {
 	        data:   origenDatos[0],
 	        render: function ( data, type, row ) {
 	            if ( type === 'display' ) {
-	                «««return '<input type="radio" name="radioIndex" class="editor-active" value="'+data+'">';
-	                return '<label class="containerradio"><input type="radio" style="align:center" name="radio" value="'+data+'"><span class="checkmark"></span></label>';
+	                return '<input type="radio" name="radioIndex" class="editor-active" value="'+data+'">';
+	                «««return '<label class="containerradio"><input type="radio" style="align:center" name="radio" value="'+data+'"><span class="checkmark"></span></label>';
 	            }
 	            return data;
 	        },

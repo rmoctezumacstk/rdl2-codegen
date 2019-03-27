@@ -29,6 +29,11 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 import org.apache.commons.lang3.RandomStringUtils
 import java.text.NumberFormat
+import org.eclipse.emf.common.util.EList
+import com.softtek.rdl2.EntityField
+import org.eclipse.emf.ecore.util.EObjectContainmentEList
+import com.softtek.rdl2.Rdl2Package
+import com.softtek.rdl2.impl.EntityImpl
 
 class EntityFieldUtils {
 
@@ -604,4 +609,6 @@ class EntityFieldUtils {
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
 		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
 	}
+	
+	
 }
