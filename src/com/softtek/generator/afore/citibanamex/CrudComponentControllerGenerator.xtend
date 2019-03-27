@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
+
 import com.softtek.rdl2.EntityTextField
 import com.softtek.rdl2.EntityLongTextField
 import com.softtek.rdl2.EntityDateField
@@ -30,12 +31,14 @@ class CrudComponentControllerGenerator {
 			for (e : m.elements.filter(typeof(Entity))) {
 				fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/controller/myn/" + e.name.toLowerCase.toFirstUpper + "Controller.java", e.generateController(m))
 
+
 			}
 		}
 	}
 	
 	
 	def CharSequence generateController(Entity e, Module m) '''
+
 
 
 
@@ -62,6 +65,7 @@ class CrudComponentControllerGenerator {
 	
 	@Controller
 	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController<«e.name.toLowerCase.toFirstUpper», «e.name.toLowerCase.toFirstUpper»> {
+
 
 
 		
@@ -134,6 +138,7 @@ class CrudComponentControllerGenerator {
 	}
 		
 	'''
+
 	
 	/* Get Attribute Import*/
 	def dispatch getAttributeImport(EntityReferenceField f, Entity t, String name) ''' 
@@ -183,5 +188,6 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityIntegerField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityCurrencyField f, Entity t)'''«f.name.toLowerCase»'''	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''«IF  f !== null && !f.upperBound.equals('*')»«f.name.toLowerCase»«ENDIF»'''	
+
 
 }

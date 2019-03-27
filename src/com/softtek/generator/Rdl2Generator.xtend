@@ -34,6 +34,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentDaoGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentDaoImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentModeloGenerator
 
+
 import com.softtek.generator.afore.citibanamex.CrudComponentHtmlGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMessagesGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMapperGenerator
@@ -71,6 +72,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
+
 
 
 class Rdl2Generator extends AbstractGenerator {
@@ -138,17 +140,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
 	@Inject CrudComponentH2Generator crudComponentH2Generator
-	
-	// Controller
-	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
-	
-	// DAO
-	@Inject CrudComponentDaoGenerator crudComponentDaoGenerator
-	
-	// DAOImpl
-	@Inject CrudComponentDaoImplGenerator crudComponentDaoImplGenerator
-	
-	@Inject CrudComponentModeloGenerator crudComponentModeloGenerator
+
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -195,12 +187,6 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentModelEnumGenerator.doGenerate(resource, fsa)
 		
 		var accModules = new HashSet()
-		
-		
-		crudComponentControllerGenerator.doGenerate(resource, fsa)
-		crudComponentDaoGenerator.doGenerate(resource, fsa)
-		crudComponentDaoImplGenerator.doGenerate(resource, fsa)
-		crudComponentModeloGenerator.doGenerate(resource, fsa)
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server
