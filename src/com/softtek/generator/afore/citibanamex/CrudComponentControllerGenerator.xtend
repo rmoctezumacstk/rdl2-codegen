@@ -53,11 +53,10 @@ class CrudComponentControllerGenerator {
 	import com.aforebanamex.plata.configuracion.service.mn.CatalogosMNService;
 	import com.aforebanamex.plata.configuracion.service.mn.«e.name.toLowerCase.toFirstUpper»Service;
 	
-	«FOR f : e.entity_fields»
-	«f.getAttributeImport(e)»
+	«FOR f : e.entity_fields.filter(EntityReferenceField)»
+	«f.getAttributeImport(e,f.name)»
 	«ENDFOR»	
 	
-		
 	@Controller
 	public class «e.name.toLowerCase.toFirstUpper»Controller extends BaseController<«e.name.toLowerCase.toFirstUpper», «e.name.toLowerCase.toFirstUpper»> {
 		
@@ -66,16 +65,21 @@ class CrudComponentControllerGenerator {
 		
 		@Autowired
 		private CatalogosMNService catalogosMNService;
-		
-		
+	
 		@Override
 		@GetMapping(value=MNConstantesHelper.URL_PAGINA_«e.name.toUpperCase»)
 		public String pagina(Model model) {
 			
+			// Catalogos Adicionales
 			//model.addAttribute("modulo", catalogosMNService.obtenerCatalogoModulo());
 			//model.addAttribute("proceso", catalogosMNService.obtenerCatalogoProcesos());
 			//model.addAttribute("subproceso", catalogosMNService.obtenerCatalogoSubproceso());
-	
+			
+			// Enumeraciones y Catalogos por Entidad
+			«FOR f : e.entity_fields.filter(EntityReferenceField)»
+			«f.getAttributeCatalog(e,f.name)»
+			«ENDFOR»	
+			
 			model.addAttribute("cabeceras", "Seleccione,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeColumn(e)»«ENDFOR»");	
 			model.addAttribute("origenDatos", "id«e.name.toLowerCase.toFirstUpper»,«FOR f : e.entity_fields SEPARATOR ","»«f.getAttributeData(e)»«ENDFOR»");
 			return MNConstantesHelper.PAGINA_«e.name.toUpperCase»;
@@ -118,107 +122,30 @@ class CrudComponentControllerGenerator {
 	}		
 	'''
 	
-	/* Get Attribute */
-	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	'''
-	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	'''	
-	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
-	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.genRelationship(t, f.name)»		
-	«ENDIF»
-	'''	
-	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	'''
-	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	model.addAttribute("«name.toLowerCase»", catalogoService.obtener«name.toLowerCase.toFirstUpper»());
-	'''
-	
-	/* Get Attribute Set */
-	def dispatch getAttributeSet(EntityTextField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityLongTextField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityDateField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityImageField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityFileField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityEmailField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»("");
-	'''
-	def dispatch getAttributeSet(EntityDecimalField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»(0.0);
-	'''
-	def dispatch getAttributeSet(EntityIntegerField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»(0);
-	'''
-	def dispatch getAttributeSet(EntityCurrencyField f, Entity t)'''
-	sem.set«f.name.toLowerCase.toFirstUpper»(0.0);
-	'''	
-	def dispatch getAttributeSet(EntityReferenceField f, Entity t)'''
-	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.genRelationshipSet(t, f.name)»		
-	«ENDIF»
-	'''	
-	def dispatch genRelationshipSet(Enum e, Entity t, String name) ''' 
-	'''
-	def dispatch genRelationshipSet(Entity e, Entity t, String name) ''' 
-	«name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «name.toLowerCase.toFirstUpper»();
-	«name.toLowerCase».setId«name.toLowerCase.toFirstUpper»(0);
-	sem.set«name.toLowerCase.toFirstUpper»(«name.toLowerCase»);
-	'''
-	
 	/* Get Attribute Import*/
-	def dispatch getAttributeImport(EntityTextField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityLongTextField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityDateField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityImageField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityFileField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityEmailField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityDecimalField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityIntegerField f, Entity t)'''
-	'''
-	def dispatch getAttributeImport(EntityCurrencyField f, Entity t)'''
-	'''	
-	def dispatch getAttributeImport(EntityReferenceField f, Entity t)'''
+	def dispatch getAttributeImport(EntityReferenceField f, Entity t, String name) ''' 
 	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.genRelationshipImport(t, f.name)»
+	«f.superType.genRelationshipImport(t, f.name)»		
 	«ENDIF»
-	'''	
-	def dispatch genRelationshipImport(Enum e, Entity t, String name) ''' 
 	'''
 	def dispatch genRelationshipImport(Entity e, Entity t, String name) ''' 
 	import com.aforebanamex.plata.comunes.model.cg.«name.toLowerCase.toFirstUpper»;
 	'''
+	def dispatch genRelationshipImport(Enum e, Entity t, String name) ''''''	
 	
+	/* Get Attribute Catalog*/
+	def dispatch getAttributeCatalog(EntityReferenceField f, Entity t, String name) ''' 
+	«IF  f !== null && !f.upperBound.equals('*')»
+	«f.superType.getAttributeCatalogRel(t, f.name)»
+	«ENDIF»
+	'''
+	def dispatch getAttributeCatalogRel(Enum e, Entity t, String name) ''' 
+	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
+	'''
+	def dispatch getAttributeCatalogRel(Entity e, Entity t, String name) ''' 
+	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
+	'''	
+
 	/* Get Attribute Column*/
 	def dispatch getAttributeColumn(EntityTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
 	def dispatch getAttributeColumn(EntityLongTextField f, Entity t)'''«entityFieldUtils.getFieldGlossaryName(f)»'''
@@ -244,4 +171,5 @@ class CrudComponentControllerGenerator {
 	def dispatch getAttributeData(EntityIntegerField f, Entity t)'''«f.name.toLowerCase»'''
 	def dispatch getAttributeData(EntityCurrencyField f, Entity t)'''«f.name.toLowerCase»'''	
 	def dispatch getAttributeData(EntityReferenceField f, Entity t)'''«IF  f !== null && !f.upperBound.equals('*')»«f.name.toLowerCase»«ENDIF»'''	
+
 }

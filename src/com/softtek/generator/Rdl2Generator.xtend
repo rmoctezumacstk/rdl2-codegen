@@ -42,7 +42,6 @@ import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentJsGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryImplGenerator
@@ -65,6 +64,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentMNConstantsHelperGen
 import com.softtek.generator.afore.citibanamex.CrudComponentQuerysGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -112,7 +112,7 @@ class Rdl2Generator extends AbstractGenerator {
 //	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
-	@Inject CrudComponentCatalogoServiceGenerator crudComponentCatalogoServiceGenerator
+	@Inject CrudComponentCatalogoMNServiceGenerator crudComponentCatalogoMNServiceGenerator
 	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
 	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
 	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
@@ -187,7 +187,7 @@ class Rdl2Generator extends AbstractGenerator {
 //			crudComponentConsultasGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 //			crudComponentMessagesGenerator.doGenerate(s, fsa)
-			crudComponentCatalogoServiceGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoMNServiceGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)

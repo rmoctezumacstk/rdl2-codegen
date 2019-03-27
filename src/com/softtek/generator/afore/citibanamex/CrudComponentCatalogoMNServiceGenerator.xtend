@@ -4,13 +4,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
 
-class CrudComponentCatalogoServiceGenerator {
+class CrudComponentCatalogoMNServiceGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/src/main/java/com/aforebanamex/plata/service/CatalogoService.java", genCatalogoService(s, fsa))	
+		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/CatalogosMNService.java", genCatalogoMNService(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	def CharSequence genCatalogoMNService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
 	package mx.com.aforebanamex.plata.service;
 	
 	import java.util.List;
