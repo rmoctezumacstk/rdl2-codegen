@@ -142,6 +142,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentH2Generator crudComponentH2Generator
 
 	
+	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
 		appTagGenerator.doGenerate(resource, fsa)
@@ -187,6 +188,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentModelEnumGenerator.doGenerate(resource, fsa)
 		
 		var accModules = new HashSet()
+		
 		
 		for (s : resource.allContents.toIterable.filter(typeof(com.softtek.rdl2.System))){
 			// Json Server
