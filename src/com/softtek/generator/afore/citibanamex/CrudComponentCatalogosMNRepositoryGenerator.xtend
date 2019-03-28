@@ -17,14 +17,15 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogoMNServiceGenerator {
+class CrudComponentCatalogosMNRepositoryGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/CatalogosMNService.java", genCatalogoMNService(s, fsa))	
+		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/repository/mn/CatalogosMNRepository.java", genCatalogoMNRepository(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn;
+	def CharSequence genCatalogoMNRepository(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.configuracion.repository.mn;
+	
 	import java.util.List;
 	
 	«FOR m : s.modules_ref»
@@ -33,17 +34,18 @@ class CrudComponentCatalogoMNServiceGenerator {
 				«f.genImportField(e)»
 			«ENDFOR»
 		«ENDFOR»
-	«ENDFOR»
+	«ENDFOR»	
 	
-	public interface CatalogosMNService {
-	
-	«FOR m : s.modules_ref»
-		«FOR e : m.module_ref.elements.filter(Entity)»
-			«FOR f: e.entity_fields»
-			«f.getEntityField()»
+	public interface CatalogosMNRepository {
+		
+		«FOR m : s.modules_ref»
+			«FOR e : m.module_ref.elements.filter(Entity)»
+				«FOR f: e.entity_fields»
+				«f.getEntityField()»
+				«ENDFOR»
 			«ENDFOR»
-		«ENDFOR»
-	«ENDFOR»
+		«ENDFOR»		
+		
 	}
 	'''
 	
@@ -71,8 +73,8 @@ class CrudComponentCatalogoMNServiceGenerator {
 	'''
 	def dispatch genRelationImport(Entity e, Entity t, String name) ''' 
 	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
-	'''	
-	
+	'''		
+
 	/* Get Field */
 	def dispatch getEntityField(EntityTextField f)''''''
 	def dispatch getEntityField(EntityLongTextField f)''''''

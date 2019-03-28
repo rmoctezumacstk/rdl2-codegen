@@ -17,15 +17,25 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogoMNServiceGenerator {
+class CrudComponentCatalogosMNRepositoryImplGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/CatalogosMNService.java", genCatalogoMNService(s, fsa))	
+		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/repository/mn/impl/CatalogosMNRepositoryImpl.java", genCatalogoMNRepositoryImpl(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn;
+	def CharSequence genCatalogoMNRepositoryImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.configuracion.repository.mn.impl;
+	
 	import java.util.List;
+	import org.springframework.core.ParameterizedTypeReference;
+	import org.springframework.http.HttpEntity;
+	import org.springframework.http.HttpHeaders;
+	import org.springframework.http.HttpMethod;
+	import org.springframework.http.ResponseEntity;
+	import org.springframework.stereotype.Repository;
+	import org.springframework.web.client.RestTemplate;
+	import com.aforebanamex.plata.base.restClient.BaseRestCliente;
+	import com.aforebanamex.plata.configuracion.repository.mn.CatalogosMNRepository;
 	
 	«FOR m : s.modules_ref»
 		«FOR e : m.module_ref.elements.filter(Entity)»
@@ -33,17 +43,19 @@ class CrudComponentCatalogoMNServiceGenerator {
 				«f.genImportField(e)»
 			«ENDFOR»
 		«ENDFOR»
-	«ENDFOR»
+	«ENDFOR»	
 	
-	public interface CatalogosMNService {
-	
-	«FOR m : s.modules_ref»
-		«FOR e : m.module_ref.elements.filter(Entity)»
-			«FOR f: e.entity_fields»
-			«f.getEntityField()»
+	@Repository
+	public class CatalogosMNRepositoryImpl extends BaseRestCliente implements CatalogosMNRepository {
+		
+		«FOR m : s.modules_ref»
+			«FOR e : m.module_ref.elements.filter(Entity)»
+				«FOR f: e.entity_fields»
+				«f.getEntityField()»
+				«ENDFOR»
 			«ENDFOR»
-		«ENDFOR»
-	«ENDFOR»
+		«ENDFOR»		
+		
 	}
 	'''
 	
@@ -71,8 +83,8 @@ class CrudComponentCatalogoMNServiceGenerator {
 	'''
 	def dispatch genRelationImport(Entity e, Entity t, String name) ''' 
 	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
-	'''	
-	
+	'''		
+
 	/* Get Field */
 	def dispatch getEntityField(EntityTextField f)''''''
 	def dispatch getEntityField(EntityLongTextField f)''''''
@@ -93,9 +105,28 @@ class CrudComponentCatalogoMNServiceGenerator {
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»(); 
+		@Override
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
+			logger.info("Se recibio en el repository obtener catalogo «name.toLowerCase.toFirstUpper»");
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();    
+			HttpEntity<«e.name.toLowerCase.toFirstUpper»> requestEntity = new HttpEntity<«e.name.toLowerCase.toFirstUpper»>(new «e.name.toLowerCase.toFirstUpper»(), headers);
+			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
+		}
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»();
-	'''		
+		@Override
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
+			logger.info("Se recibio en el repository obtener catalogo «name.toLowerCase.toFirstUpper»");
+			RestTemplate rt = new RestTemplate();
+			String uri = super.retrieveUri("services.url.mn");
+			HttpHeaders headers = new HttpHeaders();    
+			HttpEntity<«e.name.toLowerCase.toFirstUpper»> requestEntity = new HttpEntity<«e.name.toLowerCase.toFirstUpper»>(new «e.name.toLowerCase.toFirstUpper»(), headers);
+			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
+			return response.getBody();
+		}
+	'''	
+	
 }

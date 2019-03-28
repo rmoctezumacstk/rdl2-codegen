@@ -72,8 +72,9 @@ import com.softtek.generator.afore.citibanamex.CrudComponentMensajesESGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentH2Generator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoMNServiceGenerator
 import com.softtek.generator.jsonserver.JsonServerGenerator
-
-
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNServiceImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogosMNRepositoryImplGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogosMNRepositoryGenerator
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -121,7 +122,7 @@ class Rdl2Generator extends AbstractGenerator {
 //	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
-	@Inject CrudComponentCatalogoMNServiceGenerator crudComponentCatalogoMNServiceGenerator
+
 	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
 	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
 	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
@@ -131,7 +132,6 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentRepositoryImplGenerator crudComponentRepositoryImplGenerator
 	@Inject CrudComponentServiceImplMNGenerator crudComponentServiceImplMNGenerator
 	@Inject CrudComponentServiceMNGenerator crudComponentServiceMNGenerator
-	@Inject CrudComponentControllerMNGenerator crudComponentControllerMNGenerator
 	@Inject CrudComponentJsMainGenerator crudComponentJsMainGenerator
 	@Inject CrudComponentEnumGenerator crudComponentEnumGenerator
 	@Inject CrudComponentModelEnumGenerator crudComponentModelEnumGenerator
@@ -140,8 +140,13 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentQuerysGenerator crudComponentQuerysGenerator
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
 	@Inject CrudComponentH2Generator crudComponentH2Generator
-
 	
+	
+	@Inject CrudComponentControllerMNGenerator crudComponentControllerMNGenerator
+	@Inject CrudComponentCatalogoMNServiceGenerator crudComponentCatalogoMNServiceGenerator
+	@Inject CrudComponentCatalogMNServiceImplGenerator crudComponentCatalogoMNServiceImplGenerator
+	@Inject CrudComponentCatalogosMNRepositoryImplGenerator crudComponentCatalogosMNRepositoryImplGenerator
+	@Inject CrudComponentCatalogosMNRepositoryGenerator crudComponentCatalogosMNRepositoryGenerator
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -199,13 +204,16 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 //			crudComponentMessagesGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoMNServiceGenerator.doGenerate(s, fsa)
-			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
-			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
-			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
+			crudComponentCatalogoMNServiceImplGenerator.doGenerate(s, fsa)
+//			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
+//			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
+//			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 			crudComponentQuerysGenerator.doGenerate(s, fsa)
 			crudComponentMensajesESGenerator.doGenerate(s, fsa)
+			crudComponentCatalogosMNRepositoryImplGenerator.doGenerate(s, fsa)
+			crudComponentCatalogosMNRepositoryGenerator.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){

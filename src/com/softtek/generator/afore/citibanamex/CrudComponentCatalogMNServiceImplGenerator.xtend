@@ -17,15 +17,21 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogoMNServiceGenerator {
-	
+class CrudComponentCatalogMNServiceImplGenerator {
+
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/CatalogosMNService.java", genCatalogoMNService(s, fsa))	
+		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/impl/CatalogosMNServiceImpl.java", genCatalogoMNServiceImpl(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn;
+	def CharSequence genCatalogoMNServiceImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.configuracion.service.mn.impl;
+	
 	import java.util.List;
+	
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.stereotype.Service;
+	import com.aforebanamex.plata.configuracion.repository.mn.CatalogosMNRepository;
+	import com.aforebanamex.plata.configuracion.service.mn.CatalogosMNService;
 	
 	«FOR m : s.modules_ref»
 		«FOR e : m.module_ref.elements.filter(Entity)»
@@ -35,15 +41,19 @@ class CrudComponentCatalogoMNServiceGenerator {
 		«ENDFOR»
 	«ENDFOR»
 	
-	public interface CatalogosMNService {
+	@Service
+	public class CatalogosMNServiceImpl implements CatalogosMNService {
+		
+		@Autowired
+		private CatalogosMNRepository catalogosMNRepository;
 	
-	«FOR m : s.modules_ref»
-		«FOR e : m.module_ref.elements.filter(Entity)»
-			«FOR f: e.entity_fields»
-			«f.getEntityField()»
+		«FOR m : s.modules_ref»
+			«FOR e : m.module_ref.elements.filter(Entity)»
+				«FOR f: e.entity_fields»
+				«f.getEntityField()»
+				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
-	«ENDFOR»
 	}
 	'''
 	
@@ -89,13 +99,19 @@ class CrudComponentCatalogoMNServiceGenerator {
 	
 	def dispatch getEntityField(EntityReferenceField f)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.getEntityFieldRel(f.name)»
+		«f.superType.getEntityFieldRel(f.name)»
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»(); 
+		@Override
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
+			return catalogosMNRepository.obtenerCatalogo«name.toLowerCase.toFirstUpper»();
+		}	
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»();
+		@Override
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
+			return catalogosMNRepository.obtenerCatalogo«name.toLowerCase.toFirstUpper»();
+		}	
 	'''		
 }
