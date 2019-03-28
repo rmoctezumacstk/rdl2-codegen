@@ -95,9 +95,9 @@ class CrudComponentCatalogosMNRepositoryGenerator {
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»(); 
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»(); 
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»();
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 	'''		
 }

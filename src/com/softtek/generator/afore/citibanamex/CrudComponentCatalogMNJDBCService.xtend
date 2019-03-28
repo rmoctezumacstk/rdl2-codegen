@@ -17,21 +17,16 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogMNServiceImplGenerator {
-
+class CrudComponentCatalogMNJDBCService {
+	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/impl/CatalogosMNServiceImpl.java", genCatalogoMNServiceImpl(s, fsa))	
+		fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/service/CatalogosMNService.java", genCatalogoMNmnService(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNServiceImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn.impl;
+	def CharSequence genCatalogoMNmnService(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.cg.mn.service;
 	
 	import java.util.List;
-	
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
-	import com.aforebanamex.plata.configuracion.repository.mn.CatalogosMNRepository;
-	import com.aforebanamex.plata.configuracion.service.mn.CatalogosMNService;
 	
 	«FOR m : s.modules_ref»
 		«FOR e : m.module_ref.elements.filter(Entity)»
@@ -41,19 +36,15 @@ class CrudComponentCatalogMNServiceImplGenerator {
 		«ENDFOR»
 	«ENDFOR»
 	
-	@Service
-	public class CatalogosMNServiceImpl implements CatalogosMNService {
-		
-		@Autowired
-		private CatalogosMNRepository catalogosMNRepository;
+	public interface CatalogosMNService {
 	
-		«FOR m : s.modules_ref»
-			«FOR e : m.module_ref.elements.filter(Entity)»
-				«FOR f: e.entity_fields»
-				«f.getEntityField()»
-				«ENDFOR»
+	«FOR m : s.modules_ref»
+		«FOR e : m.module_ref.elements.filter(Entity)»
+			«FOR f: e.entity_fields»
+			«f.getEntityField()»
 			«ENDFOR»
 		«ENDFOR»
+	«ENDFOR»
 	}
 	'''
 	
@@ -103,15 +94,9 @@ class CrudComponentCatalogMNServiceImplGenerator {
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
-		}	
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»(); 
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
-		}	
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 	'''		
 }

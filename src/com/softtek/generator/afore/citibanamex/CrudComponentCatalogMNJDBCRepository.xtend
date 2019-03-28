@@ -17,21 +17,16 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogMNServiceImplGenerator {
-
+class CrudComponentCatalogMNJDBCRepository {
+	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/impl/CatalogosMNServiceImpl.java", genCatalogoMNServiceImpl(s, fsa))	
+		fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/repository/CatalogosMNJDBCRepository.java", genCatalogoMNJDBCRepository(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNServiceImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn.impl;
+	def CharSequence genCatalogoMNJDBCRepository(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.cg.mn.repository;
 	
 	import java.util.List;
-	
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
-	import com.aforebanamex.plata.configuracion.repository.mn.CatalogosMNRepository;
-	import com.aforebanamex.plata.configuracion.service.mn.CatalogosMNService;
 	
 	«FOR m : s.modules_ref»
 		«FOR e : m.module_ref.elements.filter(Entity)»
@@ -39,21 +34,18 @@ class CrudComponentCatalogMNServiceImplGenerator {
 				«f.genImportField(e)»
 			«ENDFOR»
 		«ENDFOR»
-	«ENDFOR»
+	«ENDFOR»	
 	
-	@Service
-	public class CatalogosMNServiceImpl implements CatalogosMNService {
+	public interface CatalogosMNJDBCRepository {
 		
-		@Autowired
-		private CatalogosMNRepository catalogosMNRepository;
-	
 		«FOR m : s.modules_ref»
 			«FOR e : m.module_ref.elements.filter(Entity)»
 				«FOR f: e.entity_fields»
 				«f.getEntityField()»
 				«ENDFOR»
 			«ENDFOR»
-		«ENDFOR»
+		«ENDFOR»		
+		
 	}
 	'''
 	
@@ -81,8 +73,8 @@ class CrudComponentCatalogMNServiceImplGenerator {
 	'''
 	def dispatch genRelationImport(Entity e, Entity t, String name) ''' 
 	import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
-	'''	
-	
+	'''		
+
 	/* Get Field */
 	def dispatch getEntityField(EntityTextField f)''''''
 	def dispatch getEntityField(EntityLongTextField f)''''''
@@ -99,19 +91,13 @@ class CrudComponentCatalogMNServiceImplGenerator {
 	
 	def dispatch getEntityField(EntityReferenceField f)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.getEntityFieldRel(f.name)»
+	«f.superType.getEntityFieldRel(f.name)»
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
-		}	
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»(); 
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
-		}	
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 	'''		
 }

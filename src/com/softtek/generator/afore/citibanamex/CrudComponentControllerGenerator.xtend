@@ -136,10 +136,10 @@ class CrudComponentControllerGenerator {
 	«ENDIF»
 	'''	
 	def dispatch genRelationship(Enum e, Entity t, String name) ''' 
-	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
+	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»());
 	'''
 	def dispatch genRelationship(Entity e, Entity t, String name) ''' 
-	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«name.toLowerCase.toFirstUpper»());
+	model.addAttribute("«name.toLowerCase»", catalogosMNService.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	/* Get Attribute Import*/

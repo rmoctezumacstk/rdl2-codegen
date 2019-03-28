@@ -48,9 +48,6 @@ import com.softtek.generator.afore.citibanamex.CrudComponentConsultasGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentConstantsGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentControllerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentJsGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoServiceImplGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryGenerator
-import com.softtek.generator.afore.citibanamex.CrudComponentCatalogoRepositoryImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentServiceGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentJDBCRepositoryGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentJDBCRepositoryImplGenerator
@@ -75,6 +72,10 @@ import com.softtek.generator.jsonserver.JsonServerGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNServiceImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogosMNRepositoryImplGenerator
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogosMNRepositoryGenerator
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCService
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCServiceImpl
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCRepository
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCRepositoryImpl
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -123,9 +124,6 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 
-	@Inject CrudComponentCatalogoServiceImplGenerator crudComponentCatalogoServiceImplGenerator
-	@Inject CrudComponentCatalogoRepositoryGenerator crudComponentCatalogoRepositoryGenerator
-	@Inject CrudComponentCatalogoRepositoryImplGenerator crudComponentCatalogoRepositoryImplGenerator
 	@Inject CrudComponentJDBCRepositoryGenerator crudComponentJDBCRepositoryGenerator
 	@Inject CrudComponentJDBCRepositoryImplGenerator crudComponentJDBCRepositoryImplGenerator
 	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
@@ -141,12 +139,18 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentMensajesESGenerator crudComponentMensajesESGenerator
 	@Inject CrudComponentH2Generator crudComponentH2Generator
 	
-	
+	// Back
 	@Inject CrudComponentControllerMNGenerator crudComponentControllerMNGenerator
 	@Inject CrudComponentCatalogoMNServiceGenerator crudComponentCatalogoMNServiceGenerator
 	@Inject CrudComponentCatalogMNServiceImplGenerator crudComponentCatalogoMNServiceImplGenerator
 	@Inject CrudComponentCatalogosMNRepositoryImplGenerator crudComponentCatalogosMNRepositoryImplGenerator
 	@Inject CrudComponentCatalogosMNRepositoryGenerator crudComponentCatalogosMNRepositoryGenerator
+	
+	// Service
+	@Inject CrudComponentCatalogMNJDBCServiceImpl crudComponentCatalogMNmnServiceImpl
+	@Inject CrudComponentCatalogMNJDBCService crudComponentCatalogMNmnService
+	@Inject CrudComponentCatalogMNJDBCRepository crudComponentCatalogMNJDBCRepository
+	@Inject CrudComponentCatalogMNJDBCRepositoryImpl crudComponentCatalogMNJDBCRepositoryImpl
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		indexJsGenerator.doGenerate(resource, fsa)
@@ -214,6 +218,10 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentMensajesESGenerator.doGenerate(s, fsa)
 			crudComponentCatalogosMNRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentCatalogosMNRepositoryGenerator.doGenerate(s, fsa)
+			crudComponentCatalogMNmnService.doGenerate(s, fsa)
+			crudComponentCatalogMNmnServiceImpl.doGenerate(s, fsa)
+			crudComponentCatalogMNJDBCRepository.doGenerate(s, fsa)
+			crudComponentCatalogMNJDBCRepositoryImpl.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){

@@ -21,7 +21,7 @@ import com.softtek.rdl2.EntityBooleanField
 class CrudComponentConstantsGenerator {
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/src/main/java/mx/com/aforebanamex/plata/helper/ComponentesGeneralesConstantsHelper.java", genJavaConstants(s, fsa))	
+		fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/helper/ComponentesGeneralesConstantsHelper.java", genJavaConstants(s, fsa))	
 	}
 	
 	def CharSequence genJavaConstants(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''

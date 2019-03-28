@@ -89,13 +89,13 @@ class CrudComponentCatalogoMNServiceGenerator {
 	
 	def dispatch getEntityField(EntityReferenceField f)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-	«f.superType.getEntityFieldRel(f.name)»
+		«f.superType.getEntityFieldRel(f.name)»
 	«ENDIF»
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»(); 
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»(); 
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
-		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»();
+		List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 	'''		
 }

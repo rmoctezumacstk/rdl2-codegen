@@ -17,21 +17,21 @@ import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.Enum
 
-class CrudComponentCatalogMNServiceImplGenerator {
-
+class CrudComponentCatalogMNJDBCServiceImpl {
+	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/java/com/aforebanamex/plata/configuracion/service/mn/impl/CatalogosMNServiceImpl.java", genCatalogoMNServiceImpl(s, fsa))	
+		fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/service/impl/CatalogosMNServiceImpl.java", genCatalogoMNmnServiceImpl(s, fsa))	
 	}
 	
-	def CharSequence genCatalogoMNServiceImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
-	package com.aforebanamex.plata.configuracion.service.mn.impl;
+	def CharSequence genCatalogoMNmnServiceImpl(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''
+	package com.aforebanamex.plata.cg.mn.service.impl;
 	
 	import java.util.List;
 	
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
-	import com.aforebanamex.plata.configuracion.repository.mn.CatalogosMNRepository;
-	import com.aforebanamex.plata.configuracion.service.mn.CatalogosMNService;
+	import com.aforebanamex.plata.cg.mn.repository.CatalogosMNJDBCRepository;
+	import com.aforebanamex.plata.cg.mn.service.CatalogosMNService;
 	
 	«FOR m : s.modules_ref»
 		«FOR e : m.module_ref.elements.filter(Entity)»
@@ -39,13 +39,14 @@ class CrudComponentCatalogMNServiceImplGenerator {
 				«f.genImportField(e)»
 			«ENDFOR»
 		«ENDFOR»
-	«ENDFOR»
+	«ENDFOR»	
+		
 	
 	@Service
 	public class CatalogosMNServiceImpl implements CatalogosMNService {
 		
 		@Autowired
-		private CatalogosMNRepository catalogosMNRepository;
+		private CatalogosMNJDBCRepository catalogosMNJDBCRepository;
 	
 		«FOR m : s.modules_ref»
 			«FOR e : m.module_ref.elements.filter(Entity)»
@@ -54,8 +55,9 @@ class CrudComponentCatalogMNServiceImplGenerator {
 				«ENDFOR»
 			«ENDFOR»
 		«ENDFOR»
-	}
-	'''
+
+	}	
+	'''	
 	
 	/* Get Import */
 	def dispatch genImportField(EntityTextField f, Entity t)''''''
@@ -105,13 +107,13 @@ class CrudComponentCatalogMNServiceImplGenerator {
 	def dispatch getEntityFieldRel(Enum e, String name) '''
 		@Override
 		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
+			return catalogosMNJDBCRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 		}	
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
 		@Override
 		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
-			return catalogosMNRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
+			return catalogosMNJDBCRepository.obtenerCatalogo«e.name.toLowerCase.toFirstUpper»();
 		}	
-	'''		
+	'''			
 }

@@ -106,25 +106,25 @@ class CrudComponentCatalogosMNRepositoryImplGenerator {
 	'''	
 	def dispatch getEntityFieldRel(Enum e, String name) '''
 		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
-			logger.info("Se recibio en el repository obtener catalogo «name.toLowerCase.toFirstUpper»");
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
+			logger.info("Se recibio en el repository obtener catalogo «e.name.toLowerCase.toFirstUpper»");
 			RestTemplate rt = new RestTemplate();
 			String uri = super.retrieveUri("services.url.mn");
 			HttpHeaders headers = new HttpHeaders();    
 			HttpEntity<«e.name.toLowerCase.toFirstUpper»> requestEntity = new HttpEntity<«e.name.toLowerCase.toFirstUpper»>(new «e.name.toLowerCase.toFirstUpper»(), headers);
-			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
+			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
 			return response.getBody();
 		}
 	'''
 	def dispatch getEntityFieldRel(Entity e, String name) ''' 
 		@Override
-		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«name.toLowerCase.toFirstUpper»() {
-			logger.info("Se recibio en el repository obtener catalogo «name.toLowerCase.toFirstUpper»");
+		public List<«e.name.toLowerCase.toFirstUpper»> obtenerCatalogo«e.name.toLowerCase.toFirstUpper»() {
+			logger.info("Se recibio en el repository obtener catalogo «e.name.toLowerCase.toFirstUpper»");
 			RestTemplate rt = new RestTemplate();
 			String uri = super.retrieveUri("services.url.mn");
 			HttpHeaders headers = new HttpHeaders();    
 			HttpEntity<«e.name.toLowerCase.toFirstUpper»> requestEntity = new HttpEntity<«e.name.toLowerCase.toFirstUpper»>(new «e.name.toLowerCase.toFirstUpper»(), headers);
-			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
+			ResponseEntity<List<«e.name.toLowerCase.toFirstUpper»>> response =  rt.exchange(uri+"obtenerCatalogo«e.name.toLowerCase.toFirstUpper»", HttpMethod.PUT,requestEntity, new ParameterizedTypeReference<List<«e.name.toLowerCase.toFirstUpper»>>(){});
 			return response.getBody();
 		}
 	'''	
