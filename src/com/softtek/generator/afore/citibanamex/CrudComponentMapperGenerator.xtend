@@ -63,7 +63,7 @@ class CrudComponentMapperGenerator {
 	def dispatch getAttribute(EntityDateField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityTimeField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
-	def dispatch getAttribute(EntityBooleanField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getDate("«f.name.toUpperCase»"));'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getBoolean("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''«t.name.toLowerCase».set«f.name.toLowerCase.toFirstUpper»(rs.getString("«f.name.toUpperCase»"));'''
@@ -81,12 +81,12 @@ class CrudComponentMapperGenerator {
     «e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = new «e.name.toLowerCase.toFirstUpper»();
     «e.name.toLowerCase».setCve«e.name.toLowerCase.toFirstUpper»(rs.getLong("CVE_«e.name.toUpperCase»"));
     «e.name.toLowerCase».setDescripcion(«e.name.toLowerCase.toFirstUpper»Enum.getDescripcionCve(rs.getInt("CVE_«e.name.toUpperCase»")));
-    «t.name.toLowerCase».set«e.name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
+    «t.name.toLowerCase».set«name.toLowerCase.toFirstUpper»(«e.name.toLowerCase»);
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-	«name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «name.toLowerCase.toFirstUpper»();
-	«name.toLowerCase».setId«name.toLowerCase.toFirstUpper»(rs.getInt("ID_«name.toUpperCase»"));
+	«e.name.toLowerCase.toFirstUpper» «name.toLowerCase» = new «e.name.toLowerCase.toFirstUpper»();
+	«name.toLowerCase».setId«e.name.toLowerCase.toFirstUpper»(rs.getInt("ID_«e.name.toUpperCase»"));
 	«t.name.toLowerCase».set«name.toLowerCase.toFirstUpper»(«name.toLowerCase»);
 	'''
 	

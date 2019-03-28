@@ -111,9 +111,7 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject JsonServerGenerator jsonServerGenerator
 
 	// Banamex
-	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
-	@Inject CrudComponentMapperGenerator crudComponentMapperGenerator
 	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
 	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
@@ -124,10 +122,16 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 
+	// Services
 	@Inject CrudComponentJDBCRepositoryGenerator crudComponentJDBCRepositoryGenerator
 	@Inject CrudComponentJDBCRepositoryImplGenerator crudComponentJDBCRepositoryImplGenerator
+	@Inject CrudComponentMapperGenerator crudComponentMapperGenerator
+	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
+	
+	// Back
 	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
 	@Inject CrudComponentRepositoryImplGenerator crudComponentRepositoryImplGenerator
+	
 	@Inject CrudComponentServiceImplMNGenerator crudComponentServiceImplMNGenerator
 	@Inject CrudComponentServiceMNGenerator crudComponentServiceMNGenerator
 	@Inject CrudComponentJsMainGenerator crudComponentJsMainGenerator

@@ -284,12 +284,14 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''	
 	
 	def dispatch genRelationshipSearchCondicion(Enum e, Entity t, String name) ''' 
-
+«««	if (!«t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»().equals(0)) {
+«««		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase» + «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase»_CIERRE;
+«««	}	
 	'''
 	
 	def dispatch genRelationshipSearchCondicion(Entity e, Entity t, String name) ''' 
-	if (!«t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»().equals(0)) {
-		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase» + «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase»_CIERRE;
+	if (!«t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»().equals(0)) {
+		condicion += ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase» + «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»() + ComponentesGeneralesConstantsHelper.«t.name.toUpperCase»_«e.name.toUpperCase»_CIERRE;
 	}	
 	'''	
 
@@ -401,11 +403,11 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''	
 	
 	def dispatch getAttributeRefValue(Enum e, Entity t, String name) ''' 
-	params.addValue("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
+	params.addValue("«e.name.toLowerCase»", «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	def dispatch getAttributeRefValue(Entity e, Entity t, String name) ''' 
-	params.addValue("id«e.name.toLowerCase.toFirstUpper»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
+	params.addValue("id«e.name.toLowerCase.toFirstUpper»", «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	/* getAttributeValue */
@@ -453,11 +455,11 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	'''	
 	
 	def dispatch getAttributeRefPut(Enum e, Entity t, String name) ''' 
-	params.put("«e.name.toLowerCase»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
+	params.put("«e.name.toLowerCase»", «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getCve«e.name.toLowerCase.toFirstUpper»());
 	'''
 	
 	def dispatch getAttributeRefPut(Entity e, Entity t, String name) ''' 
-	params.put("id«e.name.toLowerCase.toFirstUpper»", «t.name.toLowerCase».get«e.name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
+	params.put("id«e.name.toLowerCase.toFirstUpper»", «t.name.toLowerCase».get«name.toLowerCase.toFirstUpper»().getId«e.name.toLowerCase.toFirstUpper»());
 	'''	
 			
 	
