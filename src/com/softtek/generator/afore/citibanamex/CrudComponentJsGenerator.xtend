@@ -240,7 +240,7 @@ class CrudComponentJsGenerator {
 				"payload":{
 					«var state = new State(1)»
 					«FOR f : e.entity_fields»
-					«IF f !== null && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+					«IF f !== null && entityFieldUtils.isFieldRequired(f) && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
 						«IF state.getCounter() <= 1 »
 						«f.getAttributePaginarTabla(e)»
 						«ELSE»
