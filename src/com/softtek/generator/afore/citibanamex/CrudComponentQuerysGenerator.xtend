@@ -21,8 +21,11 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
-	
-	class CrudComponentQuerysGenerator {
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
+
+class CrudComponentQuerysGenerator {
 		
 		var entityUtils = new EntityUtils
 		var entityFieldUtils = new EntityFieldUtils
@@ -376,28 +379,37 @@ import com.softtek.rdl2.Entity
 	«f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+    «f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+    «f.name.toUpperCase»,
+	'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-«f.name.toUpperCase»,
+    «f.name.toUpperCase»,
 	'''	
 	
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
@@ -419,28 +431,37 @@ import com.softtek.rdl2.Entity
 	«f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityLongTextField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityDateField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityDateTimeField f, Entity t)'''
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityTimeField f, Entity t)'''
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeUpdate(EntityBooleanField f, Entity t)'''
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityImageField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityFileField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityEmailField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityDecimalField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityIntegerField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeUpdate(EntityCurrencyField f, Entity t)'''
-«f.name.toUpperCase»=:«f.name.toLowerCase»,
+    «f.name.toUpperCase»=:«f.name.toLowerCase»,
 	'''	
 	
 	def dispatch getAttributeUpdate(EntityReferenceField f, Entity t)'''
@@ -462,28 +483,37 @@ import com.softtek.rdl2.Entity
 	:«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityLongTextField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityDateField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityDateTimeField f, Entity t)'''
+    :«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityTimeField f, Entity t)'''
+    :«f.name.toLowerCase»,
+	'''
+	def dispatch getAttributeValues(EntityBooleanField f, Entity t)'''
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityImageField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityFileField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityEmailField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityDecimalField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityIntegerField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''
 	def dispatch getAttributeValues(EntityCurrencyField f, Entity t)'''
-:«f.name.toLowerCase»,
+    :«f.name.toLowerCase»,
 	'''	
 	
 	def dispatch getAttributeValues(EntityReferenceField f, Entity t)'''

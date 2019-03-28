@@ -21,6 +21,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
+import com.softtek.rdl2.EntityDateTimeField
+import com.softtek.rdl2.EntityTimeField
+import com.softtek.rdl2.EntityBooleanField
 
 class CrudComponentMensajesESGenerator {
 	
@@ -91,6 +94,15 @@ class CrudComponentMensajesESGenerator {
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
 	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
+	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
 	mn.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
@@ -131,6 +143,15 @@ class CrudComponentMensajesESGenerator {
 	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityDateField f, Entity t)'''
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
+	def dispatch getAttributeCg(EntityDateTimeField f, Entity t)'''
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
+	def dispatch getAttributeCg(EntityTimeField f, Entity t)'''
+	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
+	'''
+	def dispatch getAttributeCg(EntityBooleanField f, Entity t)'''
 	cg.«t.name.toLowerCase».«f.name.toLowerCase»=«entityFieldUtils.getFieldGlossaryName(f)»
 	'''
 	def dispatch getAttributeCg(EntityImageField f, Entity t)'''
