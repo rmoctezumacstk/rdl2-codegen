@@ -76,6 +76,7 @@ import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCService
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCServiceImpl
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCRepository
 import com.softtek.generator.afore.citibanamex.CrudComponentCatalogMNJDBCRepositoryImpl
+import com.softtek.generator.afore.citibanamex.CrudComponentCatalogosMNControllerComponent
 
 class Rdl2Generator extends AbstractGenerator {
 
@@ -112,8 +113,6 @@ class Rdl2Generator extends AbstractGenerator {
 
 	// Banamex
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
-	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
-	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
 //	@Inject CrudComponentPaginatorHelperGenerator crudComponentPaginatorHelperGenerator
 //	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
@@ -123,10 +122,13 @@ class Rdl2Generator extends AbstractGenerator {
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 
 	// Services
+	@Inject CrudComponentServiceImplGenerator crudComponentServiceImplGenerator
+	@Inject CrudComponentServiceGenerator crudComponentServiceGenerator 
 	@Inject CrudComponentJDBCRepositoryGenerator crudComponentJDBCRepositoryGenerator
 	@Inject CrudComponentJDBCRepositoryImplGenerator crudComponentJDBCRepositoryImplGenerator
 	@Inject CrudComponentMapperGenerator crudComponentMapperGenerator
 	@Inject CrudComponentHtmlGenerator crudComponentHtmlGenerator
+	@Inject CrudComponentCatalogosMNControllerComponent crudComponentCatalogosMNControllerComponent
 	
 	// Back
 	@Inject CrudComponentRepositoryGenerator crudComponentRepositoryGenerator
@@ -226,6 +228,7 @@ class Rdl2Generator extends AbstractGenerator {
 			crudComponentCatalogMNmnServiceImpl.doGenerate(s, fsa)
 			crudComponentCatalogMNJDBCRepository.doGenerate(s, fsa)
 			crudComponentCatalogMNJDBCRepositoryImpl.doGenerate(s, fsa)
+			crudComponentCatalogosMNControllerComponent.doGenerate(s, fsa)
 		}		
 		
 		for(r:resource.resourceSet.resources){

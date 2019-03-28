@@ -33,9 +33,7 @@ class CrudComponentConstantsGenerator {
 	 * 
 	 */
 	
-	package mx.com.aforebanamex.plata.helper;
-	
-	import mx.com.aforebanamex.plata.model.StatusTypeEnum;
+	package com.aforebanamex.plata.cg.mn.helper; 
 	
 	/** Constantes de rutas jsp. */
 	public class ComponentesGeneralesConstantsHelper {
@@ -106,13 +104,6 @@ class CrudComponentConstantsGenerator {
 		«e.genEntity(m.module_ref)»
 			«ENDFOR»
 		«ENDFOR»
-		
-		public static String getStatusEspanol (String estatus) {
-			
-			return estatus.equals(StatusTypeEnum.ACTIVO.getDescription()) ? StatusTypeEnum.ACTIVO.getDescripcion()
-					: StatusTypeEnum.INACTIVO.getDescripcion(); 
-			
-		}
 	}
 	'''
 
