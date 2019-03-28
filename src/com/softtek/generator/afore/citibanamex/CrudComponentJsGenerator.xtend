@@ -678,7 +678,7 @@ class CrudComponentJsGenerator {
 	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": $("#«tr.name.toLowerCase»Semaf").val()}	
 	'''
  	def dispatch getAttributeRefPaginarTabla(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	
+	"«tr.name.toLowerCase»" : {"id«tr.name.toLowerCase.toFirstUpper»": $("#«tr.name.toLowerCase»Semaf").val()}
 	'''
 	def dispatch getAttributePaginarTabla(EntityReferenceField f, Entity t)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
