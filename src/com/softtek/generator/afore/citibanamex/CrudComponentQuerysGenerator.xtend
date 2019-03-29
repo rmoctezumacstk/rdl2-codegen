@@ -327,8 +327,18 @@ class CrudComponentQuerysGenerator {
 			<![CDATA[
 				insert into 
 				CGT_«e.name.toUpperCase»
-				(CLAVE,DESCRIPCION,ESTADO_LOGICO ) 
-				values(:clave,:descripcion,:estadoLogico)
+				(
+				«FOR f : e.entity_fields»
+				«f.getAttribute(e)»
+				«ENDFOR»
+				ESTADO_LOGICO 
+				) 
+				values(
+				«FOR f : e.entity_fields»
+				«f.getAttributeValues(e)»
+				«ENDFOR»
+				:estadoLogico
+				)
 			]]>
 		</entry>
 		<entry key="mn.actualizar.«e.name.toLowerCase»">
@@ -419,11 +429,11 @@ class CrudComponentQuerysGenerator {
 	'''	
 	
 	def dispatch genRelationshipFieldGetSetOne(Enum e, Entity t, String name) ''' 
-«name.toUpperCase»,
+CVE_«name.toUpperCase»,
 	'''
 	
 	def dispatch genRelationshipFieldGetSetOne(Entity e, Entity t, String name) ''' 
-«name.toUpperCase»,
+ID_«name.toUpperCase»,
 	'''	
 	
 	/* Get Attribute Update*/	
@@ -471,11 +481,11 @@ class CrudComponentQuerysGenerator {
 	'''	
 	
 	def dispatch genRelationshipUpdate(Enum e, Entity t, String name) '''
-	«name.toUpperCase»=:«name.toLowerCase», 
+	CVE_«name.toUpperCase»=:id«name.toLowerCase.toFirstUpper», 
 	'''
 	
 	def dispatch genRelationshipUpdate(Entity e, Entity t, String name) ''' 
-«name.toUpperCase»=:«name.toLowerCase», 
+	ID_«name.toUpperCase»=:cve«name.toLowerCase.toFirstUpper», 
 	'''	
 
 	/* Get Attribute Values*/	
@@ -523,11 +533,11 @@ class CrudComponentQuerysGenerator {
 	'''	
 	
 	def dispatch genRelationshipValues(Enum e, Entity t, String name) '''
-:«name.toLowerCase»,
+:cve«name.toLowerCase.toFirstUpper»,
 	'''
 	
 	def dispatch genRelationshipValues(Entity e, Entity t, String name) ''' 
-:«name.toLowerCase»,
+:id«name.toLowerCase.toFirstUpper»,
 	'''		
 	
 }
