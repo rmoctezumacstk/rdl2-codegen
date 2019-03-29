@@ -24,7 +24,12 @@ class CrudComponentJDBCRepositoryGenerator {
 		import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 		
 		public interface «e.name.toLowerCase.toFirstUpper»JDBCRepository extends BaseRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> {
-		
+		  Semaforo obtener(int id);
+		  ResponsePlata<Semaforo> obtenerTodos(RequestPlata<Semaforo> data);
+		  Message agregar(RequestPlata<Semaforo> data, Semaforo historical);
+		  Message actualizar(RequestPlata<Semaforo> data, Semaforo historical);
+		  Message eliminar(int id, Semaforo historical);
+		  ResponsePlata<Semaforo> consultarSemaforoAutocomplete(String nombre);
 		}
 	'''	
 	
