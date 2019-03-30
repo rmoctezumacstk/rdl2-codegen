@@ -761,5 +761,110 @@ class EntityFieldUtils {
 	def  dispatch fakerDomainData(EntityCurrencyField field) {
 		return currencyFormatter.format(faker.number().numberBetween(1, 99999))
 	}
+	
+	///Get name of table column from dbMap field attribute 
+	def getFieldDbMap(EntityTextField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityLongTextField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityDateField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityDateTimeField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityTimeField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityBooleanField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityImageField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityFileField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityEmailField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityDecimalField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityIntegerField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityCurrencyField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
+	
+	def getFieldDbMap(EntityReferenceField f){
+	  var fieldtable=f.name
+	  for (a:f.attrs)
+	      if (a.db_map!==null)
+	  		fieldtable= a.db_map.table
+	  return fieldtable
+	}
 
 }

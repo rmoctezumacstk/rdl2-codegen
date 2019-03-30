@@ -18,8 +18,11 @@ import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityBooleanField
 import com.softtek.rdl2.ModuleRef
+import com.softtek.generator.utils.EntityFieldUtils
 
 class CrudComponentConstantsGenerator {
+	
+	var entityFieldUtils = new EntityFieldUtils
 	
 	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
 		for (m : s.modules_ref)
@@ -73,59 +76,59 @@ class CrudComponentConstantsGenerator {
 	
 	/* getAttributeValue */
 	def dispatch getAttribute(EntityTextField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";
 	'''
 	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityDateField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityTimeField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityImageField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityFileField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityEmailField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''
 	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
-	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «f.name.toUpperCase» Like '%";
+	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» Like '%";
 	   public static final String «t.name.toUpperCase»_«f.name.toUpperCase»_CIERRE = "%'";	
 	'''	
 	
 	def dispatch getAttributeEntityRefValue(Entity tr, EntityReferenceField f, Entity t, String name)'''
-	   public static final String «t.name.toUpperCase»_«tr.name.toUpperCase» = " and «tr.name.toUpperCase» =";
+	   public static final String «t.name.toUpperCase»_«tr.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» =";
 	'''
  	def dispatch getAttributeEntityRefValue(Enum tr, EntityReferenceField f, Entity t, String name)'''
-	   public static final String «t.name.toUpperCase»_«tr.name.toUpperCase» = " and «tr.name.toUpperCase» =";
+	   public static final String «t.name.toUpperCase»_«tr.name.toUpperCase» = " and «entityFieldUtils.getFieldDbMap(f).toUpperCase» =";
 	'''
 	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
 		«IF  f !== null && !f.upperBound.equals('*')»
