@@ -24,150 +24,225 @@ class CrudComponentJDBCRepositoryImplGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/repository/impl/"+e.name.toLowerCase.toFirstUpper+"JDBCRepositoryImpl.java", e.genJavaJDBCRepositoryImpl(m))
+				fsa.generateFile("banamex/"+m.name.toLowerCase+"/src/main/java/com/aforebanamex/plata/cg/"+m.name.toLowerCase+"/repository/impl/"+e.name.toLowerCase.toFirstUpper+"JDBCRepositoryImpl.java", e.genJavaJDBCRepositoryImpl(m))
 			}
 		}
 	}
 	
 	def CharSequence genJavaJDBCRepositoryImpl(Entity e, Module m) '''
-		package com.aforebanamex.plata.cg.mn.repository.impl;
+		package com.aforebanamex.plata.cg.«e.name.toLowerCase».repository.impl;
 		
-		import java.sql.PreparedStatement;
 		import java.util.HashMap;
 		import java.util.List;
 		import java.util.Map;
 		
-		import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+		import org.springframework.dao.DataAccessException;
 		import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-		import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 		import org.springframework.jdbc.support.GeneratedKeyHolder;
 		import org.springframework.jdbc.support.KeyHolder;
 		import org.springframework.stereotype.Repository;
 		
+		import com.aforebanamex.plata.base.model.Message;
 		import com.aforebanamex.plata.base.model.Paginado;
 		import com.aforebanamex.plata.base.model.RequestPlata;
 		import com.aforebanamex.plata.base.model.ResponsePlata;
 		import com.aforebanamex.plata.base.repository.BaseDefinitionRepository;
-		import com.aforebanamex.plata.cg.mn.helper.ComponentesGeneralesConstantsHelper;
-		import com.aforebanamex.plata.cg.mn.repository.«e.name.toLowerCase.toFirstUpper»JDBCRepository;
+		import com.aforebanamex.plata.cg.«e.name.toLowerCase».helper.ComponentesGeneralesConstantsHelper;
+		import com.aforebanamex.plata.cg.«e.name.toLowerCase».repository.«e.name.toLowerCase.toFirstUpper»JDBCRepository;
+		import com.aforebanamex.plata.comunes.helper.ValidarCadenas;
 		import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;	
+		//import com.aforebanamex.plata.comunes.model.ValorSemaforo;
+		
 		
 		@Repository
 		public class «e.name.toLowerCase.toFirstUpper»JDBCRepositoryImpl extends BaseDefinitionRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> implements «e.name.toLowerCase.toFirstUpper»JDBCRepository {
 		
 			@Override
-			public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtener(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
-				logger.info("Se recibio en el repository obtener: {}", data.toString());
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
-				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("id", «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»Response = namedParameterJdbcTemplate.queryForObject(
-				retrieveSentence("mn.consulta.«e.name.toLowerCase».id"), params, new «e.name.toLowerCase.toFirstUpper»Mapper());
+			public «e.name.toLowerCase.toFirstUpper» obtener(int id) {
+					logger.info("Se recibio en el repository obtener: {}", id);
+					MapSqlParameterSource params = new MapSqlParameterSource();
+					params.addValue("id", id);
+					«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase»Response = namedParameterJdbcTemplate
+							.queryForObject(retrieveSentence("«m.name.toLowerCase».consulta.«e.name.toLowerCase».id"), params, new «e.name.toLowerCase.toFirstUpper»Mapper());
+					//List<ValorSemaforo> valorSemaforos = jdbcTemplate.query(retrieveSentence("«m.name.toLowerCase».consulta.«e.name.toLowerCase».id"),
+					//		new Object[] { id }, new ValorSemaforoMapper());
+					//«e.name.toLowerCase»Response.setValoresSemaforo(valorSemaforos);
+			
+					return «e.name.toLowerCase»Response;
+		   }
+		   
+		   @Override
+		   public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data) {
+		   		logger.info("Se recibio en el repository obtener todos: {}", data);
+		   		Paginado paginado = data.getPaginado();
+		   		«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
+		   		
+		   		if(ValidarCadenas.comprobar(«e.name.toLowerCase».getNombre()).length()>0){
+		   			logger.info("Caracteres incorrectos");
+		   			return new ResponsePlata<>(new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_CARACTERES_NO_VALIDOS));
+		   		}
+		   
+		   		String condicion = "";
+		   		if (!«e.name.toLowerCase».getNombre().equals("")) {
+		   			condicion += ComponentesGeneralesConstantsHelper.«e.name.toUpperCase»_NOMBRE + «e.name.toLowerCase».getNombre()
+		   					+ ComponentesGeneralesConstantsHelper.«e.name.toUpperCase.toFirstUpper»_NOMBRE_CIERRE;
+		   		}
+		   		/*if (!semaforo.getEstadoIndicador().getCveEdoIndicador().equals(0L)) {
+		   			condicion += ComponentesGeneralesConstantsHelper.SEMAFORO_ESTADO_INDICADOR
+		   					+ semaforo.getEstadoIndicador().getCveEdoIndicador();
+		   		}
+		   		if (!semaforo.getTipoMedida().getCveTipoMedida().equals(0L)) {
+		   			condicion += ComponentesGeneralesConstantsHelper.SEMAFORO_TIPO_MEDIDA
+		   					+ semaforo.getTipoMedida().getCveTipoMedida();
+		   		}
+		        */
+		   		int total = jdbcTemplate.queryForObject(retrieveSentence("«m.name.toLowerCase».consulta.«e.name.toLowerCase».registros.count") + condicion + ComponentesGeneralesConstantsHelper.NO_ELIMINADO,
+		   				new Object[] {}, (rs, rowNum) -> rs.getInt(1));
+		   
+		   		List<«e.name.toLowerCase.toFirstUpper»> «e.name.toLowerCase»s = jdbcTemplate.query(
+		   				retrieveSentence("«m.name.toLowerCase».consulta.«e.name.toLowerCase».registros") + condicion 
+		   						+ ComponentesGeneralesConstantsHelper.NO_ELIMINADO
+		   						+ ComponentesGeneralesConstantsHelper.LIMIT + paginado.getValorMinimo()
+		   						+ ComponentesGeneralesConstantsHelper.COMA + paginado.getValorMaximo(),
+		   				new Object[] {}, new «e.name.toLowerCase.toFirstUpper»Mapper());
+		   		for («e.name.toLowerCase.toFirstUpper» sem : «e.name.toLowerCase»s) {
+		   			//List<ValorSemaforo> valorSemaforos = jdbcTemplate.query(retrieveSentence("mn.consulta.valor.semaforo.id"),
+		   			//		new Object[] { sem.getIdSemaforo() }, new ValorSemaforoMapper());
+		   			//sem.setValoresSemaforo(valorSemaforos);
+		   		}
+		   
+		   		for («e.name.toLowerCase.toFirstUpper» s : «e.name.toLowerCase.toFirstUpper»s) {
+		   			//s.setValorVerde(s.getValoresSemaforo().get(0).getValorMinimo() + "-"
+		   			//		+ s.getValoresSemaforo().get(0).getValorMaximo());
+		   			//s.setValorAmarillo(s.getValoresSemaforo().get(1).getValorMinimo() + "-"
+		   			//		+ s.getValoresSemaforo().get(1).getValorMaximo());
+		   			//s.setValorRojo(s.getValoresSemaforo().get(2).getValorMinimo() + "-"
+		   			//		+ s.getValoresSemaforo().get(2).getValorMaximo());
+		   		}
+		   
+		   		paginado.setTotalRegistros(total);
+		   		paginado.setTotalPaginas(paginado.getTotalRegistros() / paginado.getRegistrosMostrados()
+		   				+ ((paginado.getTotalRegistros() % paginado.getRegistrosMostrados()) == 0 ? 0 : 1));
+		   
+		   		return new ResponsePlata<>(paginado, «e.name.toLowerCase»s, new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, null));
+		   	}
+		   
+		   @Override
+		   public Message agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+		   		logger.info("Se recibio en el repository agregar: {}", data);
+		   		«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
+		   		KeyHolder keyHolder = new GeneratedKeyHolder();
+		   
+		   		try {
+		   			«e.name.toLowerCase.toFirstUpper» val = obtener«e.name.toLowerCase.toFirstUpper»Constraint(«e.name.toLowerCase»);
+		   			if(val != null) {
+		   				if(val.getEstadoIndicador().getDescripcion().equals("Eliminado")) {
+		   					return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_ELIMINADO_REGISTRO);
+		   				}else {
+		   					return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_REGISTRO_DUPLICADO);
+		   				}
+		   			}else {
+		   				
+		   				if((ValidarCadenas.comprobar(«e.name.toLowerCase».getNombre())).length()>0 
+		   						|| (ValidarCadenas.comprobar(«e.name.toLowerCase».getDescripcion())).length()>0){
+		   					return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_CARACTERES_NO_VALIDOS);
+		   				}
+		   				
+		   				MapSqlParameterSource params = new MapSqlParameterSource();
+		   				params.addValue("snombre", «e.name.toLowerCase».getNombre());
+		   				params.addValue("descripcion", «e.name.toLowerCase».getDescripcion());
+		   				params.addValue("desempenio", «e.name.toLowerCase».getDesempenio());
+		   				params.addValue("estadoIndicador", «e.name.toLowerCase».getEstadoindicador().getCveedoindicador());
+		   				params.addValue("tipoMedida", «e.name.toLowerCase».getTipomedida().getCveTipomedida());
+		   		
+		   				String[] columnNames = new String[] { "ID_«e.name.toUpperCase»" };
+		   		
+		   				this.namedParameterJdbcTemplate.update(retrieveSentence("«m.name.toLowerCase».inserta.«e.name.toLowerCase»"), params, keyHolder, columnNames);
+		   				
+		   				Long key = (long) keyHolder.getKey();
+		   				//Valor semaforo?
+		   				//for (ValorSemaforo valorSemaforo : semaforo.getValoresSemaforo()) {
+		   				//	MapSqlParameterSource paramsVal = new MapSqlParameterSource();
+		   				//	paramsVal.addValue("id", key);
+		   				//	paramsVal.addValue("color", valorSemaforo.getCveColorSemaforo());
+		   				//	paramsVal.addValue("minimo", valorSemaforo.getValorMinimo());
+		   				//	paramsVal.addValue("maximo", valorSemaforo.getValorMaximo());
+		   				//	this.namedParameterJdbcTemplate.update(retrieveSentence("mn.inserta.valor"),paramsVal);
+		   				//}
+		   				«e.name.toLowerCase».setId«e.name.toLowerCase»(key.intValue());
+		   			}
+		   		}catch (DataAccessException e) {
+		   			logger.info("ERROR BD: {}", e.getMessage());
+		   			return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_REGISTRO_DUPLICADO);
+		   		}
+		   		
+		   		return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_REGISTRO);
+		   	}
+		   	
+		   	
+		   	@Override
+		   	public Message actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
+		   			«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
+		   			try {
+		   				«e.name.toLowerCase.toFirstUpper» val = obtener«e.name.toLowerCase.toFirstUpper»Constraint(«e.name.toLowerCase»);
+		   				if(val != null) {
+		   					if(val.getEstadoIndicador().getDescripcion().equals("Eliminado")) {
+		   						return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_ELIMINADO_REGISTRO);
+		   					}else {
+		   						return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_REGISTRO_DUPLICADO);
+		   					}
+		   				}else {
+		   					
+		   					if((ValidarCadenas.comprobar(«e.name.toLowerCase».getNombre())).length()>0 
+		   							|| (ValidarCadenas.comprobar(«e.name.toLowerCase».getDescripcion())).length()>0){
+		   						return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_CARACTERES_NO_VALIDOS);
+		   					}
+		   					
+		   					MapSqlParameterSource params = new MapSqlParameterSource();
+		   					params.addValue("nombre", «e.name.toLowerCase».getNombre());
+		   					params.addValue("descripcion", «e.name.toLowerCase».getDescripcion());
+		   					params.addValue("desempenio", «e.name.toLowerCase».getDesempenio());
+		   					params.addValue("estadoIndicador", «e.name.toLowerCase».getEstadoindicador().getCveedoindicador());
+		   					params.addValue("tipoMedida", «e.name.toLowerCase».getTipomedida().getCveTipomedida());
+		   					params.addValue("id", «e.name.toLowerCase».getId«e.name.toLowerCase»());
+		   	
+		   					super.namedParameterJdbcTemplate.update(retrieveSentence("«m.name.toLowerCase».actualizar.«e.name.toLowerCase»"), params);
+		   			
+		   					//actualizarValor«e.name.toLowerCase»(«e.name.toLowerCase»);
+		   				}
+		   			}catch (DataAccessException e) {
+		   				return new Message(ComponentesGeneralesConstantsHelper.CODIGO_ERROR, ComponentesGeneralesConstantsHelper.ERROR_REGISTRO_DUPLICADO);
+		   			}
+		   			return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_ACTUALIZA_REGISTRO);
+		   	}
 		
-				return new ResponsePlata<«e.name.toLowerCase.toFirstUpper»>(«e.name.toLowerCase»Response);
-			}
+		    @Override
+		    public Message eliminar(int id, «e.name.toLowerCase.toFirstUpper» historical) {
+		    		logger.info("Se recibio en el repository eliminar: {}", id);
+		    		
+		    		Map<String, Object> params = new HashMap<>();
+		    		params.put("id«e.name.toLowerCase.toFirstUpper»", id);
+		    
+		    		logger.info("Params: {}", params);
+		    
+		    		super.namedParameterJdbcTemplate.update(retrieveSentence("«m.name.toLowerCase».eliminar.«e.name.toLowerCase»"), params);
+		    
+		    		return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_ACTUALIZA_REGISTRO);
+		    	}
+		    
+		    @Override
+		    public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> consultar«e.name.toLowerCase.toFirstUpper»Autocomplete(String nombre) {
+		    		logger.info("Se recibio en el repository consultar«e.name.toLowerCase.toFirstUpper»Autocomplete: {}", nombre);
+		    		List<«e.name.toLowerCase.toFirstUpper»> lista«e.name.toLowerCase.toFirstUpper»s = null;
+		    		ResponsePlata<«e.name.toLowerCase.toFirstUpper»> response = new ResponsePlata<>();
+		    		MapSqlParameterSource mapaParametros = new MapSqlParameterSource();
+		    		mapaParametros.addValue("nombre", nombre);
+		    		lista«e.name.toLowerCase.toFirstUpper»s = namedParameterJdbcTemplate.query(retrieveSentence("«m.name.toLowerCase».autocompletar.«e.name.toLowerCase».nombre"),
+		    				mapaParametros, new «e.name.toLowerCase.toFirstUpper»Mapper());
+		    		response.setPayloades(lista«e.name.toLowerCase.toFirstUpper»s);
+		    		return response;
+		    }
 		
-			@Override
-			public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
-				logger.info("Se recibio en el repository obtener todos: {}", data.toString());
-				Paginado paginado = data.getPaginado();
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
-				
-				String condicion = "";
-				
-				«FOR f : e.entity_fields»
-				«f.getAttributeCondicion(e)»
-				«ENDFOR»
-				
-				int total = jdbcTemplate.queryForObject(retrieveSentence("mn.consulta.«e.name.toLowerCase».registros.count") + condicion, new Object[]{}, (rs, rowNum) -> rs.getInt(1));
-		
-				List<«e.name.toLowerCase.toFirstUpper»> «e.name.toLowerCase»s = jdbcTemplate.query(retrieveSentence("mn.consulta.«e.name.toLowerCase».registros") + condicion + ComponentesGeneralesConstantsHelper.LIMIT + paginado.getValorMinimo() + ComponentesGeneralesConstantsHelper.COMA + paginado.getValorMaximo(),
-						new Object[] {}, new «e.name.toLowerCase.toFirstUpper»Mapper());
-				
-				logger.info("Los «e.name.toLowerCase»s son: " + «e.name.toLowerCase»s.size());
-				
-				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
-				//	List<Subproceso> subprocesos = jdbcTemplate.query(
-				//		retrieveSentence("«e.name.toLowerCase».subproceso.consulta.id"), new Object[] {id},
-				//		new SubprocesoMapper());
-				//      mod.setSubproceso(subproceso.get(0));	
-				//}
-				
-				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
-				//	List<Procesos> procesos = jdbcTemplate.query(
-				//		retrieveSentence("«e.name.toLowerCase».procesos.consulta.id"), new Object[] {id},
-				//		new ProcesosMapper());	
-				// 		subproceso.get(0).setProcesos(procesos.get(0));
-				//      mod.setSubproceso(subproceso.get(0));	
-				//}	
-				
-				//for («e.name.toLowerCase.toFirstUpper» mod : «e.name.toLowerCase»s) {
-				//	List<Modulo> modulos = jdbcTemplate.query(
-				//		retrieveSentence("«e.name.toLowerCase».odulo.consulta.id"), new Object[] {id},
-				//		new ModuloMapper());	
-	 			// 		mod.setSubproceso(subproceso.get(0));
-				//}				
-				
-				paginado.setTotalRegistros(total);
-				paginado.setTotalPaginas(paginado.getTotalRegistros()/paginado.getRegistrosMostrados()+((paginado.getTotalRegistros()%paginado.getRegistrosMostrados())==0?0:1));
-				
-				return new ResponsePlata<«e.name.toLowerCase.toFirstUpper»>(paginado, «e.name.toLowerCase»s);
-			}
-		
-			@Override
-			public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
-				logger.info("Se recibio en el repository agregar: {}", data.toString());
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
-				KeyHolder keyHolder = new GeneratedKeyHolder();
-				
-				MapSqlParameterSource params = new MapSqlParameterSource();
-				
-				«FOR f : e.entity_fields»
-				«f.getAttributeValue(e)»
-				«ENDFOR»
-				params.addValue("estadoLogico", true);
-				
-				String[] columnNames = new String[] {"ID_«e.name.toUpperCase»"};
-				
-				this.namedParameterJdbcTemplate.update(retrieveSentence("mn.inserta.«e.name.toLowerCase»"), params, keyHolder, columnNames);
-		        Map<String,Object> keys = keyHolder.getKeys();
-		        
-		        logger.info("Key: {}", ReflectionToStringBuilder.toString(keys));
-		        
-				Long key = (long) keyHolder.getKey();
-
-				«e.name.toLowerCase».setId«e.name.toLowerCase.toFirstUpper»(key.intValue());
-				
-				return new ResponsePlata<«e.name.toLowerCase.toFirstUpper»>(«e.name.toLowerCase»);
-			}
-		
-			@Override
-			public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
-				
-				Map<String, Object> params = new HashMap<>();
-				«FOR f : e.entity_fields»
-				«f.getAttributePut(e)»
-				«ENDFOR»
-				params.put("estadoLogico", true);
-				params.put("id«e.name.toLowerCase.toFirstUpper»", «e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»());
-				
-				logger.info("Sentence: ", retrieveSentence("mn.actualizar.«e.name.toLowerCase»"));
-				logger.info("Params: ", params);
-				
-				super.namedParameterJdbcTemplate.update(retrieveSentence("mn.actualizar.«e.name.toLowerCase»"), params);
-				
-				return new ResponsePlata<«e.name.toLowerCase.toFirstUpper»>(«e.name.toLowerCase»);
-			}
-		
-			@Override
-			public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> eliminar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
-				logger.info("Se recibio en el repository eliminar: {}", data.toString());
-				«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
-				jdbcTemplate.update(retrieveSentence("mn.eliminar.«e.name.toLowerCase»"), new Object[] { false,«e.name.toLowerCase».getId«e.name.toLowerCase.toFirstUpper»() });
-				
-				return new ResponsePlata<«e.name.toLowerCase.toFirstUpper»>(«e.name.toLowerCase»);
-			}
 
 }	
 	'''	
