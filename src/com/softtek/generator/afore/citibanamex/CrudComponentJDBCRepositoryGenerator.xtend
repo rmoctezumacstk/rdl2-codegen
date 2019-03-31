@@ -10,7 +10,7 @@ class CrudComponentJDBCRepositoryGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/mn/src/main/java/com/aforebanamex/plata/cg/mn/repository/"+e.name.toLowerCase.toFirstUpper+"JDBCRepository.java", e.genJavaJDBCRepository(m))
+				fsa.generateFile("banamex/"+m.name.toLowerCase+"/src/main/java/com/aforebanamex/plata/cg/"+m.name.toLowerCase+"/repository/"+e.name.toLowerCase.toFirstUpper+"JDBCRepository.java", e.genJavaJDBCRepository(m))
 			}
 		}
 	}
@@ -24,12 +24,12 @@ class CrudComponentJDBCRepositoryGenerator {
 		import com.aforebanamex.plata.comunes.model.cg.«e.name.toLowerCase.toFirstUpper»;
 		
 		public interface «e.name.toLowerCase.toFirstUpper»JDBCRepository extends BaseRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> {
-		  Semaforo obtener(int id);
-		  ResponsePlata<Semaforo> obtenerTodos(RequestPlata<Semaforo> data);
-		  Message agregar(RequestPlata<Semaforo> data, Semaforo historical);
-		  Message actualizar(RequestPlata<Semaforo> data, Semaforo historical);
-		  Message eliminar(int id, Semaforo historical);
-		  ResponsePlata<Semaforo> consultarSemaforoAutocomplete(String nombre);
+		  «e.name.toLowerCase.toFirstUpper» obtener(int id);
+		  ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data);
+		  Message agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical);
+		  Message actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical);
+		  Message eliminar(int id, «e.name.toLowerCase.toFirstUpper» historical);
+		  ResponsePlata<«e.name.toLowerCase.toFirstUpper»> consultar«e.name.toLowerCase.toFirstUpper»Autocomplete(String nombre);
 		}
 	'''	
 	
