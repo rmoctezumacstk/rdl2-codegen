@@ -36,209 +36,315 @@ class CrudComponentJsGenerator {
 	
 	/* Archivo Principal */
 	def CharSequence genJavaJs(Entity e, Module m) '''
+	var urlGlobal = "/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s";
+	«var state = new State(1)»
+	
 	$(document).ready(function() {
 		
 		crearCabeceras();
 			
-		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",{"paginado":{"pagina":1,"registrosMostrados":10},"payload":{
-			«FOR f : e.entity_fields SEPARATOR ","»
-				«f.getAttributeValue(e)»
-			«ENDFOR»
-		}},inicioDatos);
+		$( function() {
+		    $( "#dateExample" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		  } );
+	
+		tablaVacia();
 		
-		urlGlobal = "/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s";
-		
-		$("#agregar«e.name.toLowerCase.toFirstUpper»").click(function () {
-			var validate = false;
-			var id«e.name.toLowerCase.toFirstUpper» = Number($('input:radio[name=«e.name.toLowerCase.toFirstUpper»Radios]:checked').val());
-
-			«FOR f : e.entity_fields»
-				«f.getAttributeEntityJQueryAgregar(e)»
-			«ENDFOR»
-			
-			var modelo = {
-					"paginado":{
-						"pagina":1,
-						"registrosMostrados":10
-					},
-					"payload":{
-						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-						«FOR f : e.entity_fields SEPARATOR ","»
-							«f.getAttributeEntityLabelValue(e)»
-						«ENDFOR»
-					}
-			};
-		
-		    if(«getIfRequiredAttrbutes(e)»){
-				$( "#formularioNew«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-			}else if(validate == false){
-				jsonAjax("/configuracion/agregar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
-				mostrarAlertSuccess(MENSAJE_GUARDADO_EXITOSO);
-				$("#formularioNew«e.name.toLowerCase.toFirstUpper»").reset();
-				$(".modalNew«e.name.toLowerCase.toFirstUpper»").modal('hide');
-			}
-
-			
+		$('#mn-inp-nombre-«e.name.toLowerCase»').autocomplete({
+			source : function(request, response) {
+				$.ajax({
+							url : "/configuracion/consultar«e.name.toLowerCase.toFirstUpper»Nombre",
+							dataType : "json",
+							type : 'POST',
+							data : {
+								term : request.term
+							},
+							success : function(data) {
+								console.log(data);
+								response(data);
+							}
+				});
+			},
+			minLength : 3
 		});
 		
-		//Seleccionar «e.name.toLowerCase.toFirstUpper» por id
-		$("#actualizar«e.name.toLowerCase.toFirstUpper»").click(function() {
+		$('#cg-mod-agregar').on('shown.bs.modal', function () {
+			cleanForm("formularioNew«e.name.toLowerCase.toFirstUpper»");
+			$('#formularioNew«e.name.toLowerCase.toFirstUpper»').bootstrapValidator().data('bootstrapValidator').destroy();
+		});
 			
-			if($("input[name='radioIndex']:radio").is(':checked')){
-				var id = $('input:radio[name=radioIndex]:checked').val();
-				var modelo = {
-						"payload":{
-						"id«e.name.toLowerCase.toFirstUpper»": Number(id)
-						}
-				};
-				jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»",modelo,actualizar«e.name.toLowerCase.toFirstUpper»);
+		$("#cg-but-agregar-guardar").click(function () {		
+			$('#formularioNew«e.name.toLowerCase.toFirstUpper»').bootstrapValidator({
+				onError: function(e) {
+		            console.log('error al guardar «e.name.toLowerCase»');
+		        }
+	        }).on('success.form.bv', function(e) {
+	            e.preventDefault();
+	            var $form = $(e.target);
+	            
+	    		var id«e.name.toLowerCase.toFirstUpper» = Number($('input:radio[name=«e.name.toLowerCase»Radios]:checked').val());
+	    		«FOR f : e.entity_fields»
+					«f.getAttributeEntityJQuery(e)»
+				«ENDFOR»
+				
+	    			
+	    		var modelo = {
+	    				"paginado":{
+	    					"pagina":1,
+	    					"registrosMostrados":10
+	    				},
+	    				"payload":{
+					«state = new State(1)»
+					
+					"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper»,
+					«FOR f : e.entity_fields»
+					«IF f !== null && entityFieldUtils.isFieldRequired(f) && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+						«IF state.getCounter() <= 1 »
+						«f.getAttributeEntityLabelValue(e)»
+						«ELSE»
+						, «f.getAttributeEntityLabelValue(e)»
+						«ENDIF»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
+					«ENDFOR»
+					
+	    					}
+	    		};
+	    		jsonAjax("/configuracion/agregar«e.name.toLowerCase.toFirstUpper»",modelo,validarRespuesta);
+	    		$form.bootstrapValidator().data('bootstrapValidator').destroy();
+	        });
+			
+			$('#dateExample').on('change', function (e) {
+	            $('#formularioNew«e.name.toLowerCase.toFirstUpper»').bootstrapValidator('revalidateField', 'dateExample');
+	        });
+	
+		});
+		
+		//Seleccionar «e.name.toLowerCase» por id
+		$("#cg-but-actualizar").click(function() {
+			cleanForm("formularioEdit«e.name.toLowerCase.toFirstUpper»");
+			$('#formularioEdit«e.name.toLowerCase.toFirstUpper»').bootstrapValidator().data('bootstrapValidator').destroy();
+			if($("input[name='radio']:radio").is(':checked')){
+				var id = $('input:radio[name=radio]:checked').val();
+				var modelo = {};
+				jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»/"+id,modelo,actualizar«e.name.toLowerCase.toFirstUpper»);
 			}else{
 				mostrarAlertWarning(MENSAJE_ERROR_OPEN_ACTUALIZAR);
 			}
 		});
 		
-		//Seleccionar «e.name.toLowerCase.toFirstUpper» por id
-		$("#eliminar«e.name.toLowerCase.toFirstUpper»").click(function() {
+		//Seleccionar «e.name.toLowerCase» por id
+		$("#cg-but-eliminar").click(function() {
 			
-			if($("input[name='radioIndex']:radio").is(':checked')){
-				$("#eliminar«e.name.toLowerCase.toFirstUpper»Modal").modal('show');
+			if($("input[name='radio']:radio").is(':checked')){
+				$("#cg-mensaje-eliminar").empty().append("&iquest;Desea eliminar el «e.name.toLowerCase» "+$('input:radio[name=radio]:checked').parents("tr").find("td").eq(1).html()+"?");
+				$("#cg-mod-eliminar").modal('show');
 			}else{
 				mostrarAlertWarning(MENSAJE_ERROR_OPEN_ACTUALIZAR);
 			}
 		});
-	
 		
-		$("#buscar").click(function(){
-			
-		«FOR f : e.entity_fields»
-			«f.getAttributeSearch(e)»
-		«ENDFOR»	
-	
-			var modelo = {
-					"paginado":{
-						"pagina":1,
-						"registrosMostrados":10
-					},
-					"payload":{
-					«FOR f : e.entity_fields SEPARATOR ","»
-						«f.getAttributeEntitySearch(e)»
-					«ENDFOR»						
-					}
-			};
-			
-			jsonAjax(urlGlobal,modelo,inicioDatos);
-		});
-		
-		
-		$("#limpiar").click(function() {
-			cleanForm("formBusquedar«e.name.toLowerCase.toFirstUpper»");
-			
-			«FOR f : e.entity_fields»
-				«f.getAttributeSearch(e)»
-			«ENDFOR»	
-			
-			var modelo = {
-					"paginado":{
-						"pagina":1,
-						"registrosMostrados":10
-					},
-					"payload":{
-						«FOR f : e.entity_fields SEPARATOR ","»
+		$("#cg-but-buscar").click(function(e){
+			var caracteres = " ' * \ / ( ) \" & ";
+			var nombre = $("#mn-inp-nombre-«e.name.toLowerCase»").val();
+			var indicador = $("#mn-sel-descripcion-estado-indicador").val();
+			var medida = $("#mn-sel-descripcion-tipo-medida").val();		
+			if(nombre != "" || indicador != 0 || medida !=0){
+				$('#formBusquedar«e.name.toLowerCase.toFirstUpper»').bootstrapValidator({
+					onError: function(e) {
+			            console.log('error al guardar «e.name.toLowerCase»');
+			        },
+			        fields: {
+			        	nombre«e.name.toLowerCase.toFirstUpper»: {
+			                validators: {
+			                    regexp: {
+			                        regexp: /^[^\'\"\*\(\)\&\|\/\\]*$/,
+			                        message: "No se permiten los caracteres:" + caracteres
+			                    }
+			                }
+			            }
+			        }
+		        }).on('success.form.bv', function(e) {
+		        	e.preventDefault();
+		            var $form = $(e.target);
+		        	var modelo = {
+		    				"paginado":{
+		    					"pagina":1,
+		    					"registrosMostrados":Number($("#datostabla_length select").val())
+		    				},
+		    				"payload":{
+							«state = new State(1)»
+				    		«FOR f : e.entity_fields»
+			    			«IF f !== null && entityFieldUtils.isFieldRequired(f) && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+			    			«IF state.getCounter() <= 1 »
 							«f.getAttributeEntitySearch(e)»
-						«ENDFOR»
-					}									
-			};
-			
-			jsonAjax(urlGlobal,modelo,inicioDatos);
+							«ELSE»
+			    			, «f.getAttributeEntitySearch(e)»
+							«ENDIF»
+							«ENDIF»
+							«state.setCounter(state.getCounter()+1)»
+							«ENDFOR»
+		    				}
+		    		};
+		        	jsonAjax(urlGlobal,modelo,validarRespuestaResponse);	
+		        	$form.bootstrapValidator().data('bootstrapValidator').destroy();
+		        })
+				
+			}else{
+				e.preventDefault();
+				mostrarAlertWarning(MENSAJE_CAMPOS_OBLIGATORIOS);
+			}		
+		});
+		
+		$("#cg-but-limpiar").click(function() {
+			cleanForm("formBusquedar«e.name.toLowerCase.toFirstUpper»");
+			$('#formBusquedar«e.name.toLowerCase.toFirstUpper»').bootstrapValidator().data('bootstrapValidator').destroy();
+			tablaVacia();
+		});
+		
+		$("#cg-editar-guardar").click(function() {
+			$('#formularioEdit«e.name.toLowerCase.toFirstUpper»').bootstrapValidator({
+				onError: function(e) {
+		            console.log('error al guardar «e.name.toLowerCase»');
+		        }
+	        }).on('success.form.bv', function(e) {
+	            e.preventDefault();
+	            var $form = $(e.target);
+		        var id«e.name.toLowerCase.toFirstUpper» = $('input:radio[name=radio]:checked').val();
+	    		«FOR f : e.entity_fields»
+					«f.getAttributeEntityJQuery(e)»
+				«ENDFOR»
+				
+	    		var modelo = {
+	    				"payload":{
+					«state = new State(1)»
+					
+					"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper»,
+					«FOR f : e.entity_fields»
+					«IF f !== null && entityFieldUtils.isFieldRequired(f) && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
+						«IF state.getCounter() <= 1 »
+						«f.getAttributeEntityLabelValue(e)»
+						«ELSE»
+						, «f.getAttributeEntityLabelValue(e)»
+						«ENDIF»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
+					«ENDFOR»
+	    				}
+	    			};
+				jsonAjax("/configuracion/actualizar«e.name.toLowerCase.toFirstUpper»",modelo,validarRespuestaActualizacion);
+				$form.bootstrapValidator().data('bootstrapValidator').destroy();
+	        });
 		});
 		
 		
-		$("#editar«e.name.toLowerCase.toFirstUpper»").click(function() {
-			var validate = false;
-			var id«e.name.toLowerCase.toFirstUpper» = $('input:radio[name=radioIndex]:checked').val();
-			«FOR f : e.entity_fields»
-				«f.getAttributeEntityJQueryEdit(e)»
-			«ENDFOR»
+		$("#cg-eliminar-aceptar").click(function(){
+			var id = Number($('input:radio[name=radio]:checked').val());
+			var modelo = {};
 			
-			var modelo = {
-					"payload":{
-						"id«e.name.toLowerCase.toFirstUpper»": id«e.name.toLowerCase.toFirstUpper», 
-						«FOR f : e.entity_fields SEPARATOR ","»
-							«f.getAttributeEntityLabelValue(e)»
-						«ENDFOR»
-					}
-				};
-	
-				if(«getIfRequiredAttrbutes(e)»){
-					$( "#formularioEdit«e.name.toLowerCase.toFirstUpper»").last().addClass("was-validated");
-				}else if(validate == false){
-					jsonAjax("/configuracion/actualizar«e.name.toLowerCase.toFirstUpper»",modelo,inicioDatos);
-					mostrarAlertSuccess(MENSAJE_ACTUALIZADO_EXITOSO);
-					$("#formularioEdit«e.name.toLowerCase.toFirstUpper»").reset();
-					$(".modal«e.name.toLowerCase.toFirstUpper»Editar").modal('hide');
-				}
-		});
-		
-		$("#eliminar«e.name.toLowerCase.toFirstUpper»Confirm").click(function(){
-			var modelo = {
-					"payload":{
-						"id«e.name.toLowerCase.toFirstUpper»": Number($('input:radio[name=radioIndex]:checked').val())
-					}
-				};
-			
-			jsonAjax("/configuracion/eliminar«e.name.toLowerCase.toFirstUpper»",modelo,iniciarTabla);
+			jsonAjax("/configuracion/eliminar«e.name.toLowerCase.toFirstUpper»/"+id,modelo,iniciarTabla);
 			mostrarAlertSuccess(MENSAJE_ELIMINADO_EXITOSO);
 			iniciarTabla();
-			$(".eliminar«e.name.toLowerCase.toFirstUpper»Modal").modal('hide');
+			$(".cg-mod-eliminar").modal('hide');
 		});
+		
 	});
-	
+
+	function validarRespuesta(data){
+		if(data.codigoEstatus == 200){
+			$("#formularioNew«e.name.toLowerCase.toFirstUpper»")[0].reset();
+			$(".cg-mod-agregar").modal('hide');
+			tablaVacia();
+			mostrarAlertSuccess(MENSAJE_GUARDADO_EXITOSO);
+		}else if(data.codigoEstatus == 415){
+			mostrarAlertDanger(" "+ data.mensaje, 'alertDanger', "cg-but-agregar-guardar");
+			bloquea("cg-but-agregar-guardar");
+			return false;
+		}
+	}
+
+	function validarRespuestaActualizacion(data){
+		if(data.codigoEstatus == 200){
+			$("#formularioNew«e.name.toLowerCase.toFirstUpper»")[0].reset();
+			$(".cg-mod-editar").modal('hide');
+			iniciarTabla();
+			mostrarAlertSuccess(MENSAJE_ACTUALIZADO_EXITOSO);
+		}else if(data.codigoEstatus == 415){
+			console.log("BOTON: " + $("#cg-editar-guardar").is(":disabled"));
+			mostrarAlertDanger(" "+ data.mensaje, 'alertDangerEdit');
+			bloquea("cg-editar-guardar");
+			return false;
+		}
+	}
+
+	function validarRespuestaResponse(data){
+		if(data.mensaje.codigoEstatus == 200){
+			iniciarTabla(data);
+		}else if(data.mensaje.codigoEstatus == 415){
+			mostrarAlertDanger(" "+ data.mensaje.mensaje, 'alertDangerError');
+		}
+	}
+
+	function bloquea(boton){
+		if($("#"+boton).is(":disabled") == false){
+		     boton.disabled = true; 
+		     $("#"+boton).prop('disabled', true);
+		     
+		     setTimeout(function(){
+		    	 $("#"+boton).prop('disabled', false);
+		    }, 3000)
+		}
+	}
+
 	function obtenerModelo(){
 		var modelo = {
-				«FOR f : e.entity_fields SEPARATOR ","»
-					«f.getAttributeEntitySearch(e)»
+				«state = new State(1)»
+	    		«FOR f : e.entity_fields»
+	    			«IF state.getCounter() <= 1 »
+					«f.getAttributeEntityJQuery(e)»
+					«ELSE»
+	    			, «f.getAttributeEntityJQuery(e)»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
 				«ENDFOR»
 			}
 		console.log
 		return modelo;
 	}
-	
+
 	function cleanForm(name){
 		document.getElementById(name).reset();
 		$("#"+name).removeClass("was-validated");
 	}
-	
+
 	function iniciarTabla(){
 		var modelo = {
 				"paginado":{
 				"pagina":1,
-				"registrosMostrados":10
+				"registrosMostrados":Number($("#datostabla_length select").val())
 			},
 			"payload":{
-				«FOR f : e.entity_fields SEPARATOR ","»
-					«f.getAttributeValue(e)»
-				«ENDFOR»				
+				«state = new State(1)»
+	    		«FOR f : e.entity_fields»
+	    			«IF state.getCounter() <= 1 »
+					«f.getAttributeEntitySearch(e)»
+					«ELSE»
+	    			, «f.getAttributeEntitySearch(e)»
+					«ENDIF»
+					«state.setCounter(state.getCounter()+1)»
+				«ENDFOR»
 				}
 			};
 		jsonAjax(urlGlobal,modelo,inicioDatos);
 	}
-	
-	function actualizar«e.name.toLowerCase.toFirstUpper»(info){
-		var data = info.payload;
-		«FOR f : e.entity_fields»
-			«f.getAttributeUpdate(e)»
-		«ENDFOR»
-		$('.modal«e.name.toLowerCase.toFirstUpper»Editar').modal('show');
-	}
-	
+
 	function paginarTabla(pagina){
 		var modelo = {
 				"paginado":{
 					"pagina":pagina,
-					"registrosMostrados":Number($("#datostabla_length select").val())
+					"registrosMostrados": Number($("#datostabla_length select").val())
 				},
 				"payload":{
-					«var state = new State(1)»
+					«state = new State(1)»
 					«FOR f : e.entity_fields»
 					«IF f !== null && entityFieldUtils.isFieldRequired(f) && ( !(f instanceof EntityReferenceField) || (f instanceof EntityReferenceField && !(f as EntityReferenceField).upperBound.equals('*') ) ) »
 						«IF state.getCounter() <= 1 »
@@ -252,9 +358,9 @@ class CrudComponentJsGenerator {
 				}
 			};
 		console.log(modelo);
-		jsonAjax("/configuracion/obtener«e.name.toLowerCase.toFirstUpper»s",modelo,inicioDatos);
-	}	
-	
+		jsonAjax("/configuracion/obtenerSemaforos",modelo,inicioDatos);
+	}
+
 	'''
 	/* ./Archivo Principal */
 	
