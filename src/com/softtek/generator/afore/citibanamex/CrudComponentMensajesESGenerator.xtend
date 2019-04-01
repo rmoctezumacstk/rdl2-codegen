@@ -31,15 +31,15 @@ class CrudComponentMensajesESGenerator {
 	var entityFieldUtils = new EntityFieldUtils
 	var uiFlowUtils = new UIFlowUtils
 	
-	def doGenerate(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) {
-		fsa.generateFile("banamex/configuracion/src/main/resources/messages/mensajes-mn.properties", generateMessages(s, fsa))	
+	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
+		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
+			fsa.generateFile("banamex/configuracion/src/main/resources/messages/mensajes-"+m.name.toLowerCase+".properties", generateMessages(m, fsa))	
+		}
 	}
 	
 	
-	def CharSequence generateMessages(com.softtek.rdl2.System s, IFileSystemAccess2 fsa) '''	
-	
-	«FOR m : s.modules_ref»
-		«FOR e : m.module_ref.elements.filter(Entity)»
+	def CharSequence generateMessages(Module m, IFileSystemAccess2 fsa) '''	
+	«FOR e : m.elements.filter(Entity)»
 	mn.«e.name.toLowerCase».titulo=«e.name.toLowerCase.toFirstUpper»s
 	mn.«e.name.toLowerCase».consulta.titulo=Consultar «e.name.toLowerCase.toFirstUpper»
 	mn.«e.name.toLowerCase».tabla.titulo=Resultado de la busqueda
@@ -70,10 +70,8 @@ class CrudComponentMensajesESGenerator {
 	label.«e.name.toLowerCase».busqueda.procesos = Proceso
 	label.«e.name.toLowerCase».busqueda.subproceso = Subproceso
 	
-		«ENDFOR»
 	«ENDFOR»
-	
-	
+
 	label.busqueda.seleccionar = Seleccionar
 	label.busqueda.limpiar = Limpiar
 	label.busqueda.buscar = Buscar
