@@ -4,9 +4,11 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
-
+import com.softtek.generator.utils.EntityUtils
 
 class CrudComponentJDBCRepositoryGenerator {
+	var entityUtils = new EntityUtils
+	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
@@ -26,10 +28,18 @@ class CrudComponentJDBCRepositoryGenerator {
 		public interface «e.name.toLowerCase.toFirstUpper»JDBCRepository extends BaseRepository<RequestPlata<«e.name.toLowerCase.toFirstUpper»>, «e.name.toLowerCase.toFirstUpper», ResponsePlata<«e.name.toLowerCase.toFirstUpper»>> {
 		  «e.name.toLowerCase.toFirstUpper» obtener(int id);
 		  ResponsePlata<«e.name.toLowerCase.toFirstUpper»> obtenerTodos(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data);
+		  «IF entityUtils.isAddInScaffolding(e)»
 		  Message agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical);
+		  «ENDIF»
+		  «IF entityUtils.isEditInScaffolding(e)»
 		  Message actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical);
+		  «ENDIF»
+		  «IF entityUtils.isDeleteInScaffolding(e)»
 		  Message eliminar(int id, «e.name.toLowerCase.toFirstUpper» historical);
+		  «ENDIF»
+		  «IF entityUtils.isSearchInScaffolding(e)»
 		  ResponsePlata<«e.name.toLowerCase.toFirstUpper»> consultar«e.name.toLowerCase.toFirstUpper»Autocomplete(String nombre);
+		  «ENDIF»
 		}
 	'''	
 	

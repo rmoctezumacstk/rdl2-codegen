@@ -48,5 +48,44 @@ class EntityUtils {
 	def dispatch getReturnStatement(StatementReturn statement) {
 		return statement.entityfield
 	}
+	
+	/*
+	 * Detects if CRUD operatios are present in a given entity
+	 */
+	def boolean isSearchInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionSearch") && !a.value.trim.equals("None"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isAddInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionAdd") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isEditInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionEdit") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isDeleteInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionDelete") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
 
 }

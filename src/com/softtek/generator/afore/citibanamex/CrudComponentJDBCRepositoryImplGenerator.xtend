@@ -19,8 +19,10 @@ import com.softtek.rdl2.Enum
 import com.softtek.rdl2.EntityTimeField
 import com.softtek.rdl2.EntityDateTimeField
 import com.softtek.rdl2.EntityBooleanField
+import com.softtek.generator.utils.EntityUtils
 
 class CrudComponentJDBCRepositoryImplGenerator {
+	var entityUtils = new EntityUtils
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
@@ -127,6 +129,7 @@ class CrudComponentJDBCRepositoryImplGenerator {
 		   		return new ResponsePlata<>(paginado, «e.name.toLowerCase»s, new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, null));
 		   	}
 		   
+		   «IF entityUtils.isAddInScaffolding(e)»
 		   @Override
 		   public Message agregar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
 		   		logger.info("Se recibio en el repository agregar: {}", data);
@@ -178,8 +181,9 @@ class CrudComponentJDBCRepositoryImplGenerator {
 		   		
 		   		return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_REGISTRO);
 		   	}
+		   	«ENDIF»
 		   	
-		   	
+		   	«IF entityUtils.isEditInScaffolding(e)»
 		   	@Override
 		   	public Message actualizar(RequestPlata<«e.name.toLowerCase.toFirstUpper»> data, «e.name.toLowerCase.toFirstUpper» historical) {
 		   			«e.name.toLowerCase.toFirstUpper» «e.name.toLowerCase» = data.getPayload();
@@ -215,7 +219,9 @@ class CrudComponentJDBCRepositoryImplGenerator {
 		   			}
 		   			return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_ACTUALIZA_REGISTRO);
 		   	}
-		
+		    «ENDIF»
+		    
+		    «IF entityUtils.isDeleteInScaffolding(e)»
 		    @Override
 		    public Message eliminar(int id, «e.name.toLowerCase.toFirstUpper» historical) {
 		    		logger.info("Se recibio en el repository eliminar: {}", id);
@@ -229,7 +235,9 @@ class CrudComponentJDBCRepositoryImplGenerator {
 		    
 		    		return new Message(ComponentesGeneralesConstantsHelper.CODIGO_EXITO, ComponentesGeneralesConstantsHelper.EXITO_ACTUALIZA_REGISTRO);
 		    	}
+		    «ENDIF»
 		    
+		    «IF entityUtils.isSearchInScaffolding(e)»
 		    @Override
 		    public ResponsePlata<«e.name.toLowerCase.toFirstUpper»> consultar«e.name.toLowerCase.toFirstUpper»Autocomplete(String nombre) {
 		    		logger.info("Se recibio en el repository consultar«e.name.toLowerCase.toFirstUpper»Autocomplete: {}", nombre);
@@ -242,6 +250,7 @@ class CrudComponentJDBCRepositoryImplGenerator {
 		    		response.setPayloades(lista«e.name.toLowerCase.toFirstUpper»s);
 		    		return response;
 		    }
+		    «ENDIF»
 		
 
 }	
