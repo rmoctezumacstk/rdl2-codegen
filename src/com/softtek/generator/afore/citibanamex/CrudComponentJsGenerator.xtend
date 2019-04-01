@@ -29,7 +29,7 @@ class CrudComponentJsGenerator {
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/configuracion/src/main/webapp/resources/js/mn/" + e.name.toLowerCase + ".js", e.genJavaJs(m))
+				fsa.generateFile("banamex/configuracion/src/main/webapp/resources/js/"+m.name.toLowerCase+"/" + e.name.toLowerCase + ".js", e.genJavaJs(m))
 			}
 		}
 	}

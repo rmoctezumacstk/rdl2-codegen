@@ -4,9 +4,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.softtek.rdl2.Module
 import com.softtek.rdl2.Entity
-import com.softtek.generator.utils.EntityUtils
 import com.softtek.generator.utils.EntityFieldUtils
-import com.softtek.generator.utils.UIFlowUtils
 import com.softtek.rdl2.EntityTextField
 import com.softtek.rdl2.EntityLongTextField
 import com.softtek.rdl2.EntityDateField
@@ -24,14 +22,12 @@ import com.softtek.rdl2.EntityDateTimeField
 
 class CrudComponentHtmlGenerator {
 	
-	var entityUtils = new EntityUtils
 	var entityFieldUtils = new EntityFieldUtils
-	var uiFlowUtils = new UIFlowUtils
 	
 	def doGenerate(Resource resource, IFileSystemAccess2 fsa) {
 		for (m : resource.allContents.toIterable.filter(typeof(Module))) {
 			for (e : m.elements.filter(typeof(Entity))) {
-				fsa.generateFile("banamex/configuracion/src/main/webapp/WEB-INF/views/mn/" + e.name.toLowerCase+ ".html", e.genAppHtml(m))
+				fsa.generateFile("banamex/configuracion/src/main/webapp/WEB-INF/views/"+m.name.toLowerCase+"/" + e.name.toLowerCase+ ".html", e.genAppHtml(m))
 			}
 		}
 	}
@@ -42,25 +38,27 @@ class CrudComponentHtmlGenerator {
 	<html xmlns:th="http://www.thymeleaf.org">
 	<head th:replace="templates/layout :: head(~{this :: title}, ~{this :: .custom-link}, ~{this :: .custom-script}, ~{this :: .custom-body})">
 	
-	<title th:text="#{mn.«e.name.toLowerCase».titulo}"></title>
+	<title th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».titulo}"></title>
 	
 	<!--/* Links de su pagina */-->
 	<link class="custom-link" rel="stylesheet" media="screen"  th:href="@{/resources/css/mn/main-mn.css}" />
 	
 	<!--/* Scripts de su pagina */-->
-	<script class="custom-script" th:src="@{/resources/js/mn/«e.name.toLowerCase».js}"></script>
+	<script class="custom-script" th:src="@{/resources/js/«m.name.toLowerCase»/«e.name.toLowerCase».js}"></script>
 	</head>
 	<body>
 		<header th:insert="templates/header :: header">
 		</header>
 		<br>
 		<div class="container custom-body">
+	
 			<div id="alertSuccess"></div>
 			<div id="alertWarning"></div>
 			<div id="alertDanger"></div>
-	
+			
+			«IF isSearchInScaffolding(e)»
 			<div class="formTop">
-				<span class="titleStaticForm" th:text="#{mn.«e.name.toLowerCase».consulta.titulo}"></span>
+				<span class="titleStaticForm" th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».consulta.titulo}"></span>
 				<hr>
 				<form id="formBusquedar«e.name.toLowerCase.toFirstUpper»">
 
@@ -75,15 +73,15 @@ class CrudComponentHtmlGenerator {
 							</select>
 						</div>		
 						<div class="col-md-4">
-							<label for="procesosSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.procesos}"></label>
-							<select name="Proceso padre" id="procesosSemaf" class="form-control" required>
+							<label for="procesoSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.proceso}"></label>
+							<select name="Proceso" id="procesoSemaf" class="form-control" required>
 								<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
-								<option th:each="procesos : ${procesos}" th:value="${procesos.idProcesos}" th:utext="${procesos.descripcion}"/>
+								<option th:each="proceso : ${proceso}" th:value="${proceso.idProceso}" th:utext="${proceso.descripcion}"/>
 							</select>
 						</div>
 						<div class="col-md-4">
 							<label for="subprocesoSemaf" class="col-form-label" th:text="#{label.«e.name.toLowerCase».busqueda.subproceso}"></label>
-							<select name="Subproceso padre"
+							<select name="Subproceso"
 								id="subprocesoSemaf" class="form-control" required>
 								<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
 								<option th:each="subproceso : ${subproceso}" th:value="${subproceso.idSubproceso}" th:utext="${subproceso.descripcion}"/>
@@ -95,7 +93,7 @@ class CrudComponentHtmlGenerator {
 					
 					<div class="row">
 						«FOR f : e.entity_fields»
-						«f.getAttributeSearch(e)»
+						«f.getAttributeSearch(e, m)»
 						«ENDFOR»						
 					</div>
 					<div class="row">
@@ -109,7 +107,8 @@ class CrudComponentHtmlGenerator {
 					</div>
 				</form>
 			</div>
-			<span class="tituloTabla" th:text="#{mn.«e.name.toLowerCase».tabla.titulo}"></span>
+			«ENDIF»
+			<span class="tituloTabla" th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».tabla.titulo}"></span>
 			<div class="table-responsive">
 				<table class="table table-bordered" id="datostabla">
 					<thead class="bg-info">
@@ -118,13 +117,20 @@ class CrudComponentHtmlGenerator {
 			</div>
 			<!-- </div> -->
 			<div class="row float-right mx-0 btnList">
+				«IF isDeleteInScaffolding(e)»
 				<button type="button" class="btn-style-citi" id="eliminar«e.name.toLowerCase.toFirstUpper»" th:text="#{label.button.eliminar}"></button>
+				«ENDIF»
+				«IF isEditInScaffolding(e)»
 				<button type="button" class="btn-style-citi"
 					name="actualizar«e.name.toLowerCase.toFirstUpper»" id="actualizar«e.name.toLowerCase.toFirstUpper»" th:text="#{label.button.actualizar}"></button>
+				«ENDIF»
+				«IF isAddInScaffolding(e)»
 				<button type="button" class="btn-style-citi" data-toggle="modal"
 					data-target=".modalNew«e.name.toLowerCase.toFirstUpper»" th:text="#{label.button.agregar}"></button>
+				«ENDIF»
 			</div>
 	
+		«IF isAddInScaffolding(e)»
 		<!-- The Modal New -->
 		<div class="modal fade modalNew«e.name.toLowerCase.toFirstUpper»" tabindex="-1" role="dialog"
 			aria-labelledby="modalNuevo«e.name.toLowerCase.toFirstUpper»" aria-hidden="true"
@@ -132,7 +138,7 @@ class CrudComponentHtmlGenerator {
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="modalNuevo«e.name.toLowerCase.toFirstUpper»" th:text="#{mn.«e.name.toLowerCase».modal.agregar.titulo}"></h4>
+						<h4 class="modal-title" id="modalNuevo«e.name.toLowerCase.toFirstUpper»" th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».modal.agregar.titulo}"></h4>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -186,7 +192,7 @@ class CrudComponentHtmlGenerator {
 							
 							<div class="row">
 								«FOR f : e.entity_fields»
-								«f.getAttribute(e)»
+								«f.getAttribute(e, m)»
 								«ENDFOR»
 							</div>
 							<div class="modal-footer ">
@@ -198,7 +204,9 @@ class CrudComponentHtmlGenerator {
 				</div>
 			</div>
 		</div>
+		«ENDIF»
 	
+		«IF isEditInScaffolding(e)»
 		<!-- The Modal Edit -->
 		<div class="modal fade modal«e.name.toLowerCase.toFirstUpper»Editar" tabindex="-1" role="dialog"
 			aria-labelledby="modal«e.name.toLowerCase.toFirstUpper»Editar" aria-hidden="true"
@@ -207,7 +215,7 @@ class CrudComponentHtmlGenerator {
 				<div class="modal-content">
 	
 					<div class="modal-header">
-						<h4 class="modal-title" id="modal«e.name.toLowerCase.toFirstUpper»Editar" th:text="#{mn.«e.name.toLowerCase».modal.actualizar.titulo}"></h4>
+						<h4 class="modal-title" id="modal«e.name.toLowerCase.toFirstUpper»Editar" th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».modal.actualizar.titulo}"></h4>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -261,7 +269,7 @@ class CrudComponentHtmlGenerator {
 
 							<div class="row">
 								«FOR f : e.entity_fields»
-								«f.getAttributeEdit(e)»
+								«f.getAttributeEdit(e, m)»
 								«ENDFOR»
 							</div>
 							<div class="modal-footer">
@@ -274,6 +282,9 @@ class CrudComponentHtmlGenerator {
 				</div>
 			</div>
 		</div>
+		«ENDIF»
+		
+		«IF isDeleteInScaffolding(e)»
 		<!-- Modal -->
 		<div class="modal fade eliminar«e.name.toLowerCase.toFirstUpper»Modal" id="eliminar«e.name.toLowerCase.toFirstUpper»Modal"
 			tabindex="-1" role="dialog" aria-labelledby="modalEliminarTitle"
@@ -282,7 +293,7 @@ class CrudComponentHtmlGenerator {
 				role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="modalEliminarTitle"  th:text="#{mn.«e.name.toLowerCase».modal.eliminar.titulo}"></h5>
+						<h5 class="modal-title" id="modalEliminarTitle"  th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».modal.eliminar.titulo}"></h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -290,7 +301,7 @@ class CrudComponentHtmlGenerator {
 					</div>
 					<div class="modal-body">
 						<div class="text-center">
-							<p th:text="#{mn.«e.name.toLowerCase».modal.eliminar}"></p>
+							<p th:text="#{«m.name.toLowerCase».«e.name.toLowerCase».modal.eliminar}"></p>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -302,6 +313,7 @@ class CrudComponentHtmlGenerator {
 			</div>
 		</div>
 		</div>
+		«ENDIF»
 		
 		<footer th:replace="templates/footer :: footer">
 		</footer>
@@ -312,10 +324,10 @@ class CrudComponentHtmlGenerator {
 	
 	
 	/* Get Attribute Field */
-	def dispatch getAttribute(EntityTextField f, Entity t)'''
+	def dispatch getAttribute(EntityTextField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -324,10 +336,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityLongTextField f, Entity t)'''
+	def dispatch getAttribute(EntityLongTextField f, Entity t, Module m)'''
 	<div class="col-lg-12 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label"  th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label"  th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<textarea class="form-control" id="«f.name.toLowerCase»New"  name="«f.name.toLowerCase»New" maxlength="100" rows="3"></textarea>
@@ -335,10 +347,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttribute(EntityDateField f, Entity t)'''
+	def dispatch getAttribute(EntityDateField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -348,10 +360,10 @@ class CrudComponentHtmlGenerator {
 	</div>	
 	'''
 	
-	def dispatch getAttribute(EntityDateTimeField f, Entity t)'''
+	def dispatch getAttribute(EntityDateTimeField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -361,10 +373,10 @@ class CrudComponentHtmlGenerator {
 	</div>	
 	'''
 	
-	def dispatch getAttribute(EntityTimeField f, Entity t)'''
+	def dispatch getAttribute(EntityTimeField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -374,10 +386,10 @@ class CrudComponentHtmlGenerator {
 	</div>	
 	'''
 	
-	def dispatch getAttribute(EntityBooleanField f, Entity t)'''
+	def dispatch getAttribute(EntityBooleanField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -386,10 +398,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityImageField f, Entity t)'''
+	def dispatch getAttribute(EntityImageField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -398,10 +410,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityFileField f, Entity t)'''
+	def dispatch getAttribute(EntityFileField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -410,10 +422,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityEmailField f, Entity t)'''
+	def dispatch getAttribute(EntityEmailField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -422,10 +434,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityDecimalField f, Entity t)'''
+	def dispatch getAttribute(EntityDecimalField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -434,10 +446,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityIntegerField f, Entity t)'''
+	def dispatch getAttribute(EntityIntegerField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -446,10 +458,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttribute(EntityCurrencyField f, Entity t)'''
+	def dispatch getAttribute(EntityCurrencyField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»New" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»New"
@@ -459,16 +471,16 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''	
 	
-	def dispatch getAttribute(EntityReferenceField f, Entity t)'''
+	def dispatch getAttribute(EntityReferenceField f, Entity t, Module m)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationship(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»
+		«f.superType.genRelationship(t, f.name, entityFieldUtils.getFieldGlossaryName(f), m)»
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationship(Enum e, Entity t, String name, String glossaryName) '''
+	def dispatch genRelationship(Enum e, Entity t, String name, String glossaryName, Module m) '''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
 		</div>
 		<div class="col-lg-12">
 		<select name="«glossaryName»"
@@ -480,10 +492,10 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''
 	
-	def dispatch genRelationship(Entity e, Entity t, String name, String glossaryName) ''' 
+	def dispatch genRelationship(Entity e, Entity t, String name, String glossaryName, Module m) ''' 
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
+		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
 		</div>
 		<div class="col-lg-12">
 		<select name="«glossaryName»"
@@ -496,10 +508,10 @@ class CrudComponentHtmlGenerator {
 	'''
 	
 	/* Get Attribute Field */
-	def dispatch getAttributeEdit(EntityTextField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityTextField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -508,10 +520,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityLongTextField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityLongTextField f, Entity t, Module m)'''
 	<div class="col-lg-12 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label"  th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label"  th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<textarea class="form-control" id="«f.name.toLowerCase»Edit"  name="«f.name.toLowerCase»Edit" maxlength="100" rows="3"></textarea>
@@ -519,10 +531,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>	
 	'''
-	def dispatch getAttributeEdit(EntityDateField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityDateField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -531,10 +543,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityDateTimeField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityDateTimeField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -543,10 +555,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityTimeField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityTimeField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -555,10 +567,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityBooleanField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityBooleanField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -567,10 +579,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityImageField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityImageField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -579,10 +591,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityFileField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityFileField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -591,10 +603,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityEmailField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityEmailField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -603,10 +615,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityDecimalField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityDecimalField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -615,10 +627,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityIntegerField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityIntegerField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -627,10 +639,10 @@ class CrudComponentHtmlGenerator {
 		</div>
 	</div>
 	'''
-	def dispatch getAttributeEdit(EntityCurrencyField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityCurrencyField f, Entity t, Module m)'''
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
-			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
+			<label for="«f.name.toLowerCase»Edit" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}"></label>
 		</div>
 		<div class="col-lg-12">
 			<input type="text" class="form-control" id="«f.name.toLowerCase»Edit"
@@ -640,13 +652,13 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''	
 	
-	def dispatch getAttributeEdit(EntityReferenceField f, Entity t)'''
+	def dispatch getAttributeEdit(EntityReferenceField f, Entity t, Module m)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipEdit(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»		
+		«f.superType.genRelationshipEdit(t, f.name, entityFieldUtils.getFieldGlossaryName(f),m)»		
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationshipEdit(Enum e, Entity t, String name, String glossaryName) ''' 
+	def dispatch genRelationshipEdit(Enum e, Entity t, String name, String glossaryName, Module m) ''' 
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
 		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{cg.«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
@@ -661,7 +673,7 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''
 	
-	def dispatch genRelationshipEdit(Entity e, Entity t, String name, String glossaryName) ''' 
+	def dispatch genRelationshipEdit(Entity e, Entity t, String name, String glossaryName, Module m) ''' 
 	<div class="col-lg-6 form-group">
 		<div class="col-lg-12 text-left">
 		<label for="«name.toLowerCase»" class="col-form-label" th:text="#{cg.«t.name.toLowerCase».«e.name.toLowerCase»}"></label> 
@@ -720,100 +732,100 @@ class CrudComponentHtmlGenerator {
 	'''	
 	
 	/* Get Attribute Search */
-	def dispatch getAttributeSearch(EntityTextField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityTextField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityLongTextField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityLongTextField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityDateField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityDateField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityDateTimeField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityDateTimeField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityTimeField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityTimeField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityBooleanField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityBooleanField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityImageField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityImageField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityFileField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityFileField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityEmailField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityEmailField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityDecimalField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityDecimalField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityIntegerField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityIntegerField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''
-	def dispatch getAttributeSearch(EntityCurrencyField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityCurrencyField f, Entity t, Module m)'''
 	<div class="col-md-4">
-		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«f.name.toLowerCase»}">
+		<label for="«f.name.toLowerCase»" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«f.name.toLowerCase»}">
 		</label> <input name="«f.name.toLowerCase»Semaf" type="text"
 			class="form-control" id="«f.name.toLowerCase»Semaf" required>
 	</div>
 	'''	
 	
-	def dispatch getAttributeSearch(EntityReferenceField f, Entity t)'''
+	def dispatch getAttributeSearch(EntityReferenceField f, Entity t, Module m)'''
 	«IF  f !== null && !f.upperBound.equals('*')»
-		«f.superType.genRelationshipSearch(t, f.name, entityFieldUtils.getFieldGlossaryName(f))»
+		«f.superType.genRelationshipSearch(t, f.name, entityFieldUtils.getFieldGlossaryName(f), m)»
 	«ENDIF»
 	'''	
 	
-	def dispatch genRelationshipSearch(Enum e, Entity t, String name, String glossaryName) ''' 
+	def dispatch genRelationshipSearch(Enum e, Entity t, String name, String glossaryName, Module m) ''' 
 	<div class="col-md-4">
-		<label for="«name.toLowerCase»Semaf" class="col-form-label" th:text="#{mn.«t.name.toLowerCase».«e.name.toLowerCase»}"></label>
+		<label for="«name.toLowerCase»Semaf" class="col-form-label" th:text="#{«m.name.toLowerCase».«t.name.toLowerCase».«e.name.toLowerCase»}"></label>
 		<select name="«glossaryName»"
 			id="«name.toLowerCase»Semaf" class="form-control" required>
 			<option value="0" th:text="#{label.busqueda.seleccionar}" selected></option>
@@ -822,7 +834,7 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''
 	
-	def dispatch genRelationshipSearch(Entity e, Entity t, String name, String glossaryName) ''' 
+	def dispatch genRelationshipSearch(Entity e, Entity t, String name, String glossaryName, Module m) ''' 
 	<div class="col-md-4">
 		<label for="«name.toLowerCase»Semaf" class="col-form-label" th:text="#{cg.«t.name.toLowerCase».«e.name.toLowerCase»}"></label>
 		<select name="«glossaryName»"
@@ -833,4 +845,48 @@ class CrudComponentHtmlGenerator {
 	</div>
 	'''	
 	
+	def boolean isAddInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionAdd") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
+
+	def boolean isEditInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionEdit") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isDeleteInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionDelete") && a.value.trim.equals("true"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isSearchInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionSearch") && !a.value.trim.equals("None"))
+			  return true
+		}
+		return false
+	}
+	
+	def boolean isViewInScaffolding(Entity entity){
+		if(entity.actions!==null)
+		for(a:entity.actions.action){ 
+			if (a.eClass.name.trim.equals("ActionView") && !a.value.trim.equals("None"))
+			  return true
+		}
+		return false
+	}	
 }

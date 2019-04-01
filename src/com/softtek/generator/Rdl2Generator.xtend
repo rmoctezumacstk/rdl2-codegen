@@ -114,10 +114,6 @@ class Rdl2Generator extends AbstractGenerator {
 	// Banamex
 	@Inject CrudComponentMessagesGenerator crudComponentMessagesGenerator
 	@Inject CrudComponentModelGenerator crudComponentModelGenerator
-//	@Inject CrudComponentPaginatorHelperGenerator crudComponentPaginatorHelperGenerator
-//	@Inject CrudComponentPaginadorGenerator crudComponentPaginadorGenerator
-//	@Inject CrudComponentSqlGenerator crudComponentSqlGenerator
-//	@Inject CrudComponentConsultasGenerator crudComponentConsultasGenerator
 	@Inject CrudComponentJsGenerator crudComponentJsGenerator
 	@Inject CrudComponentControllerGenerator crudComponentControllerGenerator
 
@@ -179,11 +175,6 @@ class Rdl2Generator extends AbstractGenerator {
 		screenHtmlGenerator.doGenerate(resource, fsa)
 
 		// Banamex
-		//crudComponentHtmlGenerator.doGenerate(resource, fsa)
-//		crudComponentPaginatorHelperGenerator.doGenerate(resource, fsa)
-//		crudComponentPaginadorGenerator.doGenerate(resource, fsa)
-//		crudComponentSqlGenerator.doGenerate(resource, fsa)
-
 		crudComponentModelGenerator.doGenerate(resource, fsa)
 		crudComponentControllerGenerator.doGenerate(resource, fsa)
 		crudComponentRepositoryGenerator.doGenerate(resource, fsa)
@@ -201,6 +192,7 @@ class Rdl2Generator extends AbstractGenerator {
 		crudComponentJsMainGenerator.doGenerate(resource, fsa)	
 		crudComponentEnumGenerator.doGenerate(resource, fsa)	
 		crudComponentModelEnumGenerator.doGenerate(resource, fsa)
+		crudComponentMensajesESGenerator.doGenerate(resource, fsa)
 		
 		var accModules = new HashSet()
 		
@@ -210,18 +202,13 @@ class Rdl2Generator extends AbstractGenerator {
 			jsonServerGenerator.doGenerator(s, fsa)
 			
 			// Banamex
-//			crudComponentConsultasGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
-//			crudComponentMessagesGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoMNServiceGenerator.doGenerate(s, fsa)
 			crudComponentCatalogoMNServiceImplGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoServiceImplGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoRepositoryGenerator.doGenerate(s, fsa)
-//			crudComponentCatalogoRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentMNConstantsHelperGenerator.doGenerate(s, fsa)
 			crudComponentConstantsGenerator.doGenerate(s, fsa)
 			crudComponentQuerysGenerator.doGenerate(s, fsa)
-			crudComponentMensajesESGenerator.doGenerate(s, fsa)
+
 			crudComponentCatalogosMNRepositoryImplGenerator.doGenerate(s, fsa)
 			crudComponentCatalogosMNRepositoryGenerator.doGenerate(s, fsa)
 			crudComponentCatalogMNmnService.doGenerate(s, fsa)
@@ -232,6 +219,8 @@ class Rdl2Generator extends AbstractGenerator {
 		}		
 		
 		for(r:resource.resourceSet.resources){
+			
+			// Prototype
 			screenGenerator.doGenerate(r, fsa)
 			tableDataJsonGenerator.doGenerate(r, fsa)
 			
